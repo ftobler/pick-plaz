@@ -66,8 +66,6 @@ AccelStepper stepperB( AccelStepper::DRIVER, PIN_MOTB_STEP,  PIN_MOTB_DIR);
 AccelStepper stepperC( AccelStepper::DRIVER, PIN_MOTC_STEP,  PIN_MOTC_DIR);
 
 
-#define millis() millis_count
-
 void setup() {
 	int speed = 1000;
 	int accel = 2000;
@@ -90,21 +88,7 @@ void setup() {
 	uart_init();
 }
 
-
-static volatile int32_t millis_count = 1;
-static volatile int32_t micros_count = 1;
-static volatile float frequency = 0;
-
-
 void timer_isr() {
-	digitalWrite(PIN_OUTPUT_TOPDN, 1);
-
-	static int32_t counter = 0;
-	counter++;
-	frequency = (float)counter / millis_count * 1000;
-	micros_count = micros();
-	digitalWrite(PIN_OUTPUT_PUMP, counter & 0x01);
-
 	stepperX.run();
 	stepperY0.run();
 	stepperY1.run();
@@ -113,23 +97,10 @@ void timer_isr() {
 	stepperA.run();
 	stepperB.run();
 	stepperC.run();
-	digitalWrite(PIN_OUTPUT_TOPDN, 0);
 }
 
 void systick_isr() {
-	//digitalWrite(PIN_OUTPUT_TOPDN, 0);
-	millis_count++;
-	digitalWrite(PIN_OUTPUT_VALVE, millis_count & 0x01);
 
-	int i = millis_count;
-	if (millis_count % 16 == 0)		    stepperX.moveTo(micros() % i);
-	if (millis_count % 16 == 1)			stepperY0.moveTo(micros() % i);
-	if (millis_count % 16 == 2)			stepperY1.moveTo(micros() % i);
-	if (millis_count % 16 == 3)			stepperZ.moveTo(micros() % i);
-	if (millis_count % 16 == 4)			stepperE.moveTo(micros() % i);
-	if (millis_count % 16 == 5)			stepperA.moveTo(micros() % i);
-	if (millis_count % 16 == 6)			stepperB.moveTo(micros() % i);
-	if (millis_count % 16 == 7)			stepperC.moveTo(micros() % i);
 }
 
 void loop() {
