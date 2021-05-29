@@ -1,4 +1,4 @@
 # pick-plaz
 Open source pick and place machine
 
-CAD Onshape: https://cad.onshape.com/documents/862ad57e61972ac40678396c/w/4d5287ad2e6dc40775eabb5e/e/0f5384b1133c7c45d6dd5d48
+CAD Onshape: https://cad.onshape.com/documents/175bb45940c329c46a77df39/w/56e16a8885c2fef63520b9e2/e/e7ab10496d879b6cf281b14f
