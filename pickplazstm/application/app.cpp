@@ -10,6 +10,8 @@
 #include "stdint.h"
 #include "arduino_like_hal.h"
 #include "AccelStepper.h"
+#include "uart_handler.h"
+
 
 //#define PIN_OUTPUT_PUMP (('C' - 'A') * 16 + 6)
 
@@ -67,24 +69,25 @@ AccelStepper stepperC( AccelStepper::DRIVER, PIN_MOTC_STEP,  PIN_MOTC_DIR);
 #define millis() millis_count
 
 void setup() {
-	int speed = 2000;
-	int accel = 10000;
-	stepperX.setAcceleration(10000);
-	stepperX.setMaxSpeed(2000);
-	stepperY0.setAcceleration(10000);
-	stepperY0.setMaxSpeed(2000);
-	stepperY1.setAcceleration(10000);
-	stepperY1.setMaxSpeed(2000);
-	stepperZ.setAcceleration(10000);
-	stepperZ.setMaxSpeed(2000);
-	stepperE.setAcceleration(10000);
-	stepperE.setMaxSpeed(2000);
-	stepperA.setAcceleration(10000);
-	stepperA.setMaxSpeed(2000);
-	stepperB.setAcceleration(10000);
-	stepperB.setMaxSpeed(2000);
-	stepperC.setAcceleration(10000);
-	stepperC.setMaxSpeed(2000);
+	int speed = 1000;
+	int accel = 2000;
+	stepperX.setAcceleration(accel);
+	stepperX.setMaxSpeed(speed);
+	stepperY0.setAcceleration(accel);
+	stepperY0.setMaxSpeed(speed);
+	stepperY1.setAcceleration(accel);
+	stepperY1.setMaxSpeed(speed);
+	stepperZ.setAcceleration(accel);
+	stepperZ.setMaxSpeed(speed);
+	stepperE.setAcceleration(accel);
+	stepperE.setMaxSpeed(speed);
+	stepperA.setAcceleration(accel);
+	stepperA.setMaxSpeed(speed);
+	stepperB.setAcceleration(accel);
+	stepperB.setMaxSpeed(speed);
+	stepperC.setAcceleration(accel);
+	stepperC.setMaxSpeed(speed);
+	uart_init();
 }
 
 
@@ -146,5 +149,10 @@ void loop() {
 	digitalWrite(PIN_OUTPUT_TOPDN, millis() % 700 > 400);
 	digitalWrite(PIN_OUTPUT_AUX1, millis() % 700 > 500);
 	digitalWrite(PIN_OUTPUT_AUX2, millis() % 700 > 600);*/
+
+	//if (millis_count % 1000 == 0) {
+		uart_loop();
+	//}
+
 }
 
