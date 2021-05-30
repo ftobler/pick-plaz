@@ -1,4 +1,5 @@
 pickplazstm/Debug/*
+pickplazstm/Release/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
