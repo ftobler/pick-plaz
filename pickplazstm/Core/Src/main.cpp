@@ -122,8 +122,8 @@ int main(void)
   setup();
 
   HAL_TIM_Base_Start_IT(&htim2);  //timer has no used interrupt, but counter counts in 1us interval and overflows after 2^32
-  htim3.Instance->ARR = 50-1;
-  HAL_TIM_Base_Start_IT(&htim3);  //200us timer for fast program handling stuff
+  htim3.Instance->ARR = 20-1;
+  HAL_TIM_Base_Start_IT(&htim3);  //25us timer for fast program handling stuff
   htim4.Instance->ARR = 1000-1;
   HAL_TIM_Base_Start_IT(&htim4);  //1ms  timer for time program handling stuff
 

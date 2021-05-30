@@ -11,7 +11,7 @@
 
 AccelStepperExtended::AccelStepperExtended(int pin1, int pin2)
   : AccelStepper(AccelStepper::DRIVER, pin1, pin2) {
-	speed_multiplier = 1.000;
+	speed_multiplier = 1.000f;
 	steps_per_mm = 100;
 	max_speed_cap_mm = 10000;
 }

@@ -15,6 +15,8 @@
 
 #define NaN (0x400000)
 
+extern TIM_HandleTypeDef htim2;  //counts in 1us interval. until it overflows at 2^32
+
 typedef bool boolean;
 
 enum {
@@ -40,14 +42,15 @@ enum {
 #define sq(x) ((x)*(x))
 
 #define millis() (uwTick)
+#define micros() (htim2.Instance->CNT)
 
 #define portpin(port, pin) ((port - 'A') * 16 + pin)
 
 
-long micros();
 void delay(int delay);
 void delayMicroseconds(int delay);
 void digitalWrite(int pin, int value);
+void digitalPulse(int pin);
 uint8_t digitalRead(int pin);
 void pinMode(int pin, int mode);
 

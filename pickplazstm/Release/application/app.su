@@ -1,0 +1,8 @@
+app.cpp:476:13:void do_cmd_stepper_power(bool)	8	static
+app.cpp:564:13:void job_prelling_handle()	8	static
+app.cpp:340:13:void homeAxle(AccelStepperExtended*, Prelling_input*, int, float, int, float, float)	32	static,ignoring_inline_asm
+app.cpp:119:6:void setup()	16	static
+app.cpp:172:6:void timer_isr()	8	static
+app.cpp:188:6:void systick_isr()	0	static
+app.cpp:206:6:void loop()	120	static,ignoring_inline_asm
+app.cpp:574:1:cpp)	8	static

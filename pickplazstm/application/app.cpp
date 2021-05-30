@@ -117,10 +117,11 @@ bool job_prelling = false;
  * Does run once
  */
 void setup() {
-	float steps_per_mm = 25;
-	float speed_cap = 500;
-	float speed = 500;
-	float accel = 3000;
+	float steps_per_mm = 25.0f;
+	float speed_cap = 450.0f;
+	float speed = 450.0f;
+	float accel = 3000.0f;
+
 	stepperX.setStepsPer_mm(steps_per_mm);
 	stepperX.setAcceleration_mm(accel);
 	stepperX.setMaxSpeed_cap_mm(speed_cap);
@@ -331,9 +332,9 @@ static void do_cmd_drive_to_position(Gcode_command cmd) {
 
 
 static void do_cmd_home(Gcode_command cmd) {
-	homeAxle(&stepperZ, &input_endZ, -1, 10.0, 5000, 500.0, 5.0);
-	homeAxle(&stepperX, &input_endX, -1, 10.0, 10000, 1000.0, 5.0);
-	homeAxleDual(&stepperY0, &stepperY1, &input_endY0, &input_endY1, 10.0, 10000, 1000.0, 5.0);
+	homeAxle(&stepperZ, &input_endZ, -1, 10.0f, 5000, 500.0f, 5.0f);
+	homeAxle(&stepperX, &input_endX, -1, 10.0f, 10000, 1000.0f, 5.0f);
+	homeAxleDual(&stepperY0, &stepperY1, &input_endY0, &input_endY1, 10.0f, 10000, 1000.0f, 5.0f);
 }
 
 static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int homDirection, float home_speed, int home_timeout,
@@ -342,7 +343,7 @@ static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int
 
 	float tmpSpeed = stepper->getMaxSpeed_mm();                  //save current motor speed for later
 	stepper->setMaxSpeed_mm(home_speed);                         //set homing fast speed for 1st travel
-	stepper->setCurrentPosition_mm(0.0);                         //reset position to 0
+	stepper->setCurrentPosition_mm(0.0f);                         //reset position to 0
 	stepper->moveTo_mm(home_travel_mm * homDirection);           //run to endstop
 	endtime = millis() + home_timeout;
 	while (!endstop->get() && (millis() < endtime)) {              //block until endstop or timeout reached
@@ -350,15 +351,15 @@ static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int
 		job_prelling_handle();
 	}
 	stepper->move(0);                                            //stepper shoud stop immediately
-	stepper->setCurrentPosition_mm(0.0);                         //reset position to 0
-	stepper->moveTo_mm(home_travel_back_mm * homDirection * -1); //go back a bit
+	stepper->setCurrentPosition_mm(0.0f);                         //reset position to 0
+	stepper->moveTo_mm(home_travel_back_mm * homDirection * -1.0f); //go back a bit
 	while (stepper->isRunning()) {                               //block until stepper reached position
 		__WFI();
 	    job_prelling_handle();
 	}
-	stepper->setMaxSpeed_mm(home_speed / 2);                     //set slow speed for 2nd forward motion
-	stepper->moveTo_mm(home_travel_back_mm * 2 * homDirection);  //move to endstop 2nd time
-	endtime = millis() + home_timeout / 2;
+	stepper->setMaxSpeed_mm(home_speed / 2.0f);                     //set slow speed for 2nd forward motion
+	stepper->moveTo_mm(home_travel_back_mm * 2.0f * homDirection);  //move to endstop 2nd time
+	endtime = millis() + home_timeout / 2.0f;
 	while (!endstop->get() && (millis() < endtime)) {              //block until endstop or timeout reached
 		__WFI();
 		job_prelling_handle();
@@ -376,8 +377,8 @@ static void homeAxleDual(AccelStepperExtended* stepper1, AccelStepperExtended* s
 	float tmpSpeed = stepper1->getMaxSpeed_mm();                  //save current motor speed for later
 	stepper1->setMaxSpeed_mm(home_speed);                         //set homing fast speed for 1st travel
 	stepper2->setMaxSpeed_mm(home_speed);                         //set homing fast speed for 1st travel
-	stepper1->setCurrentPosition_mm(0.0);                         //reset position to 0
-	stepper2->setCurrentPosition_mm(0.0);                         //reset position to 0
+	stepper1->setCurrentPosition_mm(0.0f);                         //reset position to 0
+	stepper2->setCurrentPosition_mm(0.0f);                         //reset position to 0
 	stepper1->moveTo_mm(home_travel_mm * homDirection);           //run to endstop
 	stepper2->moveTo_mm(home_travel_mm * homDirection);           //run to endstop
 	endtime = millis() + home_timeout;
@@ -387,34 +388,34 @@ static void homeAxleDual(AccelStepperExtended* stepper1, AccelStepperExtended* s
 	}
 	stepper1->move(0);                                            //stepper shoud stop immediately
 	stepper2->move(0);                                            //stepper shoud stop immediately
-	stepper1->setCurrentPosition_mm(0.0);                         //reset position to 0
-	stepper2->setCurrentPosition_mm(0.0);                         //reset position to 0
-	stepper1->moveTo_mm(home_travel_back_mm * homDirection * -1); //go back a bit
-	stepper2->moveTo_mm(home_travel_back_mm * homDirection * -1); //go back a bit
+	stepper1->setCurrentPosition_mm(0.0f);                         //reset position to 0
+	stepper2->setCurrentPosition_mm(0.0f);                         //reset position to 0
+	stepper1->moveTo_mm(home_travel_back_mm * homDirection * -1.0f); //go back a bit
+	stepper2->moveTo_mm(home_travel_back_mm * homDirection * -1.0f); //go back a bit
 	while (stepper1->isRunning() || stepper2->isRunning()) {                               //block until stepper reached position
 		__WFI();
 	    job_prelling_handle();
 	}
-	stepper1->setMaxSpeed_mm(home_speed / 2);                     //set slow speed for 2nd forward motion
-	stepper2->setMaxSpeed_mm(home_speed / 2);                     //set slow speed for 2nd forward motion
-	stepper1->moveTo_mm(home_travel_back_mm * 2 * homDirection);  //move to endstop 2nd time
-	stepper2->moveTo_mm(home_travel_back_mm * 2 * homDirection);  //move to endstop 2nd time
-	endtime = millis() + home_timeout / 2;
+	stepper1->setMaxSpeed_mm(home_speed / 2.0f);                     //set slow speed for 2nd forward motion
+	stepper2->setMaxSpeed_mm(home_speed / 2.0f);                     //set slow speed for 2nd forward motion
+	stepper1->moveTo_mm(home_travel_back_mm * 2.0f * homDirection);  //move to endstop 2nd time
+	stepper2->moveTo_mm(home_travel_back_mm * 2.0f * homDirection);  //move to endstop 2nd time
+	endtime = millis() + home_timeout / 2.0f;
 	while (!(endstop1->get() && endstop2->get()) && (millis() < endtime)) {              //block until endstop or timeout reached
 		__WFI();
 		job_prelling_handle();
 	}
 	stepper1->move(0);                                            //stepper shoud stop immediately
 	stepper2->move(0);                                            //stepper shoud stop immediately
-	stepper1->setCurrentPosition_mm(0.0);                         //homing finished
-	stepper2->setCurrentPosition_mm(0.0);                         //homing finished
+	stepper1->setCurrentPosition_mm(0.0f);                         //homing finished
+	stepper2->setCurrentPosition_mm(0.0f);                         //homing finished
 	stepper1->setMaxSpeed_mm(tmpSpeed);                           //restore motor speed
 	stepper2->setMaxSpeed_mm(tmpSpeed);                           //restore motor speed
 }
 
 static void do_cmd_dwell(Gcode_command cmd) {
 	if (cmd.valueT != NaN) {
-		int milliseconds = round(cmd.valueT * 1000.0);
+		int milliseconds = round(cmd.valueT * 1000.0f);
 		delay(milliseconds);
 	}
 }

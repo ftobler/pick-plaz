@@ -10,16 +10,11 @@
 #include "stm32f4xx_hal.h"
 
 
-extern TIM_HandleTypeDef htim2;  //counts in 1us interval. until it overflows at 2^32
 
 
 GPIO_TypeDef* ports[] = {GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, 0, 0, GPIOH};
 
 
-
-int32_t micros() {
-	return htim2.Instance->CNT;
-}
 
 
 void delay(int delay) {
@@ -56,6 +51,15 @@ void digitalWrite(int pin, int value) {
 	} else {
 		GPIOx->BSRR = (uint32_t)(GPIO_Pin << 16);
 	}
+}
+
+void digitalPulse(int pin) {
+	GPIO_TypeDef* GPIOx = ports[pin / 16];
+	uint16_t GPIO_Pin = 1 << (pin & 0x0F);
+	GPIOx->BSRR = (uint32_t)GPIO_Pin;
+	__ASM("NOP");
+	__ASM("NOP");
+	GPIOx->BSRR = (uint32_t)(GPIO_Pin << 16);
 }
 
 uint8_t digitalRead(int pin) {

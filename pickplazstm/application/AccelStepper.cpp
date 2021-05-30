@@ -47,25 +47,32 @@ boolean AccelStepper::runSpeed()
     unsigned long time = micros();   
     if (time - _lastStepTime >= _stepInterval)
     {
-	if (_direction == DIRECTION_CW)
-	{
-	    // Clockwise
-	    _currentPos += 1;
-	}
-	else
-	{
-	    // Anticlockwise  
-	    _currentPos -= 1;
-	}
-	step(_currentPos);
+		if (_direction == DIRECTION_CW)
+		{
+			// Clockwise
+			_currentPos += 1;
+		}
+		else
+		{
+			// Anticlockwise
+			_currentPos -= 1;
+		}
+		//step(_currentPos);
 
-	_lastStepTime = time; // Caution: does not account for costs in step()
+		//custom ultra fast handling
+		digitalWrite(_pin[1], _direction);
+		digitalPulse(_pin[0]);
+		//digitalWrite(_pin[0], 1);
+		////delayMicroseconds(_minPulseWidth);
+		//digitalWrite(_pin[0], 0);
 
-	return true;
+		_lastStepTime = time; // Caution: does not account for costs in step()
+
+		return true;
     }
     else
     {
-	return false;
+    	return false;
     }
 }
 
@@ -105,7 +112,7 @@ void AccelStepper::computeNewSpeed()
     {
 	// We are at the target and its time to stop
 	_stepInterval = 0;
-	_speed = 0.0;
+	_speed = 0.0f;
 	_n = 0;
 	return;
     }
@@ -155,7 +162,7 @@ void AccelStepper::computeNewSpeed()
     else
     {
 	// Subsequent step. Works for accel (n is +_ve) and decel (n is -ve).
-	_cn = _cn - ((2.0f * _cn) / ((4.0f * _n) + 1)); // Equation 13
+	_cn = _cn - ((2.0f * _cn) / ((4.0f * _n) + 1.0f)); // Equation 13
 	_cn = max(_cn, _cmin); 
     }
     _n++;
@@ -184,7 +191,7 @@ void AccelStepper::computeNewSpeed()
 boolean AccelStepper::run()
 {
     if (runSpeed())
-	computeNewSpeed();
+	    computeNewSpeed();
     return _speed != 0.0 || distanceToGo() != 0;
 }
 

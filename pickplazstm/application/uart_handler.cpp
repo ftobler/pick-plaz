@@ -170,9 +170,9 @@ static void seek_space(int* index) {
 }
 
 static float read_num(int* index) {
-	float number = 0;
-	float adder_negative = 0.1;
-	float factor = 1.0;
+	float number = 0.0f;
+	float adder_negative = 0.1f;
+	float factor = 1.0f;
 	int i = *index;
 	bool isPositive = true;
 	bool finished = false;
@@ -184,14 +184,15 @@ static float read_num(int* index) {
 		} else if (c >= '0' && c <= '9') {
 			int digit = c - '0';
 			if (isPositive) {
-				number = number * 10 + digit;
+				number = number * 10.0f + digit;
 			} else {
 				number = number + digit * adder_negative;
-				adder_negative = adder_negative / 10;
+				adder_negative = adder_negative / 10.0f;
 			}
 			i++;
 		} else if (c == '-') {
-			factor = -1.0;
+			factor = -1.0f;
+			i++;
 		} else {
 			finished = true;
 		}
