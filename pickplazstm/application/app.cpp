@@ -82,6 +82,17 @@ static void job_prelling_handle();
 #define PIN_MOTC_DIR   portpin('C', 11)
 #define PIN_MOTC_EN    portpin('D', 0)
 
+//debug leds
+#define PIN_DEBUG0     portpin('B', 1)
+#define PIN_DEBUG1     portpin('B', 2)
+#define PIN_DEBUG2     portpin('B', 13)
+#define PIN_DEBUG3     portpin('B', 14)
+
+//microstep setting
+#define PIN_MOT_MS1    portpin('E', 10)
+#define PIN_MOT_MS2    portpin('E', 11)
+#define PIN_MOT_MS3    portpin('E', 12)
+
 //Steper Motor instances
 AccelStepperExtended stepperX( PIN_MOTX_STEP,  PIN_MOTX_DIR);
 AccelStepperExtended stepperY0(PIN_MOTY0_STEP, PIN_MOTY0_DIR);
@@ -121,6 +132,12 @@ void setup() {
 	float speed_cap = 450.0f;
 	float speed = 450.0f;
 	float accel = 3000.0f;
+
+	//set microstepping to 4x
+	//works only on board v1e or later
+	digitalWrite(PIN_MOT_MS1, 0);
+	digitalWrite(PIN_MOT_MS2, 1);
+	digitalWrite(PIN_MOT_MS3, 0);
 
 	stepperX.setStepsPer_mm(steps_per_mm);
 	stepperX.setAcceleration_mm(accel);
@@ -170,7 +187,6 @@ void setup() {
  * Fast timer ISR. Frequency is around multiple kHz
  */
 void timer_isr() {
-	digitalWrite((('E' - 'A') * 16 + 0), 1);
 	if (stepperX.isRunning())  stepperX.run();
 	if (stepperY0.isRunning()) stepperY0.run();
 	if (stepperY1.isRunning()) stepperY1.run();
@@ -179,7 +195,6 @@ void timer_isr() {
 	if (stepperA.isRunning())  stepperA.run();
 	if (stepperB.isRunning())  stepperB.run();
 	if (stepperC.isRunning())  stepperC.run();
-	digitalWrite((('E' - 'A') * 16 + 0), 0);
 }
 
 /**
@@ -187,16 +202,6 @@ void timer_isr() {
  */
 void systick_isr() {
 	job_prelling = true;
-//	//digitalWrite(PIN_MOTY1_EN, 1);
-//	stepperX.computeNewSpeed();
-//	//digitalWrite(PIN_MOTY1_EN, 0);
-//	stepperY0.computeNewSpeed();
-//	stepperY1.computeNewSpeed();
-//	stepperZ.computeNewSpeed();
-//	stepperE.computeNewSpeed();
-//	stepperA.computeNewSpeed();
-//	stepperB.computeNewSpeed();
-//	stepperC.computeNewSpeed();
 }
 
 
