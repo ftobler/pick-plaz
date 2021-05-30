@@ -104,16 +104,7 @@ void systick_isr() {
 }
 
 void loop() {
-    //digitalWrite(PIN_OUTPUT_TOPDN, 0);
-	static int loopCount = 0;
 
-
-
-
-
-
-	loopCount++;
-	digitalWrite(PIN_OUTPUT_BOTUP, loopCount & 0x01);
 	/*digitalWrite(PIN_OUTPUT_PUMP, millis() % 700 > 100);
 	digitalWrite(PIN_OUTPUT_VALVE, millis() % 700 > 200);
 	digitalWrite(PIN_OUTPUT_BOTUP, millis() % 700 > 300);
@@ -121,9 +112,7 @@ void loop() {
 	digitalWrite(PIN_OUTPUT_AUX1, millis() % 700 > 500);
 	digitalWrite(PIN_OUTPUT_AUX2, millis() % 700 > 600);*/
 
-	//if (millis_count % 1000 == 0) {
-		uart_loop();
-	//}
+	uart_loop();
 
 }
 

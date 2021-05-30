@@ -2,7 +2,7 @@
  * Serial.c
  *
  *  Created on: Oct 17, 2020
- *      Author: Florin (Nicolas)
+ *      Author: Florin
  */
 
 #include "Serial.h"

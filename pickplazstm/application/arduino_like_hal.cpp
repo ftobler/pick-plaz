@@ -12,30 +12,23 @@
 
 extern TIM_HandleTypeDef htim2;  //counts in 1us interval. until it overflows at 2^32
 
+
+GPIO_TypeDef* ports[] = {GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, 0, 0, GPIOH};
+
+
+
 int32_t micros() {
 	return htim2.Instance->CNT;
 }
 
 void delayMicroseconds(int delay) {
-	int32_t time = micros();
-	int32_t end = time + delay; // could overflow
-	if (time - end > delay) {
-		//overflowed
-		while (micros() > time) {
-			//wait for micros to also overflow
-		}
-		while (micros() < end) {
-			//wait normal
-		}
-	} else {
-		//normal
-		while (micros() < end) {
-
-		}
+    //not very accurate but seems to work well enough for the purpose
+	delay = (delay-1) * 10;
+	while (delay) {
+		delay--;
 	}
 }
 
-GPIO_TypeDef* ports[] = {GPIOA, GPIOB, GPIOC, GPIOD, GPIOE, 0, 0, GPIOH};
 
 void digitalWrite(int pin, int value) {
 	GPIO_TypeDef* GPIOx = ports[pin / 16];

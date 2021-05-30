@@ -11,7 +11,6 @@
 #include "stdint.h"
 
 void uart_init();
-uint8_t* uart_get_line(uint8_t* len);
 void uart_loop();
 
 #endif
