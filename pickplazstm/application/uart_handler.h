@@ -10,8 +10,26 @@
 
 #include "stdint.h"
 
+
+typedef struct {
+	char id;
+	int num;
+	float valueX;
+	float valueY;
+	float valueZ;
+	float valueE;
+	float valueA;
+	float valueB;
+	float valueC;
+	float valueF;
+	float valueS;
+	float valueT;
+} Gcode_command;
+
 void uart_init();
 void uart_loop();
+int uart_command_available();
+Gcode_command uart_command_get();
 
 #endif
 
