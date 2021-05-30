@@ -21,6 +21,24 @@ int32_t micros() {
 	return htim2.Instance->CNT;
 }
 
+
+void delay(int delay) {
+	uint32_t startTime = uwTick;
+	uint32_t endTime = startTime + delay;
+	if (startTime > endTime) {
+		//overflow occured. wait for uwTick to really overflow
+		while (uwTick < UINT32_MAX)
+		//now wait for time to be reached
+		while (uwTick < endTime) {
+			//busy wait
+		}
+	} else {
+		while (uwTick < endTime) {
+			//busy wait
+		}
+	}
+}
+
 void delayMicroseconds(int delay) {
     //not very accurate but seems to work well enough for the purpose
 	delay = (delay-1) * 10;
@@ -40,7 +58,7 @@ void digitalWrite(int pin, int value) {
 	}
 }
 
-uint8_t digitalRead(int pin, int value) {
+uint8_t digitalRead(int pin) {
 	GPIO_TypeDef* GPIOx = ports[pin / 16];
 	uint16_t GPIO_Pin = 1 << (pin & 0x0F);
 	if ((GPIOx->IDR & GPIO_Pin) != (uint32_t)GPIO_PIN_RESET)

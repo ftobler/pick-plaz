@@ -12,6 +12,7 @@
 #include "Serial.h"
 #include "math.h"
 #include "queue.h"
+#include "string.h"
 
 extern UART_HandleTypeDef huart1;
 extern Serial serial1;
@@ -82,10 +83,11 @@ static void process_parse_command() {
 		cmd.valueC = NAN;
 		cmd.valueF = NAN;
 		cmd.valueS = NAN;
+		cmd.valueP = NAN;
 		cmd.valueT = NAN;
 		seek_space(&index);
 		cmd.id = to_upper(buf[index++]);
-		cmd.num = (int)read_num(&index);
+		cmd.num = round(read_num(&index));
 		do {
 			seek_space(&index);
 			char id = to_upper(buf[index++]);
@@ -125,6 +127,9 @@ static void process_parse_command() {
 			case 'S':
 				cmd.valueS = read_num(&index);
 				break;
+			case 'P':
+				cmd.valueP = read_num(&index);
+				break;
 			case 'T':
 				cmd.valueT = read_num(&index);
 				break;
@@ -135,7 +140,14 @@ static void process_parse_command() {
 		seek_space(&index);
 		queue.push(cmd);
 	} while(do_loop);
-	serial1.writeBuf((uint8_t*)"ok\n", 3);
+	uart_message("OK");
+}
+
+
+void uart_message(const char* message) {
+	int len = strlen(message);
+	serial1.writeBuf((uint8_t*)message, len);
+	serial1.write('\n');
 }
 
 

@@ -10,6 +10,7 @@
 
 #include "stdint.h"
 #include "math.h"
+#include "stm32f4xx_hal.h"
 
 typedef bool boolean;
 
@@ -35,13 +36,16 @@ enum {
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
 
+#define millis() (uwTick)
+
 #define portpin(port, pin) ((port - 'A') * 16 + pin)
 
 
 long micros();
+void delay(int delay);
 void delayMicroseconds(int delay);
 void digitalWrite(int pin, int value);
-uint8_t digitalRead(int pin, int value);
+uint8_t digitalRead(int pin);
 void pinMode(int pin, int mode);
 
 #endif /* ARDUINO_LIKE_HAL_H_ */

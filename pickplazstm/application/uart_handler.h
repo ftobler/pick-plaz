@@ -23,6 +23,7 @@ typedef struct {
 	float valueC;
 	float valueF;
 	float valueS;
+	float valueP;
 	float valueT;
 } Gcode_command;
 
@@ -30,6 +31,7 @@ void uart_init();
 void uart_loop();
 int uart_command_available();
 Gcode_command uart_command_get();
+void uart_message(const char* message);
 
 #endif
 
