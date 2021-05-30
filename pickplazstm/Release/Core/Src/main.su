@@ -1,0 +1,3 @@
+main.cpp:145:6:void SystemClock_Config()	88	static,ignoring_inline_asm
+main.cpp:84:5:int main()	64	static,ignoring_inline_asm
+main.cpp:602:6:void Error_Handler()	0	static,ignoring_inline_asm

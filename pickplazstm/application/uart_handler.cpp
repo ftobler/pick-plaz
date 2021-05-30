@@ -13,17 +13,18 @@
 #include "math.h"
 #include "queue.h"
 #include "string.h"
+#include "arduino_like_hal.h"
 
 extern UART_HandleTypeDef huart1;
 extern Serial serial1;
 
 
 
-#define UART_BUF_SIZE 128
+#define UART_BUF_SIZE 256
 uint8_t buf[UART_BUF_SIZE];
 int buf_index = 0;
 
-#define QUEUE_LEN 15
+#define QUEUE_LEN 32
 Queue<Gcode_command> queue;
 Gcode_command queue_data[QUEUE_LEN];
 
@@ -74,17 +75,17 @@ static void process_parse_command() {
 		bool end_reached = false;
 		Gcode_command cmd;
 		cmd.num = -1;
-		cmd.valueX = NAN;
-		cmd.valueY = NAN;
-		cmd.valueZ = NAN;
-		cmd.valueE = NAN;
-		cmd.valueA = NAN;
-		cmd.valueB = NAN;
-		cmd.valueC = NAN;
-		cmd.valueF = NAN;
-		cmd.valueS = NAN;
-		cmd.valueP = NAN;
-		cmd.valueT = NAN;
+		cmd.valueX = NaN;
+		cmd.valueY = NaN;
+		cmd.valueZ = NaN;
+		cmd.valueE = NaN;
+		cmd.valueA = NaN;
+		cmd.valueB = NaN;
+		cmd.valueC = NaN;
+		cmd.valueF = NaN;
+		cmd.valueS = NaN;
+		cmd.valueP = NaN;
+		cmd.valueT = NaN;
 		seek_space(&index);
 		cmd.id = to_upper(buf[index++]);
 		cmd.num = round(read_num(&index));
@@ -138,7 +139,16 @@ static void process_parse_command() {
 			}
 		} while (!end_reached);
 		seek_space(&index);
-		queue.push(cmd);
+		if (cmd.id != '\r' && cmd.id != '\n' && cmd.id != ' ' && cmd.id != ';') {
+			if (!queue.isFull()) {
+				queue.push(cmd);
+			} else {
+				uart_message("OVERFLOW");
+			}
+			if (queue.isFull()) {
+				uart_message("FULL");
+			}
+		}
 	} while(do_loop);
 	uart_message("OK");
 }

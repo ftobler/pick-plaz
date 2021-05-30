@@ -533,6 +533,7 @@ public:
     /// Checks to see if the motor is currently running to a target
     /// \return true if the speed is not zero or not at the target position
     bool    isRunning();
+    void           computeNewSpeed();
 
 protected:
 
@@ -552,7 +553,6 @@ protected:
     /// \li  after change to acceleration through setAcceleration()
     /// \li  after change to target position (relative or absolute) through
     /// move() or moveTo()
-    void           computeNewSpeed();
 
     /// Low level function to set the motor output pins
     /// bit 0 of the mask corresponds to _pin[0]

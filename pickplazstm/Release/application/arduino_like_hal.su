@@ -1,0 +1,6 @@
+arduino_like_hal.cpp:20:9:int32_t micros()	0	static
+arduino_like_hal.cpp:25:6:void delay(int)	0	static
+arduino_like_hal.cpp:42:6:void delayMicroseconds(int)	0	static
+arduino_like_hal.cpp:51:6:void digitalWrite(int, int)	0	static
+arduino_like_hal.cpp:61:9:uint8_t digitalRead(int)	0	static
+arduino_like_hal.cpp:70:6:void pinMode(int, int)	0	static

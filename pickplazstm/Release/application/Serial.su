@@ -1,0 +1,15 @@
+Serial.cpp:21:1:Buffer::Buffer()	0	static
+Serial.cpp:25:6:void Buffer::init()	0	static
+Serial.cpp:47:6:void Serial::ISR()	16	static
+Serial.cpp:97:6:void Serial::init(UART_HandleTypeDef*)	0	static
+Serial.cpp:111:6:void Serial::initFlow(GPIO_TypeDef*, uint16_t)	0	static
+Serial.cpp:117:10:uint16_t Serial::available()	0	static
+Serial.cpp:121:6:void Serial::flushRX()	0	static
+Serial.cpp:125:6:void Serial::flushTX()	0	static
+Serial.cpp:142:9:uint8_t Serial::read()	0	static
+Serial.cpp:146:10:uint16_t Serial::readBuf(uint8_t*, uint16_t)	16	static
+Serial.cpp:168:6:void Serial::enableTx()	8	static
+Serial.cpp:129:6:void Serial::print(const char*)	4	static
+Serial.cpp:156:6:void Serial::writeBuf(const uint8_t*, uint16_t)	12	static
+Serial.cpp:162:6:void Serial::write(uint8_t)	4	static
+Serial.cpp:182:1:cpp)	0	static

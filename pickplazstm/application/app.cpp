@@ -14,6 +14,8 @@
 #include "io.h"
 #include "cmsis_gcc.h"
 
+
+static bool is_steppers_on_position();
 static void do_cmd_drive_to_position(Gcode_command cmd);
 static void do_cmd_home(Gcode_command cmd);
 static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int homDirection, float home_speed = 10.0, int home_timeout = 10000,
@@ -90,25 +92,6 @@ AccelStepperExtended stepperA( PIN_MOTA_STEP,  PIN_MOTA_DIR);
 AccelStepperExtended stepperB( PIN_MOTB_STEP,  PIN_MOTB_DIR);
 AccelStepperExtended stepperC( PIN_MOTC_STEP,  PIN_MOTC_DIR);
 
-//Stepper Motor scales (steps per mm)
-float scaleX = 100;
-float scaleY = 100;
-float scaleZ = 100;
-float scaleE = 8.888888888888;
-float scaleA = 100;
-float scaleB = 100;
-float scaleC = 100;
-
-//speed multiplier applied to G0/F1 F-Parameter
-float speed_multiplierX = 1;
-float speed_multiplierY = 1;
-float speed_multiplierZ = 1;
-float speed_multiplierE = 12;
-float speed_multiplierA = 1;
-float speed_multiplierB = 1;
-float speed_multiplierC = 1;
-
-
 //output pin cluster
 Simple_output output_pump(PIN_OUTPUT_PUMP);
 Simple_output output_valve(PIN_OUTPUT_VALVE);
@@ -134,10 +117,10 @@ bool job_prelling = false;
  * Does run once
  */
 void setup() {
-	float steps_per_mm = 100;
+	float steps_per_mm = 25;
 	float speed_cap = 500;
-	float speed = 100;
-	float accel = 200;
+	float speed = 500;
+	float accel = 3000;
 	stepperX.setStepsPer_mm(steps_per_mm);
 	stepperX.setAcceleration_mm(accel);
 	stepperX.setMaxSpeed_cap_mm(speed_cap);
@@ -158,7 +141,7 @@ void setup() {
 	stepperZ.setMaxSpeed_cap_mm(speed_cap);
 	stepperZ.setMaxSpeed_mm(speed);
 
-	stepperE.setStepsPer_mm(8.88888);
+	stepperE.setStepsPer_mm(2.222222);
 	stepperE.setMaxSpeed_multiplier_mm(12.0);
 	stepperE.setAcceleration_mm(accel);
 	stepperE.setMaxSpeed_cap_mm(speed_cap);
@@ -186,14 +169,16 @@ void setup() {
  * Fast timer ISR. Frequency is around multiple kHz
  */
 void timer_isr() {
-	stepperX.run();
-	stepperY0.run();
-	stepperY1.run();
-	stepperZ.run();
-	stepperE.run();
-	stepperA.run();
-	stepperB.run();
-	stepperC.run();
+	digitalWrite((('E' - 'A') * 16 + 0), 1);
+	if (stepperX.isRunning())  stepperX.run();
+	if (stepperY0.isRunning()) stepperY0.run();
+	if (stepperY1.isRunning()) stepperY1.run();
+	if (stepperZ.isRunning())  stepperZ.run();
+	if (stepperE.isRunning())  stepperE.run();
+	if (stepperA.isRunning())  stepperA.run();
+	if (stepperB.isRunning())  stepperB.run();
+	if (stepperC.isRunning())  stepperC.run();
+	digitalWrite((('E' - 'A') * 16 + 0), 0);
 }
 
 /**
@@ -201,6 +186,16 @@ void timer_isr() {
  */
 void systick_isr() {
 	job_prelling = true;
+//	//digitalWrite(PIN_MOTY1_EN, 1);
+//	stepperX.computeNewSpeed();
+//	//digitalWrite(PIN_MOTY1_EN, 0);
+//	stepperY0.computeNewSpeed();
+//	stepperY1.computeNewSpeed();
+//	stepperZ.computeNewSpeed();
+//	stepperE.computeNewSpeed();
+//	stepperA.computeNewSpeed();
+//	stepperB.computeNewSpeed();
+//	stepperC.computeNewSpeed();
 }
 
 
@@ -217,7 +212,7 @@ void loop() {
 	digitalWrite(PIN_OUTPUT_AUX2, millis() % 700 > 600);*/
 
 	uart_loop();
-	if (uart_command_available()) {
+	if (uart_command_available() && is_steppers_on_position()) {
 		Gcode_command cmd = uart_command_get();
 		if (cmd.id == 'G' && (cmd.num == 0 || cmd.num == 1)) {
 			//drive to position
@@ -272,6 +267,12 @@ void loop() {
 		} else if (cmd.id == 'M' && (cmd.num == 1000)) {
 			//send sync back to uart
 			uart_message("SYNC");
+		} else {
+			//unknown command
+			uart_message("ERR_COMMAND_NOT_FOUND");
+		}
+		if (!uart_command_available()) {
+			uart_message("EMPTY");
 		}
 	}
 
@@ -279,10 +280,20 @@ void loop() {
 
 }
 
-
+static bool is_steppers_on_position() {
+	if (stepperX.isRunning()) return false;
+	if (stepperY0.isRunning()) return false;
+	if (stepperY1.isRunning()) return false;
+	if (stepperZ.isRunning()) return false;
+	if (stepperE.isRunning()) return false;
+	if (stepperA.isRunning()) return false;
+	if (stepperB.isRunning()) return false;
+	if (stepperC.isRunning()) return false;
+	return true;
+}
 
 static void do_cmd_drive_to_position(Gcode_command cmd) {
-	if (cmd.valueF != NAN) {
+	if (cmd.valueF != NaN) {
 		float speed = cmd.valueF;
 		stepperX.setMaxSpeed_mm(speed);
 		stepperY0.setMaxSpeed_mm(speed);
@@ -294,27 +305,27 @@ static void do_cmd_drive_to_position(Gcode_command cmd) {
 		stepperC.setMaxSpeed_mm(speed);
 	}
 
-	if (cmd.valueX != NAN) {
-		stepperX.moveTo_mm(cmd.valueX * scaleX);
+	if (cmd.valueX != NaN) {
+		stepperX.moveTo_mm(cmd.valueX);
 	}
-	if (cmd.valueY != NAN) {
-		stepperY0.moveTo_mm(cmd.valueY * scaleY);
-		stepperY1.moveTo_mm(cmd.valueY * scaleY);
+	if (cmd.valueY != NaN) {
+		stepperY0.moveTo_mm(cmd.valueY);
+		stepperY1.moveTo_mm(cmd.valueY);
 	}
-	if (cmd.valueZ != NAN) {
-		stepperZ.moveTo_mm(cmd.valueZ * scaleZ);
+	if (cmd.valueZ != NaN) {
+		stepperZ.moveTo_mm(cmd.valueZ);
 	}
-	if (cmd.valueA != NAN) {
-		stepperA.moveTo_mm(cmd.valueA * scaleA);
+	if (cmd.valueE != NaN) {
+		stepperE.moveTo_mm(cmd.valueE);
 	}
-	if (cmd.valueB != NAN) {
-		stepperB.moveTo_mm(cmd.valueB * scaleB);
+	if (cmd.valueA != NaN) {
+		stepperA.moveTo_mm(cmd.valueA);
 	}
-	if (cmd.valueC != NAN) {
-		stepperC.moveTo_mm(cmd.valueC * scaleC);
+	if (cmd.valueB != NaN) {
+		stepperB.moveTo_mm(cmd.valueB);
 	}
-	if (cmd.valueE != NAN) {
-		stepperE.moveTo_mm(cmd.valueE * scaleE);
+	if (cmd.valueC != NaN) {
+		stepperC.moveTo_mm(cmd.valueC);
 	}
 }
 
@@ -402,7 +413,7 @@ static void homeAxleDual(AccelStepperExtended* stepper1, AccelStepperExtended* s
 }
 
 static void do_cmd_dwell(Gcode_command cmd) {
-	if (cmd.valueT != NAN) {
+	if (cmd.valueT != NaN) {
 		int milliseconds = round(cmd.valueT * 1000.0);
 		delay(milliseconds);
 	}
@@ -410,27 +421,27 @@ static void do_cmd_dwell(Gcode_command cmd) {
 
 
 static void do_cmd_set_position(Gcode_command cmd) {
-	if (cmd.valueX != NAN) {
+	if (cmd.valueX != NaN) {
 		stepperX.setCurrentPosition_mm(cmd.valueX);
 	}
-	if (cmd.valueY != NAN) {
+	if (cmd.valueY != NaN) {
 		stepperY0.setCurrentPosition_mm(cmd.valueY);
 		stepperY1.setCurrentPosition_mm(cmd.valueY);
 	}
-	if (cmd.valueZ != NAN) {
+	if (cmd.valueZ != NaN) {
 		stepperZ.setCurrentPosition_mm(cmd.valueZ);
 	}
-	if (cmd.valueA != NAN) {
+	if (cmd.valueE != NaN) {
+		stepperE.setCurrentPosition_mm(cmd.valueE);
+	}
+	if (cmd.valueA != NaN) {
 		stepperA.setCurrentPosition_mm(cmd.valueA);
 	}
-	if (cmd.valueB != NAN) {
+	if (cmd.valueB != NaN) {
 		stepperB.setCurrentPosition_mm(cmd.valueB);
 	}
-	if (cmd.valueC != NAN) {
+	if (cmd.valueC != NaN) {
 		stepperC.setCurrentPosition_mm(cmd.valueC);
-	}
-	if (cmd.valueE != NAN) {
-		stepperE.setCurrentPosition_mm(cmd.valueE);
 	}
 }
 
@@ -446,7 +457,7 @@ static void do_cmd_vacuum_valve(bool on) {
 
 
 static void do_cmd_io(Gcode_command cmd) {
-	if (cmd.valueP != NAN && cmd.valueS != NAN) {
+	if (cmd.valueP != NaN && cmd.valueS != NaN) {
 		int ioNumber = round(cmd.valueP);
 		int ioValue  = round(cmd.valueS);
 		switch (ioNumber) {
@@ -462,83 +473,90 @@ static void do_cmd_io(Gcode_command cmd) {
 
 
 static void do_cmd_stepper_power(bool on) {
-
+	digitalWrite(PIN_MOTX_EN,  on);
+	digitalWrite(PIN_MOTY0_EN, on);
+	digitalWrite(PIN_MOTY1_EN, on);
+	digitalWrite(PIN_MOTZ_EN,  on);
+	digitalWrite(PIN_MOTE_EN,  on);
+	digitalWrite(PIN_MOTA_EN,  on);
+	digitalWrite(PIN_MOTB_EN,  on);
+	digitalWrite(PIN_MOTC_EN,  on);
 }
 
 static void do_cmd_set_max_acceleration(Gcode_command cmd) {
-	if (cmd.valueX != NAN) {
+	if (cmd.valueX != NaN) {
 		stepperX.setAcceleration_mm(cmd.valueX);
 	}
-	if (cmd.valueY != NAN) {
+	if (cmd.valueY != NaN) {
 		stepperY0.setAcceleration_mm(cmd.valueY);
 		stepperY1.setAcceleration_mm(cmd.valueY);
 	}
-	if (cmd.valueZ != NAN) {
+	if (cmd.valueZ != NaN) {
 		stepperZ.setAcceleration_mm(cmd.valueZ);
 	}
-	if (cmd.valueA != NAN) {
+	if (cmd.valueE != NaN) {
+		stepperE.setAcceleration_mm(cmd.valueE);
+	}
+	if (cmd.valueA != NaN) {
 		stepperA.setAcceleration_mm(cmd.valueA);
 	}
-	if (cmd.valueB != NAN) {
+	if (cmd.valueB != NaN) {
 		stepperB.setAcceleration_mm(cmd.valueB);
 	}
-	if (cmd.valueC != NAN) {
+	if (cmd.valueC != NaN) {
 		stepperC.setAcceleration_mm(cmd.valueC);
-	}
-	if (cmd.valueE != NAN) {
-		stepperE.setAcceleration_mm(cmd.valueE);
 	}
 }
 
 
 static void do_cmd_set_max_speed(Gcode_command cmd) {
-	if (cmd.valueX != NAN) {
+	if (cmd.valueX != NaN) {
 		stepperX.setMaxSpeed_cap_mm(cmd.valueX);
 	}
-	if (cmd.valueY != NAN) {
+	if (cmd.valueY != NaN) {
 		stepperY0.setMaxSpeed_cap_mm(cmd.valueY);
 		stepperY1.setMaxSpeed_cap_mm(cmd.valueY);
 	}
-	if (cmd.valueZ != NAN) {
+	if (cmd.valueZ != NaN) {
 		stepperZ.setMaxSpeed_cap_mm(cmd.valueZ);
 	}
-	if (cmd.valueA != NAN) {
+	if (cmd.valueE != NaN) {
+		stepperE.setMaxSpeed_cap_mm(cmd.valueE);
+	}
+	if (cmd.valueA != NaN) {
 		stepperA.setMaxSpeed_cap_mm(cmd.valueA);
 	}
-	if (cmd.valueB != NAN) {
+	if (cmd.valueB != NaN) {
 		stepperB.setMaxSpeed_cap_mm(cmd.valueB);
 	}
-	if (cmd.valueC != NAN) {
+	if (cmd.valueC != NaN) {
 		stepperC.setMaxSpeed_cap_mm(cmd.valueC);
-	}
-	if (cmd.valueE != NAN) {
-		stepperE.setMaxSpeed_cap_mm(cmd.valueE);
 	}
 }
 
 
 static void do_cmd_set_max_speed_multiplier(Gcode_command cmd) {
-	if (cmd.valueX != NAN) {
+	if (cmd.valueX != NaN) {
 		stepperX.setMaxSpeed_multiplier_mm(cmd.valueX);
 	}
-	if (cmd.valueY != NAN) {
+	if (cmd.valueY != NaN) {
 		stepperY0.setMaxSpeed_multiplier_mm(cmd.valueY);
 		stepperY1.setMaxSpeed_multiplier_mm(cmd.valueY);
 	}
-	if (cmd.valueZ != NAN) {
+	if (cmd.valueZ != NaN) {
 		stepperZ.setMaxSpeed_multiplier_mm(cmd.valueZ);
 	}
-	if (cmd.valueA != NAN) {
+	if (cmd.valueE != NaN) {
+		stepperE.setMaxSpeed_multiplier_mm(cmd.valueE);
+	}
+	if (cmd.valueA != NaN) {
 		stepperA.setMaxSpeed_multiplier_mm(cmd.valueA);
 	}
-	if (cmd.valueB != NAN) {
+	if (cmd.valueB != NaN) {
 		stepperB.setMaxSpeed_multiplier_mm(cmd.valueB);
 	}
-	if (cmd.valueC != NAN) {
+	if (cmd.valueC != NaN) {
 		stepperC.setMaxSpeed_multiplier_mm(cmd.valueC);
-	}
-	if (cmd.valueE != NAN) {
-		stepperE.setMaxSpeed_multiplier_mm(cmd.valueE);
 	}
 }
 
