@@ -49,6 +49,7 @@ void uart_loop() {
 		buf[buf_index++] = tmp;
 		if (tmp == '\r' || tmp == '\n') {
 			//line is finished
+			buf[buf_index - 1] = 0; //terminate string
 			process_parse_command();
 			buf_index = 0;
 		}
@@ -89,17 +90,20 @@ static void process_parse_command() {
 		seek_space(&index);
 		cmd.id = to_upper(buf[index++]);
 		cmd.num = round(read_num(&index));
+		if (cmd.id == 0) {
+			break;
+		}
 		do {
 			seek_space(&index);
 			char id = to_upper(buf[index++]);
 			switch (id) {
 			case ';':
+				end_reached = true;
 				do_loop = true;
-				end_reached = true;
 				break;
-			case '\r':
-			case '\n':
+			case 0:
 				end_reached = true;
+				do_loop = false;
 				break;
 			case 'X':
 				cmd.valueX = read_num(&index);
@@ -139,7 +143,7 @@ static void process_parse_command() {
 			}
 		} while (!end_reached);
 		seek_space(&index);
-		if (cmd.id != '\r' && cmd.id != '\n' && cmd.id != ' ' && cmd.id != ';') {
+		if (cmd.id != 0 && cmd.id != ' ' && cmd.id != ';') {
 			if (!queue.isFull()) {
 				queue.push(cmd);
 			} else {
@@ -195,6 +199,8 @@ static float read_num(int* index) {
 			i++;
 		} else {
 			finished = true;
+			//note, do not increment i here
+			//that means that a potential escape character is not missed
 		}
 	} while (!finished);
 	*index = i;
