@@ -259,8 +259,9 @@ class Robot:
         for s in list:
             self.con.write(bytes(s, encoding="utf8"))
             self.con.write(b"\n")
+            self.con.flush()
             self.__receive_answer()
-            while self._full: #if it it full we need to wait until queue gets consumed
+            while self.__full: #if it it full we need to wait until queue gets consumed
                 self.__receive_answer()
 
 
@@ -273,32 +274,34 @@ class Robot:
         do = True
         while do:
             msg = self.con.readline()
-            if msg == b"OK":
+            print(msg)
+
+            msg = msg.decode().strip()
+            if msg == "":
+                #timeout happened
+                pass
+            elif msg == "OK":
                 #means queue is not full (and also not empty because a command was just sent)
                 self.__full = False 
                 self.__empty = False
-            elif msg == b"READY":
+            elif msg == "READY":
                 #means queue was previously full but has now been cleared and can hold another command.
                 self.__full = False 
                 self.__empty = False
-            elif msg == b"FULL":
+            elif msg == "FULL":
                 #means queue is full
                 self.__full = True
                 self.__empty = False
-            elif msg == b"EMPTY":
+            elif msg == "EMPTY":
                 #means queue is empty
                 self.__full = False 
                 self.__empty = True
-            elif msg == b"SYNC":
+            elif msg == "SYNC":
                 #means sync comamnd has been reached
                 self.__sync = True
             #elif msg == b"ERR_COMMAND_NOT_FOUND":
-            #    raise Exception(msg.decode("utf-8"))
-            #elif msg == b"OVERFLOW":
-            #    raise Exception(msg.decode("utf-8"))
+            #    raise Exception(msg
+            #    raise Exception(msg)
             else:
-                raise Exception(msg.decode("utf-8"))
-            do = self.con.in_waiting() > 0
-
-    def __del__(self):
-        self.con.close()
+                raise Exception(msg)
+            do = self.con.in_waiting > 0
