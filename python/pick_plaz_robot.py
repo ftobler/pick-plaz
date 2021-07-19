@@ -273,10 +273,7 @@ class Robot:
         """
         do = True
         while do:
-            msg = self.con.readline()
-            print(msg)
-
-            msg = msg.decode().strip()
+            msg = self.con.readline().decode().strip()
             if msg == "":
                 #timeout happened
                 pass
