@@ -337,9 +337,9 @@ static void do_cmd_drive_to_position(Gcode_command cmd) {
 
 
 static void do_cmd_home(Gcode_command cmd) {
-	homeAxle(&stepperZ, &input_endZ, -1, 10.0f, 5000, 500.0f, 5.0f);
-	homeAxle(&stepperX, &input_endX, -1, 10.0f, 10000, 1000.0f, 5.0f);
-	homeAxleDual(&stepperY0, &stepperY1, &input_endY0, &input_endY1, 10.0f, 10000, 1000.0f, 5.0f);
+	//homeAxle(&stepperZ, &input_endZ, -1, 10.0f, 5000, 500.0f, 5.0f);
+	homeAxle(&stepperX, &input_endX, -1, 80.0f, 10000, 1000.0f, 5.0f);
+	homeAxleDual(&stepperY0, &stepperY1, &input_endY0, &input_endY1, -1, 80.0f, 10000, 1000.0f, 5.0f);
 }
 
 static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int homDirection, float home_speed, int home_timeout,
@@ -351,7 +351,7 @@ static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int
 	stepper->setCurrentPosition_mm(0.0f);                         //reset position to 0
 	stepper->moveTo_mm(home_travel_mm * homDirection);           //run to endstop
 	endtime = millis() + home_timeout;
-	while (!endstop->get() && (millis() < endtime)) {              //block until endstop or timeout reached
+	while (endstop->get() && (millis() < endtime)) {              //block until endstop or timeout reached
 		__WFI();
 		job_prelling_handle();
 	}
@@ -362,10 +362,10 @@ static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int
 		__WFI();
 	    job_prelling_handle();
 	}
-	stepper->setMaxSpeed_mm(home_speed / 2.0f);                     //set slow speed for 2nd forward motion
+	stepper->setMaxSpeed_mm(home_speed / 6.0f);                     //set slow speed for 2nd forward motion
 	stepper->moveTo_mm(home_travel_back_mm * 2.0f * homDirection);  //move to endstop 2nd time
 	endtime = millis() + home_timeout / 2.0f;
-	while (!endstop->get() && (millis() < endtime)) {              //block until endstop or timeout reached
+	while (endstop->get() && (millis() < endtime)) {              //block until endstop or timeout reached
 		__WFI();
 		job_prelling_handle();
 	}
@@ -387,8 +387,18 @@ static void homeAxleDual(AccelStepperExtended* stepper1, AccelStepperExtended* s
 	stepper1->moveTo_mm(home_travel_mm * homDirection);           //run to endstop
 	stepper2->moveTo_mm(home_travel_mm * homDirection);           //run to endstop
 	endtime = millis() + home_timeout;
-	while (!(endstop1->get() && endstop2->get()) && (millis() < endtime)) {              //block until endstop or timeout reached
+	bool endstop1_reach = false;
+	bool endstop2_reach = false;
+	while (!(endstop1_reach && endstop2_reach) && (millis() < endtime)) {              //block until endstop or timeout reached
 		__WFI();
+		if (!endstop1->get()) {
+			stepper1->move(0);                                     //stepper shoud stop immediately
+			endstop1_reach = true;
+		}
+		if (!endstop2->get()) {
+			stepper2->move(0);                                     //stepper shoud stop immediately
+			endstop2_reach = true;
+		}
 		job_prelling_handle();
 	}
 	stepper1->move(0);                                            //stepper shoud stop immediately
@@ -401,13 +411,23 @@ static void homeAxleDual(AccelStepperExtended* stepper1, AccelStepperExtended* s
 		__WFI();
 	    job_prelling_handle();
 	}
-	stepper1->setMaxSpeed_mm(home_speed / 2.0f);                     //set slow speed for 2nd forward motion
-	stepper2->setMaxSpeed_mm(home_speed / 2.0f);                     //set slow speed for 2nd forward motion
+	stepper1->setMaxSpeed_mm(home_speed / 6.0f);                     //set slow speed for 2nd forward motion
+	stepper2->setMaxSpeed_mm(home_speed / 6.0f);                     //set slow speed for 2nd forward motion
 	stepper1->moveTo_mm(home_travel_back_mm * 2.0f * homDirection);  //move to endstop 2nd time
 	stepper2->moveTo_mm(home_travel_back_mm * 2.0f * homDirection);  //move to endstop 2nd time
 	endtime = millis() + home_timeout / 2.0f;
-	while (!(endstop1->get() && endstop2->get()) && (millis() < endtime)) {              //block until endstop or timeout reached
+	endstop1_reach = false;
+	endstop2_reach = false;
+	while (!(endstop1_reach && endstop2_reach) && (millis() < endtime)) {              //block until endstop or timeout reached
 		__WFI();
+		if (!endstop1->get()) {
+			stepper1->move(0);                                     //stepper shoud stop immediately
+			endstop1_reach = true;
+		}
+		if (!endstop2->get()) {
+			stepper2->move(0);                                     //stepper shoud stop immediately
+			endstop2_reach = true;
+		}
 		job_prelling_handle();
 	}
 	stepper1->move(0);                                            //stepper shoud stop immediately

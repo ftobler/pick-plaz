@@ -61,5 +61,5 @@ void AccelStepperExtended::setStepsPer_mm(float steps_per) {
 
 
 float AccelStepperExtended::getMaxSpeed_mm() {
-	return speed() / steps_per_mm;
+	return maxSpeed() / steps_per_mm;
 }
