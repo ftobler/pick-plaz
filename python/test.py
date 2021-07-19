@@ -2,6 +2,7 @@ from pick_plaz_robot import Robot
 import math
 
 robot = Robot("COM3")
+robot.home()
 robot.drive(0,0)
 robot.drive(800,0)
 robot.drive(800,800)
@@ -14,4 +15,9 @@ for i in range(n):
     x = 400 + math.sin(angle) * r
     y = 400 + math.cos(angle) * r
     robot.drive(x=x, y=y)
-robot.flush()
+
+robot.done()
+print("this line reached")
+robot.vacuum(True)
+robot.drive(10,10)
+robot.vacuum(False)

@@ -3,6 +3,9 @@ from serial import Serial
 
 class Robot:
     con = None
+    __full = False
+    __empty = False
+    __sync = False
 
     def __init__(self, comport):
         self.con = Serial(comport, baudrate=115200, timeout=0.1)
@@ -17,7 +20,7 @@ class Robot:
         self.__send_commands(["G28"])
         return self
 
-    def sync(self):
+    def done(self):
         """
         Sends a SYNC and blocks until controller has executed it.
         
@@ -62,21 +65,21 @@ class Robot:
             "G0"
         ]
         if x != None:
-            cmd.append("X%f" % x)
+            cmd.append(" X%f" % x)
         if y != None:
-            cmd.append("Y%f" % y)
+            cmd.append(" Y%f" % y)
         if z != None:
-            cmd.append("Z%f" % z)
+            cmd.append(" Z%f" % z)
         if e != None:
-            cmd.append("E%f" % e)
+            cmd.append(" E%f" % e)
         if a != None:
-            cmd.append("A%f" % a)
+            cmd.append(" A%f" % a)
         if b != None:
-            cmd.append("B%f" % b)
+            cmd.append(" B%f" % b)
         if c != None:
-            cmd.append("C%f" % c)
+            cmd.append(" C%f" % c)
         if f != None:
-            cmd.append("F%f" % f)
+            cmd.append(" F%f" % f)
         self.__send_commands(["".join(cmd)])
         return self
 
@@ -93,19 +96,19 @@ class Robot:
             "G0"
         ]
         if x != None:
-            cmd.append("X%f" % x)
+            cmd.append(" X%f" % x)
         if y != None:
-            cmd.append("Y%f" % y)
+            cmd.append(" Y%f" % y)
         if z != None:
-            cmd.append("Z%f" % z)
+            cmd.append(" Z%f" % z)
         if e != None:
-            cmd.append("E%f" % e)
+            cmd.append(" E%f" % e)
         if a != None:
-            cmd.append("A%f" % a)
+            cmd.append(" A%f" % a)
         if b != None:
-            cmd.append("B%f" % b)
+            cmd.append(" B%f" % b)
         if c != None:
-            cmd.append("C%f" % c)
+            cmd.append(" C%f" % c)
         self.__send_commands(["".join(cmd)])
         return self
 
@@ -122,19 +125,19 @@ class Robot:
             "GM201"
         ]
         if x != None:
-            cmd.append("X%f" % x)
+            cmd.append(" X%f" % x)
         if y != None:
-            cmd.append("Y%f" % y)
+            cmd.append(" Y%f" % y)
         if z != None:
-            cmd.append("Z%f" % z)
+            cmd.append(" Z%f" % z)
         if e != None:
-            cmd.append("E%f" % e)
+            cmd.append(" E%f" % e)
         if a != None:
-            cmd.append("A%f" % a)
+            cmd.append(" A%f" % a)
         if b != None:
-            cmd.append("B%f" % b)
+            cmd.append(" B%f" % b)
         if c != None:
-            cmd.append("C%f" % c)
+            cmd.append(" C%f" % c)
         self.__send_commands(["".join(cmd)])
         return self
 
@@ -151,19 +154,19 @@ class Robot:
             "GM203"
         ]
         if x != None:
-            cmd.append("X%f" % x)
+            cmd.append(" X%f" % x)
         if y != None:
-            cmd.append("Y%f" % y)
+            cmd.append(" Y%f" % y)
         if z != None:
-            cmd.append("Z%f" % z)
+            cmd.append(" Z%f" % z)
         if e != None:
-            cmd.append("E%f" % e)
+            cmd.append(" E%f" % e)
         if a != None:
-            cmd.append("A%f" % a)
+            cmd.append(" A%f" % a)
         if b != None:
-            cmd.append("B%f" % b)
+            cmd.append(" B%f" % b)
         if c != None:
-            cmd.append("C%f" % c)
+            cmd.append(" C%f" % c)
         self.__send_commands(["".join(cmd)])
         return self   
 
@@ -186,19 +189,19 @@ class Robot:
             "GM203"
         ]
         if x != None:
-            cmd.append("X%f" % x)
+            cmd.append(" X%f" % x)
         if y != None:
-            cmd.append("Y%f" % y)
+            cmd.append(" Y%f" % y)
         if z != None:
-            cmd.append("Z%f" % z)
+            cmd.append(" Z%f" % z)
         if e != None:
-            cmd.append("E%f" % e)
+            cmd.append(" E%f" % e)
         if a != None:
-            cmd.append("A%f" % a)
+            cmd.append(" A%f" % a)
         if b != None:
-            cmd.append("B%f" % b)
+            cmd.append(" B%f" % b)
         if c != None:
-            cmd.append("C%f" % c)
+            cmd.append(" C%f" % c)
         self.__send_commands(["".join(cmd)])
         return self
 
@@ -258,8 +261,10 @@ class Robot:
         """
         for s in list:
             self.con.write(bytes(s, encoding="utf8"))
-            self.con.write(b"\n")
+            print(s)
+            self.con.write(b";\n")
             self.con.flush()
+            self.__full = True #assume it
             self.__receive_answer()
             while self.__full: #if it it full we need to wait until queue gets consumed
                 self.__receive_answer()
@@ -271,12 +276,15 @@ class Robot:
         Receives at least one line but multiple if needed. 
         Depending on the result, Exceptions are thrown or Flags set.
         """
+        
         do = True
         while do:
             msg = self.con.readline().decode().strip()
+
+            print(msg)
             if msg == "":
                 #timeout happened
-                pass
+                print("timeout happened")
             elif msg == "OK":
                 #means queue is not full (and also not empty because a command was just sent)
                 self.__full = False 
