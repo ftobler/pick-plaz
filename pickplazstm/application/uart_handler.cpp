@@ -33,7 +33,7 @@ static void process_parse_command();
 static void seek_space(int* index);
 static float read_num(int* index);
 static char to_upper(char c);
-
+static bool full_sent = false;
 
 
 void uart_init() {
@@ -52,6 +52,12 @@ void uart_loop() {
 			buf[buf_index - 1] = 0; //terminate string
 			process_parse_command();
 			buf_index = 0;
+		}
+	}
+	if (full_sent) {
+		if (!queue.isFull()) {
+			uart_message("READY");
+			full_sent = false;
 		}
 	}
 }
@@ -151,10 +157,12 @@ static void process_parse_command() {
 			}
 			if (queue.isFull()) {
 				uart_message("FULL");
+				full_sent = true;
+			} else {
+				uart_message("OK");
 			}
 		}
 	} while(do_loop);
-	uart_message("OK");
 }
 
 
