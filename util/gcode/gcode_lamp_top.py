@@ -1,5 +1,6 @@
 #generate Gcode file to manufacture the 6x parts trays from cast acrylic (plexiglas)
 #use 'python gcode_lamp_top.py | tee output.gcode' to generate a file
+#use a 30* engraving cutter
 #ftobler
 
 from gcode_gen import gcode
