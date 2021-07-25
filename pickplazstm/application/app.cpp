@@ -370,7 +370,8 @@ static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int
 		job_prelling_handle();
 	}
 	stepper->move(0);                                            //stepper shoud stop immediately
-	stepper->setCurrentPosition_mm(0.0);                         //homing finished
+	stepper->setCurrentPosition_mm(-1.0f);                       //homing finished
+	stepper->moveTo_mm(0.0f);
 	stepper->setMaxSpeed_mm(tmpSpeed);                           //restore motor speed
 }
 
@@ -432,8 +433,10 @@ static void homeAxleDual(AccelStepperExtended* stepper1, AccelStepperExtended* s
 	}
 	stepper1->move(0);                                            //stepper shoud stop immediately
 	stepper2->move(0);                                            //stepper shoud stop immediately
-	stepper1->setCurrentPosition_mm(0.0f);                         //homing finished
-	stepper2->setCurrentPosition_mm(0.0f);                         //homing finished
+	stepper1->setCurrentPosition_mm(-1.0f);                         //homing finished
+	stepper2->setCurrentPosition_mm(-1.0f);                         //homing finished
+	stepper1->moveTo_mm(0.0f);
+	stepper2->moveTo_mm(0.0f);
 	stepper1->setMaxSpeed_mm(tmpSpeed);                           //restore motor speed
 	stepper2->setMaxSpeed_mm(tmpSpeed);                           //restore motor speed
 }

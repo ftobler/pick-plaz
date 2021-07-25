@@ -92,13 +92,13 @@ void Prelling_input::update() {
 	bool state = digitalRead(pin);
 	if (state) {
 		consecutive_ticks++;
-		if (consecutive_ticks > 10) {
-			consecutive_ticks = 10;
+		if (consecutive_ticks > 5) {
+			consecutive_ticks = 5;
 		}
 	} else {
 		consecutive_ticks--;
-		if (consecutive_ticks < -10) {
-			consecutive_ticks = -10;
+		if (consecutive_ticks < -5) {
+			consecutive_ticks = -5;
 		}
 	}
 }
