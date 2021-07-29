@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>pick-plaz</title>
+    <script src="vue.min.js"></script>
+    <script src="pickplaz.js"></script>
+    <script src="footprints.js"></script>
+    <link rel="stylesheet" href="pickplaz.css">
+    <link rel="stylesheet" href="materialicons.css">
+    <html lang="en"></html>
+</head>
+<body onload="start()" class="noselect">
+<div id="app">
+
+    <div class="menu">
+        <a class="logo" href="https://github.com/ftobler/pick-plaz">pick-plaz</a>
+        <div class="menu-item" v-bind:class="{active : nav.page == 0}" v-on:click="nav.page = 0">BOM</div>
+        <div class="menu-item" v-bind:class="{active : nav.page == 1}" v-on:click="nav.page = 1">Parts</div>
+        <div class="menu-item" v-bind:class="{active : nav.page == 2}" v-on:click="nav.page = 2">Feeder</div>
+        <div class="menu-item" v-bind:class="{active : nav.page == 3}" v-on:click="nav.page = 3">Navigate</div>
+
+        <div class="menu-material-pane">
+            <div class="menu-material stop">stop</div>
+            <div class="menu-material">pause</div>
+            <div class="menu-material">play_arrow</div>
+        </div>
+
+        <div class="menu-pane">
+            <div class="menu-label">PNP</div>
+            <input class="menu-content" type="file" id="myFile" name="filename">
+            <div class="menu-upload">north</div>
+        </div>
+        <div class="menu-pane">
+            <div class="menu-label">BOM</div>
+            <input class="menu-content" type="file" id="myFile" name="filename">
+            <div class="menu-upload">north</div>
+        </div>
+
+    </div>
+
+    <div class="content">
+
+        <div v-if="nav.page == 0">
+            <table>
+                <tr>
+                    <th width="300px">Place</th>
+                    <th width="300px">Fiducal</th>
+                    <th width="300px">Designator</th>
+                    <th width="300px">Value</th>
+                    <th width="300px">Footprint</th>
+                    <th width="300px">Part Nr</th>
+                    <th width="300px">Comment</th>
+                    <th width="300px">Feeder</th>
+                </tr>
+                <tr v-for="entry in db.bom">
+                    <td><input type="checkbox" v-model="entry.place"  v-if="!entry.fiducal"></td>
+                    <td><input type="checkbox" v-model="entry.fiducal"></td>
+                    <td><span v-for="id in entry.id">{{id}} </span></td>
+                    <td>{{entry.value}}</td>
+                    <td>{{entry.footprint}} <img v-bind:src="entry.footprint | footprint_img_path"/> <img v-bind:src="entry.footprint | footprint_sym_path"/></td>
+                    <td>{{entry.partnr}}</td>
+                    <td  contenteditable>{{entry.comment}}</td> <!--https://codepen.io/supraniti/pen/Lypobx-->
+                    <td  contenteditable>{{entry.feeder}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div v-if="nav.page == 1">
+            <table>
+                <tr>
+                    <th width="300px">Place</th>
+                    <th width="300px">Fiducal</th>
+                    <th width="300px">Designator</th>
+                    <th width="300px">X</th>
+                    <th width="300px">Y</th>
+                    <th width="300px">Rotation</th>
+                    <th width="300px">Status</th>
+                    <th width="300px">Action</th>
+                </tr>
+                <tr v-for="(entry, name) in db.parts">
+                    <td><input type="checkbox" v-model="entry.place"  v-if="!entry._fiducal"></td>
+                    <td><input type="checkbox" v-model="entry._fiducal"></td>
+                    <td>{{name}} <img v-bind:src="entry._footprint | footprint_img_path"/> <img v-bind:src="entry._footprint | footprint_sym_path"/></td>
+                    <td>{{entry.x}}</td>
+                    <td>{{entry.y}}</td>
+                    <td><div class="table-button material">refresh</div> {{entry.rot}}</td>
+                    <td><div class="table-button material">swap_horiz</div> {{entry.state}}</td>
+                    <!--<td><button>view place</button><button>view pick</button><button>place</button></td>-->
+                    <td><button>view place</button> <button>view pick</button> <button>place</button></td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div v-if="nav.page == 2">
+            <table>
+                <tr>
+                    <th width="300px">Name</th>
+                    <th width="300px">Type</th>
+                    <th width="300px">X</th>
+                    <th width="300px">Y</th>
+                    <th width="300px">width</th>
+                    <th width="300px">height</th>
+                    <th width="300px">Pitch</th>
+                    <th width="300px">Orientation</th>
+                    <th width="300px">Action</th>
+                </tr>
+                <tr v-for="(entry, name) in db.feeder">
+                    <td>{{name}}</td>
+                    <td>{{entry.type}}</td>
+                    <td>{{entry.x}}</td>
+                    <td>{{entry.y}}</td>
+                    <td>{{entry.width}}</td>
+                    <td>{{entry.height}}</td>
+                    <td>{{entry.pitch}}</td>
+                    <td>{{entry.Orientation}}</td>
+                    <td><button>pick</button></td>
+                </tr>
+            </table>
+        </div>
+
+        <div v-if="nav.page == 3">
+        </div>
+    </div>
+
+    
+
+</div>
+</body>
+</html>

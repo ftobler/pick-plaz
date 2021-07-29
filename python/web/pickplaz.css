@@ -1,0 +1,192 @@
+
+html {
+    height: 100%;
+}
+body {
+    /*background-color: rgb(20,20,20);*/
+    background-color: rgb(21, 23, 31);
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    position:relative;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+}
+
+.menu {
+    margin: 10px;
+    margin-bottom: 0px;
+    height: 70px;
+}
+.menu-item {
+    float: left;
+    margin: 10px;
+    padding: 10px;
+    padding-left: 15px;
+    background-color: rgb(50,50,50);
+    width: 120px;
+    height: 23px;
+    font-weight: bold;
+    transform: skew(-15deg);
+}
+
+.menu-item:hover {
+    background-color: rgb(70,70,70);
+}
+
+.menu-item.active {
+    background-color: rgb(0, 150, 92);
+}
+
+.menu-label {
+    display: inline-block;
+    padding: 100px;
+    margin: -100px;
+    padding-right: 0;
+    margin-right: 0;
+    width: 55px;
+    height: 23px;
+    background-color: rgb(70,70,70);
+}
+
+.menu-content {
+    margin-left: 10px;
+}
+
+.menu-pane {
+    float: right;
+    margin: 10px;
+    padding: 10px;
+    padding-left: 15px;
+    background-color: rgb(50,50,50);
+    width: 360px;
+    height: 23px;
+    font-weight: bold;
+    color: white;
+    transform: skew(-15deg);
+    overflow: hidden;
+}
+
+.menu-upload {
+    float: right;
+    padding: 100px;
+    margin: -100px;
+    padding-left: 10px;
+    margin-left: -5px;
+    width: 25px;
+    height: 23px;
+    font-family: "Material Icons";
+    font-size: 24px;
+}
+
+.menu-upload:hover {
+    background-color: rgb(70,70,70);
+}
+
+.stop {
+    background-color: rgb(151, 0, 0) !important;
+}
+.stop:hover {
+    background-color: rgb(175, 57, 57) !important;
+}
+.stop:active {
+    background-color: rgb(245, 115, 115) !important;
+}
+
+.menu-material-pane {
+    float: right;
+    margin: 10px;
+    font-weight: bold;
+    color: white;
+    transform: skew(-15deg);
+    overflow: hidden;
+}
+
+.menu-material {
+    float: right;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: rgb(50,50,50);
+    width: 35
+    px;
+    height: 23px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    font-family: "Material Icons";
+    font-size: 24px;
+}
+.menu-material:hover {
+    background-color: rgb(70,70,70);
+}
+.menu-material:active {
+    background-color: rgb(0, 150, 92);
+}
+
+
+.logo {
+    float: left;
+    margin: 10px;
+    padding: 2px;
+    font-size: 16pt;
+    color: white;
+    font-weight: 900;
+}
+
+
+
+
+
+
+
+
+.content {
+    /*background-color: black;*/
+    
+    flex-grow: 1;
+}
+
+
+table {
+    border-collapse: collapse;
+    margin: 20px;
+    text-align: left;
+}
+tr {
+    height: 30px;
+    border-bottom: 1px solid rgb(100,100,100);
+}
+tr:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+th {
+    border-bottom: 3px solid rgb(100,100,100);
+}
+td, th {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+td {
+    height: 35px;
+    padding-bottom: 6px;
+}
+.table-button {
+    display:  inline-block;
+    vertical-align: sub;
+}
+.table-button:hover {
+    background-color: rgba(255,255,255,0.15);
+}
+.table-button:active {
+    background-color: rgb(0, 150, 92);
+}
+.table-button.material {
+    font-family: "Material Icons";
+    font-size: 20px;
+    padding: 3px;
+    margin-top: 3px;
+}
+
