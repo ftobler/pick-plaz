@@ -49,6 +49,21 @@
             }
         },
         {
+            "place": true,
+            "fiducal": false,
+            "value": "",
+            "footprint": "TQFP-32_7x7x08P",
+            "partnr": "C14877",
+            "feeder": "tray 3",
+            "parts": {
+                "U1": {
+                    "place": true,
+                    "x": 10,  
+                    "y": 35
+                }
+            }
+        },
+        {
             "place": false,
             "fiducal": true,
             "footprint": "fiducal",

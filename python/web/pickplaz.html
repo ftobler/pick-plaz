@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="pickplaz.css">
     <link rel="stylesheet" href="materialicons.css">
     <html lang="en"></html>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate icon" href="/favicon.ico">
 </head>
 <body onload="start()" class="noselect" style="text-align: center;">
 <div id="app" style="width: 100%; max-width: 2600px; margin:0 auto;">
 
     <div class="menu">
-            <a class="logo" href="https://github.com/ftobler/pick-plaz">pick-plaz</a>
+            <a class="logo" href="https://github.com/ftobler/pick-plaz" target="_blank">pick-plaz</a>
             <div class="menu-item" v-bind:class="{active : nav.page == 0}" v-on:click="nav.page = 0">Parts</div>
             <div class="menu-item" v-bind:class="{active : nav.page == 1}" v-on:click="nav.page = 1">Feeder</div>
             <div class="menu-item" v-bind:class="{active : nav.page == 2}" v-on:click="nav.page = 2">Navigate</div>       
@@ -66,7 +68,7 @@
                     <td>{{entry.value}}</td>
                     <td>{{entry.footprint}}</td>
                     <td><img v-bind:src="entry.footprint | footprint_img_path"/> &nbsp;&nbsp;<img v-bind:src="entry.footprint | footprint_sym_path"/></td>
-                    <td>{{entry.partnr}}</td>
+                    <td><a v-bind:href="'https://lcsc.com/search?q=' + entry.partnr" target="_blank">{{entry.partnr}}</a></td>
                     <td class="cell-inline-table" colspan=5>
                         <table class="cell-inline-table">
                             <tr v-for="(part, id) in entry.parts">
@@ -120,11 +122,12 @@
             <label class="switcher-label">show component graphics</label>
             <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
             <label class="switcher-label">show symbols</label>
-        </div>
-            <canvas id="canvas-view" width="1850" height="800">
+        </div @mousemove="mousemove">
+            <canvas id="canvas-view" width="1850" height="800" @mousemove="show_coordinates" v-on:click="draw_stuff()" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup" >
 
             </canvas>
         </div>
+        <p>mouse: ({{canvas.cursor_mm.x}}/{{canvas.cursor_mm.y}})mm</p>
     </div>
 
     
