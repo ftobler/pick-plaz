@@ -9,31 +9,31 @@
     <link rel="stylesheet" href="materialicons.css">
     <html lang="en"></html>
 </head>
-<body onload="start()" class="noselect">
-<div id="app">
+<body onload="start()" class="noselect" style="text-align: center;">
+<div id="app" style="width: 100%; max-width: 2600px; margin:0 auto;">
 
     <div class="menu">
-        <a class="logo" href="https://github.com/ftobler/pick-plaz">pick-plaz</a>
-        <div class="menu-item" v-bind:class="{active : nav.page == 0}" v-on:click="nav.page = 0">BOM</div>
-        <div class="menu-item" v-bind:class="{active : nav.page == 1}" v-on:click="nav.page = 1">Parts</div>
-        <div class="menu-item" v-bind:class="{active : nav.page == 2}" v-on:click="nav.page = 2">Feeder</div>
-        <div class="menu-item" v-bind:class="{active : nav.page == 3}" v-on:click="nav.page = 3">Navigate</div>
+            <a class="logo" href="https://github.com/ftobler/pick-plaz">pick-plaz</a>
+            <div class="menu-item" v-bind:class="{active : nav.page == 0}" v-on:click="nav.page = 0">Parts</div>
+            <div class="menu-item" v-bind:class="{active : nav.page == 1}" v-on:click="nav.page = 1">Feeder</div>
+            <div class="menu-item" v-bind:class="{active : nav.page == 2}" v-on:click="nav.page = 2">Navigate</div>       
 
-        <div class="menu-material-pane">
-            <div class="menu-material stop">stop</div>
-            <div class="menu-material">pause</div>
-            <div class="menu-material">play_arrow</div>
-        </div>
-
-        <div class="menu-pane">
-            <div class="menu-label">PNP</div>
-            <input class="menu-content" type="file" id="myFile" name="filename">
-            <div class="menu-upload">north</div>
-        </div>
-        <div class="menu-pane">
-            <div class="menu-label">BOM</div>
-            <input class="menu-content" type="file" id="myFile" name="filename">
-            <div class="menu-upload">north</div>
+        <div style="float: right;">
+            <div class="menu-pane">
+                <div class="menu-label">PNP</div>
+                <input class="menu-content" type="file" id="myFile" name="filename">
+                <div class="menu-upload">north</div>
+            </div>
+            <div class="menu-pane">
+                <div class="menu-label">BOM</div>
+                <input class="menu-content" type="file" id="myFile" name="filename">
+                <div class="menu-upload">north</div>
+            </div>
+            <div class="menu-material-pane">
+                <div class="menu-material">play_arrow</div>
+                <div class="menu-material">pause</div>
+                <div class="menu-material stop">stop</div>
+            </div>
         </div>
 
     </div>
@@ -41,58 +41,51 @@
     <div class="content">
 
         <div v-if="nav.page == 0">
+
             <table>
                 <tr>
-                    <th width="300px">Place</th>
-                    <th width="300px">Fiducal</th>
-                    <th width="300px">Designator</th>
-                    <th width="300px">Value</th>
-                    <th width="300px">Footprint</th>
-                    <th width="300px">Part Nr</th>
-                    <th width="300px">Comment</th>
-                    <th width="300px">Feeder</th>
+                    <th width="20px">#</th>
+                    <th class="small" width="20px">Place</th>
+                    <th class="small" width="20px">Fiducal</th>
+                    <th width="200px">Value</th>
+                    <th width="200px">Footprint</th>
+                    <th width="150px"></th>
+                    <th width="200px">Part Nr</th>
+                    <th width="200px">Designator</th>
+                    <th width="200px">X</th>
+                    <th width="200px">Y</th>
+                    <th width="200px">Rotation</th>
+                    <th width="200px">Status</th>
+                    <th width="200px">Feeder</th>
+                    <th width="400px">Action</th>
                 </tr>
-                <tr v-for="entry in db.bom">
+                <tr v-for="(entry, i) in db.bom">
+                    <td :rowspan="entry.parts.length">{{i}}</td>
                     <td><input type="checkbox" v-model="entry.place"  v-if="!entry.fiducal"></td>
                     <td><input type="checkbox" v-model="entry.fiducal"></td>
-                    <td><span v-for="id in entry.id">{{id}} </span></td>
                     <td>{{entry.value}}</td>
-                    <td>{{entry.footprint}} <img v-bind:src="entry.footprint | footprint_img_path"/> <img v-bind:src="entry.footprint | footprint_sym_path"/></td>
+                    <td>{{entry.footprint}}</td>
+                    <td><img v-bind:src="entry.footprint | footprint_img_path"/> &nbsp;&nbsp;<img v-bind:src="entry.footprint | footprint_sym_path"/></td>
                     <td>{{entry.partnr}}</td>
-                    <td  contenteditable>{{entry.comment}}</td> <!--https://codepen.io/supraniti/pen/Lypobx-->
-                    <td  contenteditable>{{entry.feeder}}</td>
+                    <td class="cell-inline-table" colspan=5>
+                        <table class="cell-inline-table">
+                            <tr v-for="(part, id) in entry.parts">
+                                <td width="200px">{{id}}</td>
+                                <td width="200px">{{part.x}}</td>
+                                <td width="200px">{{part.y}}</td>
+                                <td width="200px"><div class="table-button material">refresh</div> {{part.rot}}</td>
+                                <td width="200px"><div class="table-button material">swap_horiz</div> {{part.state}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td contenteditable>{{entry.feeder}}</td> <!-- https://codepen.io/supraniti/pen/Lypobx -->
+                    <td><button>view place</button> <button>view pick</button> <button>do place</button></td>
                 </tr>
+            
             </table>
         </div>
 
         <div v-if="nav.page == 1">
-            <table>
-                <tr>
-                    <th width="300px">Place</th>
-                    <th width="300px">Fiducal</th>
-                    <th width="300px">Designator</th>
-                    <th width="300px">X</th>
-                    <th width="300px">Y</th>
-                    <th width="300px">Rotation</th>
-                    <th width="300px">Status</th>
-                    <th width="300px">Action</th>
-                </tr>
-                <tr v-for="(entry, name) in db.parts">
-                    <td><input type="checkbox" v-model="entry.place"  v-if="!entry._fiducal"></td>
-                    <td><input type="checkbox" v-model="entry._fiducal"></td>
-                    <td>{{name}} <img v-bind:src="entry._footprint | footprint_img_path"/> <img v-bind:src="entry._footprint | footprint_sym_path"/></td>
-                    <td>{{entry.x}}</td>
-                    <td>{{entry.y}}</td>
-                    <td><div class="table-button material">refresh</div> {{entry.rot}}</td>
-                    <td><div class="table-button material">swap_horiz</div> {{entry.state}}</td>
-                    <!--<td><button>view place</button><button>view pick</button><button>place</button></td>-->
-                    <td><button>view place</button> <button>view pick</button> <button>place</button></td>
-                </tr>
-            </table>
-        </div>
-
-
-        <div v-if="nav.page == 2">
             <table>
                 <tr>
                     <th width="300px">Name</th>
@@ -119,7 +112,18 @@
             </table>
         </div>
 
-        <div v-if="nav.page == 3">
+        <div v-if="nav.page == 2">
+        <div style="margin-bottom: 20px">
+            <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+            <label class="switcher-label">show camera</label>
+            <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+            <label class="switcher-label">show component graphics</label>
+            <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+            <label class="switcher-label">show symbols</label>
+        </div>
+            <canvas id="canvas-view" width="1850" height="800">
+
+            </canvas>
         </div>
     </div>
 

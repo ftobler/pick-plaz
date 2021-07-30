@@ -23,6 +23,7 @@ def home(name):
 @route('/api/<name>')
 def home(name):
     return static_file(name, root='web/api')
+    
 @route('/parts/<name>')
 def home(name):
     return static_file(name, root='web/parts')

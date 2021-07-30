@@ -24,7 +24,7 @@ function start() {
                     success: (data) => {
                         this.db = JSON.parse(data)
                         let i = 0
-                        for (const bom of this.db.bom) {
+                        /**for (const bom of this.db.bom) {
                             console.log(bom)
                             for (const id of bom.id) {
                                 console.log(id)
@@ -37,7 +37,7 @@ function start() {
                                 }
                             }
                             i++
-                        }
+                        }*/
                     },
                 })
             }

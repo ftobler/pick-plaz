@@ -19,6 +19,7 @@ body {
     margin: 10px;
     margin-bottom: 0px;
     height: 70px;
+    text-align: center;
 }
 .menu-item {
     float: left;
@@ -30,6 +31,7 @@ body {
     height: 23px;
     font-weight: bold;
     transform: skew(-15deg);
+    cursor: pointer;
 }
 
 .menu-item:hover {
@@ -44,6 +46,7 @@ body {
     display: inline-block;
     padding: 100px;
     margin: -100px;
+    margin-left: -130px;
     padding-right: 0;
     margin-right: 0;
     width: 55px;
@@ -53,15 +56,16 @@ body {
 
 .menu-content {
     margin-left: 10px;
+    width: 200px;
 }
 
 .menu-pane {
-    float: right;
+    float: left;
     margin: 10px;
     padding: 10px;
     padding-left: 15px;
     background-color: rgb(50,50,50);
-    width: 360px;
+    width: 320px;
     height: 23px;
     font-weight: bold;
     color: white;
@@ -79,6 +83,7 @@ body {
     height: 23px;
     font-family: "Material Icons";
     font-size: 24px;
+    cursor: pointer;
 }
 
 .menu-upload:hover {
@@ -96,7 +101,7 @@ body {
 }
 
 .menu-material-pane {
-    float: right;
+    float: left;
     margin: 10px;
     font-weight: bold;
     color: white;
@@ -105,19 +110,19 @@ body {
 }
 
 .menu-material {
-    float: right;
+    float: left;
     padding: 10px;
     padding-left: 15px;
     padding-right: 15px;
     background-color: rgb(50,50,50);
-    width: 35
-    px;
+    width: 25px;
     height: 23px;
     font-weight: bold;
     color: white;
     text-align: center;
     font-family: "Material Icons";
     font-size: 24px;
+    cursor: pointer;
 }
 .menu-material:hover {
     background-color: rgb(70,70,70);
@@ -179,6 +184,7 @@ td {
 }
 .table-button:hover {
     background-color: rgba(255,255,255,0.15);
+    cursor: pointer;
 }
 .table-button:active {
     background-color: rgb(0, 150, 92);
@@ -189,4 +195,81 @@ td {
     padding: 3px;
     margin-top: 3px;
 }
+.cell-inline-table {
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: -1px;
+    margin-top: -1px;
+    border-bottom: 1px solid rgb(100,100,100);
+    border-top: 1px solid rgb(100,100,100);
+}
+.tab {
+    margin-left: 20px;
+}
+th.small{
+    font-size: 10pt;
+    transform: rotateZ(-30deg) translate(5px, -5px);
+}
 
+
+
+
+
+
+
+canvas {
+    border: 1px solid rgb(50,50,50);
+}
+
+
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 24px;
+}
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+input:checked + .slider {
+    background-color: #2196F3;
+}
+input:checked + .slider:before {
+    -webkit-transform: translateX(16px);
+    -ms-transform: translateX(16px);
+    transform: translateX(16px);
+}
+.slider.round { /* Rounded sliders */
+    border-radius: 100px;
+}
+.slider.round:before {
+    border-radius: 50%;
+}
+.switcher-label {
+    margin-right: 20px;
+}
