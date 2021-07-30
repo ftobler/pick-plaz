@@ -1,7 +1,7 @@
 from pick_plaz_robot import Robot
 import math
 
-robot = Robot("COM3")
+robot = Robot("/dev/ttyUSB0")
 robot.home()
 robot.drive(0,0)
 robot.drive(800,0)
