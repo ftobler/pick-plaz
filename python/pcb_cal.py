@@ -102,6 +102,14 @@ def main():
 
     with camera.CameraThread(0) as c:
 
+        import queue
+
+        image = None
+        event_queue = queue.Queue()
+
+        import bottle_svr
+        b = bottle_svr.BottleServer(lambda: image, lambda x: event_queue.put(x))
+
         robot.flush()
 
         time.sleep(0.5)
@@ -151,6 +159,12 @@ def main():
                 cv2.destroyWindow("window")
                 break
 
+            try:
+                event = event_queue.get(block=False)
+                x = event["x"]
+                y = event["y"]
+            except queue.Empty as e:
+                pass
             robot.drive(x,y)
 
     print("finished")
