@@ -2,10 +2,12 @@
 import numpy as np
 
 import cv2.aruco
-import cairo
+
 
 def to_svg(filename, markers, positions, markersize):
     """ Save marker board as svg to print on paper or pcb"""
+
+    import cairo
 
     positions = np.array(positions)
 
@@ -38,6 +40,12 @@ size_x = 10
 size_y = 10
 marker_size = 3
 stride = 4
+
+# Big marker board
+# size_x = 10
+# size_y = 10
+# marker_size = 6
+# stride = 7
 
 x, y = np.meshgrid(np.arange(size_x), np.arange(size_y))
 positions = np.stack((x, y), axis=-1).reshape((-1,2)) * stride

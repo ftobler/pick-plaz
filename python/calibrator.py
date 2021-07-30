@@ -1,11 +1,10 @@
 
-# %%
-
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
+import markerboard
 
 class PointProjector():
 
@@ -57,63 +56,6 @@ class PointProjector():
         assert np.isclose(obj, obj2, rtol=1e-3, atol=1e-5).all(), "test failed"
 
 
-
-# marker pattern information
-import markerboard
-
-# %% load data
-
-with open("captures.pkl", "rb") as f:
-    captures = pickle.load(f)
-
-all_positions_bot = np.array([d["pos"] for d in captures], np.float32)
-all_ids = [d["marker_ids"] for d in captures]
-all_positions_pix = [d["markers_corners"] for d in captures]
-
-
-
-# %% calibrate with all 9 images
-
-batch_obj = []
-batch_pix = []
-
-for positions_pix, ids in zip(all_positions_pix, all_ids):
-
-    offsets = np.array([[[0,0], [1,0], [1,1], [0,1]]], dtype=np.float32) * markerboard.marker_size
-    positions_pix = np.array(positions_pix).reshape((-1, 2))
-    positions_obj = (markerboard.positions[ids].astype(np.float32) + offsets).reshape((-1, 2))
-
-    # f, ax = plt.subplots(1, 2)
-    # ax[0].plot(positions_pix[:,0], positions_pix[:,1], ".")
-    # ax[1].plot(positions_obj[:,0], positions_obj[:,1], ".")
-    # plt.show()
-
-    positions_obj = np.concatenate((positions_obj, np.zeros_like(positions_obj[..., :1])), axis=-1)
-
-    batch_obj.append(positions_obj)
-    batch_pix.append(positions_pix)
-
-im_shape_cv = (640, 480)
-
-retval, intrinsic, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(batch_obj, batch_pix, im_shape_cv, None, None, )
-
-# Test calibration accuracy
-for obj, pix, rvec, tvec in zip(batch_obj, batch_pix, rvecs, tvecs):
-
-    pix_calculated, _ = cv2.projectPoints(obj, rvec, tvec, intrinsic, dist_coeffs)
-    pix_calculated = pix_calculated[:,0]
-
-    mse = np.mean(np.square(pix - pix_calculated))
-    assert mse < 1
-    print("cal mse", mse)
-
-
-extrinsics = [np.concatenate((np.concatenate((cv2.Rodrigues(rvec)[0], tvec), axis=1),((0,0,0,1),)), axis=0) for rvec, tvec in zip(rvecs, tvecs)]
-
-
-poses = np.array([-e[:3,:3].T @ np.concatenate((e[:2,3:], [[0]]), 0) for e in extrinsics])[...,:2,  0]
-
-
 def fit_affine(points_a, points_b):
     """
     Return 3 x 3 affine matrix and the mean squared error resulted by the fit
@@ -139,47 +81,102 @@ def fit_affine(points_a, points_b):
 
     return m, mse
 
-warp_mat, mse = fit_affine(poses, all_positions_bot)
-assert mse < 0.1
+
+class Calibration():
+
+    def __init__(self, all_positions_bot, all_ids, all_positions_pix):
+        self.calibrate(all_positions_bot, all_ids, all_positions_pix)
+
+    def calibrate(self, all_positions_bot, all_ids, all_positions_pix, plot=False):
+
+        batch_obj = []
+        batch_pix = []
+
+        for positions_pix, ids in zip(all_positions_pix, all_ids):
+
+            offsets = np.array([[[0,0], [1,0], [1,1], [0,1]]], dtype=np.float32) * markerboard.marker_size
+            positions_pix = np.array(positions_pix).reshape((-1, 2))
+            positions_obj = (markerboard.positions[ids].astype(np.float32) + offsets).reshape((-1, 2))
+
+            # f, ax = plt.subplots(1, 2)
+            # ax[0].plot(positions_pix[:,0], positions_pix[:,1], ".")
+            # ax[1].plot(positions_obj[:,0], positions_obj[:,1], ".")
+            # plt.show()
+
+            positions_obj = np.concatenate((positions_obj, np.zeros_like(positions_obj[..., :1])), axis=-1)
+
+            batch_obj.append(positions_obj)
+            batch_pix.append(positions_pix)
+
+        im_shape_cv = (640, 480)
+
+        retval, intrinsic, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(batch_obj, batch_pix, im_shape_cv, None, None, )
+
+        assert retval, "Calibration failed"
+
+        # Test calibration accuracy
+        for obj, pix, rvec, tvec in zip(batch_obj, batch_pix, rvecs, tvecs):
+
+            pix_calculated, _ = cv2.projectPoints(obj, rvec, tvec, intrinsic, dist_coeffs)
+            pix_calculated = pix_calculated[:,0]
+
+            mse = np.mean(np.square(pix - pix_calculated))
+            assert mse < 1.5, f"Calibration has abnormaly high MSE ({mse})"
+            print("cal mse", mse)
+
+        #build 4x4 extrinsics
+        extrinsics = [
+            np.concatenate((
+                np.concatenate((cv2.Rodrigues(rvec)[0], tvec), axis=1),
+                ((0,0,0,1),)
+            ), axis=0)
+            for rvec, tvec in zip(rvecs, tvecs)
+        ]
+
+        cam_positions = np.array([-e[:3,:3].T @ np.concatenate((e[:2,3:], [[0]]), 0) for e in extrinsics])[...,:2,  0]
 
 
-pattern = np.array([[0,0,39,39,1], [1,39,39,0,0], [1,1,1,1,1]]).T
-pattern_world = (warp_mat @ pattern.T).T
-plt.plot(poses[:,0], poses[:,1], "o")
-plt.plot(all_positions_bot[:,0], all_positions_bot[:,1], "-o")
-for i, obj in enumerate(batch_obj):
-    xx, yy, _ = obj.T
-    plt.plot(xx, yy, ".")
-for i, obj in enumerate(batch_obj):
-    obj = obj.copy()
-    obj[:, 2] = 1
-    xx, yy, _ = warp_mat @ obj.T
-    plt.plot(xx, yy, ".")
-plt.plot(pattern[:,0], pattern[:,1], "-")
-plt.plot(pattern_world[:,0], pattern_world[:,1], "-")
-plt.axis("equal")
-plt.show()
+        warp_mat, mse = fit_affine(cam_positions, all_positions_bot)
+        assert mse < 0.1
 
+        if plot:
+            pattern = np.array([[0,0,39,39,1], [1,39,39,0,0], [1,1,1,1,1]]).T
+            pattern_world = (warp_mat @ pattern.T).T
+            plt.plot(cam_positions[:,0], cam_positions[:,1], "o")
+            plt.plot(all_positions_bot[:,0], all_positions_bot[:,1], "-o")
+            for i, obj in enumerate(batch_obj):
+                xx, yy, _ = obj.T
+                plt.plot(xx, yy, ".")
+            for i, obj in enumerate(batch_obj):
+                obj = obj.copy()
+                obj[:, 2] = 1
+                xx, yy, _ = warp_mat @ obj.T
+                plt.plot(xx, yy, ".")
+            plt.plot(pattern[:,0], pattern[:,1], "-")
+            plt.plot(pattern_world[:,0], pattern_world[:,1], "-")
+            plt.axis("equal")
+            plt.show()
 
-
-# %% world to camera
+        self.warp_mat = warp_mat
+        self.intrinsic = intrinsic
+        self.rvec = rvecs[0]
+        self.tvec = tvecs[0]
+        self.dist_coeffs = dist_coeffs
+        self.bot_pos = all_positions_bot[0]
 
 class ModelPixConverter:
 
-    def __init__(self, bot_pos, rvec, tvec, intrinsic, dist_coeffs, warp_mat):
-        self.cal_bot_pos = bot_pos
-        self.cal_rvec = rvec
-        self.cal_tvec = tvec
-        self.intrinsic = intrinsic
-        self.dist_coeffs = dist_coeffs
+    def __init__(self, cal):
+        self.cal = cal
 
-        self.warpmat_inv = np.linalg.inv(warp_mat)
+        self.warpmat_inv = np.linalg.inv(self.cal.warp_mat)
 
     def model_to_pix(self, obj, bot_pos):
-        delta = np.expand_dims(self.cal_bot_pos - bot_pos, axis=-1)
+        bot_pos = np.asarray(bot_pos).reshape((2,))
+        delta = np.expand_dims(self.cal.bot_pos - bot_pos, axis=-1)
         obj2 = (self.warpmat_inv[:,:2] @ (obj[:2] + delta)) + self.warpmat_inv[:,2:]
         obj2[2] = 0
-        pix_infred, _ = cv2.projectPoints(obj2, self.cal_rvec, self.cal_tvec, self.intrinsic, self.dist_coeffs)
+        pix_infred, _ = cv2.projectPoints(obj2.T, self.cal.rvec, self.cal.tvec, self.cal.intrinsic, self.cal.dist_coeffs)
         return pix_infred[:,0]
 
     def pix_to_model(self, pix, bot_pos):
@@ -189,50 +186,76 @@ class ModelPixConverter:
         #TODO
         # delta = np.expand_dims(self.cal_bot_pos - bot_pos, axis=-1)
         # obj2 = (self.warpmat_inv[:,:2] @ (obj[:2] + delta)) + self.warpmat_inv[:,2:]
-        # obj2[2] = 0
-        # pix_infred, _ = cv2.projectPoints(obj2, self.cal_rvec, self.cal_tvec, self.intrinsic, self.dist_coeffs)
-        # return pix_infred[:,0]
+        # obj2[2] = 0model_to_pix
+        offsets = np.array([[[0,0], [1,0], [1,1], [0,1]]], dtype=np.float32) * markerboard.marker_size
+        positions_pix = np.array(positions_pix).reshape((-1, 2))
+        positions_obj = (markerboard.positions[ids].astype(np.float32) + offsets).reshape((-1, 2))
 
 
-# use first capture as calibration
-mp = ModelPixConverter(all_positions_bot[0], rvecs[0], tvecs[0],intrinsic, dist_coeffs, warp_mat)
+        positions_obj = np.concatenate((positions_obj, np.zeros_like(positions_obj[..., :1])), axis=-1)
 
-# Test world to camera
-p = np.array([[266.68, 314.74, 1]]).T
-for obj, pix, rvec, tvec, bot_pos in zip(batch_obj, batch_pix, rvecs, tvecs, all_positions_bot):
-    pix_infred, _ = cv2.projectPoints(obj, rvec, tvec, intrinsic, dist_coeffs)
-    pix_infred = pix_infred[:,0]
-    my_pix_pos = mp.model_to_pix(p, bot_pos)
+        batch_obj.append(positions_obj)
+        batch_pix.append(positions_pix)
 
-    plt.plot(pix[:,0], pix[:,1], ".")
-    plt.plot(pix_infred[:,0], pix_infred[:,1], ".")
-    plt.plot(my_pix_pos[:,0], my_pix_pos[:,1], "x")
-    plt.show()
+    # im_shape_cv = (640, 480)
 
-# warp_mat2 = np.eye(4)
-# warp_mat2[:2,:2] = warp_mat[:2,:2]
-# warp_mat2[:2,-1] = warp_mat[:2,-1]
+    # retval, intrinsic, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(batch_obj, batch_pix, im_shape_cv, None, None, )
 
-# for extrinsic in extrinsics:
+    # return rvecs, tvecs, batch_obj, batch_pix
 
-#     extrinsic2 = np.eye(4)
-#     extrinsic2[:3] = extrinsic
+def test():
+    # load prerecoreded data
 
-#     print(warp_mat @ extrinsic)
+    with open("captures.pkl", "rb") as f:
+        captures = pickle.load(f)
 
-# for positions_pix in all_positions_pix:
+    all_positions_bot = np.array([d["pos"] for d in captures], np.float32)
+    all_ids = [d["marker_ids"] for d in captures]
+    all_positions_pix = [d["markers_corners"] for d in captures]
 
-#     positions_pix = np.array(positions_pix).reshape((-1,2))
+    cal = Calibration(all_positions_bot, all_ids, all_positions_pix)
 
-#     undistorted = cv2.undistortPoints(positions_pix, intrinsic, dist_coeffs, P=intrinsic)[:, 0]
+    mp = ModelPixConverter(cal)
 
-#     plt.plot(positions_pix[:, 0], positions_pix[:, 1], ".")
-#     plt.plot(undistorted[:, 0], undistorted[:, 1], ".")
-#     plt.axis("equal")
-#     plt.show()
+    rvecs, tvecs, batch_obj, batch_pix = test_helper(all_positions_bot, all_ids, all_positions_pix)
 
-# extrinsics2 = [None] * len(image_files)
-# for i, extrinsic in zip(sucess_indices, extrinsics):
-#     extrinsics2[i] = extrinsic
+    # Test world to camera
+    p = np.array([[266.68, 314.74, 1]]).T
+    for obj, pix, rvec, tvec, bot_pos in zip(batch_obj, batch_pix, rvecs, tvecs, all_positions_bot):
+        pix_infred, _ = cv2.projectPoints(obj, rvec, tvec, cal.intrinsic, cal.dist_coeffs)
+        pix_infred = pix_infred[:,0]
+        my_pix_pos = mp.model_to_pix(p, bot_pos)
 
+        plt.plot(pix[:,0], pix[:,1], ".")
+        plt.plot(pix_infred[:,0], pix_infred[:,1], ".")
+        plt.plot(my_pix_pos[:,0], my_pix_pos[:,1], "x")
+        plt.show()
 
+    # warp_mat2 = np.eye(4)
+    # warp_mat2[:2,:2] = warp_mat[:2,:2]
+    # warp_mat2[:2,-1] = warp_mat[:2,-1]
+
+    # for extrinsic in extrinsics:
+
+    #     extrinsic2 = np.eye(4)
+    #     extrinsic2[:3] = extrinsic
+
+    #     print(warp_mat @ extrinsic)
+
+    # for positions_pix in all_positions_pix:
+
+    #     positions_pix = np.array(positions_pix).reshape((-1,2))
+
+    #     undistorted = cv2.undistortPoints(positions_pix, intrinsic, dist_coeffs, P=intrinsic)[:, 0]
+
+    #     plt.plot(positions_pix[:, 0], positions_pix[:, 1], ".")
+    #     plt.plot(undistorted[:, 0], undistorted[:, 1], ".")
+    #     plt.axis("equal")
+    #     plt.show()
+
+    # extrinsics2 = [None] * len(image_files)
+    # for i, extrinsic in zip(sucess_indices, extrinsics):
+    #     extrinsics2[i] = extrinsic
+
+if __name__ == "__main__":
+    test()
