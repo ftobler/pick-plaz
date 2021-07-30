@@ -1,6 +1,7 @@
 
 from HersheyFonts import HersheyFonts
 import matplotlib.pyplot as plt
+import math
 
 
 class gcode:
@@ -10,7 +11,11 @@ class gcode:
     f_mill = 100
     is_mill = False
 
-    def __init__(self):
+    def __init__(self, lift=20, safe=1, f_travel=2000, f_mill=100):
+        self.lift = lift
+        self.safe = safe
+        self.f_travel = f_travel
+        self.f_mill = f_mill
         # Exec G92 if you want to start at your Zero. Otherwise leave out
         # G92 X0 Y0 Z0 ;set current position as zero position
         print("G90 ; Set to Absolute Positioning")
@@ -33,6 +38,39 @@ class gcode:
             print("G1 F%f Z%f" % (self.f_travel, self.safe))
             print("G1 F%f Z%f" % (self.f_mill, z))
         print("G1 F%f X%f Y%f Z%f" % (self.f_mill, x, y, z))
+
+    def mill_circle(self, x, y, z, r):
+        n = int(2*r*math.pi*2/0.5)
+        if n < 36:
+            n = 36
+        self.travel(x, y + r)
+        for i in range(n+1):
+            rad = 2 * math.pi * i / n
+            self.mill(x + math.sin(rad)*r, y + math.cos(rad)*r, z)
+
+    def mill_hole(self, x, y, z, r, pitch=1.0, r_backout = 0.3):
+        #pitch of 2 makes 2mm per rotation
+        self.travel(x, y + r)
+        z_dist = self.safe - z #positive number, z is given as negative number (depth)
+        turns = z_dist/pitch
+        n = int(2*r*math.pi*2/1.0*turns)
+        if n < 36*turns:
+            n = int(36*turns)
+        rad = 0
+        rads = 2*math.pi*turns
+        #spiral down
+        for i in range(n+1):
+            rad = rads * i / n
+            self.mill(x + math.sin(rad)*r, y + math.cos(rad)*r, self.safe - (i / n * z_dist))
+        #make additional circle
+        n = int(2*r*math.pi*2/1.0)
+        if n < 36:
+            n = 36
+        rad_offset = rad % (2*math.pi)
+        for i in range(n+1):
+            rad = 2 * math.pi * i / n + rad_offset
+            self.mill(x + math.sin(rad)*r, y + math.cos(rad)*r, z)
+        self.mill(x + math.sin(rad)*(r-r_backout), y + math.cos(rad)*(r-r_backout), z)
 
     def textsize(self, height):
         self.font.normalize_rendering(height)
