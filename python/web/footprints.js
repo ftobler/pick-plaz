@@ -132,5 +132,13 @@ footprints = {
         sym: "C_sym.svg",
         x: 7.6,
         y: 9,
+    },
+
+
+    "fiducal": {
+        img: "fiducal_img.svg",
+        sym: "fiducal_sym.svg",
+        x: 3.0,
+        y: 3.0,
     }
 }

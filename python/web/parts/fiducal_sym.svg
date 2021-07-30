@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Creator: CorelDRAW -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xml:space="preserve"
+   width="5mm"
+   height="5mm"
+   style="fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+   viewBox="0 0 196.9999 196.99989"
+   version="1.1"
+   id="svg13"
+   sodipodi:docname="fiducal_sym.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"><metadata
+   id="metadata17"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="3840"
+   inkscape:window-height="2097"
+   id="namedview15"
+   showgrid="true"
+   units="mm"
+   inkscape:zoom="63.830729"
+   inkscape:cx="7.0086728"
+   inkscape:cy="6.4122918"
+   inkscape:window-x="3832"
+   inkscape:window-y="-8"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg13"
+   inkscape:snap-global="true"
+   inkscape:snap-grids="true"
+   inkscape:snap-to-guides="false"><inkscape:grid
+     type="xygrid"
+     id="grid817"
+     units="mm"
+     spacingx="19.699989"
+     spacingy="19.699989"
+     empspacing="5"
+     dotted="false" /></sodipodi:namedview>
+ <defs
+   id="defs4">
+  <style
+   type="text/css"
+   id="style2">
+   <![CDATA[
+    .fil0 {fill:#996633}
+    .fil1 {fill:#E5E5E5}
+   ]]>
+  </style>
+ 
+  
+  
+  
+ <pattern
+   y="0"
+   x="0"
+   height="6"
+   width="6"
+   patternUnits="userSpaceOnUse"
+   id="EMFhbasepattern" /></defs>
+ 
+<path
+   style="opacity:1;fill:none;fill-opacity:0.92903227;stroke:#ffffff;stroke-width:10.42457749;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+   d="m 149.14831,98.499946 c 0,27.972314 -22.67605,50.648364 -50.648364,50.648364 -27.97232,0 -50.648365,-22.67605 -50.648366,-50.648364 0,-27.972321 22.676045,-50.648366 50.648366,-50.648366 27.972314,1e-6 50.648364,22.676046 50.648364,50.648366 z"
+   id="path851"
+   inkscape:connector-curvature="0"
+   sodipodi:nodetypes="sssss" /><path
+   style="fill:none;stroke:#ffffff;stroke-width:10.42457676px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+   d="M 0,98.49994 H 196.99988"
+   id="path819"
+   inkscape:connector-curvature="0" /><path
+   style="fill:none;stroke:#ffffff;stroke-width:10.42457676px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+   d="M 98.49994,-4.7965061e-7 V 196.99988"
+   id="path821"
+   inkscape:connector-curvature="0" /></svg>
