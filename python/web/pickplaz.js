@@ -153,12 +153,12 @@ function start() {
             do_move(x, y) {
                 this.canvas.pos_mm.x += x
                 this.canvas.pos_mm.y += y
-                this.do_move_robot(x, y)
+                this.do_setpos(x, y)
                 this.draw_stuff()
             },
-            do_move_robot(x, y) {
-                this.nav.camera.x + x
-                this.nav.camera.y + y
+            do_setpos(x, y) {
+                this.nav.camera.x += x
+                this.nav.camera.y += y
                 ajax({
                     type: "GET",
                     dataType: "application/json",
