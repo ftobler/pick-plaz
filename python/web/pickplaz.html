@@ -126,7 +126,7 @@
                 <label class="switcher-label">show symbols</label>
                 <span style="width: 330px; display: inline-block"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x}}/{{canvas.cursor_mm.y}})mm; robot ({{nav.camera.x}}/{{nav.camera.y}})mm</label></span>
             </div >
-            <canvas id="canvas-view" width="1850" height="800" @mousemove="show_coordinates" v-on:click="draw_stuff()" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
+            <canvas id="canvas-view" width="1850" height="800" @mousemove="show_coordinates" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 
             
         </div>

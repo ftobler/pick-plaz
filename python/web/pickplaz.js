@@ -110,17 +110,38 @@ function start() {
                 this.draw_stuff()
             },
             mousedown(event) {
-                let canvas = document.getElementById("canvas-view");
-                this.canvas.drag = true
-                //this.canvas.drag_start_mm.x = this.canvas.pos_mm.x;
-                //this.canvas.drag_start_mm.y = this.canvas.pos_mm.y;
-                this.canvas.drag_start_mm = this.px_to_mm({
-                    x: event.pageX - canvas.offsetLeft,
-                    y: event.pageY - canvas.offsetTop
-                })
+                if (event.button == 0) { //left button
+                    
+                } else if (event.button == 1) { //middle button
+                    let canvas = document.getElementById("canvas-view");
+                    this.canvas.drag = true
+                    //this.canvas.drag_start_mm.x = this.canvas.pos_mm.x;
+                    //this.canvas.drag_start_mm.y = this.canvas.pos_mm.y;
+                    this.canvas.drag_start_mm = this.px_to_mm({
+                        x: event.pageX - canvas.offsetLeft,
+                        y: event.pageY - canvas.offsetTop
+                    })
+                } else if (event.button == 2) { //right button
+
+                }
             },
             mouseup(event) {
-                this.canvas.drag = false
+                if (event.button == 0) { //left button
+                    
+                } else if (event.button == 1) { //middle button
+                    this.canvas.drag = false
+                } else if (event.button == 2) { //right button
+
+                }
+            },
+            mouseclick(event) {
+                if (event.button == 0) { //left button
+                    this.do_setpos(this.canvas.cursor_mm.x, this.canvas.cursor_mm.y)
+                } else if (event.button == 1) { //middle button
+
+                } else if (event.button == 2) { //right button
+
+                }
             },
             mousemove(event) {
                 if (this.page == NAVPAGE) {
@@ -154,12 +175,12 @@ function start() {
             do_move(x, y) {
                 this.canvas.pos_mm.x += x
                 this.canvas.pos_mm.y += y
-                this.do_setpos(x, y)
+                this.do_setpos(this.nav.camera.x + x, this.nav.camera.y + y)
                 this.draw_stuff()
             },
             do_setpos(x, y) {
-                this.nav.camera.x += x
-                this.nav.camera.y += y
+                this.nav.camera.x = x
+                this.nav.camera.y = y
                 ajax({
                     type: "GET",
                     dataType: "application/json",
