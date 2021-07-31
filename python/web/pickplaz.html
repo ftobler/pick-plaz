@@ -16,9 +16,9 @@
 
     <div class="menu">
             <a class="logo" href="https://github.com/ftobler/pick-plaz" target="_blank">pick-plaz</a>
-            <div class="menu-item" v-bind:class="{active : nav.page == 0}" v-on:click="nav.page = 0">Parts</div>
-            <div class="menu-item" v-bind:class="{active : nav.page == 1}" v-on:click="nav.page = 1">Feeder</div>
-            <div class="menu-item" v-bind:class="{active : nav.page == 2}" v-on:click="nav.page = 2">Navigate</div>       
+            <div class="menu-item" v-bind:class="{active : page == 0}" v-on:click="page = 0">Parts</div>
+            <div class="menu-item" v-bind:class="{active : page == 1}" v-on:click="page = 1">Feeder</div>
+            <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="page = 2">Navigate</div>       
 
         <div style="float: right;">
             <div class="menu-pane">
@@ -42,7 +42,7 @@
 
     <div class="content">
 
-        <div v-if="nav.page == 0">
+        <div v-if="page == 0">
 
             <table>
                 <tr>
@@ -87,7 +87,7 @@
             </table>
         </div>
 
-        <div v-if="nav.page == 1">
+        <div v-if="page == 1">
             <table>
                 <tr>
                     <th width="300px">Name</th>
@@ -114,23 +114,20 @@
             </table>
         </div>
 
-        <div v-if="nav.page == 2">
-        <div style="margin-bottom: 20px">
-            <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
-            <label class="switcher-label">show camera</label>
-            <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
-            <label class="switcher-label">show component graphics</label>
-            <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
-            <label class="switcher-label">show symbols</label>
-        </div @mousemove="mousemove">
-            <canvas id="canvas-view" width="1850" height="800" @mousemove="show_coordinates" v-on:click="draw_stuff()" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup" >
+        <div v-if="page == 2" @mousemove="mousemove">
+            <div style="margin-bottom: 20px">
+                <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+                <label class="switcher-label">show camera</label>
+                <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+                <label class="switcher-label">show component graphics</label>
+                <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+                <label class="switcher-label">show symbols</label>
+            </div >
+            <canvas id="canvas-view" width="1850" height="800" @mousemove="show_coordinates" v-on:click="draw_stuff()" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 
-            </canvas>
+            <p v-if="nav_init">mouse: ({{canvas.cursor_mm.x}}/{{canvas.cursor_mm.y}})mm; robot ({{nav.camera.x}}/{{nav.camera.y}})mm</p>
         </div>
-        <p>mouse: ({{canvas.cursor_mm.x}}/{{canvas.cursor_mm.y}})mm</p>
     </div>
-
-    
 
 </div>
 </body>

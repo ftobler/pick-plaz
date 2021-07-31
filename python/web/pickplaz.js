@@ -5,11 +5,17 @@ function start() {
     app = new Vue({
         el: "#app",
         data: {
+            page: 2,
             nav: {
-                page: 2
             },
+            nav_init: false,
             db: {
-
+            },
+            image: {
+                botup : null,
+                botup_nr : 0,
+                topdn : null,
+                topdn_nr : 0,
             },
             canvas: {
                 ctx: null,
@@ -26,35 +32,41 @@ function start() {
             document.addEventListener('mousemove', this.mousemove)   
         },
         created() {
-            this.poll()
+            this.poll_data()
+            this.poll_image()
             var c = document.getElementById("canvas-view");
             c.onmousewheel = this.mousewheel()
             this.ctx = c.getContext('2d');
         },
         methods: {
-            poll() {
+            poll_data() {
                 ajax({
                     type: "GET",
                     dataType: "application/json",
                     url: "/api/data.json",
                     success: (data) => {
                         this.db = JSON.parse(data)
-                        let i = 0
+                    },
+                })
+            },
+            poll_image() {
+                ajax({
+                    type: "GET",
+                    dataType: "application/json",
+                    url: "/api/nav.json",
+                    success: (data) => {
+                        this.nav = JSON.parse(data)
+                        this.nav_init = true
+                        let temp_img = new Image(10,10);
+                        temp_img.onload = () => {
+                            this.image.topdn = temp_img
+                            this.draw_stuff()
+                            setTimeout(() => {
+                                this.poll_image()
+                            }, 300)
+                        }
+                        temp_img.src = "/api/topdn.jpg?nr=" + this.nav.camera.framenr + "&t=" + Date.now()
                         this.draw_stuff()
-                        /**for (const bom of this.db.bom) {
-                            console.log(bom)
-                            for (const id of bom.id) {
-                                console.log(id)
-                                let part = this.db.parts[id]
-                                if (part != undefined) {
-                                    part._bom = i
-                                    part._footprint = bom.footprint
-                                    part._place = bom.place
-                                    part._fiducal = bom.fiducal
-                                }
-                            }
-                            i++
-                        }*/
                     },
                 })
             },
@@ -73,24 +85,6 @@ function start() {
                 let mm = this.px_to_mm(this.canvas.cursor_px)
                 this.canvas.cursor_mm.x = Math.round(mm.x)
                 this.canvas.cursor_mm.y = Math.round(mm.y)
-            },
-            draw_stuff() {
-                var c = document.getElementById("canvas-view");
-                this.canvas.size.x = c.width
-                this.canvas.size.y = c.height
-                if (c == null) {
-                    return
-                }
-                let ctx = c.getContext('2d');
-                ctx.lineWidth = 1 / this.canvas.zoom
-                ctx.resetTransform()
-                ctx.clearRect(0,0, c.width, c.height)
-                ctx.translate(c.width / 2, c.height / 2)
-                ctx.scale(this.canvas.zoom, this.canvas.zoom)
-                ctx.translate(-this.canvas.pos_mm.x, -this.canvas.pos_mm.y)
-                ctx.strokeStyle = "white"
-                ctx.beginPath(); ctx.rect(0, 0, 400, 400); ctx.stroke();
-                ctx.scale(1, 1)
             },
             mousewheel(e) {
                 let fact = 1.1;
@@ -126,6 +120,59 @@ function start() {
                     this.draw_stuff()
                 }
             },
+            draw_stuff() {
+                var c = document.getElementById("canvas-view");
+                if (c == null || this.nav_init == false) {
+                    return
+                }
+                this.canvas.size.x = c.width
+                this.canvas.size.y = c.height
+                let ctx = c.getContext('2d');
+                ctx.lineWidth = 1 / this.canvas.zoom
+                ctx.resetTransform()
+                ctx.clearRect(0,0, c.width, c.height)
+                ctx.translate(c.width / 2 + 0.5, c.height / 2 + 0.5)
+                ctx.scale(this.canvas.zoom, this.canvas.zoom)
+                ctx.translate(-this.canvas.pos_mm.x, -this.canvas.pos_mm.y)
+
+                //draw bed outline
+                ctx.strokeStyle = "white"
+                ctx.beginPath(); ctx.rect(this.nav.bed.x, this.nav.bed.y, this.nav.bed.width, this.nav.bed.height); ctx.stroke();
+                ctx.scale(1, 1)
+
+                //draw topdn image
+                this.draw_camera(ctx, this.image.topdn, this.nav.camera)
+
+                //draw camera position
+                ctx.strokeStyle = "yellow"
+                ctx.beginPath();
+                ctx.moveTo(this.nav.camera.x, this.nav.bed.x-10);
+                ctx.lineTo(this.nav.camera.x, this.nav.bed.x+this.nav.bed.width+10);
+                ctx.moveTo(this.nav.bed.y-10, this.nav.camera.y);
+                ctx.lineTo(this.nav.bed.y+this.nav.bed.height+10, this.nav.camera.y);
+                ctx.stroke();
+
+
+            },
+            draw_camera(ctx, image, position) {
+                if (image != null) {
+                    ctx.drawImage(
+                        image, 
+                        position.x - position.width / 2, 
+                        position.y - position.height / 2, 
+                        position.width, 
+                        position.height
+                    );
+                } else {
+                    ctx.strokeStyle = "yellow"
+                    ctx.beginPath(); ctx.rect(
+                        position.x - position.width / 2, 
+                        position.y - position.height / 2, 
+                        position.width, 
+                        position.height
+                    ); ctx.stroke();
+                }
+            }
         },
         filters: {
             footprint_img_path: function(f) {
