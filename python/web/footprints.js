@@ -135,6 +135,103 @@ footprints = {
     },
 
 
+
+    "SOD323": {
+        img: "D1.img.svg",
+        sym: "D.sym.svg",
+        x: 2.5,
+        y: 1.25,
+    },
+    "SOD123": {
+        img: "D1.img.svg",
+        sym: "D.sym.svg",
+        x: 3.85,
+        y: 1.7,
+    },
+    "SMA": {
+        img: "D2.img.svg",
+        sym: "D.sym.svg",
+        x: 4.0,
+        y: 2.3,
+    },
+    "SMB": {
+        img: "D2.img.svg",
+        sym: "D.sym.svg",
+        x: 4.0,
+        y: 3.3,
+    },
+    "SMC": {
+        img: "D2.img.svg",
+        sym: "D.sym.svg",
+        x: 6.6,
+        y: 6.6,
+    },
+
+    "SOT23": {
+        img: "SOT23-3.img.svg",
+        sym: "Q.sym.svg",
+        x: 2.9,
+        y: 2.4,
+    },
+    "SOT23-3": {
+        img: "SOT23-3.img.svg",
+        sym: "Q.sym.svg",
+        x: 2.9,
+        y: 2.4,
+    },
+    "SOT23-4": {
+        img: "SOT23-4.img.svg",
+        sym: "Q.sym.svg",
+        x: 2.9,
+        y: 2.4,
+    },
+    "SOT23-5": {
+        img: "SOT23-5.img.svg",
+        sym: "Q.sym.svg",
+        x: 2.9,
+        y: 2.4,
+    },
+    "SOT23-6": {
+        img: "SOT23-6.img.svg",
+        sym: "Q.sym.svg",
+        x: 2.9,
+        y: 2.4,
+    },
+    "SOT323": {
+        img: "SOT323-3.img.svg",
+        sym: "Q.sym.svg",
+        x: 1.6,
+        y: 2.0,
+    },
+    "SOT323-3": {
+        img: "SOT323-3.img.svg",
+        sym: "Q.sym.svg",
+        x: 1.6,
+        y: 2.0,
+    },
+    "SOT323-4": {
+        img: "SOT323-4.img.svg",
+        sym: "Q.sym.svg",
+        x: 1.6,
+        y: 2.0,
+    },
+    "SOT323-5": {
+        img: "SOT323-5.img.svg",
+        sym: "Q.sym.svg",
+        x: 1.6,
+        y: 2.0,
+    },
+    "SOT323-6": {
+        img: "SOT323-6.img.svg",
+        sym: "Q.sym.svg",
+        x: 1.6,
+        y: 2.0,
+    },
+
+
+
+
+
     "fiducal": {
         img: "fiducal_img.svg",
         sym: "fiducal_sym.svg",
