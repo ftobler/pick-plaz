@@ -7,6 +7,7 @@
             "footprint": "0603_R",
             "partnr": "C5465",
             "feeder": "tray 1",
+            "rot": 90,
             "parts": {
                 "R1": {
                     "place": true,
@@ -38,6 +39,7 @@
             "footprint": "0603_C",
             "partnr": "C14663",
             "feeder": "tray 3",
+            "rot": 90,
             "parts": {
                 "C20": {
                     "place": true,
@@ -52,14 +54,71 @@
             "place": true,
             "fiducal": false,
             "value": "",
-            "footprint": "TQFP-32_7x7x08P",
+            "footprint": "TQFP32",
             "partnr": "C14877",
             "feeder": "tray 3",
+            "rot": 90,
             "parts": {
                 "U1": {
                     "place": true,
                     "x": 10,  
-                    "y": 35
+                    "y": 35,
+                    "rot": 90,
+                    "state": 0
+                }
+            }
+        },
+        {
+            "place": true,
+            "fiducal": false,
+            "value": "",
+            "footprint": "SMA",
+            "partnr": "",
+            "feeder": "",
+            "rot": 90,
+            "parts": {
+                "D1": {
+                    "place": true,
+                    "x": 12,  
+                    "y": 12,
+                    "rot": 90,
+                    "state": 0
+                }
+            }
+        },
+        {
+            "place": true,
+            "fiducal": false,
+            "value": "",
+            "footprint": "SOT23",
+            "partnr": "",
+            "feeder": "3",
+            "rot": 90,
+            "parts": {
+                "Q5": {
+                    "place": true,
+                    "x": 35,  
+                    "y": 10,
+                    "rot": 90,
+                    "state": 0
+                }
+            }
+        },
+        {
+            "place": true,
+            "fiducal": false,
+            "value": "",
+            "footprint": "TQFP32",
+            "partnr": "C14877",
+            "feeder": "tray 3",
+            "rot": 90,
+            "parts": {
+                "U1": {
+                    "place": true,
+                    "x": 10,  
+                    "y": 35,
+                    "rot": 90,
+                    "state": 0
                 }
             }
         },

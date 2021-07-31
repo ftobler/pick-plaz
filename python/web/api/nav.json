@@ -2,8 +2,8 @@
     "camera": {
         "x": 100.0,
         "y": 150.0,
-        "width": 30.0,
-        "height": 30.0,
+        "width": 70.0,
+        "height": 70.0,
         "framenr": 1245
     },
     "bed": { 
