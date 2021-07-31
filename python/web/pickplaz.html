@@ -118,14 +118,17 @@
             <div style="margin-bottom: 20px">
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_camera"><span class="slider round"></span></label>
                 <label class="switcher-label">show camera</label>
+                <label class="switch"><input type="checkbox" checked v-model="elements.center_camera"><span class="slider round"></span></label>
+                <label class="switcher-label">center camera</label>
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_components"><span class="slider round"></span></label>
                 <label class="switcher-label">show component graphics</label>
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_symbol"><span class="slider round"></span></label>
                 <label class="switcher-label">show symbols</label>
+                <span style="width: 330px; display: inline-block"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x}}/{{canvas.cursor_mm.y}})mm; robot ({{nav.camera.x}}/{{nav.camera.y}})mm</label></span>
             </div >
             <canvas id="canvas-view" width="1850" height="800" @mousemove="show_coordinates" v-on:click="draw_stuff()" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 
-            <p v-if="nav_init">mouse: ({{canvas.cursor_mm.x}}/{{canvas.cursor_mm.y}})mm; robot ({{nav.camera.x}}/{{nav.camera.y}})mm</p>
+            
         </div>
     </div>
 

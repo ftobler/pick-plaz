@@ -29,6 +29,7 @@ function start() {
             },
             elements: {
                 show_camera: true,
+                center_camera: false,
                 show_components: true,
                 show_symbol: true,
             }
@@ -181,7 +182,12 @@ function start() {
                 ctx.clearRect(0,0, c.width, c.height)
                 ctx.translate(c.width / 2 + 0.5, c.height / 2 + 0.5)
                 ctx.scale(this.canvas.zoom, this.canvas.zoom)
+                if (this.elements.center_camera) {
+                    this.canvas.pos_mm.x = this.nav.camera.x
+                    this.canvas.pos_mm.y = this.nav.camera.y
+                }
                 ctx.translate(-this.canvas.pos_mm.x, -this.canvas.pos_mm.y)
+
 
                 //draw bed outline
                 ctx.strokeStyle = "white"
