@@ -38,13 +38,12 @@ class BottleServer:
         elif name == "nav.json":
 
             x, y = self.get_pos_fcn()
-            print("nav", x, y)
             return {
                 "camera": {
                     "x": float(x),
                     "y": float(y),
-                    "width": 50.0,
-                    "height": 50.0,
+                    "width": 70.0,
+                    "height": 70.0,
                     "framenr": 1245
                 },
                 "bed": { 
@@ -65,7 +64,6 @@ class BottleServer:
                 "x" : int(r["x"]),
                 "y" : int(r["y"]),
             })
-            print("setpos", int(r["x"]), int(r["y"]))
         except:
             pass
 
@@ -73,9 +71,7 @@ class BottleServer:
         return static_file("pickplaz.html", root='web')
 
     def _files(self, name):
-        print(name)
         return static_file(name, root='web')
-
 
     def _run(self):
 

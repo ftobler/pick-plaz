@@ -104,12 +104,11 @@ def main():
 
         import queue
 
-        image = None
-        image2 = None
+        image_cache = None
         event_queue = queue.Queue()
 
         import bottle_svr
-        b = bottle_svr.BottleServer(lambda: image2, lambda x: event_queue.put(x),  lambda: (x, y))
+        b = bottle_svr.BottleServer(lambda: image_cache, lambda x: event_queue.put(x),  lambda: (x, y))
 
         robot.flush()
 
@@ -117,9 +116,9 @@ def main():
 
         try:
             cal = calibrate(robot, c)
-            mp = calibrator.ModelPixConverter(cal)
-            h = calibrator.Homography(cal, 5, (5*50,5*50))
-            ip = calibrator.ImageProjector(h)
+            mp = None # calibrator.ModelPixConverter(cal)
+            h = calibrator.Homography(cal, 5, (5*70,5*70))
+            ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
         except Exception as e:
             print(f"Calibration could not be loaded. Reason: {e}")
 
@@ -128,43 +127,16 @@ def main():
             cache = c.cache            
             image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
 
-            image = cv2.putText(image, f"x={x}, y={y}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2/2,(255,255,255), int(2), cv2.LINE_AA)
-
             if mp is not None:
+                image = cv2.putText(image, f"x={x}, y={y}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2/2,(255,255,255), int(2), cv2.LINE_AA)
                 xx, yy = mp.model_to_pix(np.array([[CALIBRATION_POS[0]], [CALIBRATION_POS[1]]]), (x, y))[0]
                 image = cv2.putText(image, "L", (int(xx),int(yy)), cv2.FONT_HERSHEY_SIMPLEX, 2/2,(0,0,255), int(2), cv2.LINE_AA)
-
                 draw_grid(mp, image, (x, y))
 
-            sx, sy = image.shape[:2]
-            resized = cv2.resize(image, (sy//2, sx//2))
-            cv2.imshow("window", resized)
+            if ip is not None:
+                image = ip.project(image)
 
-            image2 = ip.project(image)
-
-            keyCode = cv2.waitKey(20) & 0xFF
-
-            if keyCode == ord("w"):
-                x -= 5
-            elif keyCode == ord("s"):
-                x += 5
-            elif keyCode == ord("a"):
-                y += 5
-            elif keyCode == ord("d"):
-                y -= 5
-            elif keyCode == ord("c"):
-
-                (corners, ids, rejected) = cv2.aruco.detectMarkers(image, aruco_dict, parameters=arucoParams)
-                image = cv2.aruco.drawDetectedMarkers(image, corners, ids)
-
-                captures.append({
-                    "pos": (x, y),
-                    "markers_corners" : corners,
-                    "marker_ids" : ids,
-                })
-            elif keyCode == 27: #escape
-                cv2.destroyWindow("window")
-                break
+            image_cache = image
 
             try:
                 event = event_queue.get(block=False)
