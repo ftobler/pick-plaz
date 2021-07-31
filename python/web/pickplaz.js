@@ -25,11 +25,11 @@ function start() {
                 drag: false,
                 pos_mm: { x: 200, y: 200 },
                 size: { x: 0, y: 0 },
-                zoom: 1.2,
+                zoom: 15,
             },
             elements: {
                 show_camera: true,
-                center_camera: false,
+                center_camera: true,
                 show_components: true,
                 show_symbol: true,
             }

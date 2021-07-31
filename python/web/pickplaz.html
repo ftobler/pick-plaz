@@ -53,12 +53,12 @@
                     <th width="200px">Footprint</th>
                     <th width="150px"></th>
                     <th width="200px">Part Nr</th>
+                    <th width="200px">Feeder</th>
                     <th width="200px">Designator</th>
                     <th width="200px">X</th>
                     <th width="200px">Y</th>
                     <th width="200px">Rotation</th>
                     <th width="200px">Status</th>
-                    <th width="200px">Feeder</th>
                     <th width="400px">Action</th>
                 </tr>
                 <tr v-for="(entry, i) in db.bom">
@@ -69,7 +69,8 @@
                     <td>{{entry.footprint}}</td>
                     <td><img v-bind:src="entry.footprint | footprint_img_path"/> &nbsp;&nbsp;<img v-bind:src="entry.footprint | footprint_sym_path"/></td>
                     <td><a v-bind:href="'https://lcsc.com/search?q=' + entry.partnr" target="_blank">{{entry.partnr}}</a></td>
-                    <td class="cell-inline-table" colspan=5>
+                    <td contenteditable>{{entry.feeder}}</td> <!-- https://codepen.io/supraniti/pen/Lypobx -->
+                    <td class="cell-inline-table" colspan=6>
                         <table class="cell-inline-table">
                             <tr v-for="(part, id) in entry.parts">
                                 <td width="200px">{{id}}</td>
@@ -77,11 +78,10 @@
                                 <td width="200px">{{part.y}}</td>
                                 <td width="200px"><div class="table-button material">refresh</div> {{part.rot}}</td>
                                 <td width="200px"><div class="table-button material">swap_horiz</div> {{part.state}}</td>
+                                <td width="400px"><button>view place</button> <button>view pick</button> <button>do place</button></td>
                             </tr>
                         </table>
                     </td>
-                    <td contenteditable>{{entry.feeder}}</td> <!-- https://codepen.io/supraniti/pen/Lypobx -->
-                    <td><button>view place</button> <button>view pick</button> <button>do place</button></td>
                 </tr>
             
             </table>
