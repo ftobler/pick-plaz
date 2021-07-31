@@ -159,6 +159,7 @@ class Calibration():
 
         self.warp_mat = warp_mat
         self.intrinsic = intrinsic
+        self.extrinsic = extrinsics[0]
         self.rvec = rvecs[0]
         self.tvec = tvecs[0]
         self.dist_coeffs = dist_coeffs
@@ -179,29 +180,107 @@ class ModelPixConverter:
         pix_infred, _ = cv2.projectPoints(obj2.T, self.cal.rvec, self.cal.tvec, self.cal.intrinsic, self.cal.dist_coeffs)
         return pix_infred[:,0]
 
+    # TODO implement
     def pix_to_model(self, pix, bot_pos):
-
         undistorted = cv2.undistortPoints(pix, self.intrinsic, self.dist_coeffs, P=self.intrinsic)[:, 0]
 
-        #TODO
-        # delta = np.expand_dims(self.cal_bot_pos - bot_pos, axis=-1)
-        # obj2 = (self.warpmat_inv[:,:2] @ (obj[:2] + delta)) + self.warpmat_inv[:,2:]
-        # obj2[2] = 0model_to_pix
-        offsets = np.array([[[0,0], [1,0], [1,1], [0,1]]], dtype=np.float32) * markerboard.marker_size
-        positions_pix = np.array(positions_pix).reshape((-1, 2))
-        positions_obj = (markerboard.positions[ids].astype(np.float32) + offsets).reshape((-1, 2))
+class Homography(object):
+
+    def __init__(self, cal, pixel_per_mm: float=10, size_pix: tuple=(300,200)):
+        """
+        cal : Calibration object
+        pixel_per_mm : float
+        pixel_size 
+
+        """
+        self.cal = cal
+        self.pixel_per_mm = pixel_per_mm
+        self.size_pix = size_pix
+
+        self._update()
+
+    def _update(self):
+
+        assert self.size_pix[0] * self.size_pix[1] < 1e6, "Homography has more than 1Mpix"
+
+        self.size_mm = (
+            self.size_pix[0] / self.pixel_per_mm,
+            self.size_pix[1] / self.pixel_per_mm,
+        )
+
+        # Build zoom matrix
+        camera_zoom = np.eye(3)
+        camera_zoom[0,0] = self.pixel_per_mm
+        camera_zoom[1,1] = self.pixel_per_mm
+
+        t_mat = np.eye(3)
+        t_mat[:2,2] = -self.cal.bot_pos
+
+        a = 0 * np.pi/180
+        rotm = self.m = np.array([
+            [np.cos(a),np.sin(a),0],
+            [-np.sin(a),np.cos(a),0],
+            [0,0,1],
+         ])
+
+        centering = np.array([
+            [1,0,self.size_mm[0]/2],
+            [0,1,self.size_mm[1]/2],
+            [0,0,1],
+         ])
+        self.camera_zoom = camera_zoom @ centering @ rotm @ t_mat @ self.cal.warp_mat
+
+        self.extrinsic_basis = self.cal.extrinsic #@ self.basis
+        self.extrinsic_basis33 = self.extrinsic_basis[:3, [0,1,3]]
+
+        # calculate transform matrices
+        # self.transform_obj2pix = self.cal.intrinsic @ self.extrinsic_basis[:3]
+        # self.transform_pix2corr = camera_zoom @ np.linalg.inv(self.cal.intrinsic @ self.extrinsic_basis33)
+        # self.transform_corr2obj = self.calc_corr2obj_transform(self.transform_pix2corr @ self.transform_obj2pix)
+
+class ImageProjector:
+
+    def __init__(self, homography, interp=cv2.INTER_LINEAR, border_value=255):
+
+        self.homography = homography
+        self.interp = interp
+        self.border_value = border_value
+
+        self._update()
+
+    def _update(self):
+
+        intrinsic = self.homography.cal.intrinsic
+        dist_coeffs = self.homography.cal.dist_coeffs
+        camera_zoom = self.homography.camera_zoom
+        extrinsic_basis33 = self.homography.extrinsic_basis33
+        size = self.homography.size_pix
+
+        self.map1, self.map2 = cv2.initUndistortRectifyMap(intrinsic, dist_coeffs, np.eye(3), camera_zoom @ np.linalg.inv(extrinsic_basis33), size, cv2.CV_32FC1)
+
+    def project(self, image):
+        corrected_image = cv2.remap(image, self.map1, self.map2, self.interp, borderMode=cv2.BORDER_CONSTANT, borderValue=self.border_value)
+        return corrected_image
+
+def test2():
+
+    with open("cal.pkl", "rb") as f:
+        cal = pickle.load(f)
+
+    image = cv2.imread("image.png")
+
+    sw, sh = 50, 50
+
+    h = Homography(cal, 5, (sw*5,sh*5))
+    ip = ImageProjector(h)
+    res = ip.project(image)
 
 
-        positions_obj = np.concatenate((positions_obj, np.zeros_like(positions_obj[..., :1])), axis=-1)
+    import matplotlib.pyplot as plt
+    plt.imshow(res)
+    plt.show()
 
-        batch_obj.append(positions_obj)
-        batch_pix.append(positions_pix)
 
-    # im_shape_cv = (640, 480)
-
-    # retval, intrinsic, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(batch_obj, batch_pix, im_shape_cv, None, None, )
-
-    # return rvecs, tvecs, batch_obj, batch_pix
 
 def test():
     # load prerecoreded data
@@ -258,4 +337,4 @@ def test():
     #     extrinsics2[i] = extrinsic
 
 if __name__ == "__main__":
-    test()
+    test2()
