@@ -26,6 +26,11 @@ function start() {
                 pos_mm: { x: 200, y: 200 },
                 size: { x: 0, y: 0 },
                 zoom: 1.2,
+            },
+            elements: {
+                show_camera: true,
+                show_components: true,
+                show_symbol: true,
             }
         },
         mounted() {
@@ -58,15 +63,23 @@ function start() {
                     success: (data) => {
                         this.nav = JSON.parse(data)
                         this.nav_init = true
-                        let temp_img = new Image(10,10);
-                        temp_img.onload = () => {
-                            this.image.topdn = temp_img
-                            this.draw_stuff()
+
+                        if (this.elements.show_camera && this.page==NAVPAGE) {
+                            let temp_img = new Image(10,10);
+                            temp_img.onload = () => {
+                                this.image.topdn = temp_img
+                                this.draw_stuff()
+                                setTimeout(() => {
+                                    this.poll_image()
+                                }, 300)
+                            }
+                            temp_img.src = "/api/topdn.jpg?nr=" + this.nav.camera.framenr + "&t=" + Date.now()
+                        } else {
+                            this.image.topdn = null
                             setTimeout(() => {
                                 this.poll_image()
                             }, 300)
                         }
-                        temp_img.src = "/api/topdn.jpg?nr=" + this.nav.camera.framenr + "&t=" + Date.now()
                         this.draw_stuff()
                     },
                 })
@@ -175,17 +188,22 @@ function start() {
                 ctx.beginPath(); ctx.rect(this.nav.bed.x, this.nav.bed.y, this.nav.bed.width, this.nav.bed.height); ctx.stroke();
                 ctx.scale(1, 1)
 
-                //draw topdn image
-                this.draw_camera(ctx, this.image.topdn, this.nav.camera)
+                
+                if (this.elements.show_camera) {
+                    //draw topdn image
+                    this.draw_camera(ctx, this.image.topdn, this.nav.camera)
 
-                //draw camera position
-                ctx.strokeStyle = "yellow"
-                ctx.beginPath();
-                ctx.moveTo(this.nav.camera.x, this.nav.bed.x-10);
-                ctx.lineTo(this.nav.camera.x, this.nav.bed.x+this.nav.bed.width+10);
-                ctx.moveTo(this.nav.bed.y-10, this.nav.camera.y);
-                ctx.lineTo(this.nav.bed.y+this.nav.bed.height+10, this.nav.camera.y);
-                ctx.stroke();
+                    //draw camera position
+                    ctx.strokeStyle = "yellow"
+                    ctx.beginPath();
+                    ctx.moveTo(this.nav.camera.x, this.nav.bed.x-10);
+                    ctx.lineTo(this.nav.camera.x, this.nav.bed.x+this.nav.bed.width+10);
+                    ctx.moveTo(this.nav.bed.y-10, this.nav.camera.y);
+                    ctx.lineTo(this.nav.bed.y+this.nav.bed.height+10, this.nav.camera.y);
+                    ctx.stroke();
+                }
+
+                
 
 
             },

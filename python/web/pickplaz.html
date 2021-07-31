@@ -116,11 +116,11 @@
 
         <div v-if="page == 2" @mousemove="mousemove">
             <div style="margin-bottom: 20px">
-                <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+                <label class="switch"><input type="checkbox" checked v-model="elements.show_camera"><span class="slider round"></span></label>
                 <label class="switcher-label">show camera</label>
-                <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+                <label class="switch"><input type="checkbox" checked v-model="elements.show_components"><span class="slider round"></span></label>
                 <label class="switcher-label">show component graphics</label>
-                <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+                <label class="switch"><input type="checkbox" checked v-model="elements.show_symbol"><span class="slider round"></span></label>
                 <label class="switcher-label">show symbols</label>
             </div >
             <canvas id="canvas-view" width="1850" height="800" @mousemove="show_coordinates" v-on:click="draw_stuff()" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
