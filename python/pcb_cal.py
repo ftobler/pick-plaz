@@ -105,10 +105,11 @@ def main():
         import queue
 
         image = None
+        image2 = None
         event_queue = queue.Queue()
 
         import bottle_svr
-        b = bottle_svr.BottleServer(lambda: image, lambda x: event_queue.put(x))
+        b = bottle_svr.BottleServer(lambda: image2, lambda x: event_queue.put(x),  lambda: (x, y))
 
         robot.flush()
 
@@ -117,6 +118,8 @@ def main():
         try:
             cal = calibrate(robot, c)
             mp = calibrator.ModelPixConverter(cal)
+            h = calibrator.Homography(cal, 5, (5*50,5*50))
+            ip = calibrator.ImageProjector(h)
         except Exception as e:
             print(f"Calibration could not be loaded. Reason: {e}")
 
@@ -133,9 +136,13 @@ def main():
 
                 draw_grid(mp, image, (x, y))
 
-            cv2.imshow("window", image)
+            sx, sy = image.shape[:2]
+            resized = cv2.resize(image, (sy//2, sx//2))
+            cv2.imshow("window", resized)
 
-            keyCode = cv2.waitKey(100) & 0xFF
+            image2 = ip.project(image)
+
+            keyCode = cv2.waitKey(20) & 0xFF
 
             if keyCode == ord("w"):
                 x -= 5
@@ -166,6 +173,8 @@ def main():
             except queue.Empty as e:
                 pass
             robot.drive(x,y)
+
+            time.sleep(0.1)
 
     print("finished")
 

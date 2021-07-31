@@ -10,10 +10,11 @@ import threading
 
 class BottleServer:
 
-    def __init__(self, get_camera_fcn, event_put_fcn, listen="0.0.0.0", port=8080):
+    def __init__(self, get_camera_fcn, event_put_fcn, get_pos_fcn, listen="0.0.0.0", port=8080):
 
         self.get_camera_fcn = get_camera_fcn
         self.event_put_fcn = event_put_fcn
+        self.get_pos_fcn = get_pos_fcn
 
         self.port = port
         self.listen = listen
@@ -34,16 +35,37 @@ class BottleServer:
                 return jpg
             else:
                 return "{}"
+        elif name == "nav.json":
+
+            x, y = self.get_pos_fcn()
+            print("nav", x, y)
+            return {
+                "camera": {
+                    "x": float(x),
+                    "y": float(y),
+                    "width": 50.0,
+                    "height": 50.0,
+                    "framenr": 1245
+                },
+                "bed": { 
+                    "x": -0.0,
+                    "y": -0.0,
+                    "width": 400,
+                    "height": 400
+                }
+            }
         else:
             return static_file(name, root='web/api')
 
     def _setpos(self):
+        
         r = dict(request.query.decode())
         try:
             self.event_put_fcn({
                 "x" : int(r["x"]),
                 "y" : int(r["y"]),
             })
+            print("setpos", int(r["x"]), int(r["y"]))
         except:
             pass
 
@@ -58,9 +80,9 @@ class BottleServer:
     def _run(self):
 
         route('/')(self._home)
-        route('/<name:path>')(self._files)
         route('/api/<name>')(self._api)
-        post('/api/setpos')(self._setpos)
+        route('/api/setpos')(self._setpos)
+        route('/<name:path>')(self._files)
 
         run(host=self.listen, port=self.port, debug=False, threaded=True, quiet=True)
 
