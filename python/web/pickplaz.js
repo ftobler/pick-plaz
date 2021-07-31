@@ -1,11 +1,11 @@
 
-
+const NAVPAGE = 2
 
 function start() {
     app = new Vue({
         el: "#app",
         data: {
-            page: 2,
+            page: NAVPAGE,
             nav: {
             },
             nav_init: false,
@@ -29,7 +29,8 @@ function start() {
             }
         },
         mounted() {
-            document.addEventListener('mousemove', this.mousemove)   
+            document.addEventListener('mousemove', this.mousemove)
+            document.addEventListener('keyup', this.keylistener)
         },
         created() {
             this.poll_data()
@@ -108,17 +109,51 @@ function start() {
                 this.canvas.drag = false
             },
             mousemove(event) {
-                if (this.canvas.drag == true) {
-                    let canvas = document.getElementById("canvas-view");
-                    let dragEnd_mmm = this.px_to_mm_save(this.canvas.drag_start_mm, {
-                        x: event.pageX - canvas.offsetLeft,
-                        y: event.pageY - canvas.offsetTop
-                    })
-                    this.canvas.dragEnd_mmm = dragEnd_mmm
-                    this.canvas.pos_mm.x = 2*this.canvas.drag_start_mm.x - dragEnd_mmm.x
-                    this.canvas.pos_mm.y = 2*this.canvas.drag_start_mm.y - dragEnd_mmm.y
-                    this.draw_stuff()
+                if (this.page == NAVPAGE) {
+                    if (this.canvas.drag == true) {
+                        let canvas = document.getElementById("canvas-view");
+                        let dragEnd_mmm = this.px_to_mm_save(this.canvas.drag_start_mm, {
+                            x: event.pageX - canvas.offsetLeft,
+                            y: event.pageY - canvas.offsetTop
+                        })
+                        this.canvas.dragEnd_mmm = dragEnd_mmm
+                        this.canvas.pos_mm.x = 2*this.canvas.drag_start_mm.x - dragEnd_mmm.x
+                        this.canvas.pos_mm.y = 2*this.canvas.drag_start_mm.y - dragEnd_mmm.y
+                        this.draw_stuff()
+                    }
                 }
+            },
+            keylistener(event) {
+                if (this.page == NAVPAGE) {
+                    const stepwidth = 10 // mm
+                    if (event.code == 'KeyW') {
+                        this.do_move(0, -stepwidth)
+                    } else if (event.code == 'KeyA') {
+                        this.do_move(-stepwidth, 0)
+                    } else if (event.code == 'KeyS') {
+                        this.do_move(0, stepwidth)
+                    } else if (event.code == 'KeyD') {
+                        this.do_move(stepwidth, 0)
+                    }
+                }
+            },
+            do_move(x, y) {
+                this.canvas.pos_mm.x += x
+                this.canvas.pos_mm.y += y
+                this.do_move_robot(x, y)
+                this.draw_stuff()
+            },
+            do_move_robot(x, y) {
+                this.nav.camera.x + x
+                this.nav.camera.y + y
+                ajax({
+                    type: "GET",
+                    dataType: "application/json",
+                    url: "/api/setpos?x=" + this.nav.camera.x + "&y=" + this.nav.camera.y,
+                    success: (data) => {
+                        
+                    },
+                })
             },
             draw_stuff() {
                 var c = document.getElementById("canvas-view");
