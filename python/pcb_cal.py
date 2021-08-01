@@ -11,7 +11,7 @@ import camera
 import save_robot
 import calibrator
 
-CALIBRATION_POS = (276, 314)
+CALIBRATION_POS = (276//2, 314//2)
 aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_100)
 arucoParams = cv2.aruco.DetectorParameters_create()
 
@@ -50,9 +50,6 @@ def calibrate(robot, camera):
         time.sleep(0.5)
          
         image = cv2.cvtColor(camera.cache["image"], cv2.COLOR_GRAY2BGR)
-
-        cv2.imshow("window", image)
-        cv2.waitKey(100)
 
         arucoParams = cv2.aruco.DetectorParameters_create()
         (corners, ids, rejected) = cv2.aruco.detectMarkers(image, aruco_dict, parameters=arucoParams)
@@ -115,13 +112,10 @@ def main():
 
         time.sleep(0.5)
 
-        try:
-            cal = calibrate(robot, c)
-            mp = None # calibrator.ModelPixConverter(cal)
-            h = calibrator.Homography(cal, 5, (5*70,5*70))
-            ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
-        except Exception as e:
-            print(f"Calibration could not be loaded. Reason: {e}")
+        cal = calibrate(robot, c)
+        mp = None # calibrator.ModelPixConverter(cal)
+        h = calibrator.Homography(cal, 10, (10*35,10*35))
+        ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
 
         while True:
 
