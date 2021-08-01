@@ -168,10 +168,9 @@ def main():
 
                 try:
                     event = event_queue.get(block=False)
-                    print(x, y)
+
                     x = event["x"]
                     y = event["y"]
-                    print(x, y)
 
                     nav["camera"]["x"] = float(x)
                     nav["camera"]["y"] = float(y)
