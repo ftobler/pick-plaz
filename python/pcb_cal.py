@@ -115,6 +115,8 @@ def main():
             data = {
             }
 
+            CAM_RES = 20
+
             nav = {
                 "camera": {
                     "x": float(x),
@@ -143,7 +145,7 @@ def main():
 
             cal = calibrate(robot, c)
             mp = None # calibrator.ModelPixConverter(cal)
-            h = calibrator.Homography(cal, 10, (10*35,10*35))
+            h = calibrator.Homography(cal, CAM_RES, (CAM_RES*35,CAM_RES*35))
             ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
 
             fd = fiducial.FiducialDetector(cal)
@@ -181,7 +183,7 @@ def main():
                     cache = c.cache
                     cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
                     fx, fy = fd(cam_image, (x, y))
-                    nav["pcb"]["transform"] = [1, 0, 0, -1, fx, -fy]
+                    nav["pcb"]["transform"] = [1, 0, 0, -1, fx, fy]
 
                 except queue.Empty:
                     pass
