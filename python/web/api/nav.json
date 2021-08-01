@@ -14,5 +14,8 @@
     },
     "pcb": {
         "transform": [1, 0, 0, -1, 10, -10]
+    },
+    "detection": {
+        "fiducial": [0, 0]
     }
 }

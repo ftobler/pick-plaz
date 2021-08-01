@@ -2,22 +2,22 @@
     "bom": [
         {
             "feeder": null,
-            "fiducal": false,
-            "footprint": "B2B-XH",
+            "fiducial": false,
+            "footprint": "B2B-XH",      
             "partnr": "02-JST-B3B-XH-A",
             "parts": {
                 "U$2": {
-                    "place": true,
+                    "place": false,     
                     "state": 0
                 }
             },
-            "place": true,
+            "place": false,
             "rot": 0,
-            "value": "02-JST-B3B-XH-A"
+            "value": "02-JST-B3B-XH-A"  
         },
         {
             "feeder": null,
-            "fiducal": false,
+            "fiducial": false,
             "footprint": "0805_RES",
             "partnr": "RESISTOR0805_RES",
             "parts": {
@@ -68,7 +68,7 @@
         },
         {
             "feeder": null,
-            "fiducal": false,
+            "fiducial": true,
             "footprint": "FIDUCIAL_2MM",
             "partnr": "FIDUCIAL2MM",
             "parts": {
@@ -103,7 +103,7 @@
         },
         {
             "feeder": null,
-            "fiducal": false,
+            "fiducial": false,
             "footprint": "5730-LED",
             "partnr": "LED-5730",
             "parts": {
@@ -234,35 +234,35 @@
         },
         {
             "feeder": null,
-            "fiducal": false,
+            "fiducial": false,
             "footprint": "TOBENG-1MM-FINISH",
             "partnr": "LOGO-TOBENG-1MM-FINISH",
             "parts": {
                 "U$1": {
-                    "place": true,
+                    "place": false,
                     "state": 0
                 }
             },
-            "place": true,
+            "place": false,
             "rot": 0,
             "value": "LOGO-TOBENG-1MM-FINISH"
         },
         {
             "feeder": null,
-            "fiducal": false,
+            "fiducial": false,
             "footprint": "PIN_1X1_SMD_BIG_L",
             "partnr": "PIN_1X1SMD_BIG_L",
             "parts": {
                 "X1": {
-                    "place": true,
+                    "place": false,
                     "state": 0
                 },
                 "X2": {
-                    "place": true,
+                    "place": false,
                     "state": 0
                 }
             },
-            "place": true,
+            "place": false,
             "rot": 0,
             "value": "PIN_1X1SMD_BIG_L"
         }

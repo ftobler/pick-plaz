@@ -191,6 +191,17 @@ function start() {
                     },
                 })
             },
+            fiducial_assing_current_location(entry, part, id) {
+                console.log(this.nav.detection.fiducial)
+                ajax({
+                    type: "GET",
+                    dataType: "application/json",
+                    url: "/api/setfiducal?x=" + this.nav.detection.fiducial[0] + "&y=" + this.nav.detection.fiducial[1] + "&id=" + id,
+                    success: (data) => {
+                        
+                    },
+                })
+            },
             draw_stuff() {
                 var c = document.getElementById("canvas-view");
                 if (c == null || this.nav_init == false) {

@@ -89,8 +89,8 @@ def pnp_bom_parse(pnp, bom):
         #build the BOM dict
         parts_list = {}
         bom_entry = {
-            "place": True,
-            "fiducal": False,
+            "place": False,
+            "fiducial": "fiducial" in bom[bom_index_footprint].lower(),
             "footprint": bom[bom_index_footprint],
             "value": bom[bom_index_value],
             "partnr": bom[bom_index_part],
@@ -98,11 +98,12 @@ def pnp_bom_parse(pnp, bom):
             "rot": 0,
             "parts": parts_list
         }
+
         data.append(bom_entry)
         #search the matching PNP table entry for each designator
         for id in id_list:
             parts_data = {
-                "place": True,
+                "place": False,
                 "state": 0,
             }
             for part in pnp_data[1:]:
@@ -115,6 +116,8 @@ def pnp_bom_parse(pnp, bom):
                         parts_data["layer"] = part[pnp_index_layer]
                     else:
                         parts_data["layer"] = None
+                    parts_data["place"] = True
+                    bom_entry["place"] = True
                     break
             parts_list[id] = parts_data
 

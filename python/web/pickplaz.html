@@ -80,7 +80,8 @@
                                 <td width="150px">{{part.y}}</td>
                                 <td width="150px"><div class="table-button material">refresh</div> {{part.rot}}</td>
                                 <td width="200px"><div class="table-button material">swap_horiz</div> {{part.state}}</td>
-                                <td width="400px"><button>view place</button> <button>view pick</button> <button>do place</button></td>
+                                <td v-if="entry.fiducial == false" width="400px"><button>view place</button> <button>view pick</button> <button>do place</button></td>
+                                <td v-if="entry.fiducial == true"  width="400px"><button v-on:click="fiducial_assing_current_location(entry, part, id)">assign location</button></td>
                             </tr>
                         </table>
                     </td>
