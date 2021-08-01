@@ -246,6 +246,13 @@ function start() {
                 if (this.elements.show_symbol) {
                     ctx.strokeStyle = "yellow"
                     this.draw_fiducial(ctx, this.nav.detection.fiducial, "detection")
+                    //draw detected fiducials
+                    if (this.elements.show_symbol) {
+                        ctx.strokeStyle = "yellow"
+                        for (let [id, coord] of Object.entries(this.nav.pcb.fiducials)) {
+                            this.draw_fiducial(ctx, coord, id)
+                        }
+                    }
                 }
                 
                 //draw pcb
@@ -269,13 +276,6 @@ function start() {
                     ctx.beginPath();
                     ctx.arc(0, 0, 1, 0, 2 * Math.PI)
                     ctx.stroke()
-                }
-                //draw detected fiducials
-                if (this.elements.show_symbol) {
-                    ctx.strokeStyle = "yellow"
-                    for (let [id, coord] of Object.entries(this.nav.pcb.fiducials)) {
-                        this.draw_fiducial(ctx, coord, id)
-                    }
                 }
                 //draw the parts
                 for (let entry of this.db.bom) {

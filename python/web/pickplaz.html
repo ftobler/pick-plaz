@@ -18,7 +18,7 @@
         <a class="logo" href="https://github.com/ftobler/pick-plaz" target="_blank">pick-plaz</a>
         <div class="menu-item" v-bind:class="{active : page == 0}" v-on:click="page = 0">Parts</div>
         <div class="menu-item" v-bind:class="{active : page == 1}" v-on:click="page = 1">Feeder</div>
-        <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="page = 2">Navigate</div>
+        <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="page = 2; setTimeout(() => {draw_stuff()})">Navigate</div>
 
         <div style="float: right;">
             <div class="menu-pane">
