@@ -94,6 +94,7 @@ def main():
 
     robot = save_robot.SaveRobot("/dev/ttyUSB0")
     robot.home()
+    robot.light_topdn(True)
 
     captures = []
 
@@ -150,8 +151,11 @@ def main():
 
     print("finished")
 
-    # drive close to home
-    robot.drive(5,5)
+    # park robot
+    robot.drive(5,5) # drive close to home
+    robot.dwell(100)
+    robot.steppers(False)
+    robot.light_topdn(False)
 
     # with open("captures.pkl", "wb") as f:
     #     pickle.dump(captures, f)

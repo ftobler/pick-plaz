@@ -493,12 +493,12 @@ static void do_cmd_io(Gcode_command cmd) {
 		int ioNumber = round(cmd.valueP);
 		int ioValue  = round(cmd.valueS);
 		switch (ioNumber) {
-		case 0:	output_pump.set(ioValue);
-		case 1:	output_aux1.set(ioValue);
-		case 2:	output_botup.set(ioValue);
-		case 3:	output_topdn.set(ioValue);
-		case 4:	output_valve.set(ioValue);
-		case 5:	output_tray.set(ioValue);
+		case 0:	output_pump.set(ioValue); break;
+		case 1:	output_aux1.set(ioValue); break;
+		case 2:	output_botup.set(ioValue); break;
+		case 3:	output_topdn.set(ioValue); break;
+		case 4:	output_valve.set(ioValue); break;
+		case 5:	output_tray.set(ioValue); break;
 		}
 	}
 }
