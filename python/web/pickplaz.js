@@ -245,15 +245,7 @@ function start() {
                 //draw detected fiducial
                 if (this.elements.show_symbol) {
                     ctx.strokeStyle = "yellow"
-                    for (let [id, coord] of Object.entries(this.nav.pcb.fiducial)) {
-                        ctx.beginPath();
-                        ctx.arc(coord[0], coord[1], 0.75, 0, 2 * Math.PI)
-                        ctx.stroke();
-                        ctx.beginPath();
-                        ctx.arc(coord[0], coord[1], 1.5, 0, 2 * Math.PI)
-                        ctx.stroke();
-                        ctx.fillText(id, coord[0] + 0.2, coord[1] - 0.2);
-                    }
+                    this.draw_fiducial(ctx, this.nav.detection.fiducial, "detection")
                 }
                 
                 //draw pcb
@@ -277,6 +269,13 @@ function start() {
                     ctx.beginPath();
                     ctx.arc(0, 0, 1, 0, 2 * Math.PI)
                     ctx.stroke()
+                }
+                //draw detected fiducials
+                if (this.elements.show_symbol) {
+                    ctx.strokeStyle = "yellow"
+                    for (let [id, coord] of Object.entries(this.nav.pcb.fiducials)) {
+                        this.draw_fiducial(ctx, coord, id)
+                    }
                 }
                 //draw the parts
                 for (let entry of this.db.bom) {
@@ -356,6 +355,15 @@ function start() {
                         position.height
                     ); ctx.stroke();
                 }
+            },
+            draw_fiducial(ctx, coord, text) {
+                ctx.beginPath();
+                ctx.arc(coord[0], coord[1], 0.75, 0, 2 * Math.PI)
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(coord[0], coord[1], 1.5, 0, 2 * Math.PI)
+                ctx.stroke();
+                ctx.fillText(text, coord[0] + 0.2, coord[1] - 0.2);
             }
         },
         filters: {
