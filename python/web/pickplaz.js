@@ -341,8 +341,8 @@ function start() {
                 }
                 return ""
             },
-            round: function(v, amount) {
-                return Math.round(v, amount)
+            round: function(v) {
+                return Math.round(v)
             },
         }
 
