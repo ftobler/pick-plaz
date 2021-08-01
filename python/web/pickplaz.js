@@ -210,6 +210,7 @@ function start() {
                 this.canvas.size.x = c.width
                 this.canvas.size.y = c.height
                 let ctx = c.getContext('2d');
+                ctx.font = "2px Arial";
                 ctx.lineWidth = 1 / this.canvas.zoom
                 ctx.resetTransform()
                 ctx.clearRect(0,0, c.width, c.height)
@@ -241,29 +242,42 @@ function start() {
                 ctx.beginPath(); ctx.rect(this.nav.bed.x, this.nav.bed.y, this.nav.bed.width, this.nav.bed.height); ctx.stroke();
                 ctx.scale(1, 1)
 
+                //draw detected fiducial
+                if (this.elements.show_symbol) {
+                    ctx.strokeStyle = "yellow"
+                    for (let [id, coord] of Object.entries(this.nav.pcb.fiducial)) {
+                        ctx.beginPath();
+                        ctx.arc(coord[0], coord[1], 0.75, 0, 2 * Math.PI)
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.arc(coord[0], coord[1], 1.5, 0, 2 * Math.PI)
+                        ctx.stroke();
+                        ctx.fillText(id, coord[0] + 0.2, coord[1] - 0.2);
+                    }
+                }
                 
-
-
                 //draw pcb
                 ctx.save()
                 let t = this.nav.pcb.transform
                 ctx.transform(t[0], t[1], t[2], t[3], t[4], t[5])
                 //draw pcb origin
-                ctx.strokeStyle = "white"
-                ctx.beginPath();
-                ctx.moveTo(0, +10)
-                ctx.lineTo(0, 0)
-                ctx.lineTo(10, 0)
-                ctx.moveTo(-1, +8)
-                ctx.lineTo(0, +10)
-                ctx.lineTo(1, +8)
-                ctx.moveTo(8, -1)
-                ctx.lineTo(10, 0)
-                ctx.lineTo(8, 1)
-                ctx.stroke()
-                ctx.beginPath();
-                ctx.arc(0, 0, 1, 0, 2 * Math.PI)
-                ctx.stroke()
+                if (this.elements.show_symbol) {
+                    ctx.strokeStyle = "white"
+                    ctx.beginPath();
+                    ctx.moveTo(0, +10)
+                    ctx.lineTo(0, 0)
+                    ctx.lineTo(10, 0)
+                    ctx.moveTo(-1, +8)
+                    ctx.lineTo(0, +10)
+                    ctx.lineTo(1, +8)
+                    ctx.moveTo(8, -1)
+                    ctx.lineTo(10, 0)
+                    ctx.lineTo(8, 1)
+                    ctx.stroke()
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 1, 0, 2 * Math.PI)
+                    ctx.stroke()
+                }
                 //draw the parts
                 for (let entry of this.db.bom) {
                     if (entry.place == true || entry.fiducial == true) {
@@ -278,36 +292,43 @@ function start() {
                             ctx.save()
                             ctx.rotate(rad)
 
-                            ctx.strokeStyle = "red"
-                            ctx.beginPath();
-                            ctx.moveTo(0,0)
-                            ctx.lineTo(0, size)
-                            ctx.stroke();
-
-                            ctx.strokeStyle = "green"
-                            ctx.beginPath();
-                            ctx.moveTo(0,0)
-                            ctx.lineTo(size, 0)
-                            ctx.stroke();
-                            
-                            ctx.strokeStyle = "yellow"
-                            ctx.beginPath();
-                            ctx.moveTo(0,0)
-                            ctx.lineTo(0, -size)
-                            ctx.stroke();
-                            
-                            ctx.strokeStyle = "blue"
-                            ctx.beginPath();
-                            ctx.moveTo(0,0)
-                            ctx.lineTo(-size, 0)
-                            ctx.stroke();
-
-                            if (entry.fiducial == true) {
-                                ctx.strokeStyle = "white"
+                            if (this.elements.show_symbol) {
+                                ctx.strokeStyle = "red"
                                 ctx.beginPath();
-                                ctx.arc(0, 0, 1, 0, 2 * Math.PI)
-                                ctx.stroke()
+                                ctx.moveTo(0,0)
+                                ctx.lineTo(0, size)
+                                ctx.stroke();
+
+                                ctx.strokeStyle = "green"
+                                ctx.beginPath();
+                                ctx.moveTo(0,0)
+                                ctx.lineTo(size, 0)
+                                ctx.stroke();
+                                
+                                ctx.strokeStyle = "yellow"
+                                ctx.beginPath();
+                                ctx.moveTo(0,0)
+                                ctx.lineTo(0, -size)
+                                ctx.stroke();
+                                
+                                ctx.strokeStyle = "blue"
+                                ctx.beginPath();
+                                ctx.moveTo(0,0)
+                                ctx.lineTo(-size, 0)
+                                ctx.stroke();
+
+                                if (entry.fiducial == true) {
+                                    ctx.strokeStyle = "white"
+                                    ctx.beginPath();
+                                    ctx.arc(0, 0, 1, 0, 2 * Math.PI)
+                                    ctx.stroke()
+                                }
                             }
+                            
+                            ctx.save()
+                            ctx.transform(1, 0, 0, -1, 0, 0)
+                            ctx.fillText(id, 0.2, -0.2);
+                            ctx.restore()
 
                             ctx.restore()
                             ctx.restore()
