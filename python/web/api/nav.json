@@ -6,14 +6,19 @@
         "height": 70.0,
         "framenr": 1245
     },
-    "bed": { 
+    "bed": {
         "x": -0.0,
         "y": -0.0,
         "width": 400,
         "height": 400
     },
     "pcb": {
-        "transform": [1, 0, 0, -1, 10, -10]
+        "transform": [1, 0, 0, -1, 10, -10],
+        "fiducial" : {
+            "V1" : [10,10],
+            "V2" : [10,20],
+            "V3" : [20,20]
+        }
     },
     "detection": {
         "fiducial": [0, 0]
