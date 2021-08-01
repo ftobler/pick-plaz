@@ -53,6 +53,7 @@ class BottleServer:
         r = dict(request.query.decode())
         try:
             self.event_put_fcn({
+                "type" : "setpos",
                 "x" : float(r["x"]),
                 "y" : float(r["y"]),
             })
@@ -63,6 +64,7 @@ class BottleServer:
         r = dict(request.query.decode())
         try:
             self.event_put_fcn({
+                "type" : "setfiducial",
                 "x" : float(r["x"]),
                 "y" : float(r["y"]),
                 "id" : r["id"],
@@ -81,6 +83,7 @@ class BottleServer:
         route('/')(self._home)
         route('/api/<name>')(self._api)
         route('/api/setpos')(self._setpos)
+        route('/api/setfiducal')(self._setfiducial)
         route('/<name:path>')(self._files)
 
         run(host=self.listen, port=self.port, debug=False, threaded=True, quiet=True)
