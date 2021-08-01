@@ -10,8 +10,8 @@ class SaveRobot(pick_plaz_robot.Robot):
     def __init__(self, comport):
         super().__init__(comport)
 
-        self.x_bounds = (0,800)
-        self.y_bounds = (0,800)
+        self.x_bounds = (0,400)
+        self.y_bounds = (0,400)
 
     @staticmethod
     def __check_range(x, start_stop):

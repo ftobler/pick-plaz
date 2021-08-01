@@ -257,6 +257,59 @@ class Robot:
             self.__send_commands(["M18"])
         return self
 
+
+    def light_botup(self, enable=True):
+        """
+        Switch Light ON/OFF (True/False)
+        
+        Function blocks execution until the command is sent.
+        Returns itself
+        """
+        self.__set_io(2, enable)
+        return self
+
+
+    def light_topdn(self, enable=True):
+        """
+        Switch Light ON/OFF (True/False)
+        
+        Function blocks execution until the command is sent.
+        Returns itself
+        """
+        self.__set_io(3, enable)
+        return self
+
+
+    def light_tray(self, enable=True):
+        """
+        Switch Light ON/OFF (True/False)
+        
+        Function blocks execution until the command is sent.
+        Returns itself
+        """
+        self.__set_io(5, enable)
+        return self
+
+
+    def raw_command(self, gcode):
+        """
+        Send a raw GCODE command
+        
+        Function blocks execution until the command is sent.
+        Returns itself
+        """
+        self.__send_commands([gcode])
+        return self
+
+
+    def __set_io(self, io, enable):
+        
+        """
+        control IO
+        """
+        self.__send_commands(["M42 P%d S%d" % (io, 1 if enable else 0)])
+
+
     def __send_commands(self, list):
         """
         Send one or multiple Gcode commands.
@@ -273,7 +326,6 @@ class Robot:
                 self.__receive_answer()
 
 
-    #asdf
     def __receive_answer(self):
         """
         Receives at least one line but multiple if needed. 

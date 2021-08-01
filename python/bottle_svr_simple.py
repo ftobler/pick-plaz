@@ -22,7 +22,6 @@ def home(name):
 
 @route('/api/<name>')
 def home(name):
-    print("static file")
     resp = static_file(name, root='web/api')
     resp.headers['Cache-Control'] = 'no-cache'
     return resp
