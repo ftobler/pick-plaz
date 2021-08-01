@@ -116,7 +116,7 @@
             </table>
         </div>
 
-        <div v-if="page == 2" @mousemove="mousemove">
+        <div v-if="page == 2">
             <div style="margin-bottom: 20px">
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_camera"><span class="slider round"></span></label>
                 <label class="switcher-label">show camera</label>
@@ -126,9 +126,9 @@
                 <label class="switcher-label">show component graphics</label>
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_symbol"><span class="slider round"></span></label>
                 <label class="switcher-label">show symbols</label>
-                <span style="width: 330px; display: inline-block"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x}}/{{canvas.cursor_mm.y}})mm; robot ({{nav.camera.x}}/{{nav.camera.y}})mm</label></span>
+                <span style="width: 330px; display: inline-block"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm; robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
             </div >
-            <canvas id="canvas-view" width="1850" height="800" @mousemove="show_coordinates" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
+            <canvas id="canvas-view" width="1850" height="800" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 
             
         </div>

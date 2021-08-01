@@ -94,13 +94,6 @@ function start() {
                     y: pos_mm.y + ((px.y - this.canvas.size.y/2) / this.canvas.zoom)
                 }
             },
-            show_coordinates(e) {
-                this.canvas.cursor_px.x = e.offsetX;
-                this.canvas.cursor_px.y = e.offsetY;
-                let mm = this.px_to_mm(this.canvas.cursor_px)
-                this.canvas.cursor_mm.x = Math.round(mm.x)
-                this.canvas.cursor_mm.y = Math.round(mm.y)
-            },
             mousewheel(e) {
                 let fact = 1.1;
                 if (event.wheelDelta < 0) {
@@ -157,6 +150,14 @@ function start() {
                         this.draw_stuff()
                     }
                 }
+                this.show_coordinates(event)
+            },
+            show_coordinates(e) {
+                this.canvas.cursor_px.x = e.offsetX;
+                this.canvas.cursor_px.y = e.offsetY;
+                let mm = this.px_to_mm(this.canvas.cursor_px)
+                this.canvas.cursor_mm.x = mm.x
+                this.canvas.cursor_mm.y = mm.y
             },
             keylistener(event) {
                 if (this.page == NAVPAGE) {
@@ -339,6 +340,9 @@ function start() {
                     return "/parts/" + dat.sym
                 }
                 return ""
+            },
+            round: function(v, amount) {
+                return Math.round(v, amount)
             },
         }
 
