@@ -11,6 +11,7 @@ import camera
 import save_robot
 import calibrator
 import fiducial
+import bottle_svr
 
 CALIBRATION_POS = (276//2, 314//2)
 
@@ -23,7 +24,7 @@ arucoParams = cv2.aruco.DetectorParameters_create()
 def calibrate(robot, camera):
     """
     Drive to calibration board and calibrate
-    
+
     If calibration is saved, load from pickle instead
     """
 
@@ -53,7 +54,7 @@ def calibrate(robot, camera):
         robot.drive(x, y)
         robot.flush()
         time.sleep(0.5)
-         
+
         image = cv2.cvtColor(camera.cache["image"], cv2.COLOR_GRAY2BGR)
 
         arucoParams = cv2.aruco.DetectorParameters_create()
@@ -133,10 +134,13 @@ def main():
                 },
                 "pcb": {
                     "transform": [1, 0, 0, -1, 10, -10],
+                    "fiducials": {}
+                },
+                "detection": {
+                    "fiducial": [0, 0],
                 },
             }
 
-            import bottle_svr
             b = bottle_svr.BottleServer(lambda: image_cache, lambda x: event_queue.put(x),  lambda: data, lambda: nav)
 
             robot.flush()
@@ -171,19 +175,26 @@ def main():
                 try:
                     event = event_queue.get(block=False)
 
-                    x = event["x"]
-                    y = event["y"]
+                    if event["type"] == "setpos":
 
-                    nav["camera"]["x"] = float(x)
-                    nav["camera"]["y"] = float(y)
+                        x = event["x"]
+                        y = event["y"]
 
-                    robot.drive(x,y)
+                        nav["camera"]["x"] = float(x)
+                        nav["camera"]["y"] = float(y)
 
-                    time.sleep(1)
-                    cache = c.cache
-                    cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
-                    fx, fy = fd(cam_image, (x, y))
-                    nav["pcb"]["transform"] = [1, 0, 0, -1, fx, fy]
+                        robot.drive(x,y)
+
+                        time.sleep(1)
+                        cache = c.cache
+                        cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
+                        nav["detection"]["fiducial"] =  fd(cam_image, (x, y))
+
+                    if event["type"] == "setfiducial":
+                        nav["pcb"]["fiducials"][event["id"]] = (event["x"], event["y"])
+
+                        if len(nav["pcb"]["fiducials"]) >=3:
+                            nav["pcb"]["transform"] =  fiducial.get_transform(nav["pcb"]["fiducials"])
 
                 except queue.Empty:
                     pass

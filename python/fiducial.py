@@ -54,3 +54,34 @@ class FiducialDetector:
             return pos
 
         raise NoFiducialFoundException("No fiducial found")
+
+def get_transform(fid_map):
+
+    import json
+
+    with open("web/api/data.json", "r") as f:
+        data = json.load(f)
+
+    bot_pos = []
+    fid_pos = []
+    for x in data["bom"]:
+        if x["fiducial"]:
+            for id, pos in fid_map.items():
+                part =  x["parts"][id]
+                bot_pos.append(pos)
+                fid_pos.append((float(part["x"]), float(part["y"])))
+
+    fid_pos = np.asarray(fid_pos)
+    bot_pos = np.asarray(bot_pos)
+
+    m, mse = calibrator.fit_affine(fid_pos, bot_pos)
+
+    print(m)
+    print(mse)
+
+    t = tuple(m[:2].T.flatten())
+
+    return t
+
+if __name__ == "__main__":
+    get_transform(None)
