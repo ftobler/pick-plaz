@@ -215,7 +215,7 @@ class Robot:
         Function blocks execution until the command is sent.
         Returns itself
         """
-        self.__send_commands(["G4T%d" % timeout_milliseconds])
+        self.__send_commands(["G4T%d" % (timeout_milliseconds//1000)]) #FIXME G4T uses seconds instead of milliseconds
         return self
 
     def vacuum(self, enable):

@@ -10,8 +10,13 @@ import numpy as np
 import camera
 import save_robot
 import calibrator
+import fiducial
 
 CALIBRATION_POS = (276//2, 314//2)
+
+
+CALIBRATION_POS = (105,196)
+
 aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_100)
 arucoParams = cv2.aruco.DetectorParameters_create()
 
@@ -44,7 +49,7 @@ def calibrate(robot, camera):
     markers_corners = []
     marker_ids = []
 
-    for x,y in positions:
+    for i, (x,y) in enumerate(positions):
         robot.drive(x, y)
         robot.flush()
         time.sleep(0.5)
@@ -57,6 +62,8 @@ def calibrate(robot, camera):
 
         markers_corners.append(corners)
         marker_ids.append(ids)
+
+        cv2.imwrite(f"{i}.jpg", image)
 
     cal = calibrator.Calibration(positions, marker_ids, markers_corners)
     mp = calibrator.ModelPixConverter(cal)
@@ -93,66 +100,107 @@ def main():
     robot.home()
     robot.light_topdn(True)
 
-    captures = []
-
     x, y = CALIBRATION_POS
     robot.drive(x, y)
 
-    with camera.CameraThread(0) as c:
+    try:
 
-        import queue
+        with camera.CameraThread(0) as c:
 
-        image_cache = None
-        event_queue = queue.Queue()
+            import queue
 
-        import bottle_svr
-        b = bottle_svr.BottleServer(lambda: image_cache, lambda x: event_queue.put(x),  lambda: (x, y))
+            image_cache = None
+            event_queue = queue.Queue()
 
-        robot.flush()
+            data = {
+            }
 
-        time.sleep(0.5)
+            nav = {
+                "camera": {
+                    "x": float(x),
+                    "y": float(y),
+                    "width": 35.0,
+                    "height": 35.0,
+                    "framenr": 1245
+                },
+                "bed": {
+                    "x": -0.0,
+                    "y": -0.0,
+                    "width": 400,
+                    "height": 400
+                },
+                "pcb": {
+                    "transform": [1, 0, 0, -1, 10, -10],
+                },
+            }
 
-        cal = calibrate(robot, c)
-        mp = None # calibrator.ModelPixConverter(cal)
-        h = calibrator.Homography(cal, 10, (10*35,10*35))
-        ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
+            import bottle_svr
+            b = bottle_svr.BottleServer(lambda: image_cache, lambda x: event_queue.put(x),  lambda: data, lambda: nav)
 
-        while True:
+            robot.flush()
 
-            cache = c.cache            
-            image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
+            time.sleep(0.5)
 
-            if mp is not None:
-                image = cv2.putText(image, f"x={x}, y={y}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2/2,(255,255,255), int(2), cv2.LINE_AA)
-                xx, yy = mp.model_to_pix(np.array([[CALIBRATION_POS[0]], [CALIBRATION_POS[1]]]), (x, y))[0]
-                image = cv2.putText(image, "L", (int(xx),int(yy)), cv2.FONT_HERSHEY_SIMPLEX, 2/2,(0,0,255), int(2), cv2.LINE_AA)
-                draw_grid(mp, image, (x, y))
+            cal = calibrate(robot, c)
+            mp = None # calibrator.ModelPixConverter(cal)
+            h = calibrator.Homography(cal, 10, (10*35,10*35))
+            ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
 
-            if ip is not None:
-                image = ip.project(image)
+            fd = fiducial.FiducialDetector(cal)
 
-            image_cache = image
+            while True:
 
-            try:
-                event = event_queue.get(block=False)
-                x = event["x"]
-                y = event["y"]
-            except queue.Empty as e:
-                pass
-            robot.drive(x,y)
+                cache = c.cache
+                cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
 
-            time.sleep(0.1)
+                if mp is not None:
+                    cam_image = cv2.putText(cam_image, f"x={x}, y={y}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2/2,(255,255,255), int(2), cv2.LINE_AA)
+                    xx, yy = mp.model_to_pix(np.array([[CALIBRATION_POS[0]], [CALIBRATION_POS[1]]]), (x, y))[0]
+                    cam_image = cv2.putText(cam_image, "L", (int(xx),int(yy)), cv2.FONT_HERSHEY_SIMPLEX, 2/2,(0,0,255), int(2), cv2.LINE_AA)
+                    draw_grid(mp, cam_image, (x, y))
+
+                if ip is not None:
+                    image = ip.project(cam_image)
+                else:
+                    image = cam_image
+
+                image_cache = image
+
+                try:
+                    event = event_queue.get(block=False)
+                    print(x, y)
+                    x = event["x"]
+                    y = event["y"]
+                    print(x, y)
+
+                    nav["camera"]["x"] = float(x)
+                    nav["camera"]["y"] = float(y)
+
+                    robot.drive(x,y)
+
+                    time.sleep(1)
+                    cache = c.cache
+                    cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
+                    fx, fy = fd(cam_image, (x, y))
+                    nav["pcb"]["transform"] = [1, 0, 0, -1, fx, -fy]
+
+                except queue.Empty:
+                    pass
+                except fiducial.NoFiducialFoundException:
+                    pass
+
+                time.sleep(0.1)
+
+    except KeyboardInterrupt:
+        pass
 
     print("finished")
 
     # park robot
     robot.drive(5,5) # drive close to home
-    robot.dwell(100)
+    robot.dwell(1000)
     robot.steppers(False)
     robot.light_topdn(False)
-
-    # with open("captures.pkl", "wb") as f:
-    #     pickle.dump(captures, f)
 
 if __name__ == "__main__":
     main()
