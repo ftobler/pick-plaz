@@ -1,6 +1,276 @@
 {
     "bom": [
         {
+            "feeder": null,
+            "fiducal": false,
+            "footprint": "B2B-XH",
+            "partnr": "02-JST-B3B-XH-A",
+            "parts": {
+                "U$2": {
+                    "place": true,
+                    "state": 0
+                }
+            },
+            "place": true,
+            "rot": 0,
+            "value": "02-JST-B3B-XH-A"
+        },
+        {
+            "feeder": null,
+            "fiducal": false,
+            "footprint": "0805_RES",
+            "partnr": "RESISTOR0805_RES",
+            "parts": {
+                "R1": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "30.00",
+                    "state": 0,
+                    "x": "12.12",
+                    "y": "7.00"
+                },
+                "R2": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "318.00",
+                    "state": 0,
+                    "x": "10.40",
+                    "y": "-9.37"
+                },
+                "R3": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "246.00",
+                    "state": 0,
+                    "x": "-5.69",
+                    "y": "-12.79"
+                },
+                "R4": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "174.00",
+                    "state": 0,
+                    "x": "-13.92",
+                    "y": "1.46"
+                },
+                "R5": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "102.00",
+                    "state": 0,
+                    "x": "-2.91",
+                    "y": "13.69"
+                }
+            },
+            "place": true,
+            "rot": 0,
+            "value": "470"
+        },
+        {
+            "feeder": null,
+            "fiducal": false,
+            "footprint": "FIDUCIAL_2MM",
+            "partnr": "FIDUCIAL2MM",
+            "parts": {
+                "V1": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "0.00",
+                    "state": 0,
+                    "x": "11.50",
+                    "y": "14.50"
+                },
+                "V2": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "0.00",
+                    "state": 0,
+                    "x": "14.50",
+                    "y": "-11.50"
+                },
+                "V3": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "0.00",
+                    "state": 0,
+                    "x": "-11.50",
+                    "y": "-14.50"
+                }
+            },
+            "place": true,
+            "rot": 0,
+            "value": "FIDUCIAL2MM"
+        },
+        {
+            "feeder": null,
+            "fiducal": false,
+            "footprint": "5730-LED",
+            "partnr": "LED-5730",
+            "parts": {
+                "D1": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "90.00",
+                    "state": 0,
+                    "x": "0.00",
+                    "y": "12.30"
+                },
+                "D10": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "234.00",
+                    "state": 0,
+                    "x": "-7.23",
+                    "y": "-9.95"
+                },
+                "D11": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "210.00",
+                    "state": 0,
+                    "x": "-10.65",
+                    "y": "-6.15"
+                },
+                "D12": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "186.00",
+                    "state": 0,
+                    "x": "-12.23",
+                    "y": "-1.29"
+                },
+                "D13": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "162.00",
+                    "state": 0,
+                    "x": "-11.70",
+                    "y": "3.80"
+                },
+                "D14": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "138.00",
+                    "state": 0,
+                    "x": "-9.14",
+                    "y": "8.23"
+                },
+                "D15": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "114.00",
+                    "state": 0,
+                    "x": "-5.00",
+                    "y": "11.24"
+                },
+                "D2": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "66.00",
+                    "state": 0,
+                    "x": "5.00",
+                    "y": "11.24"
+                },
+                "D3": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "42.00",
+                    "state": 0,
+                    "x": "9.14",
+                    "y": "8.23"
+                },
+                "D4": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "18.00",
+                    "state": 0,
+                    "x": "11.70",
+                    "y": "3.80"
+                },
+                "D5": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "354.00",
+                    "state": 0,
+                    "x": "12.23",
+                    "y": "-1.29"
+                },
+                "D6": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "330.00",
+                    "state": 0,
+                    "x": "10.65",
+                    "y": "-6.15"
+                },
+                "D7": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "306.00",
+                    "state": 0,
+                    "x": "7.23",
+                    "y": "-9.95"
+                },
+                "D8": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "282.00",
+                    "state": 0,
+                    "x": "2.56",
+                    "y": "-12.03"
+                },
+                "D9": {
+                    "layer": null,
+                    "place": true,
+                    "rot": "258.00",
+                    "state": 0,
+                    "x": "-2.56",
+                    "y": "-12.03"
+                }
+            },
+            "place": true,
+            "rot": 0,
+            "value": "LED-5730"
+        },
+        {
+            "feeder": null,
+            "fiducal": false,
+            "footprint": "TOBENG-1MM-FINISH",
+            "partnr": "LOGO-TOBENG-1MM-FINISH",
+            "parts": {
+                "U$1": {
+                    "place": true,
+                    "state": 0
+                }
+            },
+            "place": true,
+            "rot": 0,
+            "value": "LOGO-TOBENG-1MM-FINISH"
+        },
+        {
+            "feeder": null,
+            "fiducal": false,
+            "footprint": "PIN_1X1_SMD_BIG_L",
+            "partnr": "PIN_1X1SMD_BIG_L",
+            "parts": {
+                "X1": {
+                    "place": true,
+                    "state": 0
+                },
+                "X2": {
+                    "place": true,
+                    "state": 0
+                }
+            },
+            "place": true,
+            "rot": 0,
+            "value": "PIN_1X1SMD_BIG_L"
+        }
+    ],
+
+
+    "bom_old": [
+        {
             "place": true,
             "fiducial": false,
             "value": "100k",
