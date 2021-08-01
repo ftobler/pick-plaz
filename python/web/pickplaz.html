@@ -15,10 +15,10 @@
 <div id="app" style="width: 100%; max-width: 2600px; margin:0 auto;">
 
     <div class="menu">
-            <a class="logo" href="https://github.com/ftobler/pick-plaz" target="_blank">pick-plaz</a>
-            <div class="menu-item" v-bind:class="{active : page == 0}" v-on:click="page = 0">Parts</div>
-            <div class="menu-item" v-bind:class="{active : page == 1}" v-on:click="page = 1">Feeder</div>
-            <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="page = 2">Navigate</div>       
+        <a class="logo" href="https://github.com/ftobler/pick-plaz" target="_blank">pick-plaz</a>
+        <div class="menu-item" v-bind:class="{active : page == 0}" v-on:click="page = 0">Parts</div>
+        <div class="menu-item" v-bind:class="{active : page == 1}" v-on:click="page = 1">Feeder</div>
+        <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="page = 2">Navigate</div>
 
         <div style="float: right;">
             <div class="menu-pane">
@@ -48,7 +48,7 @@
                 <tr>
                     <th width="20px">#</th>
                     <th class="small" width="20px">Place</th>
-                    <th class="small" width="20px">Fiducal</th>
+                    <th class="small" width="20px">fiducial</th>
                     <th width="150px">Value</th>
                     <th width="200px">Footprint</th>
                     <th width="150px"></th>
@@ -64,8 +64,8 @@
                 </tr>
                 <tr v-for="(entry, i) in db.bom">
                     <td :rowspan="entry.parts.length">{{i}}</td>
-                    <td><input type="checkbox" v-model="entry.place"  v-if="!entry.fiducal"></td>
-                    <td><input type="checkbox" v-model="entry.fiducal"></td>
+                    <td><input type="checkbox" v-model="entry.place"  v-if="!entry.fiducial"></td>
+                    <td><input type="checkbox" v-model="entry.fiducial"></td>
                     <td>{{entry.value}}</td>
                     <td>{{entry.footprint}}</td>
                     <td><img v-bind:src="entry.footprint | footprint_img_path"/> &nbsp;&nbsp;<img v-bind:src="entry.footprint | footprint_sym_path"/></td>

@@ -209,13 +209,7 @@ function start() {
                 }
                 ctx.translate(-this.canvas.pos_mm.x, -this.canvas.pos_mm.y)
 
-
-                //draw bed outline
-                ctx.strokeStyle = "white"
-                ctx.beginPath(); ctx.rect(this.nav.bed.x, this.nav.bed.y, this.nav.bed.width, this.nav.bed.height); ctx.stroke();
-                ctx.scale(1, 1)
-
-                
+                //draw camera group
                 if (this.elements.show_camera) {
                     //draw topdn image
                     this.draw_camera(ctx, this.image.topdn, this.nav.camera)
@@ -230,20 +224,47 @@ function start() {
                     ctx.stroke();
                 }
 
+                //draw bed outline
+                ctx.strokeStyle = "white"
+                ctx.beginPath(); ctx.rect(this.nav.bed.x, this.nav.bed.y, this.nav.bed.width, this.nav.bed.height); ctx.stroke();
+                ctx.scale(1, 1)
+
+                
+
+
                 //draw pcb
                 ctx.save()
                 let t = this.db.pcb.transform
-                //ctx.transform(t[0], t[1], t[2], t[3], t[4], t[5])
+                ctx.transform(t[0], t[1], t[2], t[3], t[4], t[5])
+                //draw pcb origin
+                ctx.strokeStyle = "white"
+                ctx.beginPath();
+                ctx.moveTo(0, +10)
+                ctx.lineTo(0, 0)
+                ctx.lineTo(10, 0)
+                ctx.moveTo(-1, +8)
+                ctx.lineTo(0, +10)
+                ctx.lineTo(1, +8)
+                ctx.moveTo(8, -1)
+                ctx.lineTo(10, 0)
+                ctx.lineTo(8, 1)
+                ctx.stroke()
+                ctx.beginPath();
+                ctx.arc(0, 0, 1, 0, 2 * Math.PI)
+                ctx.stroke()
+                //draw the parts
                 for (let entry of this.db.bom) {
                     if (entry.place == true || entry.fiducial == true) {
                         for (let [id, part] of Object.entries(entry.parts)) {
-                            console.log(part)
-                            let rad = (entry.rot + part.rot) * 2 * Math.pi / 360
-                            const size = 2
+                            let deg = 0
+                            if (entry.rot != undefined) deg += entry.rot
+                            if (part.rot != undefined) deg += part.rot
+                            let rad = deg * 2 * Math.PI / 360
+                            const size = 1.5
                             ctx.save()
-                            //ctx.translate(+part.x, +part.y)
+                            ctx.translate(part.x, part.y)
+                            ctx.save()
                             ctx.rotate(rad)
-                            ctx.translate(-part.x, -part.y)
 
                             ctx.strokeStyle = "red"
                             ctx.beginPath();
@@ -257,18 +278,26 @@ function start() {
                             ctx.lineTo(size, 0)
                             ctx.stroke();
                             
-                            ctx.strokeStyle = "blue"
+                            ctx.strokeStyle = "yellow"
                             ctx.beginPath();
                             ctx.moveTo(0,0)
                             ctx.lineTo(0, -size)
                             ctx.stroke();
                             
-                            ctx.strokeStyle = "yellow"
+                            ctx.strokeStyle = "blue"
                             ctx.beginPath();
                             ctx.moveTo(0,0)
                             ctx.lineTo(-size, 0)
                             ctx.stroke();
 
+                            if (entry.fiducial == true) {
+                                ctx.strokeStyle = "white"
+                                ctx.beginPath();
+                                ctx.arc(0, 0, 1, 0, 2 * Math.PI)
+                                ctx.stroke()
+                            }
+
+                            ctx.restore()
                             ctx.restore()
                         }
                     }

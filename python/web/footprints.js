@@ -136,6 +136,40 @@ footprints = {
 
 
 
+    
+    "0201_L": {
+        "img": "L_img.svg",
+        "sym": "D_sym.svg",
+        "x": 0.6,
+        "y": 0.3,
+    },
+    "0402_L": {
+        "img": "L_img.svg",
+        "sym": "D_sym.svg",
+        "x": 1.0,
+        "y": 0.8,
+    },
+    "0603_L": {
+        "img": "L_img.svg",
+        "sym": "D_sym.svg",
+        "x": 1.6,
+        "y": 0.8,
+    },
+    "0805_L": {
+        "img": "L_img.svg",
+        "sym": "D_sym.svg",
+        "x": 2.0,
+        "y": 1.25,
+    },
+    "1206_L": {
+        "img": "L_img.svg",
+        "sym": "D_sym.svg",
+        "x": 3.2,
+        "y": 1.6,
+    },
+
+
+
     "SOD323": {
         "img": "D1_img.svg",
         "sym": "D_sym.svg",
