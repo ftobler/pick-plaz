@@ -1,6 +1,10 @@
 #tornado needs this or it does not run
 import asyncio
-# asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+try:
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+except Exception as e:
+    print(e)
+    print("probably running on windows")
 
 from bottle import route, run, template, request, response, static_file
 

@@ -234,7 +234,7 @@ function start() {
 
                 //draw pcb
                 ctx.save()
-                let t = this.db.pcb.transform
+                let t = this.nav.pcb.transform
                 ctx.transform(t[0], t[1], t[2], t[3], t[4], t[5])
                 //draw pcb origin
                 ctx.strokeStyle = "white"
