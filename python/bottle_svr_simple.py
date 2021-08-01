@@ -1,6 +1,6 @@
 #tornado needs this or it does not run
 import asyncio
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+# asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 from bottle import route, run, template, request, response, static_file
 

@@ -1,6 +1,9 @@
 from serial import Serial
 
 
+def print(*args):
+    pass
+
 class Robot:
     con = None
     __full = False
