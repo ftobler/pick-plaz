@@ -42,8 +42,8 @@ class BottleServer:
                 "camera": {
                     "x": float(x),
                     "y": float(y),
-                    "width": 70.0,
-                    "height": 70.0,
+                    "width": 35.0,
+                    "height": 35.0,
                     "framenr": 1245
                 },
                 "bed": { 
@@ -61,8 +61,8 @@ class BottleServer:
         r = dict(request.query.decode())
         try:
             self.event_put_fcn({
-                "x" : int(r["x"]),
-                "y" : int(r["y"]),
+                "x" : float(r["x"]),
+                "y" : float(r["y"]),
             })
         except:
             pass

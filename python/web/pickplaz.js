@@ -25,7 +25,7 @@ function start() {
                 drag: false,
                 pos_mm: { x: 200, y: 200 },
                 size: { x: 0, y: 0 },
-                zoom: 8,
+                zoom: 7
             },
             elements: {
                 show_camera: true,

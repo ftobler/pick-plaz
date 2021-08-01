@@ -34,12 +34,12 @@ static void do_cmd_set_max_speed_multiplier(Gcode_command cmd);
 static void job_prelling_handle();
 
 //output pin cluster (these have FET driver to either 5V or 12V)
-#define PIN_OUTPUT_PUMP  portpin('C', 6)
-#define PIN_OUTPUT_VALVE portpin('D', 15)
-#define PIN_OUTPUT_BOTUP portpin('D', 14)
-#define PIN_OUTPUT_TOPDN portpin('D', 13)
-#define PIN_OUTPUT_AUX1  portpin('D', 12)
-#define PIN_OUTPUT_AUX2  portpin('D', 11)
+#define PIN_OUTPUT_PUMP  portpin('C', 6)  //12V
+#define PIN_OUTPUT_AUX1  portpin('D', 15) //written as VALVE on PCB on early revision. 5V
+#define PIN_OUTPUT_BOTUP portpin('D', 14) //12V
+#define PIN_OUTPUT_TOPDN portpin('D', 13) //12V
+#define PIN_OUTPUT_VALVE portpin('D', 12) //written as AUX1 on PCB on early revision. 12V
+#define PIN_OUTPUT_TRAY  portpin('D', 11) //written as AUX2 on PCB on early revision. 12V
 
 //Input pin cluster
 #define PIN_INPUT_XEND  portpin('D', 10)
@@ -109,7 +109,7 @@ Simple_output output_valve(PIN_OUTPUT_VALVE);
 Simple_output output_botup(PIN_OUTPUT_BOTUP);
 Simple_output output_topdn(PIN_OUTPUT_TOPDN);
 Simple_output output_aux1(PIN_OUTPUT_AUX1);
-Simple_output output_aux2(PIN_OUTPUT_AUX2);
+Simple_output output_tray(PIN_OUTPUT_TRAY);
 
 
 //input pin cluster
@@ -128,10 +128,10 @@ bool job_prelling = false;
  * Does run once
  */
 void setup() {
-	float steps_per_mm = 25.0f;
-	float speed_cap = 450.0f;
-	float speed = 450.0f;
-	float accel = 3000.0f;
+	float steps_per_mm = 25.0f * 2.0f;
+	float speed_cap = 450.0f / 2.0f;
+	float speed = 450.0f     / 2.0f;
+	float accel = 3000.0f    / 2.0f;
 
 	//set microstepping to 4x
 	//works only on board v1e or later
@@ -181,6 +181,8 @@ void setup() {
 	stepperC.setMaxSpeed_mm(speed);
 
 	uart_init();
+
+	do_cmd_stepper_power(false);
 }
 
 /**
@@ -226,6 +228,7 @@ void loop() {
 			do_cmd_drive_to_position(cmd);
 		} else if (cmd.id == 'G' && (cmd.num == 28)) {
 			//home
+			do_cmd_stepper_power(true);  //switch it on first.
 			do_cmd_home(cmd);
 		} else if (cmd.id == 'G' && (cmd.num == 4)) {
 			//dwell
@@ -338,8 +341,8 @@ static void do_cmd_drive_to_position(Gcode_command cmd) {
 
 static void do_cmd_home(Gcode_command cmd) {
 	//homeAxle(&stepperZ, &input_endZ, -1, 10.0f, 5000, 500.0f, 5.0f);
-	homeAxle(&stepperX, &input_endX, -1, 80.0f, 10000, 1000.0f, 5.0f);
-	homeAxleDual(&stepperY0, &stepperY1, &input_endY0, &input_endY1, -1, 80.0f, 10000, 1000.0f, 5.0f);
+	homeAxle(&stepperX, &input_endX, -1, 80.0f/2.0f, 10000, 1000.0f/2.0f, 5.0f/2.0f);
+	homeAxleDual(&stepperY0, &stepperY1, &input_endY0, &input_endY1, -1, 80.0f/2.0f, 10000, 1000.0f/2.0f, 5.0f/2.0f);
 }
 
 static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int homDirection, float home_speed, int home_timeout,
@@ -490,18 +493,19 @@ static void do_cmd_io(Gcode_command cmd) {
 		int ioNumber = round(cmd.valueP);
 		int ioValue  = round(cmd.valueS);
 		switch (ioNumber) {
-		case 0:	output_pump.set(ioValue);
-		case 1:	output_valve.set(ioValue);
-		case 2:	output_botup.set(ioValue);
-		case 3:	output_topdn.set(ioValue);
-		case 4:	output_aux1.set(ioValue);
-		case 5:	output_aux2.set(ioValue);
+		case 0:	output_pump.set(ioValue); break;
+		case 1:	output_aux1.set(ioValue); break;
+		case 2:	output_botup.set(ioValue); break;
+		case 3:	output_topdn.set(ioValue); break;
+		case 4:	output_valve.set(ioValue); break;
+		case 5:	output_tray.set(ioValue); break;
 		}
 	}
 }
 
 
 static void do_cmd_stepper_power(bool on) {
+	on = !on;
 	digitalWrite(PIN_MOTX_EN,  on);
 	digitalWrite(PIN_MOTY0_EN, on);
 	digitalWrite(PIN_MOTY1_EN, on);
