@@ -230,8 +230,50 @@ function start() {
                     ctx.stroke();
                 }
 
-                
+                //draw pcb
+                ctx.save()
+                let t = this.db.pcb.transform
+                //ctx.transform(t[0], t[1], t[2], t[3], t[4], t[5])
+                for (let entry of this.db.bom) {
+                    if (entry.place == true || entry.fiducial == true) {
+                        for (let [id, part] of Object.entries(entry.parts)) {
+                            console.log(part)
+                            let rad = (entry.rot + part.rot) * 2 * Math.pi / 360
+                            const size = 2
+                            ctx.save()
+                            //ctx.translate(+part.x, +part.y)
+                            ctx.rotate(rad)
+                            ctx.translate(-part.x, -part.y)
 
+                            ctx.strokeStyle = "red"
+                            ctx.beginPath();
+                            ctx.moveTo(0,0)
+                            ctx.lineTo(0, size)
+                            ctx.stroke();
+
+                            ctx.strokeStyle = "green"
+                            ctx.beginPath();
+                            ctx.moveTo(0,0)
+                            ctx.lineTo(size, 0)
+                            ctx.stroke();
+                            
+                            ctx.strokeStyle = "blue"
+                            ctx.beginPath();
+                            ctx.moveTo(0,0)
+                            ctx.lineTo(0, -size)
+                            ctx.stroke();
+                            
+                            ctx.strokeStyle = "yellow"
+                            ctx.beginPath();
+                            ctx.moveTo(0,0)
+                            ctx.lineTo(-size, 0)
+                            ctx.stroke();
+
+                            ctx.restore()
+                        }
+                    }
+                }
+                ctx.restore();
 
             },
             draw_camera(ctx, image, position) {
