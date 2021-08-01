@@ -2,7 +2,7 @@
     "bom": [
         {
             "place": true,
-            "fiducal": false,
+            "fiducial": false,
             "value": "100k",
             "footprint": "0603_R",
             "partnr": "C5465",
@@ -34,7 +34,7 @@
         },
         {
             "place": true,
-            "fiducal": false,
+            "fiducial": false,
             "value": "100n",
             "footprint": "0603_C",
             "partnr": "C14663",
@@ -52,7 +52,7 @@
         },
         {
             "place": true,
-            "fiducal": false,
+            "fiducial": false,
             "value": "",
             "footprint": "TQFP32",
             "partnr": "C14877",
@@ -70,7 +70,7 @@
         },
         {
             "place": true,
-            "fiducal": false,
+            "fiducial": false,
             "value": "",
             "footprint": "SMA",
             "partnr": "",
@@ -88,7 +88,7 @@
         },
         {
             "place": true,
-            "fiducal": false,
+            "fiducial": false,
             "value": "",
             "footprint": "SOT23",
             "partnr": "",
@@ -106,7 +106,7 @@
         },
         {
             "place": true,
-            "fiducal": false,
+            "fiducial": false,
             "value": "",
             "footprint": "TQFP32",
             "partnr": "C14877",
@@ -124,8 +124,8 @@
         },
         {
             "place": false,
-            "fiducal": true,
-            "footprint": "fiducal",
+            "fiducial": true,
+            "footprint": "fiducial",
             "parts": {
                 "V1": {
                     "place": true,
@@ -151,5 +151,9 @@
             "pitch": null,
             "orientation": null
         }
+    },
+
+    "pcb": {
+        "transform": [1, 0, 0, 0, 1, 0]
     }
 }
