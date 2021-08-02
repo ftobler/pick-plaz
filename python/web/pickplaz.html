@@ -22,19 +22,15 @@
 
         <div style="float: right;">
             <div class="menu-pane">
-                <div class="menu-label">PNP</div>
+                <div class="menu-label">BOM & PNP</div>
                 <input class="menu-content" type="file" id="myFile" name="filename">
-                <div class="menu-upload">north</div>
-            </div>
-            <div class="menu-pane">
-                <div class="menu-label">BOM</div>
                 <input class="menu-content" type="file" id="myFile" name="filename">
                 <div class="menu-upload">north</div>
             </div>
             <div class="menu-material-pane">
-                <div class="menu-material">play_arrow</div>
-                <div class="menu-material">pause</div>
-                <div class="menu-material stop">stop</div>
+                <div class="menu-material" v-on:click="do_sequence('play')">play_arrow</div>
+                <div class="menu-material" v-on:click="do_sequence('pause')">pause</div>
+                <div class="menu-material stop" v-on:click="do_sequence('stop')">stop</div>
             </div>
         </div>
 
@@ -80,8 +76,15 @@
                                 <td width="150px">{{part.y}}</td>
                                 <td width="150px"><div class="table-button material">refresh</div> {{part.rot}}</td>
                                 <td width="200px"><div class="table-button material">swap_horiz</div> {{part.state}}</td>
-                                <td v-if="entry.fiducial == false" width="400px"><button>view place</button> <button>view pick</button> <button>do place</button></td>
-                                <td v-if="entry.fiducial == true"  width="400px"><button v-on:click="fiducial_assing_current_location(entry, part, id)">assign location</button></td>
+                                <td v-if="entry.fiducial == false" width="400px">
+                                    <button v-on:click="part_view_place(part)">view place</button> 
+                                    <button v-on:click="part_view_pick(entry)">view pick</button>
+                                    <button v-on:click="part_do_place(entry, part, id)">do place</button>
+                                </td>
+                                <td v-if="entry.fiducial == true"  width="400px">
+                                    <button v-on:click="fiducial_goto(part)">goto</button>
+                                    <button v-on:click="fiducial_assing_current_location(id)">assign location</button>
+                                </td>
                             </tr>
                         </table>
                     </td>
