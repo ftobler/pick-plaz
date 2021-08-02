@@ -187,8 +187,8 @@ function start() {
             fiducial_goto(part) {
                 this.do_setpos(part.x, part.y, "pcb")
             },
-            fiducial_assing_current_location(id) {
-                api.fiducial_assing_current_location(this.nav.detection.fiducial[0], this.nav.detection.fiducial[1], id)
+            fiducial_assing_current_location(id, mode) {
+                api.fiducial_assing_current_location(this.nav.detection.fiducial[0], this.nav.detection.fiducial[1], id, mode)
             },
             part_view_place(part) {
                 this.do_setpos(part.x, part.y, "pcb")
@@ -393,11 +393,12 @@ function start() {
 
 
 api = {
-    fiducial_assing_current_location(x_global, y_global, id) {
+    fiducial_assing_current_location(x_global, y_global, id, mode) {
         apicall("setfiducal", {
             x: x_global,
             y: y_global,
-            id: id
+            id: id,
+            mode: mode
         })
     },
     robot_setpos(x_global, y_global, system) {

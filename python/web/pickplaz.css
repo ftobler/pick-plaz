@@ -13,7 +13,16 @@ body {
     height: 100%;
     display: flex;
     flex-flow: column;
+    overflow-y: scroll; /* Show vertical scrollbar */
 }
+body::-webkit-scrollbar {
+    width: 8px;
+}
+body::-webkit-scrollbar-thumb {
+    background-color: rgb(116, 116, 116);
+}
+
+
 a:link, a:visited {
     color: white;
 }
@@ -28,13 +37,14 @@ a:hover {
     text-align: center;
 }
 .menu-item {
+    text-align: center;
+    vertical-align: middle;
     float: left;
     margin: 10px;
-    padding: 10px;
-    padding-left: 15px;
     background-color: rgb(50,50,50);
     width: 120px;
-    height: 23px;
+    line-height: 44px;
+    height: 44px;
     font-weight: bold;
     transform: skew(-15deg);
     cursor: pointer;
@@ -48,45 +58,36 @@ a:hover {
     background-color: rgb(0, 150, 92);
 }
 
-.menu-label {
-    display: inline-block;
-    padding: 100px;
-    margin: -100px;
-    margin-left: -130px;
-    padding-right: 0;
-    margin-right: 0;
-    width: 155px;
-    height: 23px;
-    background-color: rgb(70,70,70);
-}
-
-.menu-content {
-    margin-left: 10px;
-    width: 200px;
-}
-
 .menu-pane {
     float: left;
     margin: 10px;
-    padding: 10px;
-    padding-left: 15px;
     background-color: rgb(50,50,50);
-    width: 600px;
-    height: 23px;
+    height: 44px;
+    line-height: 44px;
     font-weight: bold;
     color: white;
     transform: skew(-15deg);
     overflow: hidden;
 }
 
+.menu-label {
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 44px;
+    background-color: rgb(70,70,70);
+}
+
+.menu-content {
+    margin-left: 10px;
+    vertical-align: text-top;
+    width: 200px;
+}
+
 .menu-upload {
     float: right;
-    padding: 100px;
-    margin: -100px;
-    padding-left: 10px;
-    margin-left: -5px;
-    width: 25px;
-    height: 23px;
+    width: 44px;
+    height: 44px;
     font-family: "Material Icons";
     font-size: 24px;
     cursor: pointer;
@@ -106,23 +107,11 @@ a:hover {
     background-color: rgb(245, 115, 115) !important;
 }
 
-.menu-material-pane {
-    float: left;
-    margin: 10px;
-    font-weight: bold;
-    color: white;
-    transform: skew(-15deg);
-    overflow: hidden;
-}
-
 .menu-material {
     float: left;
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
     background-color: rgb(50,50,50);
-    width: 25px;
-    height: 23px;
+    width: 50px;
+    height: 44px;
     font-weight: bold;
     color: white;
     text-align: center;

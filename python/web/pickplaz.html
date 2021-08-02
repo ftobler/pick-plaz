@@ -27,7 +27,7 @@
                 <input class="menu-content" type="file" id="myFile" name="filename">
                 <div class="menu-upload">north</div>
             </div>
-            <div class="menu-material-pane">
+            <div class="menu-pane">
                 <div class="menu-material" v-on:click="do_sequence('play')">play_arrow</div>
                 <div class="menu-material" v-on:click="do_sequence('pause')">pause</div>
                 <div class="menu-material stop" v-on:click="do_sequence('stop')">stop</div>
@@ -70,7 +70,7 @@
                     <td width="200px"><div class="table-button material">refresh</div> {{entry.rot}}</td>
                     <td class="cell-inline-table" colspan=6>
                         <table class="cell-inline-table">
-                            <tr v-for="(part, id) in entry.parts">
+                            <tr v-for="(part, id, index) in entry.parts">
                                 <td width="150px">{{id}}</td>
                                 <td width="150px">{{part.x}}</td>
                                 <td width="150px">{{part.y}}</td>
@@ -83,7 +83,8 @@
                                 </td>
                                 <td v-if="entry.fiducial == true"  width="400px">
                                     <button v-on:click="fiducial_goto(part)">goto</button>
-                                    <button v-on:click="fiducial_assing_current_location(id)">assign location</button>
+                                    <button v-on:click="fiducial_assing_current_location(id, 'assign')">assign</button>
+                                    <button v-on:click="fiducial_assing_current_location(id, 'unassign')">unassign</button>
                                 </td>
                             </tr>
                         </table>
