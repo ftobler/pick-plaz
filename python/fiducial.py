@@ -56,6 +56,10 @@ class FiducialDetector:
         raise NoFiducialFoundException("No fiducial found")
 
 def get_transform(fid_map):
+    """
+    Fit transform between fiducials and robot coordinates
+
+    Return transform as used by cairo and mean squared error in mm^2"""
 
     import json
 
@@ -84,12 +88,9 @@ def get_transform(fid_map):
     else:
         m, mse = np.eye(3), 0
 
-    print(m)
-    print(mse)
-
     t = tuple(m[:2].T.flatten())
 
-    return t
+    return t, mse
 
 if __name__ == "__main__":
     get_transform(None)

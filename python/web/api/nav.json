@@ -14,6 +14,7 @@
     },
     "pcb": {
         "transform": [1, 0, 0, -1, 10, -10],
+        "transform_mse" : 0.1,
         "fiducials" : {
             "V1" : [10,10],
             "V2" : [10,20],
