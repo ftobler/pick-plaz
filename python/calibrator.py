@@ -131,8 +131,6 @@ def fit_scaled_rigid(points_a, points_b, mirror=True):
 
     mse = np.mean(((m[:2,:2] @ points_a.T + m[:2,2:]) - points_b.T)**2)*2
 
-    print(mse)
-
     return m, mse
 
 def fit_translation(points_a, points_b, mirror):
