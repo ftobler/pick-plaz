@@ -74,7 +74,15 @@ def get_transform(fid_map):
     fid_pos = np.asarray(fid_pos)
     bot_pos = np.asarray(bot_pos)
 
-    m, mse = calibrator.fit_affine(fid_pos, bot_pos)
+    n_points = len(fid_pos)
+    if n_points >= 3:
+        m, mse = calibrator.fit_affine(fid_pos, bot_pos)
+    elif n_points == 2:
+        m, mse = calibrator.fit_scaled_rigid(fid_pos, bot_pos)
+    elif n_points == 1:
+        m, mse = calibrator.fit_translation(fid_pos, bot_pos)
+    else:
+        m, mse = np.eye(3), 0
 
     print(m)
     print(mse)

@@ -81,6 +81,88 @@ def fit_affine(points_a, points_b):
 
     return m, mse
 
+def fit_scaled_rigid(points_a, points_b, mirror=True):
+    """
+        points_a : np.array([(x0, y0), (x1, y1)])
+        points_b : np.array([(x0, y0), (x1, y1)])
+    """
+
+    mirror = -1 if mirror else 1
+
+    da = points_a[1] - points_a[0]
+    db = points_b[1] - points_b[0]
+
+    s = np.linalg.norm(db) / np.linalg.norm(da)
+
+    alpha = - np.arctan2(da[1], da[0])
+    beta = np.arctan2(db[1], db[0])
+
+    t0 = np.array([
+        [1, 0, -points_a[0][0]],
+        [0, 1, -points_a[0][1]],
+        [0, 0, 1],
+    ])
+
+    r0 = np.array([
+        [s*np.cos(alpha), -s*np.sin(alpha), 0],
+        [s*np.sin(alpha), s*np.cos(alpha), 0],
+        [0, 0, 1],
+    ])
+
+    s = np.array([
+        [s, 0, 0],
+        [0, s * mirror, 0],
+        [0, 0, 1],
+    ])
+
+    r1 = np.array([
+        [np.cos(beta), -np.sin(beta), 0],
+        [np.sin(beta), np.cos(beta), 0],
+        [0, 0, 1],
+    ])
+
+    t1 = np.array([
+        [1, 0, points_b[0][0]],
+        [0, 1, points_b[0][1]],
+        [0, 0, 1],
+    ])
+
+    m = t1 @ r1 @ s @ r0 @ t0
+
+    mse = np.mean(((m[:2,:2] @ points_a.T + m[:2,2:]) - points_b.T)**2)*2
+
+    print(mse)
+
+    return m, mse
+
+def fit_translation(points_a, points_b, mirror):
+
+    mirror = -1 if mirror else 1
+
+    t0 = np.array([
+        [1, 0, -points_a[0][0]],
+        [0, 1, -points_a[0][1]],
+        [0, 0, 1],
+    ])
+
+    s = np.array([
+        [1, 0, 0],
+        [0, 1 * mirror, 0],
+        [0, 0, 1],
+    ])
+
+    t1 = np.array([
+        [1, 0, points_b[0][0]],
+        [0, 1, points_b[0][1]],
+        [0, 0, 1],
+    ])
+
+    m = t1 @ s @ t0
+
+    mse = np.mean(((m[:2,:2] @ points_a.T + m[:2,2:]) - points_b.T)**2)*2
+
+    return m, mse
+
 
 class Calibration():
 

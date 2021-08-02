@@ -192,9 +192,7 @@ def main():
 
                     if event["type"] == "setfiducial":
                         nav["pcb"]["fiducials"][event["id"]] = (event["x"], event["y"])
-
-                        if len(nav["pcb"]["fiducials"]) >=3:
-                            nav["pcb"]["transform"] =  fiducial.get_transform(nav["pcb"]["fiducials"])
+                        nav["pcb"]["transform"] = fiducial.get_transform(nav["pcb"]["fiducials"])
 
                 except queue.Empty:
                     pass

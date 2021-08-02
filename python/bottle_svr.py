@@ -86,6 +86,7 @@ class BottleServer:
         route('/api/setfiducal')(self._setfiducial)
         route('/<name:path>')(self._files)
 
+        print(f"Starting server at {self.listen}:{self.port}")
         run(host=self.listen, port=self.port, debug=False, threaded=True, quiet=True)
 
 class BottleServerMock(BottleServer):
