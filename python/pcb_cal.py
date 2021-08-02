@@ -134,6 +134,7 @@ def main():
                 },
                 "pcb": {
                     "transform": [1, 0, 0, -1, 10, -10],
+                    "transform_mse" : 0.1,
                     "fiducials": {}
                 },
                 "detection": {
@@ -192,7 +193,9 @@ def main():
 
                     if event["type"] == "setfiducial":
                         nav["pcb"]["fiducials"][event["id"]] = (event["x"], event["y"])
-                        nav["pcb"]["transform"] = fiducial.get_transform(nav["pcb"]["fiducials"])
+                        transform, mse = fiducial.get_transform(nav["pcb"]["fiducials"])
+                        nav["pcb"]["transform"] = transform
+                        nav["pcb"]["transform_mse"] = float(mse)
 
                 except queue.Empty:
                     pass
