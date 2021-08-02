@@ -163,44 +163,45 @@ function start() {
                 if (this.page == NAVPAGE) {
                     const stepwidth = 10 // mm
                     if (event.code == 'KeyW') {
-                        this.do_move(0, -stepwidth)
+                        this.do_key_move(0, -stepwidth)
                     } else if (event.code == 'KeyA') {
-                        this.do_move(-stepwidth, 0)
+                        this.do_key_move(-stepwidth, 0)
                     } else if (event.code == 'KeyS') {
-                        this.do_move(0, stepwidth)
+                        this.do_key_move(0, stepwidth)
                     } else if (event.code == 'KeyD') {
-                        this.do_move(stepwidth, 0)
+                        this.do_key_move(stepwidth, 0)
                     }
                 }
             },
-            do_move(x, y) {
+            do_key_move(x, y) {
                 this.canvas.pos_mm.x += x
                 this.canvas.pos_mm.y += y
                 this.do_setpos(this.nav.camera.x + x, this.nav.camera.y + y)
                 this.draw_stuff()
             },
-            do_setpos(x, y) {
+            do_setpos(x, y, system) {
                 this.nav.camera.x = x
                 this.nav.camera.y = y
-                ajax({
-                    type: "GET",
-                    dataType: "application/json",
-                    url: "/api/setpos?x=" + this.nav.camera.x + "&y=" + this.nav.camera.y,
-                    success: (data) => {
-                        
-                    },
-                })
+                api.robot_setpos(this.nav.camera.x, this.nav.camera.y, system)
             },
-            fiducial_assing_current_location(entry, part, id) {
-                console.log(this.nav.detection.fiducial)
-                ajax({
-                    type: "GET",
-                    dataType: "application/json",
-                    url: "/api/setfiducal?x=" + this.nav.detection.fiducial[0] + "&y=" + this.nav.detection.fiducial[1] + "&id=" + id,
-                    success: (data) => {
-                        
-                    },
-                })
+            fiducial_goto(part) {
+                this.do_setpos(part.x, part.y, "pcb")
+            },
+            fiducial_assing_current_location(id, mode) {
+                api.fiducial_assing_current_location(this.nav.detection.fiducial[0], this.nav.detection.fiducial[1], id, mode)
+            },
+            part_view_place(part) {
+                this.do_setpos(part.x, part.y, "pcb")
+            },
+            part_view_pick(entry) {
+                alert("unimplemented")
+            },
+            part_do_place(entry, part, id) {
+                alert("unimplemented")
+            },
+            do_sequence(method) {
+                alert("unimplemented '" + method + "'")
+                api.sequence(method)
             },
             draw_stuff() {
                 var c = document.getElementById("canvas-view");
@@ -322,12 +323,13 @@ function start() {
                                     ctx.arc(0, 0, 1, 0, 2 * Math.PI)
                                     ctx.stroke()
                                 }
+                                    
+                                ctx.save()
+                                ctx.transform(1, 0, 0, -1, 0, 0)
+                                ctx.fillText(id, 0.2, -0.2);
+                                ctx.restore()
                             }
                             
-                            ctx.save()
-                            ctx.transform(1, 0, 0, -1, 0, 0)
-                            ctx.fillText(id, 0.2, -0.2);
-                            ctx.restore()
 
                             ctx.restore()
                             ctx.restore()
@@ -390,6 +392,85 @@ function start() {
 }
 
 
+api = {
+    fiducial_assing_current_location(x_global, y_global, id, mode) {
+        apicall("setfiducal", {
+            x: x_global,
+            y: y_global,
+            id: id,
+            mode: mode
+        })
+    },
+    robot_setpos(x_global, y_global, system) {
+        if (system == undefined) {
+            system = "global"
+        } else {
+            alert("need /api/setpos but with pcb coordinate system\nproposal: /api/setpos?x=0&y=0&system=pcb")
+        }
+        apicall("setpos", {
+            x: x_global,
+            y: y_global,
+            system: system
+        })
+    },
+    sequence(method) {
+        apicall("sequencecontrol", {
+            method: method
+        })
+    },
+    bom_set_place(index, active) {
+        alert("unimplemented 'bommodify'")
+        apicall("bommodify", {
+            method: "place",
+            index: index,
+            active: active
+        })
+    },
+    bom_set_fiducial(index, active) {
+        alert("unimplemented 'bommodify'")
+        apicall("bommodify", {
+            method: "fiducial",
+            index: index,
+            active: active
+        })
+    },
+    bom_set_rotation(index, rotation) {
+        alert("unimplemented 'bommodify'")
+        apicall("bommodify", {
+            method: "rotation_bom",
+            index: index,
+            rotation: rotation
+        })
+    },
+    part_set_rotation(id, rotation) {
+        alert("unimplemented 'bommodify'")
+        apicall("bommodify", {
+            method: "rotation_part",
+            id: id,
+            rotation: rotation
+        })
+    },
+    part_set_status(id, status) {
+        alert("unimplemented 'bommodify'")
+        apicall("bommodify", {
+            method: "status",
+            id: id,
+            status: status
+        })
+    },
+}
+
+function apicall(scope, arguments, cb) {
+    ajax({
+        type: "GET",
+        dataType: "application/json",
+        url: "/api/" + scope + build_query_parameter(arguments),
+        success: cb
+    })
+}
+
+
+
 /*
 ajax({
 	    type: "GET",
@@ -446,3 +527,6 @@ function pad(num, size) {
     while (num.length < size) num = "0" + num;
     return num;
 }
+
+
+

@@ -75,7 +75,7 @@ def pnp_bom_parse(pnp, bom):
     #eagle uses 'x', jlcpcb uses 'posX', easyeda uses '', altium uses 'Center-X(mm)'
     pnp_index_x         = find_indexes(pnp_data[0], ["x", "posX", "mid x", "Center-X(mm)", "xmid", "midx", "x-mid", "mid-x"])
     #eagle uses 'y', jlcpcb uses 'posY', easyeda uses '', altium uses 'Center-Y(mm)'
-    pnp_index_y         = find_indexes(pnp_data[0], ["y", "mid y", "Center-Y(mm)", "ymid", "midy", "y-mid", "mid-y"])
+    pnp_index_y         = find_indexes(pnp_data[0], ["y", "posY", "mid y", "Center-Y(mm)", "ymid", "midy", "y-mid", "mid-y"])
     #eagle uses 'rot', jlcpcb uses 'rot', easyeda uses '', altium uses 'rotation'
     pnp_index_rot       = find_indexes(pnp_data[0], ["rot", "rotation"])
     #eagle uses '', jlcpcb uses 'side', easyeda uses '', altium uses 'layer'
