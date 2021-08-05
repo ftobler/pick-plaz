@@ -129,9 +129,9 @@ bool job_prelling = false;
  */
 void setup() {
 	float steps_per_mm = 25.0f * 2.0f;
-	float speed_cap = 450.0f / 2.0f;
-	float speed = 450.0f     / 2.0f;
-	float accel = 3000.0f    / 2.0f;
+	float speed_cap = 350.0f / 2.0f;
+	float speed = 350.0f     / 2.0f;
+	float accel = 2000.0f    / 2.0f;
 
 	//set microstepping to 4x
 	//works only on board v1e or later
@@ -341,8 +341,8 @@ static void do_cmd_drive_to_position(Gcode_command cmd) {
 
 static void do_cmd_home(Gcode_command cmd) {
 	//homeAxle(&stepperZ, &input_endZ, -1, 10.0f, 5000, 500.0f, 5.0f);
-	homeAxle(&stepperX, &input_endX, -1, 80.0f/2.0f, 10000, 1000.0f/2.0f, 5.0f/2.0f);
-	homeAxleDual(&stepperY0, &stepperY1, &input_endY0, &input_endY1, -1, 80.0f/2.0f, 10000, 1000.0f/2.0f, 5.0f/2.0f);
+	homeAxle(&stepperX, &input_endX, -1, 80.0f/4.0f, 30000, 400.0f	, 5.0f/3.0f);
+	homeAxleDual(&stepperY0, &stepperY1, &input_endY0, &input_endY1, -1, 80.0f/4.0f, 30000, 400.0f, 5.0f/3.0f);
 }
 
 static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int homDirection, float home_speed, int home_timeout,
