@@ -133,7 +133,7 @@ def fit_scaled_rigid(points_a, points_b, mirror=True):
 
     return m, mse
 
-def fit_translation(points_a, points_b, mirror):
+def fit_translation(points_a, points_b, mirror=True):
 
     mirror = -1 if mirror else 1
 
@@ -161,6 +161,9 @@ def fit_translation(points_a, points_b, mirror):
 
     return m, mse
 
+
+class CalibrationError(Exception):
+    pass
 
 class Calibration():
 
@@ -192,7 +195,8 @@ class Calibration():
 
         retval, intrinsic, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(batch_obj, batch_pix, im_shape_cv, None, None, )
 
-        assert retval, "Calibration failed"
+        if not retval:
+            raise CalibrationError("Calibration failed")
 
         # Test calibration accuracy
         for obj, pix, rvec, tvec in zip(batch_obj, batch_pix, rvecs, tvecs):
@@ -217,7 +221,8 @@ class Calibration():
 
 
         warp_mat, mse = fit_affine(cam_positions, all_positions_bot)
-        assert mse < 0.1
+        if mse > 0.1:
+            raise CalibrationError("Calibration resulted in abnormaly high residual error")
 
         if plot:
             pattern = np.array([[0,0,39,39,1], [1,39,39,0,0], [1,1,1,1,1]]).T
