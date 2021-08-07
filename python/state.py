@@ -3,12 +3,14 @@ import time
 import queue
 
 import cv2
+import numpy as np
 
 import camera
 import save_robot
 import bottle_svr
 import fiducial
 import calibrator
+import pick
 
 
 class AbortException(Exception):
@@ -21,8 +23,9 @@ class StateContext:
         self.camera = camera
         self.event_queue = event_queue
 
-        self.data = {
-        }
+        import json
+        with open("web/api/data.json", "r") as f:
+            self.data = json.load(f)
 
         self.nav = {
             "camera": {
@@ -46,9 +49,12 @@ class StateContext:
             },
             "detection": {
                 "fiducial": [0, 0],
+                "part" : [0,0,0],
             },
             "state": "idle",
         }
+
+        self.robot.pos_logger = self.nav["camera"]
 
         self.cal = None
         self.ip = None
@@ -98,13 +104,21 @@ class StateContext:
             self.ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
             self.fd = fiducial.FiducialDetector(self.cal)
 
+            self.picker = pick.Picker(self.cal)
+
         except calibrator.CalibrationError as e:
             print(f"Sorry calibration failed: {e}")
             return self.idle_state
-        except AbortException:
+        except AbortException as e:
+            print(f"Abort Exception: {e}")
             return self.idle_state
 
         return self.setup_state
+
+    def _pcb2robot(self, x, y):
+        m = np.array(self.nav["pcb"]["transform"]).reshape((3,2)).T
+        x, y = m[:2,:2] @ (x, y) + m[:2,2]
+        return x, y
 
     def setup_state(self):
 
@@ -116,9 +130,8 @@ class StateContext:
 
                 x = item["x"]
                 y = item["y"]
-
-                self.nav["camera"]["x"] = float(x)
-                self.nav["camera"]["y"] = float(y)
+                if item["system"] == "pcb":
+                    x, y = self._pcb2robot(x, y)
 
                 self.robot.drive(x,y)
                 self.robot.flush()
@@ -126,6 +139,9 @@ class StateContext:
                 time.sleep(0.5)
                 cache = self.camera.cache
                 cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
+
+                # self.nav["detection"]["part"] = self.picker.detect_pick_location2((x, y), self.robot, self.camera)
+                # p.make_collage(self.robot, self.camera)
 
                 try:
                     self.nav["detection"]["fiducial"] =  self.fd(cam_image, (x, y))
@@ -138,9 +154,12 @@ class StateContext:
                 self.nav["pcb"]["transform"] = transform
                 self.nav["pcb"]["transform_mse"] = float(mse)
 
-            elif item["type"] == "run":
-                return self.init_state
+            elif item["type"] == "sequence":
+                if item["method"] == "play":
+                    return self.run_state
 
+        except save_robot.OutOfSaveSpaceException as e:
+            print(e)
         except AbortException:
             return self.idle_state
 
@@ -154,17 +173,33 @@ class StateContext:
 
             print("get next part information")
 
+            tray = self.data["feeder"]["tray 5"]
+            part_pos = (50,50)
+
+
             print("pick part")
+            self.nav["detection"]["part"] = self.picker.pick_from_tray(tray, self.robot, self.camera)
 
             print("place part")
 
-            item = self.event_queue.get(block=False)
-            if item is not None:
+            pos = self._pcb2robot(*part_pos)
+            self.robot.drive(*pos)
+            self.robot.done()
+            time.sleep(1.5)
+
+            try:
+                item = self.event_queue.get(block=False)
                 if item["type"] == "run":
                     return self.init_state
+            except queue.Empty:
+                pass
+
+        except pick.NoPartFoundException as e:
+            print(e)
+            return self.setup_state
         except AbortException:
             return self.idle_state
-        return self.run_state
+        return self.setup_state
 
 
 def main():
