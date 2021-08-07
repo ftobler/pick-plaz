@@ -52,7 +52,6 @@ class StateContext:
                 "part" : [0,0,0],
             },
             "state": "idle",
-            "alerts": [],
         }
 
         self.robot.pos_logger = self.nav["camera"]
@@ -224,18 +223,19 @@ class StateContext:
         return self.run_state
 
     def _push_alert(self, msg, answers=None):
-        alerts = self.nav["alerts"]
-        if len(alerts) == 0:
-            uid = 0
+        if "alert" in self.nav:
+            uid = self.nav["alert"]["id"] + 1
         else:
-            uid = alerts[-1]["id"] + 1
+            uid = 0
+
         if answers is None:
             answers = ["ok"]
-        alerts.append({
+
+        self.nav["alert"] = {
             "id" : uid,
             "msg" : str(msg),
             "answers" : [str(a) for a in answers],
-        })
+        }
 
 def main():
 
