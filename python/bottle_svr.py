@@ -83,6 +83,14 @@ class BottleServer:
         except:
             pass
 
+    def _alertquit(self):
+        r = dict(request.query.decode())
+        try:
+            r["type"] = "alertquit"
+            self.event_put_fcn(r)
+        except:
+            pass
+
     def _home(self):
         return static_file("pickplaz.html", root='web')
 
@@ -96,6 +104,7 @@ class BottleServer:
         route('/api/setpos')(self._setpos)
         route('/api/setfiducal')(self._setfiducial)
         route('/api/sequencecontrol')(self._sequencecontrol)
+        route('/api/alertquit')(self._alertquit)
         route('/<name:path>')(self._files)
 
         print(f"Starting server at {self.listen}:{self.port}")

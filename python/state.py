@@ -52,6 +52,7 @@ class StateContext:
                 "part" : [0,0,0],
             },
             "state": "idle",
+            "alerts": [],
         }
 
         self.robot.pos_logger = self.nav["camera"]
@@ -107,10 +108,10 @@ class StateContext:
             self.picker = pick.Picker(self.cal)
 
         except calibrator.CalibrationError as e:
-            print(f"Sorry calibration failed: {e}")
+            self._push_alert(e)
             return self.idle_state
         except AbortException as e:
-            print(f"Abort Exception: {e}")
+            self._push_alert(e)
             return self.idle_state
 
         return self.setup_state
@@ -159,8 +160,9 @@ class StateContext:
                     return self.run_state
 
         except save_robot.OutOfSaveSpaceException as e:
-            print(e)
-        except AbortException:
+            self._push_alert(e)
+        except AbortException as e:
+            self._push_alert(e)
             return self.idle_state
 
         return self.setup_state
@@ -186,6 +188,7 @@ class StateContext:
 
             part, partdes = self._get_next_part()
             if part is None:
+                self._push_alert("Placing finished")
                 return self.setup_state
             part_pos = float(partdes["x"]), float(partdes["y"])
             tray = self.data["feeder"]["tray 5"] #TODO where to retrive tray of a part
@@ -213,12 +216,26 @@ class StateContext:
                 pass
 
         except pick.NoPartFoundException as e:
-            print(e)
+            self._push_alert(e)
             return self.setup_state
-        except AbortException:
+        except AbortException as e:
+            self._push_alert(e)
             return self.idle_state
         return self.run_state
 
+    def _push_alert(self, msg, answers=None):
+        alerts = self.nav["alerts"]
+        if len(alerts) == 0:
+            uid = 0
+        else:
+            uid = alerts[-1]["id"] + 1
+        if answers is None:
+            answers = ["ok"]
+        alerts.append({
+            "id" : uid,
+            "msg" : str(msg),
+            "answers" : [str(a) for a in answers],
+        })
 
 def main():
 
