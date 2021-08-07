@@ -85,12 +85,18 @@ function start() {
                         }
                         this.draw_stuff()
 
-                        if (this.nav.alerts != [] && this.activealert == null) {
-                            let alert_data = this.nav.alerts[0]
-                            if (alert_data.id > this.last_quit_alert) {
-                                console.log(JSON.stringify(alert_data, null, 4))
-                                this.activealert = alert_data
+                        if (this.nav.alert != undefined) {
+                            if (this.last_quit_alert < this.nav.alert.id) {
+                                if (this.activealert && this.activealert.id != this.nav.alert.id) {
+                                    console.log(JSON.stringify(this.nav.alert, null, 4))
+                                }
+                                this.activealert = this.nav.alert
+                                if (this.activealert.answers == undefined || this.activealert.answers.length == 0) {
+                                    this.activealert.answers = ["OK"]
+                                }
                             }
+                        } else {
+                            this.activealert = null
                         }
                     },
                 })
