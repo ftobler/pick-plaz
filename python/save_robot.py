@@ -6,12 +6,14 @@ class OutOfSaveSpaceException(Exception):
 
 class SaveRobot(pick_plaz_robot.Robot):
     """ Wrapper for Robot that checks for illegal operations"""
-    
-    def __init__(self, comport):
+
+    def __init__(self, comport, pos_logger=None):
         super().__init__(comport)
 
         self.x_bounds = (0,400)
         self.y_bounds = (0,400)
+
+        self.pos_logger = pos_logger
 
     @staticmethod
     def __check_range(x, start_stop):
@@ -21,9 +23,15 @@ class SaveRobot(pick_plaz_robot.Robot):
         elif x < start_stop[0] or x > start_stop[1]:
             return True
         else:
-            return False 
+            return False
 
     def drive(self, x=None, y=None, z=None, e=None, a=None, b=None, c=None, f=None):
+
+        if self.pos_logger is not None:
+            if x is not None:
+                self.pos_logger["x"] = x
+            if y is not None:
+                self.pos_logger["y"] = y
 
         if self.__check_range(x, self.x_bounds):
             raise OutOfSaveSpaceException(f"Attempting to drive x={x} which is outside of save bounds {self.x_bounds}")

@@ -210,7 +210,6 @@ function start() {
                 alert("unimplemented")
             },
             do_sequence(method) {
-                alert("unimplemented '" + method + "'")
                 api.sequence(method)
             },
             do_alert_quit(id, answer) {
@@ -262,6 +261,8 @@ function start() {
                 if (this.elements.show_symbol) {
                     ctx.strokeStyle = "yellow"
                     this.draw_fiducial(ctx, this.nav.detection.fiducial, "detection")
+
+                    this.draw_part(ctx, this.nav.detection.part, "part")
                     //draw detected fiducials
                     if (this.elements.show_symbol) {
                         ctx.strokeStyle = "yellow"
@@ -381,6 +382,28 @@ function start() {
                 ctx.arc(coord[0], coord[1], 1.5, 0, 2 * Math.PI)
                 ctx.stroke();
                 ctx.fillText(text, coord[0] + 0.2, coord[1] - 0.2);
+            },
+            draw_part(ctx, coord, text) {
+                ctx.save();
+                ctx.translate(coord[0], coord[1]);
+
+                ctx.beginPath();
+                ctx.arc(0, 0, 0.75, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(0, 0, 1.5, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fillText(text, 0.2, 0.2);
+
+                ctx.rotate(-coord[2]);
+                ctx.moveTo(-2,0);
+                ctx.lineTo(2,0);
+                ctx.stroke();
+                ctx.moveTo(0,-3);
+                ctx.lineTo(0,3);
+                ctx.stroke();
+
+                ctx.restore();
             }
         },
         filters: {
@@ -419,9 +442,10 @@ api = {
     robot_setpos(x_global, y_global, system) {
         if (system == undefined) {
             system = "global"
-        } else {
-            alert("need /api/setpos but with pcb coordinate system\nproposal: /api/setpos?x=0&y=0&system=pcb")
         }
+        // else {
+        //     alert("need /api/setpos but with pcb coordinate system\nproposal: /api/setpos?x=0&y=0&system=pcb")
+        // }
         apicall("setpos", {
             x: x_global,
             y: y_global,

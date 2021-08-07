@@ -414,10 +414,19 @@
     "feeder": {
         "tray 1": {
             "type": "auto_detect_zone",
-            "x": 442,  
+            "x": 442,
             "y": 330,
-            "width": 33,  
+            "width": 33,
             "height": 21,
+            "pitch": null,
+            "orientation": null
+        },
+        "tray 5": {
+            "type": "auto_detect_zone",
+            "x": 132,
+            "y": 298,
+            "width": 48,
+            "height": 30,
             "pitch": null,
             "orientation": null
         }
