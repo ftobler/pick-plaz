@@ -297,7 +297,8 @@ input:checked + .slider:before {
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 .alert-content {
-    background-color: rgb(151, 0, 0);
+    /*background-color: rgb(151, 0, 0);*/
+    background-color: rgb(21, 23, 31);
     margin: auto;
     text-align: left;
     vertical-align: top;
@@ -333,13 +334,11 @@ input:checked + .slider:before {
     line-height: 44px;
     text-align: center;
     vertical-align: middle;
-    background-color: rgb(131, 1, 1);
+    /*background-color: rgb(131, 1, 1);*/
+    background-color: rgb(34, 37, 46);
 }
 
 .alert-button:hover {
-    background-color: rgb(175, 57, 57) !important;
+    /*background-color: rgb(175, 57, 57) !important;*/
+    background-color: rgb(58, 61, 73);
 }
-.alert-button:active {
-    background-color: rgb(194, 52, 52) !important;
-}
-
