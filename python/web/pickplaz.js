@@ -85,7 +85,7 @@ function start() {
                         }
                         this.draw_stuff()
 
-                        if (this.nav.alert != undefined) {
+                        if (this.nav.alert != undefined && this.nav.alert != null) {
                             if (this.last_quit_alert < this.nav.alert.id) {
                                 if (this.activealert && this.activealert.id != this.nav.alert.id) {
                                     console.log(JSON.stringify(this.nav.alert, null, 4))
