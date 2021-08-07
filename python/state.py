@@ -165,6 +165,17 @@ class StateContext:
 
         return self.setup_state
 
+    def _get_next_part(self):
+        for part in self.data["bom"]:
+            for name, partdes in part["parts"].items():
+                if "x" not in partdes:
+                    continue
+                part_pos = float(partdes["x"]), float(partdes["y"])
+                if partdes["state"] == 0:
+                    return part, partdes
+        return None, None
+
+
     def run_state(self):
 
         self.nav["state"] = "run"
@@ -173,11 +184,15 @@ class StateContext:
 
             print("get next part information")
 
-            tray = self.data["feeder"]["tray 5"]
-            part_pos = (50,50)
+            part, partdes = self._get_next_part()
+            if part is None:
+                return self.setup_state
+            part_pos = float(partdes["x"]), float(partdes["y"])
+            tray = self.data["feeder"]["tray 5"] #TODO where to retrive tray of a part
 
 
             print("pick part")
+
             self.nav["detection"]["part"] = self.picker.pick_from_tray(tray, self.robot, self.camera)
 
             print("place part")
@@ -187,10 +202,13 @@ class StateContext:
             self.robot.done()
             time.sleep(1.5)
 
+            partdes["state"] = 1
+
             try:
                 item = self.event_queue.get(block=False)
-                if item["type"] == "run":
-                    return self.init_state
+                if item["type"] == "sequence":
+                    if item["method"] == "pause":
+                        return self.setup_state
             except queue.Empty:
                 pass
 
@@ -199,7 +217,7 @@ class StateContext:
             return self.setup_state
         except AbortException:
             return self.idle_state
-        return self.setup_state
+        return self.run_state
 
 
 def main():

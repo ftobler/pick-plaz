@@ -200,8 +200,6 @@ function start() {
                 alert("unimplemented")
             },
             do_sequence(method) {
-                if (method != "play")
-                    alert("unimplemented '" + method + "'");
                 api.sequence(method)
             },
             draw_stuff() {

@@ -424,7 +424,7 @@
         "tray 5": {
             "type": "auto_detect_zone",
             "x": 132,
-            "y": 299,
+            "y": 298,
             "width": 48,
             "height": 30,
             "pitch": null,

@@ -17,36 +17,45 @@ class Picker():
         self.min_area_mm2 = 2
 
         self.res = 20
-        self.range = 30
+        self.range = 20
 
         h = calibrator.Homography(cal, self.res, (int(self.res*self.range),int(self.res*self.range)))
         self.ip = calibrator.ImageProjector(h, border_value=(0,0,0))
 
     def pick_from_tray(self, tray, robot, camera):
 
-        x, y = tray["x"], tray["y"]
-        x += tray["width"] / 2
-        y += tray["height"] / 2
+        r = self.range
 
-        robot_pos = (x, y)
+        w = tray["width"] - r
+        h = tray["height"] - r
+        xs = tray["x"] + r/2 + np.linspace(0, w, 2 + int(np.floor(w/(r*2/3))))
+        ys = tray["y"] + r/2 + np.linspace(0, h, 2 + int(np.floor(h/(r*2/3))))
+        search_positions = np.stack(np.meshgrid(xs, ys), axis=-1).reshape((-1,2))
 
         robot.light_topdn(False)
-        robot.drive(x, y)
-        robot.done()
-        time.sleep(1.5)
-        image = camera.cache["image"]
-        robot.light_topdn(True)
-        image = self.ip.project(image)
 
-        p, a = self._find_components(image)
-        if len(p) == 0:
+        for robot_pos in search_positions:
+
+            robot.drive(*robot_pos)
+            robot.done()
+            time.sleep(0.5)
+            image = camera.cache["image"]
+            image = self.ip.project(image)
+
+            p, a = self._find_components(image)
+            if len(p):
+                break
+        else:
             raise NoPartFoundException("Could not find part to pick")
 
         pos = np.array(p[0])
         pos = tuple((pos / self.res) - (self.range/2) + robot_pos)
 
         robot.drive(*pos)
-        time.sleep(1.5)
+        robot.done()
+        time.sleep(0.5)
+
+        robot.light_topdn(True)
 
         return (pos[0], pos[1], a[0]/180*np.pi)
 
@@ -165,7 +174,8 @@ class Picker():
         res = np.empty((s, s), np.uint8)
 
         robot.drive(x0, y0)
-        time.sleep(2)
+        robot.done()
+        time.sleep(0.5)
 
         for x in range(10):
             r = range(10)
@@ -175,7 +185,7 @@ class Picker():
 
             for y in r:
                 robot.drive(x0+x*mm_step, y0+y*mm_step)
-                robot.flush()
+                robot.done()
                 time.sleep(0.5)
 
                 image = camera.cache["image"]
