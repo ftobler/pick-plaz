@@ -23,5 +23,19 @@
     },
     "detection": {
         "fiducial": [0, 0]
-    }
+    },
+    "state": "idle",
+    "alerts": [
+        {
+            "id": 0,
+            "msg": "this is an alert set in nav.json. everything in 'data' gets printed in js console",
+            "data": {
+                "id": "something"
+            },
+            "answers": [
+                "OK",
+                "AAaaaaarrrg"
+            ]
+        }
+    ]
 }

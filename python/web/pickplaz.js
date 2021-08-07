@@ -6,6 +6,8 @@ function start() {
         el: "#app",
         data: {
             page: NAVPAGE,
+            activealert: null,
+            last_quit_alert: -1,
             nav: {
             },
             nav_init: false,
@@ -82,6 +84,14 @@ function start() {
                             }, 300)
                         }
                         this.draw_stuff()
+
+                        if (this.nav.alerts != [] && this.activealert == null) {
+                            let alert_data = this.nav.alerts[0]
+                            if (alert_data.id > this.last_quit_alert) {
+                                console.log(JSON.stringify(alert_data, null, 4))
+                                this.activealert = alert_data
+                            }
+                        }
                     },
                 })
             },
@@ -202,6 +212,11 @@ function start() {
             do_sequence(method) {
                 alert("unimplemented '" + method + "'")
                 api.sequence(method)
+            },
+            do_alert_quit(id, answer) {
+                this.activealert = null
+                this.last_quit_alert = id
+                api.alert_quit(id, answer)
             },
             draw_stuff() {
                 var c = document.getElementById("canvas-view");
@@ -416,6 +431,12 @@ api = {
     sequence(method) {
         apicall("sequencecontrol", {
             method: method
+        })
+    },
+    alert_quit(id, answer) {
+        apicall("alertquit", {
+            id: id,
+            answer: answer
         })
     },
     bom_set_place(index, active) {

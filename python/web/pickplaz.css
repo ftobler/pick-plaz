@@ -278,3 +278,68 @@ input:checked + .slider:before {
 .switcher-label {
     margin-right: 20px;
 }
+
+
+
+
+.alert {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: none;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.alert-content {
+    background-color: rgb(151, 0, 0);
+    margin: auto;
+    text-align: left;
+    vertical-align: top;
+    height: 200px;
+    width: 550px;
+    transform: skew(-15deg);
+    overflow: hidden;
+    position: relative;
+}
+.alert-content h1 {  /* nexted selector (space)*/
+    margin: 10px;
+    margin-left: 15px;
+    margin-bottom: 0px;
+}
+.alert-content p {  /* nexted selector (space)*/
+    margin: 10px;
+    margin-left: 15px;
+    margin-bottom: 0px;
+}
+.alert-button-list {
+    position: absolute;
+    bottom: 10px; 
+    right: 10px; 
+}
+.alert-button {  /* nexted selector (space)*/
+    display: inline-block;
+    margin-top: 0;
+    margin-left: 10px;
+    font-weight: bold;
+}
+.alert-button {
+    width: 140px;
+    line-height: 44px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: rgb(131, 1, 1);
+}
+
+.alert-button:hover {
+    background-color: rgb(175, 57, 57) !important;
+}
+.alert-button:active {
+    background-color: rgb(194, 52, 52) !important;
+}
+
