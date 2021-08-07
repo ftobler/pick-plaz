@@ -22,7 +22,8 @@
         }
     },
     "detection": {
-        "fiducial": [0, 0]
+        "fiducial": [0, 0],
+        "part": [0, 0, 0]
     },
     "state": "idle",
     "alerts": [
