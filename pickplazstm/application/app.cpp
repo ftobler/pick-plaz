@@ -347,16 +347,23 @@ static void do_cmd_home(Gcode_command cmd) {
 		cmd.valueZ = 0;
 	}
 	if (cmd.valueZ != NaN) {
+		float tmpSpeed = stepperZ.getMaxSpeed_mm();
 		       //motor      endstop     dir  speed     timeout  travel backtravel
 		homeAxle(&stepperZ, &input_endZ,  1, 80.0f/4.0f, 5000,   15.0f, 7.5f, 9.0f);
+		stepperZ.setMaxSpeed_mm(tmpSpeed);
 	}
 	if (cmd.valueX != NaN) {
+		float tmpSpeed = stepperX.getMaxSpeed_mm();
 	           //motor      endstop     dir  speed     timeout  travel backtravel
 		homeAxle(&stepperX, &input_endX, -1, 80.0f/4.0f, 30000, 400.0f, 3.0f, -1.0f);
+		stepperX.setMaxSpeed_mm(tmpSpeed);
 	}
 	if (cmd.valueY != NaN) {
+		float tmpSpeed = stepperY0.getMaxSpeed_mm();
 	                //motor1     motor2      endstop1      endstop2     dir  speed     timeout  travel backtravel
 		homeAxleDual(&stepperY0, &stepperY1, &input_endY0, &input_endY1, -1, 80.0f/4.0f, 30000, 400.0f, 3.0f, -1.0f);
+		stepperY0.setMaxSpeed_mm(tmpSpeed);
+		stepperY1.setMaxSpeed_mm(tmpSpeed);
 	}
 }
 
@@ -364,7 +371,7 @@ static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int
 		float home_travel_mm, float home_travel_back_mm, float sensor_position) {
 	uint32_t endtime;
 
-	float tmpSpeed = stepper->getMaxSpeed_mm();                  //save current motor speed for later
+
 	stepper->setMaxSpeed_mm(home_speed);                         //set homing fast speed for 1st travel
 	stepper->setCurrentPosition_mm(0.0f);                         //reset position to 0
 	stepper->moveTo_mm(home_travel_mm * homDirection);           //run to endstop
@@ -392,7 +399,6 @@ static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int
 	stepper->move(0);                                            //stepper shoud stop immediately
 	stepper->setCurrentPosition_mm(sensor_position);                       //homing finished
 	stepper->moveTo_mm(0.0f);
-	stepper->setMaxSpeed_mm(tmpSpeed);                           //restore motor speed
 }
 
 
