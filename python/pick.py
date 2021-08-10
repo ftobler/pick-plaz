@@ -14,7 +14,7 @@ class Picker():
 
     def __init__(self, cal):
 
-        self.min_area_mm2 = 2
+        self.min_area_mm2 = 1.5
 
         self.res = 20
         self.range = 20
@@ -24,7 +24,7 @@ class Picker():
 
     def pick_from_tray(self, tray, robot, camera):
 
-        r = self.range
+        r = self.range + 4 #TODO check correct ranging
 
         w = tray["width"] - r
         h = tray["height"] - r
@@ -33,6 +33,8 @@ class Picker():
         search_positions = np.stack(np.meshgrid(xs, ys), axis=-1).reshape((-1,2))
 
         robot.light_topdn(False)
+
+        time.sleep(3) #quickfit as long as robot.done() is not working correctly #TODO remove
 
         for robot_pos in search_positions:
 
@@ -51,9 +53,20 @@ class Picker():
         pos = np.array(p[0])
         pos = tuple((pos / self.res) - (self.range/2) + robot_pos)
 
+        #drive to part and measure again without paralax
+        robot_pos = pos
         robot.drive(*pos)
         robot.done()
         time.sleep(0.5)
+        image = camera.cache["image"]
+        image = self.ip.project(image)
+
+        p, a = self._find_components(image)
+        if len(p):
+            pos = np.array(p[0])
+            pos = tuple((pos / self.res) - (self.range/2) + robot_pos)
+        else:
+            raise NoPartFoundException("Could not find part to pick")
 
         robot.light_topdn(True)
 
