@@ -17,6 +17,9 @@ class AbortException(Exception):
     """ All calibration is broken"""
     pass
 
+DX, DY = 200 - 127.33, 200 - 218.39
+PICK_Z = -18
+
 class StateContext:
     def __init__(self, robot, camera, event_queue):
         self.robot = robot
@@ -42,10 +45,19 @@ class StateContext:
                 "width": 400,
                 "height": 400,
             },
+            # "pcb": {
+            #     "transform": [1, 0, 0, -1, 10, -10],
+            #     "transform_mse" : 0.1,
+            #     "fiducials": {},
+            # },
             "pcb": {
-                "transform": [1, 0, 0, -1, 10, -10],
-                "transform_mse" : 0.1,
-                "fiducials": {},
+                "transform": [0.7731953990297232, 0.6349855425247388, 0.6334672579790972, -0.7721192569425455, 58.60784553169759, 195.32190030743706],
+                "transform_mse": 2.271919407036514e-26,
+                "fiducials": {
+                    "V1": [76.68486786123627, 191.42850482080448],
+                    "V2": [62.53430535086904, 213.40856212888522],
+                    "V3": [40.5308232021589, 199.21529579406945]
+                }
             },
             "detection": {
                 "fiducial": [0, 0],
@@ -91,6 +103,8 @@ class StateContext:
         self.nav["state"] = "init"
 
         try:
+            self.robot.vacuum(False)
+            self.robot.valve(False)
             self.robot.home()
             self.robot.light_topdn(True)
 
@@ -120,6 +134,21 @@ class StateContext:
         x, y = m[:2,:2] @ (x, y) + m[:2,2]
         return x, y
 
+    def _pcb2robot2(self, x, y, a):
+        m = np.array(self.nav["pcb"]["transform"]).reshape((3,2)).T
+        a = a * np.pi/180
+        x2 = x + np.cos(a)
+        y2 = y + np.sin(a)
+
+        x, y = m[:2,:2] @ (x, y) + m[:2,2]
+
+        x2, y2 = m[:2,:2] @ (x2, y2) + m[:2,2]
+
+        a = np.arctan2(y2-y, x2-x)
+        a = a*180/np.pi
+
+        return x, y, a
+
     def setup_state(self):
 
         self.nav["state"] = "setup"
@@ -134,7 +163,7 @@ class StateContext:
                     x, y = self._pcb2robot(x, y)
 
                 self.robot.drive(x,y)
-                self.robot.flush()
+                self.robot.done()
 
                 time.sleep(0.5)
                 cache = self.camera.cache
@@ -172,7 +201,7 @@ class StateContext:
                 if "x" not in partdes:
                     continue
                 part_pos = float(partdes["x"]), float(partdes["y"])
-                if partdes["state"] == 0:
+                if partdes["state"] == 0 and partdes["place"]:
                     return part, partdes
         return None, None
 
@@ -189,21 +218,41 @@ class StateContext:
             if part is None:
                 self._push_alert("Placing finished")
                 return self.setup_state
-            part_pos = float(partdes["x"]), float(partdes["y"])
-            tray = self.data["feeder"]["tray 5"] #TODO where to retrive tray of a part
+            place_pos = float(partdes["x"]), float(partdes["y"])
+            place_angle = float(partdes["rot"])
+            tray = self.data["feeder"][part["feeder"]]
 
+            print("get pick position")
+            # peek part location
+            pick_pos = self.picker.pick_from_tray(tray, self.robot, self.camera)
+            self.nav["detection"]["part"] = pick_pos
 
             print("pick part")
 
-            self.nav["detection"]["part"] = self.picker.pick_from_tray(tray, self.robot, self.camera)
+            self.robot.vacuum(True)
+            self.robot.valve(False)
+            x, y, angle_rad = pick_pos
+            self.robot.drive(x=x+DX, y=y+DY)
+            self.robot.drive(e=angle_rad*180/np.pi, f=350)
+            self.robot.drive(z=PICK_Z)
+            self.robot.done()
+            self.robot.valve(True)
+            self.robot.drive(z=0)
+            self.robot.drive(e=0, f=350)
 
             print("place part")
 
-            pos = self._pcb2robot(*part_pos)
-            self.robot.drive(*pos)
+            x, y = place_pos
+            x, y, place_angle = self._pcb2robot2(x, y, place_angle)
+            self.robot.drive(x=x+DX, y=y+DY)
+            self.robot.drive(e=-place_angle, f=350)
+            self.robot.drive(z=PICK_Z)
             self.robot.done()
-            time.sleep(1.5)
+            self.robot.valve(False)
+            self.robot.vacuum(False)
+            self.robot.drive(z=0)
 
+            print("update part")
             partdes["state"] = 1
 
             try:
@@ -263,6 +312,7 @@ def main():
 
     # park robot
     robot.drive(5,5) # drive close to home
+    robot.done()
     robot.dwell(1000)
     robot.steppers(False)
     robot.light_topdn(False)
