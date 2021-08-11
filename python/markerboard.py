@@ -11,7 +11,7 @@ def to_svg(filename, markers, positions, markersize):
 
     positions = np.array(positions)
 
-    size = tuple(positions.max(axis=0) + markersize+1)
+    size = tuple(positions.max(axis=0) + markersize)
 
     aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_100)
 
@@ -36,6 +36,25 @@ def to_svg(filename, markers, positions, markersize):
                         ctx.fill()
             ctx.restore()
 
+def to_png(filename, markers, positions, markersize):
+    """ Save marker board as png to print on pcb"""
+
+    positions = np.array(positions)
+
+    r = 2
+
+    size = tuple((positions.max(axis=0) + markersize)*r)
+
+    aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_100)
+
+    canvas = np.ones(size, np.uint8)*255
+    for marker_id, (x0, y0) in zip(markers, positions):
+        marker_image = cv2.aruco.drawMarker(aruco_dict, marker_id, 6)
+        x = r*x0
+        y = r*y0
+        canvas[y:y+marker_image.shape[1], x:x+marker_image.shape[0]] = marker_image
+    cv2.imwrite(filename, canvas)
+
 size_x = 10
 size_y = 10
 marker_size = 3
@@ -53,3 +72,4 @@ ids = np.arange(len(positions))
 
 if __name__ == "__main__":
     to_svg("test.svg", ids, positions, marker_size)
+    to_png("test.png", ids, positions, marker_size)
