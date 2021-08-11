@@ -11,7 +11,7 @@ import bottle_svr
 import fiducial
 import calibrator
 import pick
-
+import camera_cal
 
 class AbortException(Exception):
     """ All calibration is broken"""
@@ -45,20 +45,20 @@ class StateContext:
                 "width": 400,
                 "height": 400,
             },
-            # "pcb": {
-            #     "transform": [1, 0, 0, -1, 10, -10],
-            #     "transform_mse" : 0.1,
-            #     "fiducials": {},
-            # },
             "pcb": {
-                "transform": [0.7731953990297232, 0.6349855425247388, 0.6334672579790972, -0.7721192569425455, 58.60784553169759, 195.32190030743706],
-                "transform_mse": 2.271919407036514e-26,
-                "fiducials": {
-                    "V1": [76.68486786123627, 191.42850482080448],
-                    "V2": [62.53430535086904, 213.40856212888522],
-                    "V3": [40.5308232021589, 199.21529579406945]
-                }
+                "transform": [1, 0, 0, -1, 10, -10],
+                "transform_mse" : 0.1,
+                "fiducials": {},
             },
+            # "pcb": {
+            #     "transform": [0.7731953990297232, 0.6349855425247388, 0.6334672579790972, -0.7721192569425455, 58.60784553169759, 195.32190030743706],
+            #     "transform_mse": 2.271919407036514e-26,
+            #     "fiducials": {
+            #         "V1": [76.68486786123627, 191.42850482080448],
+            #         "V2": [62.53430535086904, 213.40856212888522],
+            #         "V3": [40.5308232021589, 199.21529579406945]
+            #     }
+            # },
             "detection": {
                 "fiducial": [0, 0],
                 "part" : [0,0,0],
@@ -108,8 +108,7 @@ class StateContext:
             self.robot.home()
             self.robot.light_topdn(True)
 
-            from pcb_cal import calibrate
-            self.cal = calibrate(self.robot, self.camera)
+            self.cal = camera_cal.calibrate(self.robot, self.camera)
 
             res = self.nav["camera"]["res"]
             width = self.nav["camera"]["width"]
@@ -164,7 +163,6 @@ class StateContext:
 
                 self.robot.drive(x,y)
                 self.robot.done()
-
                 time.sleep(0.5)
                 cache = self.camera.cache
                 cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
@@ -179,9 +177,25 @@ class StateContext:
 
             elif item["type"] == "setfiducial":
                 self.nav["pcb"]["fiducials"][item["id"]] = (item["x"], item["y"])
-                transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"])
+                transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], self.data["bom"])
                 self.nav["pcb"]["transform"] = transform
                 self.nav["pcb"]["transform_mse"] = float(mse)
+            elif item["type"] == "autosetfiducial":
+                #TODO make button in web ui, test
+
+                fiducial_parts = [x["parts"] for x in self.data["bom"] if x["fiducial"]]
+
+                for name, part in fiducial_parts.items():
+                    x, y = self._pcb2robot(float(part["x"]), float(part["y"]))
+
+                    self.robot.drive(x,y)
+                    self.robot.done()
+
+                    time.sleep(0.5)
+                    cache = self.camera.cache
+                    cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
+
+                    self.nav["pcb"]["fiducials"][name] = self.fd(cam_image, (x, y))
 
             elif item["type"] == "sequence":
                 if item["method"] == "play":
@@ -196,12 +210,13 @@ class StateContext:
         return self.setup_state
 
     def _get_next_part(self):
+        """ find next part in bom that is eligable for placing"""
         for part in self.data["bom"]:
             for name, partdes in part["parts"].items():
                 if "x" not in partdes:
                     continue
                 part_pos = float(partdes["x"]), float(partdes["y"])
-                if partdes["state"] == 0 and partdes["place"]:
+                if partdes["state"] == 0 and partdes["place"] and not part["fiducial"]:
                     return part, partdes
         return None, None
 
@@ -223,7 +238,6 @@ class StateContext:
             tray = self.data["feeder"][part["feeder"]]
 
             print("get pick position")
-            # peek part location
             pick_pos = self.picker.pick_from_tray(tray, self.robot, self.camera)
             self.nav["detection"]["part"] = pick_pos
 
@@ -311,6 +325,8 @@ def main():
     print("finished")
 
     # park robot
+    robot.vacuum(False)
+    robot.valve(False)
     robot.drive(5,5) # drive close to home
     robot.done()
     robot.dwell(1000)

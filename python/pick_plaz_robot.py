@@ -13,24 +13,31 @@ class Robot:
     def __init__(self, comport):
         self.con = Serial(comport, baudrate=115200, timeout=0.1)
 
-    def home(self):
+    def home(self, axis=None):
         """
         Sends a HOME command
+
+        axis : str, axes to home e.g. axis="xy" homes the x and y axis
 
         Function blocks execution until the command is sent.
         Returns itself
         """
-        self.__send_commands(["G28"])
+        if axis is None:
+            self.__send_commands(["G28"])
+        else:
+            axes = " ".join(f"{a}=0" for a in ["x", "y", "z"] if a in axis)
+            self.__send_commands([f"G28 {axes}"])
+
         return self
 
     def done(self):
         """
         Sends a SYNC and blocks until controller has executed it.
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
-        self.sync = False
+        self.__sync = False
         self.__send_commands(["M1000"])
         while not self.__sync:
             self.__receive_answer()
@@ -39,7 +46,7 @@ class Robot:
     def flush(self):
         """
         Blocks until the command queue on controller side is empty.
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -60,7 +67,7 @@ class Robot:
           * A = Paste Motor
           * B = reserved
           * C = reserved
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -91,7 +98,7 @@ class Robot:
         Assumes this as the actual position without driving there.
 
         Axies descripton see drive()
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -120,7 +127,7 @@ class Robot:
         set the axies acceleration
 
         Axies descripton see drive()
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -149,7 +156,7 @@ class Robot:
         set the maximum allowed feedrate
 
         Axies descripton see drive()
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -171,7 +178,7 @@ class Robot:
         if c != None:
             cmd.append(" C%f" % c)
         self.__send_commands(["".join(cmd)])
-        return self   
+        return self
 
     def feedrate_multiplier(self, x=None, y=None, z=None, e=None, a=None, b=None, c=None):
         """
@@ -184,7 +191,7 @@ class Robot:
         this allows slow rotating axies to kind of ignore the F-Parameter
 
         Axies descripton see drive()
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -211,7 +218,7 @@ class Robot:
     def dwell(self, timeout_milliseconds):
         """
         controller sleeps for this amount of time
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -221,7 +228,7 @@ class Robot:
     def vacuum(self, enable):
         """
         turn the vacuum pump (motor) on/off
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -230,11 +237,11 @@ class Robot:
         else:
             self.__send_commands(["M11"])
         return self
-        
+
     def valve(self, enable):
         """
         turn the vacuum valve to the nozzle on/off
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -247,7 +254,7 @@ class Robot:
     def steppers(self, enable):
         """
         turn stepper power on/off
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -261,7 +268,7 @@ class Robot:
     def light_botup(self, enable=True):
         """
         Switch Light ON/OFF (True/False)
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -272,7 +279,7 @@ class Robot:
     def light_topdn(self, enable=True):
         """
         Switch Light ON/OFF (True/False)
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -283,7 +290,7 @@ class Robot:
     def light_tray(self, enable=True):
         """
         Switch Light ON/OFF (True/False)
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -294,7 +301,7 @@ class Robot:
     def raw_command(self, gcode):
         """
         Send a raw GCODE command
-        
+
         Function blocks execution until the command is sent.
         Returns itself
         """
@@ -303,7 +310,7 @@ class Robot:
 
 
     def __set_io(self, io, enable):
-        
+
         """
         control IO
         """
@@ -328,10 +335,10 @@ class Robot:
 
     def __receive_answer(self):
         """
-        Receives at least one line but multiple if needed. 
+        Receives at least one line but multiple if needed.
         Depending on the result, Exceptions are thrown or Flags set.
         """
-        
+
         do = True
         while do:
             msg = self.con.readline().decode().strip()
@@ -342,11 +349,11 @@ class Robot:
                 print("timeout happened")
             elif msg == "OK":
                 #means queue is not full (and also not empty because a command was just sent)
-                self.__full = False 
+                self.__full = False
                 self.__empty = False
             elif msg == "READY":
                 #means queue was previously full but has now been cleared and can hold another command.
-                self.__full = False 
+                self.__full = False
                 self.__empty = False
             elif msg == "FULL":
                 #means queue is full
@@ -354,7 +361,7 @@ class Robot:
                 self.__empty = False
             elif msg == "EMPTY":
                 #means queue is empty
-                self.__full = False 
+                self.__full = False
                 self.__empty = True
             elif msg == "SYNC":
                 #means sync comamnd has been reached

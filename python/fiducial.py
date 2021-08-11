@@ -55,7 +55,7 @@ class FiducialDetector:
 
         raise NoFiducialFoundException("No fiducial found")
 
-def get_transform(fid_map):
+def get_transform(fid_map, bom):
     """
     Fit transform between fiducials and robot coordinates
 
@@ -68,7 +68,7 @@ def get_transform(fid_map):
 
     bot_pos = []
     fid_pos = []
-    for x in data["bom"]:
+    for x in bom:
         if x["fiducial"]:
             for id, pos in fid_map.items():
                 part =  x["parts"][id]

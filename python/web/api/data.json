@@ -3,20 +3,20 @@
         {
             "feeder": null,
             "fiducial": false,
-            "footprint": "B2B-XH",      
+            "footprint": "B2B-XH",
             "partnr": "02-JST-B3B-XH-A",
             "parts": {
                 "U$2": {
-                    "place": false,     
+                    "place": false,
                     "state": 0
                 }
             },
             "place": false,
             "rot": 0,
-            "value": "02-JST-B3B-XH-A"  
+            "value": "02-JST-B3B-XH-A"
         },
         {
-            "feeder": null,
+            "feeder": "tray 1",
             "fiducial": false,
             "footprint": "0805_RES",
             "partnr": "RESISTOR0805_RES",
@@ -102,7 +102,7 @@
             "value": "FIDUCIAL2MM"
         },
         {
-            "feeder": null,
+            "feeder": "tray 0",
             "fiducial": false,
             "footprint": "5730-LED",
             "partnr": "LED-5730",
@@ -281,21 +281,21 @@
             "parts": {
                 "R1": {
                     "place": true,
-                    "x": 10,  
+                    "x": 10,
                     "y": 10,
                     "rot": 0,
                     "state": 0
                 },
                 "R3": {
                     "place": true,
-                    "x": 10,  
+                    "x": 10,
                     "y": 20,
                     "rot": 45,
                     "state": 0
                 },
                 "R2": {
                     "place": true,
-                    "x": 10,  
+                    "x": 10,
                     "y": 30,
                     "rot": 90,
                     "state": 0
@@ -313,7 +313,7 @@
             "parts": {
                 "C20": {
                     "place": true,
-                    "x": 12.0,  
+                    "x": 12.0,
                     "y": 22.24,
                     "rot": 180,
                     "state": 0
@@ -331,7 +331,7 @@
             "parts": {
                 "U1": {
                     "place": true,
-                    "x": 10,  
+                    "x": 10,
                     "y": 35,
                     "rot": 90,
                     "state": 0
@@ -349,7 +349,7 @@
             "parts": {
                 "D1": {
                     "place": true,
-                    "x": 12,  
+                    "x": 12,
                     "y": 12,
                     "rot": 90,
                     "state": 0
@@ -367,7 +367,7 @@
             "parts": {
                 "Q5": {
                     "place": true,
-                    "x": 35,  
+                    "x": 35,
                     "y": 10,
                     "rot": 90,
                     "state": 0
@@ -385,7 +385,7 @@
             "parts": {
                 "U1": {
                     "place": true,
-                    "x": 10,  
+                    "x": 10,
                     "y": 35,
                     "rot": 90,
                     "state": 0
@@ -399,12 +399,12 @@
             "parts": {
                 "V1": {
                     "place": true,
-                    "x": 5,  
+                    "x": 5,
                     "y": 5
                 },
                 "V3": {
                     "place": true,
-                    "x": 50,  
+                    "x": 50,
                     "y": 60
                 }
             }
@@ -412,19 +412,19 @@
     ],
 
     "feeder": {
-        "tray 1": {
+        "tray 0": {
             "type": "auto_detect_zone",
-            "x": 442,
-            "y": 330,
-            "width": 33,
-            "height": 21,
+            "x": 53,
+            "y": 269,
+            "width": 48,
+            "height": 30,
             "pitch": null,
             "orientation": null
         },
-        "tray 5": {
+        "tray 1": {
             "type": "auto_detect_zone",
-            "x": 132,
-            "y": 298,
+            "x": 53,
+            "y": 299,
             "width": 48,
             "height": 30,
             "pitch": null,

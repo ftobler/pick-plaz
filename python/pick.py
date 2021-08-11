@@ -32,9 +32,9 @@ class Picker():
         ys = tray["y"] + r/2 + np.linspace(0, h, 2 + int(np.floor(h/(r*2/3))))
         search_positions = np.stack(np.meshgrid(xs, ys), axis=-1).reshape((-1,2))
 
-        robot.light_topdn(False)
+        # self._plot_search_positions(search_positions, tray)
 
-        time.sleep(3) #quickfit as long as robot.done() is not working correctly #TODO remove
+        robot.light_topdn(False)
 
         for robot_pos in search_positions:
 
@@ -186,10 +186,6 @@ class Picker():
 
         res = np.empty((s, s), np.uint8)
 
-        robot.drive(x0, y0)
-        robot.done()
-        time.sleep(0.5)
-
         for x in range(10):
             r = range(10)
 
@@ -208,3 +204,39 @@ class Picker():
         cv2.imwrite(f"collage.jpg", res)
 
         pass
+
+    def _plot_search_positions(self, search_positions, tray):
+        import matplotlib.pyplot as plt
+
+        r = self.range/2
+        for x, y in search_positions:
+            plt.plot([x-r, x-r, x+r, x+r, x-r],[y-r, y+r, y+r, y-r, y-r], "-")
+            plt.plot([x],[y], "o")
+
+        x, y, w, h = tray["x"], tray["y"], tray["width"], tray["height"]
+
+        plt.plot([x, x, x+w, x+w, x], [y, y+h, y+h, y, y], "o-")
+        plt.axis("equal")
+        plt.savefig("plot.png")
+        plt.close()
+
+
+if __name__ == "__main__":
+
+    import pickle
+
+    with open("cal.pkl", "rb") as f:
+        cal = pickle.load(f)
+
+
+    p = Picker(cal)
+
+
+    import json
+    with open("web/api/data.json", "r") as f:
+        data = json.load(f)
+
+
+    p.pick_from_tray(data["feeder"]["tray 0"], None, None)
+
+    print("done")

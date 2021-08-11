@@ -72,7 +72,7 @@ def fit_affine(points_a, points_b):
 
     b = points_b.T.reshape((-1, 1))
 
-    res, _, _, _ = np.linalg.lstsq(A, b)
+    res, _, _, _ = np.linalg.lstsq(A, b, rcond=None)
 
     m = np.eye(3)
     m[:2] = res.reshape((2,3))
@@ -174,6 +174,12 @@ class Calibration():
 
         batch_obj = []
         batch_pix = []
+
+        if any(x is None for x in all_ids):
+            raise CalibrationError("Some aruco markers have missing ids")
+
+        if any(len(x) < 5 for x in all_positions_pix):
+            raise CalibrationError("Some calibration images have less than 5 identified aruco markers")
 
         for positions_pix, ids in zip(all_positions_pix, all_ids):
 

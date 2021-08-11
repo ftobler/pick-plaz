@@ -29,9 +29,9 @@ class SaveRobot(pick_plaz_robot.Robot):
 
         if self.pos_logger is not None:
             if x is not None:
-                self.pos_logger["x"] = x
+                self.pos_logger["x"] = float(x)
             if y is not None:
-                self.pos_logger["y"] = y
+                self.pos_logger["y"] = float(y)
 
         if self.__check_range(x, self.x_bounds):
             raise OutOfSaveSpaceException(f"Attempting to drive x={x} which is outside of save bounds {self.x_bounds}")
