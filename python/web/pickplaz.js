@@ -8,6 +8,7 @@ function start() {
             page: NAVPAGE,
             activealert: null,
             last_quit_alert: -1,
+            menu_hamburger: false,
             nav: {
             },
             nav_init: false,

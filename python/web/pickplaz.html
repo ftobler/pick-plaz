@@ -30,6 +30,15 @@
         <div class="menu-item" v-bind:class="{active : page == 0}" v-on:click="page = 0">Parts</div>
         <div class="menu-item" v-bind:class="{active : page == 1}" v-on:click="page = 1">Feeder</div>
         <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="page = 2; setTimeout(() => {draw_stuff()})">Navigate</div>
+        <div class="menu-item menu-material" v-on:click="menu_hamburger = !menu_hamburger" v-bind:class="{active : menu_hamburger}">menu
+            <div v-if="menu_hamburger">
+                <div class="menu-menu-item" v-on:click="do_sequence('home')">Home</div>
+                <div class="menu-menu-item" v-on:click="do_sequence('motor_off')">Motor Off</div>
+                <div class="menu-menu-item" v-on:click="do_sequence('motor_on')">Motor On</div>
+                <div class="menu-menu-item" v-on:click="do_sequence('calibrate_topdn')">Calibrate Camera</div>
+                <div class="menu-menu-item" v-on:click="do_sequence('shutdown')">Shutdown</div>
+            </div>
+        </div>
 
         <div style="float: right;">
             <div class="menu-pane">
@@ -142,7 +151,8 @@
                 <label class="switcher-label">show component graphics</label>-->
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_symbol"><span class="slider round"></span></label>
                 <label class="switcher-label">show symbols</label>
-                <span style="width: 350px; display: inline-block"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm; robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
+                <span style="width: 200px; display: inline-block"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm</label></span>
+                <span style="width: 200px; display: inline-block"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
             </div >
             <canvas id="canvas-view" width="1850" height="800" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 
