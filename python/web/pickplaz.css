@@ -181,15 +181,19 @@ a:hover {
 
 .content {
     /*background-color: black;*/
-    
+    margin: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     flex-grow: 1;
+    position: relative;
 }
 
 
 table {
     border-collapse: collapse;
-    margin: 20px;
     text-align: left;
+    table-layout: fixed;
+    width: 100%;
 }
 tr {
     height: 30px;
@@ -239,7 +243,8 @@ td {
 }
 th.small{
     font-size: 10pt;
-    transform: rotateZ(-30deg) translate(5px, -5px);
+    text-align: left;
+    transform: translate(5px, -10px) rotateZ(-30deg);
 }
 
 
