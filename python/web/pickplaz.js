@@ -503,7 +503,7 @@ function start() {
                 ctx.save();
                 ctx.translate(part.x, part.y);
                 ctx.rotate(part.rot*Math.PI/180);
-                if (footprint) {
+                if (footprint && this.elements.show_parts) {
                     ctx.drawImage(
                         footprint.imageImg,
                         -footprint.x/2,
