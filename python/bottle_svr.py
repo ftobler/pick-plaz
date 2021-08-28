@@ -115,10 +115,10 @@ class BottleServer:
 
         route('/')(self._home)
         route('/api/<name>')(self._api)
-        route('/api/setpos')(self._setpos)
-        route('/api/setfiducal')(self._setfiducial)
-        route('/api/sequencecontrol')(self._sequencecontrol)
-        route('/api/alertquit')(self._alertquit)
+        route('/api/setpos', method='POST')(self._setpos)
+        route('/api/setfiducal', method='POST')(self._setfiducial)
+        route('/api/sequencecontrol', method='POST')(self._sequencecontrol)
+        route('/api/alertquit', method='POST')(self._alertquit)
         route('/api/upload', method='POST')(self._upload)
         route('/<name:path>')(self._files)
 
