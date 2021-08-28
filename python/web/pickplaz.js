@@ -483,15 +483,14 @@ function start() {
                 ctx.restore();
             },
             draw_feeder(ctx, name, feeder, part, footprint) {
+
+                let d = 2; // margin
+
                 ctx.save();
                 ctx.translate(feeder.x, feeder.y);
 
                 ctx.fillStyle = "cyan"
                 ctx.strokeStyle = "cyan"
-
-                ctx.beginPath();
-                ctx.rect(0, 0, feeder.width, feeder.height);
-                ctx.stroke();
 
                 ctx.moveTo(0,feeder.height);
 
@@ -532,36 +531,42 @@ function start() {
 
                     }
 
-                } else {
-                    ctx.moveTo(0,feeder.height);
-                    ctx.lineTo(feeder.width, 0);
-                    ctx.stroke();
-                    ctx.moveTo(0,0);
-                    ctx.lineTo(feeder.width, feeder.height);
-                    ctx.stroke();
                 }
 
                 let metrics = ctx.measureText("");
                 let fontHeight = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
                 let y = fontHeight;
                 for (let line of textLines) {
-                    ctx.fillText(line, 1, y);
+                    ctx.fillText(line, d+1, d+y);
                     y += fontHeight;
                 }
 
-
+                ctx.save();
                 ctx.font = "5px Arial";
                 let txt = this.db.const.feeder_status[feeder.state]
 
-                if (feeder.state == 1) ctx.fillStyle = "green";
-                if (feeder.state == 2) ctx.fillStyle = "red";
+                if (feeder.state == 1) {ctx.fillStyle = "green"; ctx.strokeStyle = "green"}
+                if (feeder.state == 2) {ctx.fillStyle = "red"; ctx.strokeStyle = "red"}
 
                 metrics = ctx.measureText(txt);
                 ctx.fillText(
                     txt,
                     feeder.width / 2 - metrics.width/2,
-                    feeder.height - 3
+                    feeder.height - 3 - d
                 );
+
+                if (feeder.state != 0) {
+                    ctx.beginPath();
+                    ctx.lineWidth = d;
+                    ctx.globalAlpha = 0.5
+                    ctx.rect(d/2, d/2, feeder.width - d, feeder.height - d);
+                    ctx.stroke();
+                }
+                ctx.restore();
+
+                ctx.beginPath();
+                ctx.rect(0, 0, feeder.width, feeder.height);
+                ctx.stroke();
 
                 ctx.restore();
             },
