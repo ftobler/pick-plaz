@@ -137,6 +137,8 @@ conf.yml
 
 *.png
 *.jpeg
+*.jpg
+*.pkl
 
 .vscode
 
