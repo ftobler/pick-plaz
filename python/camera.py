@@ -2,6 +2,7 @@
 import threading
 
 import cv2
+import numpy as np
 
 def cam(func, device=0, count=10):
     """
@@ -62,8 +63,6 @@ class CameraThread:
         self.thread_exit_request = False
         self.cache = {}
 
-        self.on_terminate_callback = lambda: None #dummy function
-
     def _update(self):
         try:
             while not self.thread_exit_request:
@@ -77,6 +76,37 @@ class CameraThread:
         finally:
             self.cap.release()
             print("cap released")
+
+    def __enter__(self):
+        self.thread.start()
+        return self
+
+    def __exit__(self, type, value, tb):
+        self.thread_exit_request = True
+
+class CameraThreadMock:
+
+    def __init__(self):
+        """
+        device_number : integer of /dev/video?
+        """
+
+        self.thread = threading.Thread(target=self._update, args=())
+        self.thread.name = "CameraThread"
+        self.thread.daemon = False
+
+        self.thread_exit_request = False
+        self.cache = {}
+
+    def _update(self):
+        while not self.thread_exit_request:
+            frame = np.random.uniform(0, 255, size=(480,640)).astype(np.uint8)
+            timestamp = time.time()
+            self.cache = {
+                "image" : frame,
+                "timestamp": timestamp
+            }
+            time.sleep(0.1)
 
     def __enter__(self):
         self.thread.start()
