@@ -49,4 +49,53 @@ def test2():
     robot.light_topdn(False)
     robot.steppers(False)
 
-test2()
+def test3():
+    """pick, rotate, place"""
+    robot.valve(False)
+    # robot.steppers(True)
+    robot.home("y")
+
+    for _ in range(2):
+
+        robot.vacuum(True)
+        robot.valve(False)
+        robot.drive(x=100, e=0)
+        robot.drive(z=-15)
+        robot.valve(True)
+        robot.drive(z=0)
+        robot.drive(x=0, e=90)
+        robot.drive(z=-15)
+        robot.valve(False)
+        robot.vacuum(False)
+        robot.drive(z=0)
+
+        robot.vacuum(True)
+        robot.drive(x=0)
+        robot.drive(z=-15)
+        robot.valve(True)
+        robot.drive(z=0)
+        robot.drive(x=100, e=0)
+        robot.drive(z=-15)
+        robot.valve(False)
+        robot.vacuum(False)
+        robot.drive(z=0)
+
+    robot.vacuum(False)
+    robot.drive(z=0)
+    robot.drive(x=0, e=0)
+    robot.steppers(False)
+
+def test4():
+    import time
+    robot.steppers(True)
+
+    t = 1
+
+    time.sleep(t)
+    robot.drive(z=-15, f=10)
+    time.sleep(t)
+
+    robot.drive(z=0, f=10)
+    robot.steppers(False)
+
+test4()
