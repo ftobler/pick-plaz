@@ -6,8 +6,8 @@ function start() {
         el: "#app",
         data: {
             page: NAVPAGE,
-            activealert: null,
-            last_quit_alert: -1,
+            dialogs: [],
+            last_put_alert: -1,
             menu_hamburger: false,
             nav: {
             },
@@ -93,11 +93,18 @@ function start() {
                     this.draw_stuff()
 
                     if (this.nav.alert != undefined && this.nav.alert != null) {
-                        if (this.last_quit_alert < this.nav.alert.id) {
+                        if (this.last_put_alert < this.nav.alert.id) {
                             if (this.activealert && this.activealert.id != this.nav.alert.id) {
                                 console.log(JSON.stringify(this.nav.alert, null, 4))
                             }
-                            this.put_alert(this.nav.alert)
+                            this.show_dialog({
+                                title: "Server Alert",
+                                msg: this.nav.alert.msg,
+                                answers: this.nav.alert.answers,
+                                do_apiquit: true,
+                                id: this.nav.alert.id
+                            })
+                            this.last_put_alert = this.nav.alert.id
                         }
                     } else {
                         this.activealert = null
@@ -179,7 +186,7 @@ function start() {
                 this.canvas.cursor_mm.y = mm.y
             },
             keylistener(event) {
-                if (this.activealert) {
+                if (this.dialogs.length > 0) {
                     return;
                 }
                 if (this.page == NAVPAGE) {
@@ -231,7 +238,6 @@ function start() {
             do_alert_quit(id, answer) {
                 let doQuit = this.activealert.do_apiquit
                 this.activealert = null
-                this.last_quit_alert = id
                 if (doQuit) {
                     api.alert_quit(id, answer)
                 }
@@ -241,34 +247,53 @@ function start() {
                 //form.submit();
                 api.do_upload(form, (err) => {
                     if (err.error != undefined) {
-                        this.put_alert_manual("Upload Failed. " + err.error, null, false)
+                        this.put_alert("Upload Failed. " + err.error, null)
                     } else {
-                        this.put_alert_manual("Upload Success.", null, false)
+                        this.put_alert("Upload Success.", null)
                     }
                 })
             },
             show_dialog(config) {
+                //{
+                //    title: "title",
+                //    msg: "message",
+                //    input: false,
+                //    selection: ["sel1"],
+                //    answers: ["OK"],
+                //    do_apiquit: false,
+                //    id: 0
+                //}
+                if (config.answers == undefined || config.answers == null || config.answers.length == 0) {
+                    config.answers = ["OK"]
+                }
+                if (config.do_apiquit != true) {
+                    config.do_apiquit = false
+                }
+                if (config.selection == undefined) {
+                    config.selection = []
+                }
+                if (config.input == undefined) {
+                    config.input = false
+                }
+                if (config.unit == undefined) {
+                    config.unit = ""
+                }
                 this.dialogs.push(config)
             },
-            put_alert_manual(msg, answers, do_apiquit) {
-                this.put_alert( {
-                    msg: msg,
-                    answers, answers
-                }, do_apiquit)
+            do_dialog_quit(answer) {
+                console.log("do_dialog_quit");
+                let config = this.dialogs[0]
+                if (config.do_apiquit) {
+                    api.alert_quit(config.id, answer)
+                }
+                this.dialogs.shift()  //remove first element
             },
-            put_alert(alert, do_apiquit) {
-                if (this.activealer != null) {
-                    console.log("multiple alerts.")
-                    return;
-                }
-                if (do_apiquit == undefined) {
-                    do_apiquit = true
-                }
-                this.activealert = alert
-                this.activealert.do_alert_quit = do_apiquit
-                if (this.activealert.answers == undefined || this.activealert.answers == null || this.activealert.answers.length == 0) {
-                    this.activealert.answers = ["OK"]
-                }
+            put_alert(msg, answers) {
+                this.show_dialog({
+                    title: "Alert",
+                    msg: msg,
+                    answers: answers,
+                })
             },
             draw_stuff() {
                 var c = document.getElementById("canvas-view");

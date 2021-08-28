@@ -14,20 +14,33 @@
 <body onload="start()" class="noselect" style="text-align: center;">
 <div id="app" style="width: 100%; max-width: 2600px; margin:0 auto; visibility: hidden;">
 
+    <div class="alert" v-if="dialogs.length > 0">
+        <div class="alert-content">
+            <h1>{{dialogs[0].title}}</h1>
+            <div class="alert-inner">
+                <p>{{dialogs[0].msg}}</p>
+                <div v-if="dialogs[0].input"><input type="text" id="lname" name="lname"> {{dialogs[0].unit}}</div>
+                <div class="alert-selection" v-for='text in dialogs[0].selection'>{{dialogs[0].text}}</div>
+            </div>
+            <div class="alert-button-list">
+                <div class="alert-button" v-for="answer in dialogs[0].answers" v-on:click="do_dialog_quit(answer)">{{answer}}</div>
+            </div>
+        </div>
+    </div>
 
-    <div class="alert" v-if="activealert">
+<!--     <div class="alert" v-if="activealert">
         <div class="alert-content">
             <h1>Alert</h1>
             <div class="alert-inner">
                 <p>{{activealert.msg}}</p>
-<!--                 <input type="text" id="lname" name="lname"> mm
-                <div class="alert-selection" v-for='answer in ["auto detect zone", "fixed grid", "strip", "x", "y"]'>{{answer}}</div> -->
+                <input type="text" id="lname" name="lname"> mm
+                <div class="alert-selection" v-for='answer in ["auto detect zone", "fixed grid", "strip", "x", "y"]'>{{answer}}</div>
             </div>
             <div class="alert-button-list">
                 <div class="alert-button" v-for="answer in activealert.answers" v-on:click="do_alert_quit(activealert.id, answer)">{{answer}}</div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
 <!--     <div class="alert">
@@ -93,7 +106,7 @@
                     <th class="small" width="40px">X-Pos</th>
                     <th class="small" width="40px">Y-Pos</th>
                     <th class="small" width="40px">Rotation</th>
-                    <th width="70px">Status</th>
+                    <th width="70px">State</th>
                     <th width="200px">Action</th>
                 </tr>
                 <tr v-for="(entry, i) in db.bom">
@@ -143,7 +156,7 @@
                     <th width="80px">height</th>
                     <th width="80px">Pitch</th>
                     <th width="80px">Orientation</th>
-                    <th width="100px">Status</th>
+                    <th width="100px">State</th>
                     <th width="100px">Action</th>
                 </tr>
                 <tr v-for="(entry, name) in db.feeder">
