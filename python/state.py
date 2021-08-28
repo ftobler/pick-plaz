@@ -313,16 +313,13 @@ def main(mock=False):
 
     d = data_manager.DataManager()
 
-    s = StateContext(robot, c, d, event_queue)
+    s = StateContext(robot, c, d.get(), event_queue)
 
-    '''b = bottle_svr.BottleServer(
+    b = bottle_svr.BottleServer(
         lambda: s.get_cam(),
         lambda x: event_queue.put(x),
         d,
-        lambda: s.nav)'''
-    def dummy_fcn(*args):
-        pass
-    b = bottle_svr.BottleServer(dummy_fcn, dummy_fcn, d, dummy_fcn)
+        lambda: s.nav)
 
     with c:
         try:

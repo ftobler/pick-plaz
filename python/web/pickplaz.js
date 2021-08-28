@@ -221,9 +221,10 @@ function start() {
                 api.sequence(method)
             },
             do_alert_quit(id, answer) {
+                let doQuit = this.activealert.do_apiquit
                 this.activealert = null
                 this.last_quit_alert = id
-                if (this.activealert.do_apiquit) {
+                if (doQuit) {
                     api.alert_quit(id, answer)
                 }
             },
