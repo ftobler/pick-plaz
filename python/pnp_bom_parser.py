@@ -48,7 +48,7 @@ def find_indexes(data, probable_list, default=None):
             return data_lower.index(checkit.lower())
         except:
             pass #ignore it and check the next entry
-    if default == None: 
+    if default == None:
         raise Exception("index %s not found in %s" % (data, json.dumps(probable_list)))
     else:
         return default
@@ -58,7 +58,7 @@ def pnp_bom_parse_internal(pnp, bom):
     #parse file and get it to a python double array
     pnp_data = parse_raw_content(pnp)
     bom_data = parse_raw_content(bom)
-    
+
     #get the matchig header indexes for the BOM file
     #eagle uses 'parts', jlcpcb uses 'designator', easyeda uses 'designator', altium uses 'designator'
     bom_index_id        = find_indexes(bom_data[0], ["parts", "designator", "id", "ref"])

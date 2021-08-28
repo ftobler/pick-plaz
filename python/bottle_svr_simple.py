@@ -29,7 +29,7 @@ def home(name):
     resp = static_file(name, root='web/api')
     resp.headers['Cache-Control'] = 'no-cache'
     return resp
-    
+
 @route('/parts/<name>')
 def home(name):
     return static_file(name, root='web/parts')
