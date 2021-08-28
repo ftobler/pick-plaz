@@ -8,19 +8,19 @@ import pnp_bom_parser
 
 class DataManager:
 
-    part_status = ["skip", "not placed", "placed"]
+    part_state = ["skip", "not placed", "placed"]
     feeder_type = ["auto detect zone", "fixed grid", "strip"]
     feeder_attribute = ["x", "y", "width", "height", "pitch"]
-    feeder_status = ["disabled", "ready", "empty"]
+    feeder_state = ["disabled", "ready", "empty"]
 
     def __init__(self):
         with open("web/api/data.json", "r") as f:
             self.data = json.load(f)
             self.data["const"] = {}
-            self.data["const"]["part_status"] = self.part_status
+            self.data["const"]["part_status"] = self.part_state
             self.data["const"]["feeder_type"] = self.feeder_type
             self.data["const"]["feeder_attribute"] = self.feeder_attribute
-            self.data["const"]["feeder_status"] = self.feeder_status
+            self.data["const"]["feeder_status"] = self.feeder_state
 
 
     def get(self):
@@ -63,7 +63,7 @@ class DataManager:
     def modify_part_status(self, part_id, status=None):
         part = self._get_bom_by_index(part_id)
         if status == None:
-            part["status"] = (part["status"] + 1) % len(self.part_status)
+            part["status"] = (part["status"] + 1) % len(self.part_state)
         else:
             part["status"] = status
 
@@ -104,7 +104,7 @@ class DataManager:
     def _get_feeder_by_id(self, feeder_id, status=None):
         feeder = self._get_bom_by_index(feeder_id)
         if status == None:
-            feeder["status"] = (feeder["status"] + 1) % len(self.feeder_status)
+            feeder["status"] = (feeder["status"] + 1) % len(self.feeder_state)
         else:
             feeder["status"] = status
 

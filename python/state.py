@@ -313,7 +313,7 @@ class StateContext:
             uid = 0
 
         if answers is None:
-            answers = ["ok"]
+            answers = ["OK"]
 
         self.nav["alert"] = {
             "id" : uid,
