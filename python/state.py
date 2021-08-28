@@ -307,8 +307,10 @@ def main(mock=False):
     #TODO: @flo make Robot mock
     robot = save_robot.SaveRobot("/dev/ttyUSB0")
 
-    #TODO: @nic make camera mock
-    c = camera.CameraThread(0)
+    if not mock:
+        c = camera.CameraThread(0)
+    else:
+        c = camera.CameraThreadMock()
 
     s = StateContext(robot, c, event_queue)
 
@@ -324,7 +326,7 @@ def main(mock=False):
         except KeyboardInterrupt:
             pass
 
-    print("finished")
+    print("parking robot")
 
     # park robot
     robot.vacuum(False)
@@ -334,6 +336,8 @@ def main(mock=False):
     robot.dwell(1000)
     robot.steppers(False)
     robot.light_topdn(False)
+
+    print("finished")
 
 if __name__ == "__main__":
     main()
