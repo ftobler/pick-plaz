@@ -12,11 +12,11 @@ import json
 
 class BottleServer:
 
-    def __init__(self, get_camera_fcn, event_put_fcn, data_fcn, nav_fcn, listen="0.0.0.0", port=8080):
+    def __init__(self, get_camera_fcn, event_put_fcn, data, nav_fcn, listen="0.0.0.0", port=8080):
 
         self.get_camera_fcn = get_camera_fcn
         self.event_put_fcn = event_put_fcn
-        self.data_fcn = data_fcn
+        self.data = data
         self.nav_fcn = nav_fcn
 
         self.port = port
@@ -42,10 +42,7 @@ class BottleServer:
             return self.nav_fcn()
 
         elif name == "data.json":
-            with open("web/api/data.json", "r") as f:
-                data = json.load(f)
-            data.update(self.data_fcn())
-            return data
+            return self.data.get()
         else:
             return static_file(name, root='web/api')
 
@@ -91,6 +88,23 @@ class BottleServer:
         except:
             pass
 
+    def _upload(self):
+        r = dict(request.query.decode())
+        bom = request.files.get('bom_upload')
+        pnp = request.files.get('pnp_upload')
+        #print(bom.filename)
+        error = None
+        if bom != None and pnp != None:
+            try:
+                bom_lines = [b.decode("utf-8") for b in bom.file.read().splitlines()]
+                pnp_lines = [b.decode("utf-8") for b in pnp.file.read().splitlines()]
+                self.data.replace(bom_lines, pnp_lines)
+            except Exception as e:
+                error = "Parsing of BOM or PNP failed. Exception: '" + str(e) + "'"
+        else:
+            error = "Need a BOM and a PNP file"
+        return {'error': error}
+
     def _home(self):
         return static_file("pickplaz.html", root='web')
 
@@ -105,6 +119,7 @@ class BottleServer:
         route('/api/setfiducal')(self._setfiducial)
         route('/api/sequencecontrol')(self._sequencecontrol)
         route('/api/alertquit')(self._alertquit)
+        route('/api/upload', method='POST')(self._upload)
         route('/<name:path>')(self._files)
 
         print(f"Starting server at {self.listen}:{self.port}")
@@ -134,7 +149,11 @@ def mock():
     def dummy_fcn(*args):
         pass
 
-    b = BottleServerMock(dummy_fcn, dummy_fcn, dummy_fcn, dummy_fcn)
+    
+    import data_manager
+    d = data_manager.DataManager()
+
+    b = BottleServer(dummy_fcn, dummy_fcn, d, dummy_fcn)
     while(True):
         time.sleep(1)
 

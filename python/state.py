@@ -12,6 +12,7 @@ import fiducial
 import calibrator
 import pick
 import camera_cal
+import data_manager
 
 class AbortException(Exception):
     """ All calibration is broken"""
@@ -21,14 +22,11 @@ DX, DY = 200 - 127.33, 200 - 218.39
 PICK_Z = -18
 
 class StateContext:
-    def __init__(self, robot, camera, event_queue):
+    def __init__(self, robot, camera, data, event_queue):
         self.robot = robot
         self.camera = camera
-        self.event_queue = event_queue
-
-        import json
-        with open("web/api/data.json", "r") as f:
-            self.data = json.load(f)
+        self.event_queue = event_queue 
+        self.data = data
 
         self.nav = {
             "camera": {
@@ -310,12 +308,14 @@ def main(mock=False):
     #TODO: @nic make camera mock
     c = camera.CameraThread(0)
 
-    s = StateContext(robot, c, event_queue)
+    d = data_manager.DataManager()
+
+    s = StateContext(robot, c, d, event_queue)
 
     b = bottle_svr.BottleServer(
         lambda: s.get_cam(),
         lambda x: event_queue.put(x),
-        lambda: s.data,
+        d,
         lambda: s.nav)
 
     with c:
@@ -334,6 +334,7 @@ def main(mock=False):
     robot.dwell(1000)
     robot.steppers(False)
     robot.light_topdn(False)
+    robot.light_botup(False)
 
 if __name__ == "__main__":
     main()

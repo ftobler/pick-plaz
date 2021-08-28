@@ -65,8 +65,12 @@ function start() {
                     dataType: "application/json",
                     url: "/api/nav.json",
                     success: (data) => {
-                        this.nav = JSON.parse(data)
-                        this.nav_init = true
+                        try {
+                            this.nav = JSON.parse(data)
+                            this.nav_init = true
+                        } catch {
+                            console.log("Failed to load nav.json. More related errors might follow.")
+                        }
 
                         if (this.elements.show_camera && this.page==NAVPAGE) {
                             let temp_img = new Image(10,10);
@@ -91,10 +95,7 @@ function start() {
                                 if (this.activealert && this.activealert.id != this.nav.alert.id) {
                                     console.log(JSON.stringify(this.nav.alert, null, 4))
                                 }
-                                this.activealert = this.nav.alert
-                                if (this.activealert.answers == undefined || this.activealert.answers.length == 0) {
-                                    this.activealert.answers = ["OK"]
-                                }
+                                this.put_alert(this.nav.alert)
                             }
                         } else {
                             this.activealert = null
@@ -222,7 +223,40 @@ function start() {
             do_alert_quit(id, answer) {
                 this.activealert = null
                 this.last_quit_alert = id
-                api.alert_quit(id, answer)
+                if (this.activealert.do_apiquit) {
+                    api.alert_quit(id, answer)
+                }
+            },
+            do_upload() {
+                let form = document.getElementById("upload_form");
+                //form.submit();
+                api.do_upload(form, (err) => {
+                    if (err.error != undefined) {
+                        this.put_alert_manual("Upload Failed. " + err.error, null, false)
+                    } else {
+                        this.put_alert_manual("Upload Success.", null, false)
+                    }
+                })
+            },
+            put_alert_manual(msg, answers, do_apiquit) {
+                this.put_alert( {
+                    msg: msg,
+                    answers, answers
+                }, do_apiquit)
+            },
+            put_alert(alert, do_apiquit) {
+                if (this.activealer != null) {
+                    console.log("multiple alerts.")
+                    return;
+                }
+                if (do_apiquit == undefined) {
+                    do_apiquit = true
+                }
+                this.activealert = alert
+                this.activealert.do_alert_quit = do_apiquit
+                if (this.activealert.answers == undefined || this.activealert.answers == null || this.activealert.answers.length == 0) {
+                    this.activealert.answers = ["OK"]
+                }
             },
             draw_stuff() {
                 var c = document.getElementById("canvas-view");
@@ -510,11 +544,51 @@ api = {
             status: status
         })
     },
+    do_upload(form, event) {
+        var form_data = new FormData(form);
+        /*ajax({
+            type: 'POST',
+            url: '/api/upload',
+            dataType: 'multipart/form-data'
+        })*/
+
+        fetch('/api/upload', {method: "POST", body: form_data}).then(response => response.json()).then((json) => {
+            if (event != undefined) {
+                event(json)
+            }
+        })
+        
+        /*$.ajax({
+            url: '/api/upload',
+            type: 'POST',
+            data: form_data,
+            contentType: false,
+            processData: false,
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', function(evt) {
+                    if (evt.lengthComputable) {
+                        var per = Math.round(evt.loaded / evt.total * 100);
+                        $('#prg').html('progress: ' + per + '%');
+                        if (per == 100) {
+                            document.getElementById("info").innerHTML = "waiting for reboot";
+                        }
+                    }
+                }, false);
+                return xhr;
+            },
+            success:function(d, s) {
+                console.log('success!')
+            },
+            error: function (a, b, c) {
+            }
+        });*/
+    }
 }
 
 function apicall(scope, arguments, cb) {
     ajax({
-        type: "GET",
+        type: "POST",
         dataType: "application/json",
         url: "/api/" + scope + build_query_parameter(arguments),
         success: cb
