@@ -568,7 +568,7 @@ function start() {
 
                 ctx.save();
                 ctx.font = "5px Arial";
-                let txt = this.db.const.feeder_status[feeder.state]
+                let txt = this.db.const.feeder_state[feeder.state]
 
                 if (feeder.state == 1) {ctx.fillStyle = "green"; ctx.strokeStyle = "green"}
                 if (feeder.state == 2) {ctx.fillStyle = "red"; ctx.strokeStyle = "red"}
@@ -595,10 +595,10 @@ function start() {
 
                 ctx.restore();
             },
-            part_status: function(i) {
+            part_state: function(i) {
                 return this.db.const.part_state[i]
             },
-            feeder_status: function(i) {
+            feeder_state: function(i) {
                 return this.db.const.feeder_state[i]
             }
         },

@@ -17,10 +17,10 @@ class DataManager:
         with open("web/api/data.json", "r") as f:
             self.data = json.load(f)
             self.data["const"] = {}
-            self.data["const"]["part_status"] = self.part_state
+            self.data["const"]["part_state"] = self.part_state
             self.data["const"]["feeder_type"] = self.feeder_type
             self.data["const"]["feeder_attribute"] = self.feeder_attribute
-            self.data["const"]["feeder_status"] = self.feeder_state
+            self.data["const"]["feeder_state"] = self.feeder_state
 
 
     def get(self):
