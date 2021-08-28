@@ -419,7 +419,8 @@
             "width": 48,
             "height": 30,
             "pitch": null,
-            "orientation": null
+            "orientation": 0,
+            "state": 0
         },
         "tray 1": {
             "type": "auto_detect_zone",
@@ -428,7 +429,8 @@
             "width": 48,
             "height": 30,
             "pitch": null,
-            "orientation": null
+            "orientation": 90,
+            "state": 0
         }
     }
 }
