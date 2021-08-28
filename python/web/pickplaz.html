@@ -114,11 +114,11 @@
                     <td><input type="checkbox" v-model="entry.place"  v-if="!entry.fiducial"></td>
                     <td><input type="checkbox" v-model="entry.fiducial"></td>
                     <td>{{entry.value}}</td>
-                    <td>{{entry.footprint}}</td>
+                    <td><div class="table-button material">edit</div> {{entry.footprint}}</td>
                     <td><img v-bind:src="entry.footprint | footprint_img_path"/> &nbsp;&nbsp;<img v-bind:src="entry.footprint | footprint_sym_path"/></td>
                     <td><a v-bind:href="'https://lcsc.com/search?q=' + entry.partnr" target="_blank">{{entry.partnr}}</a></td>
-                    <td contenteditable v-on:input="do_sequence($event.target.innerHTML)">{{entry.feeder}}</td> <!-- https://codepen.io/supraniti/pen/Lypobx -->
-                    <td width="200px"><div class="table-button material" v-on:click="do_bom_rotate(entry, i)">refresh</div> {{entry.rot}}</td>
+                    <td><div class="table-button material">edit</div> {{entry.feeder}}</td>
+                    <td><div class="table-button material">refresh</div> {{entry.rot}}</td>
                     <td class="cell-inline-table" colspan=6>
                         <table class="cell-inline-table">
                             <tr v-for="(part, id, index) in entry.parts">
@@ -160,13 +160,13 @@
                     <th width="100px">Action</th>
                 </tr>
                 <tr v-for="(entry, name) in db.feeder">
-                    <td>{{name}}</td>
+                    <td><div class="table-button material">edit</div> {{name}}</td>
                     <td><div class="table-button material">swap_calls</div> {{entry.type}}</td>
-                    <td>{{entry.x}}</td>
-                    <td>{{entry.y}}</td>
-                    <td>{{entry.width}}</td>
-                    <td>{{entry.height}}</td>
-                    <td>{{entry.pitch}}</td>
+                    <td><div class="table-button material">edit</div> {{entry.x}}</td>
+                    <td><div class="table-button material">edit</div> {{entry.y}}</td>
+                    <td><div class="table-button material">edit</div> {{entry.width}}</td>
+                    <td><div class="table-button material">edit</div> {{entry.height}}</td>
+                    <td><div class="table-button material">edit</div> {{entry.pitch}}</td>
                     <td><div class="table-button material" v-on:click="do_bom_rotate(entry, i)">refresh</div> {{entry.Orientation}}</td>
                     <td><div class="table-button material">swap_calls</div> {{feeder_state(entry.state)}}</td>
                     <td><button>test pick</button> <button>goto</button></td>
@@ -184,6 +184,8 @@
                 <label class="switcher-label">show component graphics</label>-->
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_symbol"><span class="slider round"></span></label>
                 <label class="switcher-label">show symbols</label>
+                <label class="switch"><input type="checkbox" checked v-model="elements.show_parts"><span class="slider round"></span></label>
+                <label class="switcher-label">show parts</label>
                 <span style="width: 250px; display: inline-block"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm</label></span>
                 <span style="width: 250px; display: inline-block"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
                 <button class="fiducial-assign" v-for="(part, id)  in fiducial_bom.parts">{{id}}<div class="fiducial-assign-hint">assign/unassign Fiducial</div></button>

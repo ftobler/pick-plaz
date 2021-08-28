@@ -35,6 +35,7 @@ function start() {
                 center_camera: true,
                 show_components: true,
                 show_symbol: true,
+                show_parts: true,
             },
             fiducial_bom: {}
         },
