@@ -176,7 +176,7 @@ class Calibration():
         batch_pix = []
 
         if any(x is None for x in all_ids):
-            raise CalibrationError("Some aruco markers have missing ids")
+            raise CalibrationError("Some aruco markers have not been detected correctly (ids are missing)")
 
         if any(len(x) < 5 for x in all_positions_pix):
             raise CalibrationError("Some calibration images have less than 5 identified aruco markers")

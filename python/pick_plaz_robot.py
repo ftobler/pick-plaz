@@ -1,4 +1,7 @@
-from serial import Serial
+try:
+    from serial import Serial
+except:
+    print("Could not import Serial. However, usage with mock is still possible.")
 
 
 def print(*args):

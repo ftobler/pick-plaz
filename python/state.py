@@ -1,6 +1,7 @@
 
 import time
 import queue
+import pickle
 
 import cv2
 import numpy as np
@@ -106,7 +107,13 @@ class StateContext:
             self.robot.home()
             self.robot.light_topdn(True)
 
-            self.cal = camera_cal.calibrate(self.robot, self.camera)
+            try:
+                with open("cal.pkl", "rb") as f:
+                    self.cal = pickle.load(f)
+            except FileNotFoundError:
+                self._push_alert(f"Calibration not found. Using default calibration instead. Please calibrate.")
+                with open("default_cal.pkl", "rb") as f:
+                    self.cal = pickle.load(f)
 
             res = self.nav["camera"]["res"]
             width = self.nav["camera"]["width"]
@@ -117,9 +124,6 @@ class StateContext:
 
             self.picker = pick.Picker(self.cal)
 
-        except calibrator.CalibrationError as e:
-            self._push_alert(e)
-            return self.idle_state
         except AbortException as e:
             self._push_alert(e)
             return self.idle_state
@@ -206,7 +210,9 @@ class StateContext:
                 elif item["method"] == "motor_on":
                     self.robot.steppers(True)
                 elif item["method"] == "calibrate_topdn":
-                    pass # TODO implement
+                    self.cal = camera_cal.calibrate(self.robot, self.camera)
+                    with open("cal.pkl", "wb") as f:
+                        pickle.dump(self.cal, f)
                 elif item["method"] == "shutdown":
                     import subprocess
                     process = subprocess.run(['shutdown', '-h', '+0'],
@@ -214,7 +220,8 @@ class StateContext:
                                               universal_newlines=True)
                     if process.returncode != 0:
                         self._push_alert("Shutdown failed")
-
+        except calibrator.CalibrationError as e:
+            self._push_alert(f"Calibration Failed: {e}")
         except save_robot.OutOfSaveSpaceException as e:
             self._push_alert(e)
         except AbortException as e:

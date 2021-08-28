@@ -12,16 +12,7 @@ arucoParams = cv2.aruco.DetectorParameters_create()
 def calibrate(robot, camera):
     """
     Drive to calibration board and calibrate
-
-    If calibration is saved, load from pickle instead
     """
-
-    try:
-        with open("cal.pkl", "rb") as f:
-            cal = pickle.load(f)
-        return cal
-    except FileNotFoundError:
-        pass
 
     positions = np.array([
         (0,0),
@@ -56,8 +47,5 @@ def calibrate(robot, camera):
 
     cal = calibrator.Calibration(positions, marker_ids, markers_corners)
     mp = calibrator.ModelPixConverter(cal)
-
-    with open("cal.pkl", "wb") as f:
-        pickle.dump(cal, f)
 
     return cal
