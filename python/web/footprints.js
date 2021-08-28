@@ -715,3 +715,16 @@ footprints = {
         "y": 3.0,
     }
 }
+
+getFootprint = function(footprint) {
+    footprint = footprints[footprint]
+    if (footprint !== undefined) {
+        if (footprint.imageImg === undefined) {
+            footprint.imageImg = new Image(footprint.x, footprint.y);
+            footprint.imageImg.src = "parts/" + footprint.img
+            footprint.imageSym = new Image();
+            footprint.imageSym.src = "parts/" + footprint.sym
+        }
+    }
+    return footprint
+}

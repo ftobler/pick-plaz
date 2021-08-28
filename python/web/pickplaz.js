@@ -340,7 +340,7 @@ function start() {
                     ctx.strokeStyle = "yellow"
                     this.draw_fiducial(ctx, this.nav.detection.fiducial, "detection")
 
-                    this.draw_part(ctx, this.nav.detection.part, "part")
+                    this.draw_detection(ctx, this.nav.detection.part, "part")
                     //draw detected fiducials
                     if (this.elements.show_symbol) {
                         ctx.strokeStyle = "yellow"
@@ -381,6 +381,10 @@ function start() {
                             if (part.rot != undefined) deg += part.rot
                             let rad = deg * 2 * Math.PI / 360
                             const size = 1.5
+
+                            let footprint = getFootprint(entry.footprint)
+                            this.draw_part(ctx, part, footprint)
+
                             ctx.save()
                             ctx.translate(part.x, part.y)
                             ctx.save()
@@ -441,20 +445,7 @@ function start() {
                         }
                     }
 
-                    let footprint = undefined
-                    if (part) {
-                        footprint = footprints[part.footprint]
-                        if (footprint !== undefined) {
-                            if (footprint.imageImg === undefined) {
-                                footprint.imageImg = new Image(footprint.x, footprint.y);
-                                footprint.imageImg.src = "parts/" + footprint.img
-                                footprint.imageSym = new Image();
-                                footprint.imageSym.src = "parts/" + footprint.sym
-                            }
-                        }
-                    }
-
-                    this.draw_feeder(ctx, name, feeder, part, footprint)
+                    this.draw_feeder(ctx, name, feeder, part)
                 }
             },
             draw_camera(ctx, image, position) {
@@ -485,7 +476,7 @@ function start() {
                 ctx.stroke();
                 ctx.fillText(text, coord[0] + 0.2, coord[1] - 0.2);
             },
-            draw_part(ctx, coord, text) {
+            draw_detection(ctx, coord, text) {
                 ctx.save();
                 ctx.translate(coord[0], coord[1]);
 
@@ -507,7 +498,22 @@ function start() {
 
                 ctx.restore();
             },
-            draw_feeder(ctx, name, feeder, part, footprint) {
+            draw_part(ctx, part, footprint) {
+                ctx.save();
+                ctx.translate(part.x, part.y);
+                ctx.rotate(part.rot*Math.PI/180);
+                if (footprint) {
+                    ctx.drawImage(
+                        footprint.imageImg,
+                        -footprint.x/2,
+                        -footprint.y/2,
+                        footprint.x,
+                        footprint.y
+                    );
+                }
+                ctx.restore();
+            },
+            draw_feeder(ctx, name, feeder, part) {
 
                 let d = 2; // margin
 
@@ -525,6 +531,7 @@ function start() {
 
                     textLines.push(part.partnr)
 
+                    let footprint = getFootprint(part.footprint)
                     if (footprint) {
                         // scale sym size into a 10x10mm box
                         let factor = Math.max(footprint.imageSym.height, footprint.imageSym.width) / 10
