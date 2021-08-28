@@ -396,6 +396,10 @@ function start() {
                 }
                 ctx.restore();
 
+                //draw feeder
+                for (const [name, feeder] of Object.entries(this.db.feeder)) {
+                    this.draw_feeder(ctx, name, feeder)
+                }
             },
             draw_camera(ctx, image, position) {
                 if (image != null) {
@@ -444,6 +448,20 @@ function start() {
                 ctx.moveTo(0,-3);
                 ctx.lineTo(0,3);
                 ctx.stroke();
+
+                ctx.restore();
+            },
+            draw_feeder(ctx, name, feeder) {
+                ctx.save();
+                ctx.translate(feeder.x, feeder.y);
+
+                ctx.beginPath();
+                ctx.rect(0, 0, feeder.width, feeder.height);
+                ctx.stroke();
+
+                ctx.moveTo(0,feeder.height);
+                ctx.fillStyle = "yellow"
+                ctx.fillText(name, 1, feeder.height-1);
 
                 ctx.restore();
             }
