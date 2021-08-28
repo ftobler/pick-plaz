@@ -149,7 +149,6 @@ def mock():
     def dummy_fcn(*args):
         pass
 
-    
     import data_manager
     d = data_manager.DataManager()
 

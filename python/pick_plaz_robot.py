@@ -10,8 +10,19 @@ class Robot:
     __empty = False
     __sync = False
 
-    def __init__(self, comport):
-        self.con = Serial(comport, baudrate=115200, timeout=0.1)
+    def __init__(self, comport=None):
+        if comport != None:
+            #regular constructor
+            self.con = Serial(comport, baudrate=115200, timeout=0.1)
+        else:
+            #mock constructor
+            def dummy_fcn(*args):
+                pass
+            self.__send_commands = dummy_fcn
+            self.__receive_answer = dummy_fcn
+            self.done = dummy_fcn
+            self.flush = dummy_fcn
+
 
     def home(self, axis=None):
         """

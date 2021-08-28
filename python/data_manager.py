@@ -1,6 +1,7 @@
 
 import json
-from pnp_bom_parser import pnp_bom_parse
+from importlib import reload
+import pnp_bom_parser
 
 
 class DataManager:
@@ -15,6 +16,6 @@ class DataManager:
 
 
     def replace(self, bom_str, pnp_str):
-        self.data = pnp_bom_parse(pnp_str, bom_str)
-
+        reload(pnp_bom_parser)
+        self.data["bom"] = pnp_bom_parser.pnp_bom_parse(pnp_str, bom_str)
 

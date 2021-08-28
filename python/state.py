@@ -299,11 +299,12 @@ class StateContext:
         }
 
 def main(mock=False):
+    if mock:
+        print("starting in mock mode")
 
     event_queue = queue.Queue()
 
-    #TODO: @flo make Robot mock
-    robot = save_robot.SaveRobot("/dev/ttyUSB0")
+    robot = save_robot.SaveRobot(None if mock else "/dev/ttyUSB0")
 
     if not mock:
         c = camera.CameraThread(0)
@@ -314,11 +315,14 @@ def main(mock=False):
 
     s = StateContext(robot, c, d, event_queue)
 
-    b = bottle_svr.BottleServer(
+    '''b = bottle_svr.BottleServer(
         lambda: s.get_cam(),
         lambda x: event_queue.put(x),
         d,
-        lambda: s.nav)
+        lambda: s.nav)'''
+    def dummy_fcn(*args):
+        pass
+    b = bottle_svr.BottleServer(dummy_fcn, dummy_fcn, d, dummy_fcn)
 
     with c:
         try:

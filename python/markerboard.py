@@ -1,6 +1,7 @@
 
 import numpy as np
 
+#pip install opencv-contrib-python
 import cv2.aruco
 
 

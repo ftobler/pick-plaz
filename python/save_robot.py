@@ -7,7 +7,7 @@ class OutOfSaveSpaceException(Exception):
 class SaveRobot(pick_plaz_robot.Robot):
     """ Wrapper for Robot that checks for illegal operations"""
 
-    def __init__(self, comport, pos_logger=None):
+    def __init__(self, comport=None, pos_logger=None):
         super().__init__(comport)
 
         self.x_bounds = (0,400)

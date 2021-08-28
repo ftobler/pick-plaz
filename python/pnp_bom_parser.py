@@ -54,7 +54,7 @@ def find_indexes(data, probable_list, default=None):
         return default
 
 
-def pnp_bom_parse(pnp, bom):
+def pnp_bom_parse_internal(pnp, bom):
     #parse file and get it to a python double array
     pnp_data = parse_raw_content(pnp)
     bom_data = parse_raw_content(bom)
@@ -122,6 +122,15 @@ def pnp_bom_parse(pnp, bom):
             parts_list[id] = parts_data
 
     return data
+
+def pnp_bom_parse(pnp, bom):
+    try:
+        return pnp_bom_parse_internal(pnp, bom)
+    except Exception as e:
+        #in case it's a Egale BOM, there is somehing to adjust and then try again
+        bom = bom[1::]
+        pnp = ["id	x	y	rot"] + pnp
+        return pnp_bom_parse_internal(pnp, bom)
 
 
 if __name__ == "__main__":
