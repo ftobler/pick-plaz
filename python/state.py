@@ -29,6 +29,8 @@ class StateContext:
         self.event_queue = event_queue
         self.data = data
 
+        self.alert_id = 0
+
         self.nav = {
             "camera": {
                 "x": 0,
@@ -94,6 +96,8 @@ class StateContext:
         item = self.event_queue.get()
         if item["type"] == "init":
             return self.init_state
+        else:
+            self._handle_common_event(item)
 
         return self.idle_state
 
@@ -220,6 +224,8 @@ class StateContext:
                                               universal_newlines=True)
                     if process.returncode != 0:
                         self._push_alert("Shutdown failed")
+            else:
+                self._handle_common_event(item)
         except calibrator.CalibrationError as e:
             self._push_alert(f"Calibration Failed: {e}")
         except save_robot.OutOfSaveSpaceException as e:
@@ -295,6 +301,8 @@ class StateContext:
                 if item["type"] == "sequence":
                     if item["method"] == "pause":
                         return self.setup_state
+                else:
+                    self._handle_common_event(item)
             except queue.Empty:
                 pass
 
@@ -307,19 +315,21 @@ class StateContext:
         return self.run_state
 
     def _push_alert(self, msg, answers=None):
-        if "alert" in self.nav:
-            uid = self.nav["alert"]["id"] + 1
-        else:
-            uid = 0
 
         if answers is None:
             answers = ["OK"]
 
         self.nav["alert"] = {
-            "id" : uid,
+            "id" : self.alert_id,
             "msg" : str(msg),
             "answers" : [str(a) for a in answers],
         }
+
+        self.alert_id += 1
+
+    def _handle_common_event(self, item):
+        if item["type"] == "alertquit":
+            del self.nav["alert"]
 
 def main(mock=False):
     if mock:
