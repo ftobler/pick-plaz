@@ -14,7 +14,7 @@
 <body onload="start()" class="noselect" style="text-align: center;">
 <div id="app" style="width: 100%; max-width: 2600px; margin:0 auto;">
 
-    
+
     <div class="alert" v-if="activealert">
         <div class="alert-content">
             <h1>Alert</h1>
@@ -97,7 +97,7 @@
                                 <td width="40px">{{part.rot}}</td>
                                 <td width="70px"><div class="table-button material">swap_calls</div> {{part.state}}</td>
                                 <td v-if="entry.fiducial == false" width="200px">
-                                    <button v-on:click="part_view_place(part)">view place</button> 
+                                    <button v-on:click="part_view_place(part)">view place</button>
                                     <button v-on:click="part_view_pick(entry)">view pick</button>
                                     <button v-on:click="part_do_place(entry, part, id)">do place</button>
                                 </td>
@@ -110,7 +110,7 @@
                         </table>
                     </td>
                 </tr>
-            
+
             </table>
         </div>
 
@@ -156,7 +156,7 @@
             </div >
             <canvas id="canvas-view" width="1850" height="800" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 
-            
+
         </div>
     </div>
 

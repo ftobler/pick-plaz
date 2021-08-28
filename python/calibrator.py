@@ -281,7 +281,7 @@ class Homography(object):
         """
         cal : Calibration object
         pixel_per_mm : float
-        pixel_size 
+        pixel_size
 
         """
         self.cal = cal

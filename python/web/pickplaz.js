@@ -122,7 +122,7 @@ function start() {
             },
             mousedown(event) {
                 if (event.button == 0) { //left button
-                    
+
                 } else if (event.button == 1) { //middle button
                     let canvas = document.getElementById("canvas-view");
                     this.canvas.drag = true
@@ -138,7 +138,7 @@ function start() {
             },
             mouseup(event) {
                 if (event.button == 0) { //left button
-                    
+
                 } else if (event.button == 1) { //middle button
                     this.canvas.drag = false
                 } else if (event.button == 2) { //right button
@@ -313,7 +313,7 @@ function start() {
                         }
                     }
                 }
-                
+
                 //draw pcb
                 ctx.save()
                 let t = this.nav.pcb.transform
@@ -362,13 +362,13 @@ function start() {
                                 ctx.moveTo(0,0)
                                 ctx.lineTo(size, 0)
                                 ctx.stroke();
-                                
+
                                 ctx.strokeStyle = "yellow"
                                 ctx.beginPath();
                                 ctx.moveTo(0,0)
                                 ctx.lineTo(0, -size)
                                 ctx.stroke();
-                                
+
                                 ctx.strokeStyle = "blue"
                                 ctx.beginPath();
                                 ctx.moveTo(0,0)
@@ -381,13 +381,13 @@ function start() {
                                     ctx.arc(0, 0, 1, 0, 2 * Math.PI)
                                     ctx.stroke()
                                 }
-                                    
+
                                 ctx.save()
                                 ctx.transform(1, 0, 0, -1, 0, 0)
                                 ctx.fillText(id, 0.2, -0.2);
                                 ctx.restore()
                             }
-                            
+
 
                             ctx.restore()
                             ctx.restore()
@@ -400,18 +400,18 @@ function start() {
             draw_camera(ctx, image, position) {
                 if (image != null) {
                     ctx.drawImage(
-                        image, 
-                        position.x - position.width / 2, 
-                        position.y - position.height / 2, 
-                        position.width, 
+                        image,
+                        position.x - position.width / 2,
+                        position.y - position.height / 2,
+                        position.width,
                         position.height
                     );
                 } else {
                     ctx.strokeStyle = "yellow"
                     ctx.beginPath(); ctx.rect(
-                        position.x - position.width / 2, 
-                        position.y - position.height / 2, 
-                        position.width, 
+                        position.x - position.width / 2,
+                        position.y - position.height / 2,
+                        position.width,
                         position.height
                     ); ctx.stroke();
                 }
@@ -558,7 +558,7 @@ api = {
                 event(json)
             }
         })
-        
+
         /*$.ajax({
             url: '/api/upload',
             type: 'POST',
@@ -602,7 +602,7 @@ function apicall(scope, arguments, cb) {
 ajax({
 	    type: "GET",
 	    url: "/something",
-		success: (data) => {                        
+		success: (data) => {
 	    },
 	    dataType: "application/json"
 	})

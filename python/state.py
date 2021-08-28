@@ -26,7 +26,7 @@ class StateContext:
     def __init__(self, robot, camera, data, event_queue):
         self.robot = robot
         self.camera = camera
-        self.event_queue = event_queue 
+        self.event_queue = event_queue
         self.data = data
 
         self.nav = {
