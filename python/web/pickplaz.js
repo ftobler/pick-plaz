@@ -35,7 +35,8 @@ function start() {
                 center_camera: true,
                 show_components: true,
                 show_symbol: true,
-            }
+            },
+            fiducial_bom: {}
         },
         mounted() {
             document.addEventListener('mousemove', this.mousemove)
@@ -51,17 +52,26 @@ function start() {
         methods: {
             poll_data() {
                 ajax({
-                    type: "GET",
+                    type: "POST",
                     dataType: "application/json",
                     url: "/api/data.json",
                     success: (data) => {
                         this.db = JSON.parse(data)
+                        let index = 0
+                        for (let bom of this.db.bom) {
+                            if (bom.fiducial == true) {
+                                this.db.fiducial = index
+                                this.fiducial_bom = bom;
+                                break;
+                            }
+                            index++
+                        }
                     },
                 })
             },
             poll_image() {
                 ajax({
-                    type: "GET",
+                    type: "POST",
                     dataType: "application/json",
                     url: "/api/nav.json",
                     success: (data) => {

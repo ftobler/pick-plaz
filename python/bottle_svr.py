@@ -28,23 +28,24 @@ class BottleServer:
         self.thread.start()
 
     def _api(self, name):
-        if name == "topdn.jpg":
-            import cv2
-            img = self.get_camera_fcn()
-            status, encoded = cv2.imencode('.jpg', img)
-            if status:
-                jpg = encoded.tobytes()
-                response.set_header('Content-type', 'image/jpeg')
-                return jpg
-            else:
-                return "{}"
-        elif name == "nav.json":
-            return self.nav_fcn()
+        return static_file(name, root='web/api')
 
-        elif name == "data.json":
-            return self.data.get()
+    def _camera_topdn(self):
+        import cv2
+        img = self.get_camera_fcn()
+        status, encoded = cv2.imencode('.jpg', img)
+        if status:
+            jpg = encoded.tobytes()
+            response.set_header('Content-type', 'image/jpeg')
+            return jpg
         else:
-            return static_file(name, root='web/api')
+            return "{}"
+
+    def _nav(self):
+        return self.nav_fcn()
+
+    def _data(self):
+        return self.data.get()
 
     def _setpos(self):
         r = dict(request.query.decode())
@@ -114,7 +115,10 @@ class BottleServer:
     def _run(self):
 
         route('/')(self._home)
-        route('/api/<name>')(self._api)
+        #route('/api/<name>')(self._api)
+        route('/api/topdn.jpg', method='GET')(self._camera_topdn)
+        route('/api/nav.json', method='POST')(self._nav)
+        route('/api/data.json', method='POST')(self._data)
         route('/api/setpos', method='POST')(self._setpos)
         route('/api/setfiducal', method='POST')(self._setfiducial)
         route('/api/sequencecontrol', method='POST')(self._sequencecontrol)

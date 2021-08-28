@@ -119,12 +119,13 @@
                 <tr>
                     <th width="100px">Name</th>
                     <th width="100px">Type</th>
-                    <th width="100px">X</th>
-                    <th width="100px">Y</th>
-                    <th width="100px">width</th>
-                    <th width="100px">height</th>
-                    <th width="100px">Pitch</th>
-                    <th width="100px">Orientation</th>
+                    <th width="80px">X</th>
+                    <th width="80px">Y</th>
+                    <th width="80px">width</th>
+                    <th width="80px">height</th>
+                    <th width="80px">Pitch</th>
+                    <th width="80px">Orientation</th>
+                    <th width="100px">Status</th>
                     <th width="100px">Action</th>
                 </tr>
                 <tr v-for="(entry, name) in db.feeder">
@@ -136,7 +137,8 @@
                     <td>{{entry.height}}</td>
                     <td>{{entry.pitch}}</td>
                     <td><div class="table-button material" v-on:click="do_bom_rotate(entry, i)">refresh</div> {{entry.Orientation}}</td>
-                    <td><button>test pick</button></td>
+                    <td><div class="table-button material">swap_calls</div> {{entry.state}}</td>
+                    <td><button>test pick</button> <button>goto</button></td>
                 </tr>
             </table>
         </div>
@@ -151,8 +153,9 @@
                 <label class="switcher-label">show component graphics</label>-->
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_symbol"><span class="slider round"></span></label>
                 <label class="switcher-label">show symbols</label>
-                <span style="width: 200px; display: inline-block"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm</label></span>
-                <span style="width: 200px; display: inline-block"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
+                <span style="width: 250px; display: inline-block"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm</label></span>
+                <span style="width: 250px; display: inline-block"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
+                <button class="fiducial-assign" v-for="(part, id)  in fiducial_bom.parts">{{id}}<div class="fiducial-assign-hint">assign/unassign Fiducial</div></button>
             </div >
             <canvas id="canvas-view" width="1850" height="800" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 

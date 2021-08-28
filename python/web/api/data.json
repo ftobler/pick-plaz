@@ -18,7 +18,7 @@
         {
             "feeder": "tray 1",
             "fiducial": false,
-            "footprint": "0805_RES",
+            "footprint": "0805_R",
             "partnr": "RESISTOR0805_RES",
             "parts": {
                 "R1": {

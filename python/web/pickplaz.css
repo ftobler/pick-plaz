@@ -31,6 +31,23 @@ a:hover {
     color: rgb(255, 196, 196);
 }
 
+
+button {
+    height: 30px;
+    transform: skew(-15deg);
+    cursor: pointer;
+
+    background-color: rgb(0, 150, 92);
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+button:hover {
+    background-color: rgb(0, 102, 63);
+}
+
 .menu {
     margin: 10px;
     margin-bottom: 0px;
@@ -310,6 +327,37 @@ input:checked + .slider:before {
     margin-right: 20px;
 }
 
+.fiducial-assign {
+    width: 42px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+.fiducial-assign-hint {
+    visibility: hidden;
+    position: absolute;
+    top: 34px;
+    left: 50%;
+    margin-left: -44px;
+    width: 88px;
+    padding: 2px;
+    background-color: rgb(50,50,50);
+    transform: skew(15deg);
+}
+.fiducial-assign-hint::after {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 50%;
+    top: 3px;
+    transform:  translate(-10px, -10px) rotate(45deg);
+    background-color: rgb(50,50,50);
+    content: " ";
+    z-index: -1;  /* to be below the parent element */
+}
+.fiducial-assign:hover .fiducial-assign-hint {
+    visibility: visible;
+    font-size: 9pt;
+}
 
 
 
