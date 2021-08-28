@@ -118,7 +118,7 @@ class StateContext:
             self.picker = pick.Picker(self.cal)
 
         except calibrator.CalibrationError as e:
-            self._push_alert(e)
+            self._push_alert(f"Calibration Failed: {e}")
             return self.idle_state
         except AbortException as e:
             self._push_alert(e)
