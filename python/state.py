@@ -198,6 +198,22 @@ class StateContext:
             elif item["type"] == "sequence":
                 if item["method"] == "play":
                     return self.run_state
+                elif item["method"] == "home":
+                    self.robot.home()
+                    self.robot.done()
+                elif item["method"] == "motor_off":
+                    self.robot.steppers(False)
+                elif item["method"] == "motor_on":
+                    self.robot.steppers(True)
+                elif item["method"] == "calibrate_topdn":
+                    pass # TODO implement
+                elif item["method"] == "shutdown":
+                    import subprocess
+                    process = subprocess.run(['shutdown', '-h', '+0'],
+                                              stdout=subprocess.PIPE,
+                                              universal_newlines=True)
+                    if process.returncode != 0:
+                        self._push_alert("Shutdown failed")
 
         except save_robot.OutOfSaveSpaceException as e:
             self._push_alert(e)
@@ -332,6 +348,7 @@ def main(mock=False):
     # park robot
     robot.vacuum(False)
     robot.valve(False)
+    robot.drive(z=0)
     robot.drive(5,5) # drive close to home
     robot.done()
     robot.dwell(1000)
