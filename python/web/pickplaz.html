@@ -12,24 +12,43 @@
     <link rel="alternate icon" href="/favicon.ico">
 </head>
 <body onload="start()" class="noselect" style="text-align: center;">
-<div id="app" style="width: 100%; max-width: 2600px; margin:0 auto;">
+<div id="app" style="width: 100%; max-width: 2600px; margin:0 auto; visibility: hidden;">
 
 
     <div class="alert" v-if="activealert">
         <div class="alert-content">
             <h1>Alert</h1>
-            <p>{{activealert.msg}}</p>
+            <div class="alert-inner">
+                <p>{{activealert.msg}}</p>
+<!--                 <input type="text" id="lname" name="lname"> mm
+                <div class="alert-selection" v-for='answer in ["auto detect zone", "fixed grid", "strip", "x", "y"]'>{{answer}}</div> -->
+            </div>
             <div class="alert-button-list">
                 <div class="alert-button" v-for="answer in activealert.answers" v-on:click="do_alert_quit(activealert.id, answer)">{{answer}}</div>
             </div>
         </div>
     </div>
 
+
+<!--     <div class="alert">
+        <div class="alert-content">
+            <h1>Feeder</h1>
+            <div class="alert-inner">
+                <p>Please enter X-Position:</p>
+                <input type="text" id="lname" name="lname"> mm
+                <div class="alert-selection" v-for='answer in ["auto detect zone", "fixed grid", "strip", "x", "y"]'>{{answer}}</div>
+            </div>
+            <div class="alert-button-list">
+                <div class="alert-button">Cancel</div>
+            </div>
+        </div>
+    </div> -->
+
     <div class="menu">
         <a class="logo" href="https://github.com/ftobler/pick-plaz" target="_blank">pick-plaz</a>
-        <div class="menu-item" v-bind:class="{active : page == 0}" v-on:click="page = 0">Parts</div>
-        <div class="menu-item" v-bind:class="{active : page == 1}" v-on:click="page = 1">Feeder</div>
-        <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="page = 2; setTimeout(() => {draw_stuff()})">Navigate</div>
+        <div class="menu-item" v-bind:class="{active : page == 0}" v-on:click="do_nav(0)">Parts</div>
+        <div class="menu-item" v-bind:class="{active : page == 1}" v-on:click="do_nav(1)">Feeder</div>
+        <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="do_nav(2); setTimeout(() => {draw_stuff()})">Navigate</div>
         <div class="menu-item menu-material" v-on:click="menu_hamburger = !menu_hamburger" v-bind:class="{active : menu_hamburger}">menu
             <div v-if="menu_hamburger">
                 <div class="menu-menu-item" v-on:click="do_sequence('home')">Home</div>
@@ -53,7 +72,6 @@
                 <div class="menu-material stop" v-on:click="do_sequence('stop')">stop</div>
             </div>
         </div>
-
     </div>
 
     <div class="content">
@@ -95,7 +113,7 @@
                                 <td width="40px">{{part.x}}</td>
                                 <td width="40px">{{part.y}}</td>
                                 <td width="40px">{{part.rot}}</td>
-                                <td width="70px"><div class="table-button material">swap_calls</div> {{part.state}}</td>
+                                <td width="70px"><div class="table-button material">swap_calls</div> {{part_state(part.state)}}</td>
                                 <td v-if="entry.fiducial == false" width="200px">
                                     <button v-on:click="part_view_place(part)">view place</button>
                                     <button v-on:click="part_view_pick(entry)">view pick</button>
@@ -137,7 +155,7 @@
                     <td>{{entry.height}}</td>
                     <td>{{entry.pitch}}</td>
                     <td><div class="table-button material" v-on:click="do_bom_rotate(entry, i)">refresh</div> {{entry.Orientation}}</td>
-                    <td><div class="table-button material">swap_calls</div> {{entry.state}}</td>
+                    <td><div class="table-button material">swap_calls</div> {{feeder_state(entry.state)}}</td>
                     <td><button>test pick</button> <button>goto</button></td>
                 </tr>
             </table>

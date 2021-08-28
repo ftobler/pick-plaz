@@ -48,69 +48,60 @@ function start() {
             var c = document.getElementById("canvas-view");
             c.onmousewheel = this.mousewheel()
             this.ctx = c.getContext('2d');
+            document.getElementById("app").style.visibility = "visible"
         },
         methods: {
             poll_data() {
-                ajax({
-                    type: "POST",
-                    dataType: "application/json",
-                    url: "/api/data.json",
-                    success: (data) => {
-                        this.db = JSON.parse(data)
-                        let index = 0
-                        for (let bom of this.db.bom) {
-                            if (bom.fiducial == true) {
-                                this.db.fiducial = index
-                                this.fiducial_bom = bom;
-                                break;
-                            }
-                            index++
+                api.data((data) => {
+                    this.db = JSON.parse(data)
+                    let index = 0
+                    for (let bom of this.db.bom) {
+                        if (bom.fiducial == true) {
+                            this.db.fiducial = index
+                            this.fiducial_bom = bom;
+                            break;
                         }
-                    },
+                        index++
+                    }
                 })
             },
             poll_image() {
-                ajax({
-                    type: "POST",
-                    dataType: "application/json",
-                    url: "/api/nav.json",
-                    success: (data) => {
-                        try {
-                            this.nav = JSON.parse(data)
-                            this.nav_init = true
-                        } catch {
-                            console.log("Failed to load nav.json. More related errors might follow.")
-                        }
+                api.nav((data) => {
+                    try {
+                        this.nav = JSON.parse(data)
+                        this.nav_init = true
+                    } catch {
+                        console.log("Failed to load nav.json. More related errors might follow.")
+                    }
 
-                        if (this.elements.show_camera && this.page==NAVPAGE) {
-                            let temp_img = new Image(10,10);
-                            temp_img.onload = () => {
-                                this.image.topdn = temp_img
-                                this.draw_stuff()
-                                setTimeout(() => {
-                                    this.poll_image()
-                                }, 300)
-                            }
-                            temp_img.src = "/api/topdn.jpg?nr=" + this.nav.camera.framenr + "&t=" + Date.now()
-                        } else {
-                            this.image.topdn = null
+                    if (this.elements.show_camera && this.page==NAVPAGE) {
+                        let temp_img = new Image(10,10);
+                        temp_img.onload = () => {
+                            this.image.topdn = temp_img
+                            this.draw_stuff()
                             setTimeout(() => {
                                 this.poll_image()
                             }, 300)
                         }
-                        this.draw_stuff()
+                        temp_img.src = "/api/topdn.jpg?nr=" + this.nav.camera.framenr + "&t=" + Date.now()
+                    } else {
+                        this.image.topdn = null
+                        setTimeout(() => {
+                            this.poll_image()
+                        }, 300)
+                    }
+                    this.draw_stuff()
 
-                        if (this.nav.alert != undefined && this.nav.alert != null) {
-                            if (this.last_quit_alert < this.nav.alert.id) {
-                                if (this.activealert && this.activealert.id != this.nav.alert.id) {
-                                    console.log(JSON.stringify(this.nav.alert, null, 4))
-                                }
-                                this.put_alert(this.nav.alert)
+                    if (this.nav.alert != undefined && this.nav.alert != null) {
+                        if (this.last_quit_alert < this.nav.alert.id) {
+                            if (this.activealert && this.activealert.id != this.nav.alert.id) {
+                                console.log(JSON.stringify(this.nav.alert, null, 4))
                             }
-                        } else {
-                            this.activealert = null
+                            this.put_alert(this.nav.alert)
                         }
-                    },
+                    } else {
+                        this.activealert = null
+                    }
                 })
             },
             px_to_mm(px) {
@@ -188,6 +179,9 @@ function start() {
                 this.canvas.cursor_mm.y = mm.y
             },
             keylistener(event) {
+                if (this.activealert) {
+                    return;
+                }
                 if (this.page == NAVPAGE) {
                     const stepwidth = 10 // mm
                     if (event.code == 'KeyW') {
@@ -200,6 +194,10 @@ function start() {
                         this.do_key_move(stepwidth, 0)
                     }
                 }
+            },
+            do_nav(target_page) {
+                this.page = target_page
+                this.poll_data();
             },
             do_key_move(x, y) {
                 this.canvas.pos_mm.x += x
@@ -248,6 +246,9 @@ function start() {
                         this.put_alert_manual("Upload Success.", null, false)
                     }
                 })
+            },
+            show_dialog(config) {
+                this.dialogs.push(config)
             },
             put_alert_manual(msg, answers, do_apiquit) {
                 this.put_alert( {
@@ -474,6 +475,12 @@ function start() {
                 ctx.fillText(name, 1, feeder.height-1);
 
                 ctx.restore();
+            },
+            part_status: function(i) {
+                return this.db.const.part_state[i]
+            },
+            feeder_status: function(i) {
+                return this.db.const.feeder_state[i]
             }
         },
         filters: {
@@ -501,6 +508,12 @@ function start() {
 
 
 api = {
+    data(cb) {
+        apicall("data.json", {}, cb, false)
+    },
+    nav(cb) {
+        apicall("nav.json", {}, cb, false)
+    },
     fiducial_assing_current_location(x_global, y_global, id, mode) {
         apicall("setfiducal", {
             x: x_global,
@@ -575,47 +588,19 @@ api = {
     },
     do_upload(form, event) {
         var form_data = new FormData(form);
-        /*ajax({
-            type: 'POST',
-            url: '/api/upload',
-            dataType: 'multipart/form-data'
-        })*/
-
+        console.log("api 'upload'")
         fetch('/api/upload', {method: "POST", body: form_data}).then(response => response.json()).then((json) => {
             if (event != undefined) {
                 event(json)
             }
         })
-
-        /*$.ajax({
-            url: '/api/upload',
-            type: 'POST',
-            data: form_data,
-            contentType: false,
-            processData: false,
-            xhr: function() {
-                var xhr = new window.XMLHttpRequest();
-                xhr.upload.addEventListener('progress', function(evt) {
-                    if (evt.lengthComputable) {
-                        var per = Math.round(evt.loaded / evt.total * 100);
-                        $('#prg').html('progress: ' + per + '%');
-                        if (per == 100) {
-                            document.getElementById("info").innerHTML = "waiting for reboot";
-                        }
-                    }
-                }, false);
-                return xhr;
-            },
-            success:function(d, s) {
-                console.log('success!')
-            },
-            error: function (a, b, c) {
-            }
-        });*/
     }
 }
 
-function apicall(scope, arguments, cb) {
+function apicall(scope, arguments, cb, debug_print) {
+    if (debug_print != false) {
+        console.log("api '" + scope + "' " + JSON.stringify(arguments))
+    }
     ajax({
         type: "POST",
         dataType: "application/json",

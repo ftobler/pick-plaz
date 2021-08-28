@@ -48,6 +48,9 @@ button:hover {
     background-color: rgb(0, 102, 63);
 }
 
+
+
+
 .menu {
     margin: 10px;
     margin-bottom: 0px;
@@ -381,43 +384,74 @@ input:checked + .slider:before {
     margin: auto;
     text-align: left;
     vertical-align: top;
-    height: 200px;
+    min-height: 200px;
     width: 550px;
     transform: skew(-15deg);
     overflow: hidden;
     position: relative;
 }
-.alert-content h1 {  /* nexted selector (space)*/
+.alert-content h1 {  /* nested selector (space)*/
     margin: 10px;
     margin-left: 15px;
     margin-bottom: 0px;
 }
-.alert-content p {  /* nexted selector (space)*/
-    margin: 10px;
-    margin-left: 15px;
-    margin-bottom: 0px;
+.alert-inner {
+    transform: skew(15deg);
+    margin-left: 80px;
+    margin-right: 80px;
+    margin-top: 20px;
+    margin-bottom: 70px;
+}
+
+.alert-inner input {
+    height: 30px;
+    color: white;
+    background-color: rgb(13, 14, 19);
+    border-radius: 2px;
+    border: 1px solid grey;
+    text-decoration: none;
+    width: 330px
 }
 .alert-button-list {
     position: absolute;
     bottom: 10px;
     right: 10px;
-}
-.alert-button {  /* nexted selector (space)*/
-    display: inline-block;
-    margin-top: 0;
-    margin-left: 10px;
-    font-weight: bold;
+    left: 0px;
+    text-align: right;
 }
 .alert-button {
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-weight: bold;
     width: 140px;
     line-height: 44px;
     text-align: center;
     vertical-align: middle;
-    /*background-color: rgb(131, 1, 1);*/
+    background-color: rgb(34, 37, 46);
+}
+.alert-button:hover {
+    background-color: rgb(58, 61, 73);
+}
+
+
+.alert-selection-list {
+    transform: skew(15deg);
+}
+.alert-selection {
+    display: block;
+    margin-top: 2px;
+    font-weight: bold;
+    width: 370px;
+    line-height: 30px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    background-color: rgb(13, 14, 19);
+}
+
+.alert-selection:hover {
     background-color: rgb(34, 37, 46);
 }
 
-.alert-button:hover {
-    /*background-color: rgb(175, 57, 57) !important;*/
-    background-color: rgb(58, 61, 73);
-}
+
+
