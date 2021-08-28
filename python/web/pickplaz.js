@@ -408,7 +408,27 @@ function start() {
 
                 //draw feeder
                 for (const [name, feeder] of Object.entries(this.db.feeder)) {
-                    this.draw_feeder(ctx, name, feeder)
+                    let part = undefined;
+                    for (let entry of this.db.bom) {
+                        if (entry.feeder == name) {
+                            part = entry
+                        }
+                    }
+
+                    let footprint = undefined
+                    if (part) {
+                        footprint = footprints[part.footprint]
+                        if (footprint !== undefined) {
+                            if (footprint.imageImg === undefined) {
+                                footprint.imageImg = new Image(footprint.x, footprint.y);
+                                footprint.imageImg.src = "parts/" + footprint.img
+                                footprint.imageSym = new Image();
+                                footprint.imageSym.src = "parts/" + footprint.sym
+                            }
+                        }
+                    }
+
+                    this.draw_feeder(ctx, name, feeder, part, footprint)
                 }
             },
             draw_camera(ctx, image, position) {
@@ -461,17 +481,86 @@ function start() {
 
                 ctx.restore();
             },
-            draw_feeder(ctx, name, feeder) {
+            draw_feeder(ctx, name, feeder, part, footprint) {
                 ctx.save();
                 ctx.translate(feeder.x, feeder.y);
+
+                ctx.fillStyle = "cyan"
+                ctx.strokeStyle = "cyan"
 
                 ctx.beginPath();
                 ctx.rect(0, 0, feeder.width, feeder.height);
                 ctx.stroke();
 
                 ctx.moveTo(0,feeder.height);
-                ctx.fillStyle = "yellow"
-                ctx.fillText(name, 1, feeder.height-1);
+
+                textLines = [name]
+
+                if (part) {
+
+                    textLines.push(part.partnr)
+
+                    if (footprint) {
+                        // scale sym size into a 10x10mm box
+                        let factor = Math.max(footprint.imageSym.height, footprint.imageSym.width) / 10
+                        let h = footprint.imageSym.height / factor;
+                        let w = footprint.imageSym.width / factor;
+
+                        ctx.drawImage(
+                            footprint.imageSym,
+                            feeder.width / 3  - w / 2,
+                            feeder.height / 2 - h / 2,
+                            w,
+                            h
+                        );
+                        ctx.drawImage(
+                            footprint.imageImg,
+                            feeder.width / 3 * 2 - footprint.x/2,
+                            feeder.height / 2 - footprint.y/2,
+                            footprint.x,
+                            footprint.y
+                        );
+                    } else {
+                        let txt = "no part symbol"
+                        let metrics = ctx.measureText(txt);
+                        ctx.fillText(
+                            txt,
+                            feeder.width / 2 - metrics.width/2,
+                            feeder.height / 2
+                        );
+
+                    }
+
+                } else {
+                    ctx.moveTo(0,feeder.height);
+                    ctx.lineTo(feeder.width, 0);
+                    ctx.stroke();
+                    ctx.moveTo(0,0);
+                    ctx.lineTo(feeder.width, feeder.height);
+                    ctx.stroke();
+                }
+
+                let metrics = ctx.measureText("");
+                let fontHeight = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
+                let y = fontHeight;
+                for (let line of textLines) {
+                    ctx.fillText(line, 1, y);
+                    y += fontHeight;
+                }
+
+
+                ctx.font = "5px Arial";
+                let txt = this.db.const.feeder_status[feeder.state]
+
+                if (feeder.state == 1) ctx.fillStyle = "green";
+                if (feeder.state == 2) ctx.fillStyle = "red";
+
+                metrics = ctx.measureText(txt);
+                ctx.fillText(
+                    txt,
+                    feeder.width / 2 - metrics.width/2,
+                    feeder.height - 3
+                );
 
                 ctx.restore();
             }
