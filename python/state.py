@@ -300,12 +300,14 @@ class StateContext:
             "answers" : [str(a) for a in answers],
         }
 
-def main():
+def main(mock=False):
 
     event_queue = queue.Queue()
 
+    #TODO: @flo make Robot mock
     robot = save_robot.SaveRobot("/dev/ttyUSB0")
 
+    #TODO: @nic make camera mock
     c = camera.CameraThread(0)
 
     s = StateContext(robot, c, event_queue)
