@@ -79,8 +79,8 @@ button:hover {
     vertical-align: middle;
     float: left;
     background-color: rgb(50,50,50);
-    width: 120px;
-    line-height: 32px;
+    width: 180px;
+    line-height: 28px;
     height: 32px;
     font-weight: normal;
     cursor: pointer;
@@ -172,6 +172,19 @@ button:hover {
     background-color: rgb(0, 150, 92);
 }
 
+
+.menu-item-material {
+    display: inline-block;
+    font-family: "Material Icons";
+    margin-right: 6px;
+    margin-left: -4px;
+    transform: translate(0, 2px) skew(15deg);
+}
+
+.material {
+    display: inline-block;
+    font-family: "Material Icons";
+}
 
 .logo {
     float: left;
