@@ -30,16 +30,18 @@ class DebugItem:
             "text" : text,
         }
 
-    def commit(self):
-        self.debug_data.data[self.name] = self.data
 
 class DebugData:
 
     def __init__(self):
         self.active = True
-        self.dir = "web/debug/"
-        os.mkdir(self.dir)
+        self.dir = "web/debug"
+        if not os.path.exists(self.dir):
+            os.mkdir(self.dir)
         self.data = {}
+
+        i = self.get("test1")
+        i.set_text("please püll")
 
     def get_dict(self):
         return {name : item.data for name, item in self.data.items()}
