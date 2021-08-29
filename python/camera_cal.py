@@ -4,6 +4,8 @@ import numpy as np
 import cv2
 import calibrator
 
+import debug
+
 CALIBRATION_POS = (155.7,124.2)
 
 aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_100)
@@ -43,7 +45,7 @@ def calibrate(robot, camera):
         markers_corners.append(corners)
         marker_ids.append(ids)
 
-        cv2.imwrite(f"{i}.jpg", image)
+        debug.set_image(f"Calibrate{i}", image)
 
     cal = calibrator.Calibration(positions, marker_ids, markers_corners)
     mp = calibrator.ModelPixConverter(cal)
