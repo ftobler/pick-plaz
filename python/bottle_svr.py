@@ -174,7 +174,7 @@ class BottleServer:
             elif method == "rotation":
                 self.data.modify_feeder_rot(feeder, _int_none(r["data"]))
             elif method == "state":
-                self.data.modify_feeder_rot(feeder, _int_none(r["data"]))
+                self.data.modify_feeder_state(feeder, _int_none(r["data"]))
             elif method in self.data.feeder_attribute:
                 self.data.modify_feeder_attribute(feeder, method, _int(r["data"]))
         except:
