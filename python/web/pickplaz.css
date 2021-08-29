@@ -92,9 +92,11 @@ button:active {
     font-weight: normal;
     cursor: pointer;
     font-size: 11pt;
+    transition: 0.3s;
 }
 .menu-menu-item:hover {
     background-color: rgb(70,70,70);
+    transition: 0.05s;
 }
 .menu-menu-item:active {
     background-color: rgb(0, 150, 92);
@@ -191,8 +193,7 @@ button:active {
 .menu-item-material {
     display: inline-block;
     font-family: "Material Icons";
-    margin-right: 6px;
-    margin-left: -4px;
+    margin-right: 10px;
     transform: translate(0, 2px) skew(15deg);
 }
 
@@ -379,7 +380,7 @@ input:checked + .slider:before {
     margin-right: 2px;
 }
 .fiducial-assign-hint {
-    visibility: hidden;
+    opacity: 0;
     position: absolute;
     top: 34px;
     left: 50%;
@@ -388,6 +389,9 @@ input:checked + .slider:before {
     padding: 2px;
     background-color: rgb(50,50,50);
     transform: skew(15deg);
+    font-size: 9pt;
+    transition: 0.5s;
+    pointer-events: none;
 }
 .fiducial-assign-hint::after {
     position: absolute;
@@ -401,8 +405,7 @@ input:checked + .slider:before {
     z-index: -1;  /* to be below the parent element */
 }
 .fiducial-assign:hover .fiducial-assign-hint {
-    visibility: visible;
-    font-size: 9pt;
+    opacity: 1;
 }
 
 
@@ -539,7 +542,7 @@ input:checked + .slider:before {
     margin: 5px;
     padding: 10px;
     width: 430px;
-    height: 430px;
+    height: 370px;
     background-color: rgb(13, 14, 19);
     overflow: hidden;
 }
@@ -555,7 +558,7 @@ input:checked + .slider:before {
 }
 .debug-section img{
     max-width: 410px;
-    max-height: 400px;
+    max-height: 340px;
 }
 .debug-text {
     font-weight: bold;
