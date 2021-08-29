@@ -102,8 +102,10 @@ function start() {
                                 title: "Server Alert",
                                 msg: this.nav.alert.msg,
                                 answers: this.nav.alert.answers,
-                                do_apiquit: true,
-                                id: this.nav.alert.id
+                                id: this.nav.alert.id,
+                                callback: (data, answer) => {
+                                    api.alert_quit(data.id, answer)
+                                }
                             })
                             this.last_put_alert = this.nav.alert.id
                         }
@@ -236,13 +238,94 @@ function start() {
             do_sequence(method) {
                 api.sequence(method)
             },
-            do_alert_quit(id, answer) {
-                let doQuit = this.activealert.do_apiquit
-                this.activealert = null
-                if (doQuit) {
-                    api.alert_quit(id, answer)
-                }
+
+
+            do_modify_bom_doplace(bom, i) {
+                console.log("do_modify_bom_doplace")
             },
+            do_modify_bom_isfiducial(bom, i) {
+                console.log("do_modify_bom_isfiducial")
+            },
+            do_modify_bom_footprint(bom, i) {
+                let footprint_names = []
+                for (const [name, feeder] of Object.entries(footprints)) {
+                    footprint_names.push(name)
+                }
+                if (footprint_names.length == 0) {
+                    return
+                }
+                this.show_dialog({
+                    title: "Edit",
+                    msg: "Select a new Footprint name",
+                    dropdown: footprint_names,
+                    answers: ["OK", "Cancel"],
+                    dropdown_selection: footprint_names[0],
+                    callback: (data, answer) => {
+                        console.log("do_modify_bom_footprint " + data.dropdown_selection)
+                    }
+                })
+            },
+            do_modify_bom_feeder(bom, i) {
+                let feeder_names = []
+                for (const [name, feeder] of Object.entries(this.db.feeder)) {
+                    feeder_names.push(name)
+                }
+                if (feeder_names.length == 0) {
+                    return
+                }
+                this.show_dialog({
+                    title: "Edit",
+                    msg: "Select a new Feeder name.",
+                    dropdown: feeder_names,
+                    answers: ["OK", "Cancel"],
+                    dropdown_selection: feeder_names[0],
+                    callback: (data, answer) => {
+                        console.log("do_modify_bom_feeder " + data.dropdown_selection)
+                    }
+                })
+            },
+            do_modify_bom_rotation(bom, i) {
+                console.log("do_modify_bom_rotation")
+            },
+            do_modify_part_state(id) {
+                console.log("do_modify_part_state")
+            },
+
+            do_modify_feeder_name(feeder) {
+                this.show_dialog({
+                    title: "Edit",
+                    msg: "Enter a new Feeder name.",
+                    input: true,
+                    answers: ["OK", "Cancel"],
+                    input_data: feeder,
+                    callback: (data, answer) => {
+                        console.log("do_modify_feeder_name " + data.input_data)
+                    }
+                })
+            },
+            do_modify_feeder_type(feeder) {
+                console.log("do_modify_feeder_type")
+            },
+            do_modify_feeder_attribute(feeder, feeder_obj, attribute) {
+                this.show_dialog({
+                    title: "Edit",
+                    msg: "Enter a new numerical value for '" + attribute + "'.",
+                    input: true,
+                    input_data: feeder_obj[attribute],
+                    answers: ["OK", "Cancel"],
+                    callback: (data, answer) => {
+                        console.log("do_modify_feeder_attribute " + attribute + " " + data.input_data)
+                    }
+                })
+            },
+            do_modify_feeder_rotation(feeder) {
+                console.log("do_modify_feeder_rotation")
+            },
+            do_modify_feeder_state(feeder) {
+                console.log("do_modify_feeder_state")
+            },
+
+
             do_upload() {
                 let form = document.getElementById("upload_form");
                 //form.submit();
@@ -255,20 +338,18 @@ function start() {
                 })
             },
             show_dialog(config) {
-                //{
+                //let data = {
                 //    title: "title",
                 //    msg: "message",
                 //    input: false,
+                //    dropdown: ["sel1"],
                 //    selection: ["sel1"],
                 //    answers: ["OK"],
-                //    do_apiquit: false,
-                //    id: 0
+                //    id: 0,
+                //    callback: (data, answer) => {}
                 //}
                 if (config.answers == undefined || config.answers == null || config.answers.length == 0) {
                     config.answers = ["OK"]
-                }
-                if (config.do_apiquit != true) {
-                    config.do_apiquit = false
                 }
                 if (config.selection == undefined) {
                     config.selection = []
@@ -284,10 +365,22 @@ function start() {
             do_dialog_quit(answer) {
                 console.log("do_dialog_quit");
                 let config = this.dialogs[0]
-                if (config.do_apiquit) {
-                    api.alert_quit(config.id, answer)
+                if (config.callback != undefined) {
+                    config.callback(config, answer);
                 }
                 this.dialogs.shift()  //remove first element
+            },
+            dialog_user_confirm(message, success_callback) {
+                this.show_dialog({
+                    title: "Confirm",
+                    msg: message,
+                    answers: ["Yes", "No"],
+                    callback: (config, answer) => {
+                        if (answer == "Yes") {
+                            success_callback()
+                        }
+                    }
+                })
             },
             put_alert(msg, answers) {
                 this.show_dialog({

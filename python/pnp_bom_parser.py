@@ -109,9 +109,9 @@ def pnp_bom_parse_internal(pnp, bom):
             for part in pnp_data[1:]:
                 if part[pnp_index_id] == id:
                     #matching PNP line found. Now assign it.
-                    parts_data["x"]     = part[pnp_index_x]
-                    parts_data["y"]     = part[pnp_index_y]
-                    parts_data["rot"]   = part[pnp_index_rot]
+                    parts_data["x"]     = float(part[pnp_index_x])
+                    parts_data["y"]     = float(part[pnp_index_y])
+                    parts_data["rot"]   = float(part[pnp_index_rot])
                     if pnp_index_layer != -1: #this could be non existing
                         parts_data["layer"] = part[pnp_index_layer]
                     else:

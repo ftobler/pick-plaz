@@ -19,7 +19,10 @@
             <h1>{{dialogs[0].title}}</h1>
             <div class="alert-inner">
                 <p>{{dialogs[0].msg}}</p>
-                <div v-if="dialogs[0].input"><input type="text" id="lname" name="lname"> {{dialogs[0].unit}}</div>
+                <div v-if="dialogs[0].input"><input type="text" v-model="dialogs[0].input_data"> {{dialogs[0].unit}}</div>
+                <select v-if="dialogs[0].dropdown" v-model="dialogs[0].dropdown_selection">
+                    <option v-for="s in dialogs[0].dropdown">{{s}}</option>
+                </select>
                 <div class="alert-selection" v-for='text in dialogs[0].selection'>{{dialogs[0].text}}</div>
             </div>
             <div class="alert-button-list">
@@ -27,35 +30,6 @@
             </div>
         </div>
     </div>
-
-<!--     <div class="alert" v-if="activealert">
-        <div class="alert-content">
-            <h1>Alert</h1>
-            <div class="alert-inner">
-                <p>{{activealert.msg}}</p>
-                <input type="text" id="lname" name="lname"> mm
-                <div class="alert-selection" v-for='answer in ["auto detect zone", "fixed grid", "strip", "x", "y"]'>{{answer}}</div>
-            </div>
-            <div class="alert-button-list">
-                <div class="alert-button" v-for="answer in activealert.answers" v-on:click="do_alert_quit(activealert.id, answer)">{{answer}}</div>
-            </div>
-        </div>
-    </div> -->
-
-
-<!--     <div class="alert">
-        <div class="alert-content">
-            <h1>Feeder</h1>
-            <div class="alert-inner">
-                <p>Please enter X-Position:</p>
-                <input type="text" id="lname" name="lname"> mm
-                <div class="alert-selection" v-for='answer in ["auto detect zone", "fixed grid", "strip", "x", "y"]'>{{answer}}</div>
-            </div>
-            <div class="alert-button-list">
-                <div class="alert-button">Cancel</div>
-            </div>
-        </div>
-    </div> -->
 
     <div class="menu">
         <a class="logo" href="https://github.com/ftobler/pick-plaz" target="_blank">pick-plaz</a>
@@ -68,7 +42,8 @@
                 <div class="menu-menu-item" v-on:click="do_sequence('motor_off')">Motor Off</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('motor_on')">Motor On</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('calibrate_topdn')">Calibrate Camera</div>
-                <div class="menu-menu-item" v-on:click="do_sequence('shutdown')">Shutdown</div>
+                <div class="menu-menu-item" v-on:click="dialog_user_confirm('Do you want to shutdown the computer? This shuts down the operating system and not just the pick-plaz application.', () => {do_sequence('shutdown')})">Shutdown</div>
+                <div class="menu-menu-item" v-on:click="do_nav(3)">Debug View</div>
             </div>
         </div>
 
@@ -111,14 +86,14 @@
                 </tr>
                 <tr v-for="(entry, i) in db.bom">
                     <td :rowspan="entry.parts.length">{{i}}</td>
-                    <td><input type="checkbox" v-model="entry.place"  v-if="!entry.fiducial"></td>
-                    <td><input type="checkbox" v-model="entry.fiducial"></td>
+                    <td><input type="checkbox" v-model="entry.place" v-on:change="do_modify_bom_doplace(entry, i)" v-if="!entry.fiducial"></td>
+                    <td><input type="checkbox" v-model="entry.fiducial" v-on:change="do_modify_bom_isfiducial(entry, i)"></td>
                     <td>{{entry.value}}</td>
-                    <td><div class="table-button material">edit</div> {{entry.footprint}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_bom_footprint(entry, i)">edit</div> {{entry.footprint}}</td>
                     <td><img v-bind:src="entry.footprint | footprint_img_path"/> &nbsp;&nbsp;<img v-bind:src="entry.footprint | footprint_sym_path"/></td>
                     <td><a v-bind:href="'https://lcsc.com/search?q=' + entry.partnr" target="_blank">{{entry.partnr}}</a></td>
-                    <td><div class="table-button material">edit</div> {{entry.feeder}}</td>
-                    <td><div class="table-button material">refresh</div> {{entry.rot}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_bom_feeder(entry, i)">edit</div> {{entry.feeder}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_bom_rotation(entry, i)">refresh</div> {{entry.rot}}</td>
                     <td class="cell-inline-table" colspan=6>
                         <table class="cell-inline-table">
                             <tr v-for="(part, id, index) in entry.parts">
@@ -126,7 +101,7 @@
                                 <td width="40px">{{part.x}}</td>
                                 <td width="40px">{{part.y}}</td>
                                 <td width="40px">{{part.rot}}</td>
-                                <td width="70px"><div class="table-button material">swap_calls</div> {{part_state(part.state)}}</td>
+                                <td width="70px"><div class="table-button material" v-on:click="do_modify_part_state(id)">swap_calls</div> {{part_state(part.state)}}</td>
                                 <td v-if="entry.fiducial == false" width="200px">
                                     <button v-on:click="part_view_place(part)">view place</button>
                                     <button v-on:click="part_view_pick(entry)">view pick</button>
@@ -160,15 +135,15 @@
                     <th width="100px">Action</th>
                 </tr>
                 <tr v-for="(entry, name) in db.feeder">
-                    <td><div class="table-button material">edit</div> {{name}}</td>
-                    <td><div class="table-button material">swap_calls</div> {{entry.type}}</td>
-                    <td><div class="table-button material">edit</div> {{entry.x}}</td>
-                    <td><div class="table-button material">edit</div> {{entry.y}}</td>
-                    <td><div class="table-button material">edit</div> {{entry.width}}</td>
-                    <td><div class="table-button material">edit</div> {{entry.height}}</td>
-                    <td><div class="table-button material">edit</div> {{entry.pitch}}</td>
-                    <td><div class="table-button material" v-on:click="do_bom_rotate(entry, i)">refresh</div> {{entry.Orientation}}</td>
-                    <td><div class="table-button material">swap_calls</div> {{feeder_state(entry.state)}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_name(name)">edit</div> {{name}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_type(name)">swap_calls</div> {{entry.type}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'x')">edit</div> {{entry.x}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'y')">edit</div> {{entry.y}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'width')">edit</div> {{entry.width}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'height')">edit</div> {{entry.height}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'pitch')">edit</div> {{entry.pitch}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_rotation(name)">refresh</div> {{entry.Orientation}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_state(name)">swap_calls</div> {{feeder_state(entry.state)}}</td>
                     <td><button>test pick</button> <button>goto</button></td>
                 </tr>
             </table>
@@ -193,6 +168,20 @@
             <canvas id="canvas-view" width="1850" height="800" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 
 
+        </div>
+
+        <div v-if="page == 3" class="debug-page">
+            <h1>Debug View</h1>
+            <div class="debug-section">
+                <p>topdn.jpg</p>
+                <a href="api/topdn.jpg"><img src="api/topdn.jpg"></a>
+            </div>
+            <div class="debug-section">asdf2</div>
+            <div class="debug-section">asdf3</div>
+            <div class="debug-section">asdf4</div>
+            <div class="debug-section">asdf5</div>
+            <div class="debug-section">asdf6</div>
+            <div class="debug-section">asdf7</div>
         </div>
     </div>
 
