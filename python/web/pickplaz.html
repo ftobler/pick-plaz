@@ -38,12 +38,12 @@
         <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="do_nav(2); setTimeout(() => {draw_stuff()})">Navigate</div>
         <div class="menu-item menu-material" v-on:click="menu_hamburger = !menu_hamburger" v-bind:class="{active : menu_hamburger}">menu
             <div v-if="menu_hamburger">
-                <div class="menu-menu-item" v-on:click="do_sequence('home')">Home</div>
-                <div class="menu-menu-item" v-on:click="do_sequence('motor_off')">Motor Off</div>
-                <div class="menu-menu-item" v-on:click="do_sequence('motor_on')">Motor On</div>
-                <div class="menu-menu-item" v-on:click="do_sequence('calibrate_topdn')">Calibrate Camera</div>
-                <div class="menu-menu-item" v-on:click="dialog_user_confirm('Do you want to shutdown the computer? This shuts down the operating system and not just the pick-plaz application.', () => {do_sequence('shutdown')})">Shutdown</div>
-                <div class="menu-menu-item" v-on:click="do_nav(3); poll_debug()">Debug View</div>
+                <div class="menu-menu-item" v-on:click="do_sequence('home')"><div class="menu-item-material">home</div>Home</div>
+                <div class="menu-menu-item" v-on:click="do_sequence('motor_off')"><div class="menu-item-material">power_off</div>Motor Off</div>
+                <div class="menu-menu-item" v-on:click="do_sequence('motor_on')"><div class="menu-item-material">power</div>Motor On</div>
+                <div class="menu-menu-item" v-on:click="do_sequence('calibrate_topdn')"><div class="menu-item-material">photo_camera</div>Calibrate Camera</div>
+                <div class="menu-menu-item" v-on:click="dialog_user_confirm('Do you want to shutdown the computer? This shuts down the operating system and not just the pick-plaz application.', () => {do_sequence('shutdown')})"><div class="menu-item-material">power_settings_new</div>Shutdown</div>
+                <div class="menu-menu-item" v-on:click="do_nav(3); poll_debug()"><div class="menu-item-material">analytics</div>Debug View</div>
             </div>
         </div>
 
@@ -172,7 +172,6 @@
 
         <div v-if="page == 3" class="debug-page">
             <h3>Debug View<div class="table-button material" v-on:click="debug = {}; setTimeout(() => {poll_debug()})">refresh</div></h3>
-            <br>
             <div class="debug-section" v-for="(entry, name) in debug" v-if="Object.keys(entry).length">
                 <span v-if="entry.type == 'image'">
                     <p>{{name}}</p>
