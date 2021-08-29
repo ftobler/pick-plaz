@@ -17,6 +17,7 @@
     <div class="alert" v-if="dialogs.length > 0">
         <div class="alert-content">
             <h1>{{dialogs[0].title}}</h1>
+            <div class="alert-icon">{{dialogs[0].material_image}}</div>
             <div class="alert-inner">
                 <p>{{dialogs[0].msg}}</p>
                 <div v-if="dialogs[0].input"><input type="text" v-model="dialogs[0].input_data"> {{dialogs[0].unit}}</div>

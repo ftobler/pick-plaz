@@ -260,8 +260,9 @@ td {
 .table-button.material {
     font-family: "Material Icons";
     font-size: 20px;
-    padding: 3px;
-    margin-top: 3px;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 100%;
 }
 .cell-inline-table {
     margin: 0px;
@@ -410,7 +411,7 @@ input:checked + .slider:before {
 }
 .alert-inner {
     transform: skew(15deg);
-    margin-left: 80px;
+    margin-left: 110px;
     margin-right: 80px;
     margin-top: 20px;
     margin-bottom: 90px;
@@ -470,6 +471,16 @@ input:checked + .slider:before {
 
 .alert-selection:hover {
     background-color: rgb(34, 37, 46);
+}
+
+.alert-icon {
+    position: absolute;
+    font-family: "Material Icons";
+    font-size: 48px;
+    color: rgba(255,255,255,0.4);
+    transform: skew(15deg);
+    left: 35px;
+    top: 90px;
 }
 
 

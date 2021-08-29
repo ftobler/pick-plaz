@@ -100,11 +100,29 @@ function start() {
                             if (this.activealert && this.activealert.id != this.nav.alert.id) {
                                 console.log(JSON.stringify(this.nav.alert, null, 4))
                             }
+                            let icon = "notifications"
+                            let msg = this.nav.alert.msg.toLowerCase()
+                            if (msg.includes("warn")) {
+                                icon = "warning"
+                            }
+                            if (msg.includes("error") || msg.includes("exception") || msg.includes("fail")) {
+                                icon = "error"
+                            }
+                            if (msg.includes("attention") || msg.includes("feedback")) {
+                                icon = "feedback"
+                            }
+                            if (msg.includes("info")) {
+                                icon = "info"
+                            }
+                            if (msg.includes("complete") || msg.includes("finish") || msg.includes("success") || msg.includes("done")) {
+                                icon = "done"
+                            }
                             this.show_dialog({
                                 title: "Server Alert",
                                 msg: this.nav.alert.msg,
                                 answers: this.nav.alert.answers,
                                 id: this.nav.alert.id,
+                                material_image: icon,
                                 callback: (data, answer) => {
                                     api.alert_quit(data.id, answer)
                                 }
@@ -268,6 +286,7 @@ function start() {
                     dropdown: footprint_names,
                     answers: ["OK", "Cancel"],
                     dropdown_selection: footprint_names[0],
+                    material_image: "edit",
                     callback: (data, answer) => {
                         console.log("do_modify_bom_footprint " + data.dropdown_selection)
                     }
@@ -287,6 +306,7 @@ function start() {
                     dropdown: feeder_names,
                     answers: ["OK", "Cancel"],
                     dropdown_selection: feeder_names[0],
+                    material_image: "edit",
                     callback: (data, answer) => {
                         console.log("do_modify_bom_feeder " + data.dropdown_selection)
                     }
@@ -306,6 +326,7 @@ function start() {
                     input: true,
                     answers: ["OK", "Cancel"],
                     input_data: feeder,
+                    material_image: "edit",
                     callback: (data, answer) => {
                         console.log("do_modify_feeder_name " + data.input_data)
                     }
@@ -321,6 +342,7 @@ function start() {
                     input: true,
                     input_data: feeder_obj[attribute],
                     answers: ["OK", "Cancel"],
+                    material_image: "edit",
                     callback: (data, answer) => {
                         console.log("do_modify_feeder_attribute " + attribute + " " + data.input_data)
                     }
@@ -338,11 +360,21 @@ function start() {
                 let form = document.getElementById("upload_form");
                 //form.submit();
                 api.do_upload(form, (err) => {
+                    let msg
+                    let image
                     if (err.error != undefined) {
-                        this.put_alert("Upload Failed. " + err.error, null)
+                        msg = "Upload Failed. " + err.error
+                        image = "error"
                     } else {
-                        this.put_alert("Upload Success.", null)
+                        msg = "Upload Success."
+                        image = "done"
                     }
+                    this.show_dialog({
+                        title: "Upload",
+                        msg: msg,
+                        answers: ["ok"],
+                        material_image: image
+                    })
                 })
             },
             show_dialog(config) {
@@ -354,6 +386,7 @@ function start() {
                 //    selection: ["sel1"],
                 //    answers: ["OK"],
                 //    id: 0,
+                //    material_image: "info",
                 //    callback: (data, answer) => {}
                 //}
                 if (config.answers == undefined || config.answers == null || config.answers.length == 0) {
@@ -367,6 +400,9 @@ function start() {
                 }
                 if (config.unit == undefined) {
                     config.unit = ""
+                }
+                if (config.material_image == undefined) {
+                    config.material_image = "notifications"
                 }
                 this.dialogs.push(config)
             },
@@ -388,13 +424,6 @@ function start() {
                             success_callback()
                         }
                     }
-                })
-            },
-            put_alert(msg, answers) {
-                this.show_dialog({
-                    title: "Alert",
-                    msg: msg,
-                    answers: answers,
                 })
             },
             draw_stuff() {
