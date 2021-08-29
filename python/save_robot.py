@@ -34,9 +34,9 @@ class SaveRobot(pick_plaz_robot.Robot):
                 self.pos_logger["y"] = float(y)
 
         if self.__check_range(x, self.x_bounds):
-            raise OutOfSaveSpaceException(f"Attempting to drive x={x} which is outside of save bounds {self.x_bounds}")
+            raise OutOfSaveSpaceException(f"Attempting to drive x={x}, which is outside of save bounds {self.x_bounds}.")
 
         if self.__check_range(y, self.y_bounds):
-            raise OutOfSaveSpaceException(f"Attempting to drive y={y} which is outside of save bounds {self.y_bounds}")
+            raise OutOfSaveSpaceException(f"Attempting to drive y={y}, which is outside of save bounds {self.y_bounds}.")
 
         return super().drive(x=x, y=y, z=z, e=e, b=b, c=c, f=f)

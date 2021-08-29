@@ -19,6 +19,7 @@
             <h1>{{dialogs[0].title}}</h1>
             <div class="alert-icon">{{dialogs[0].material_image}}</div>
             <div class="alert-inner">
+                <div style="height: 12px" v-if="!dialogs[0].input"> </div>
                 <p>{{dialogs[0].msg}}</p>
                 <div v-if="dialogs[0].input"><input type="text" v-model="dialogs[0].input_data" list="datalist"> {{dialogs[0].unit}}</div>
                 <!-- <select v-if="dialogs[0].dropdown" v-model="dialogs[0].dropdown_selection"> -->
@@ -107,12 +108,11 @@
                                 <td width="40px">{{part.rot}}</td>
                                 <td width="70px"><div class="table-button material" v-on:click="do_modify_part_state(id)">swap_calls</div> {{part_state(part.state)}}</td>
                                 <td v-if="entry.fiducial == false" width="200px">
-                                    <button v-on:click="part_view_place(part)">view place</button>
-                                    <button v-on:click="part_view_pick(entry)">view pick</button>
-                                    <button v-on:click="part_do_place(entry, part, id)">do place</button>
+                                    <button v-on:click="do_part_goto(part)">view place</button>
+                                    <button v-on:click="do_feeder_goto(entry.feeder)">view pick</button>
                                 </td>
                                 <td v-if="entry.fiducial == true"  width="200px">
-                                    <button v-on:click="fiducial_goto(part)">goto</button>
+                                    <button v-on:click="do_part_goto(part)">goto</button>
                                     <button v-on:click="fiducial_assing_current_location(id, 'assign')">assign</button>
                                     <button v-on:click="fiducial_assing_current_location(id, 'unassign')">unassign</button>
                                 </td>
@@ -148,7 +148,10 @@
                     <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'pitch')">edit</div> {{entry.pitch}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_rotation(name)">refresh</div> {{entry.Orientation}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_state(name)">swap_calls</div> {{feeder_state(entry.state)}}</td>
-                    <td><button>test pick</button> <button>goto</button></td>
+                    <td>
+                        <button v-on:click="do_feeder_test(name)">test pick</button>
+                        <button v-on:click="do_feeder_goto(name)">goto</button>
+                    </td>
                 </tr>
             </table>
         </div></transition>
@@ -167,7 +170,7 @@
                 <label class="switcher-label">show parts</label>
                 <span style="width: 250px; display: inline-block"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm</label></span>
                 <span style="width: 250px; display: inline-block"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
-                <button class="fiducial-assign" v-for="(part, id)  in fiducial_bom.parts">{{id}}<div class="fiducial-assign-hint">assign/unassign Fiducial</div></button>
+                <button class="fiducial-assign" v-for="(part, id)  in fiducial_bom.parts" v-on:click="fiducial_assing_current_location(id, 'assign')">{{id}}<div class="fiducial-assign-hint">Assign Fiducial</div></button>
             </div >
             <canvas id="canvas-view" width="1850" height="800" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 

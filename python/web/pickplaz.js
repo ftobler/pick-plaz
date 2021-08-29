@@ -246,57 +246,72 @@ function start() {
                 this.nav.camera.y = y
                 api.robot_setpos(this.nav.camera.x, this.nav.camera.y, system)
             },
-            fiducial_goto(part) {
-                this.do_setpos(part.x, part.y, "pcb")
-            },
             fiducial_assing_current_location(id, mode) {
                 api.fiducial_assing_current_location(this.nav.detection.fiducial[0], this.nav.detection.fiducial[1], id, mode)
             },
-            part_view_place(part) {
+            do_part_goto(part) {
+                if (part.x == undefined || part.y == undefined) {
+                    this.show_dialog({
+                        title: "Error",
+                        msg: "The part part does not have XY coordinates to drive to.",
+                        material_image: "error",
+                    })
+                    return;
+                }
                 this.do_setpos(part.x, part.y, "pcb")
-            },
-            part_view_pick(entry) {
-                alert("unimplemented")
-            },
-            part_do_place(entry, part, id) {
-                alert("unimplemented")
             },
             do_sequence(method) {
                 api.sequence(method)
             },
             do_save_restore(method) {
-                if (method == "save") {
-                    this.show_dialog({
-                        title: "Save",
-                        msg: "Enter a filename to save the current context to.",
-                        answers: ["OK", "Cancel"],
-                        input: true,
-                        material_image: "save",
-                        callback: (data, answer) => {
-                            console.log("do_save_restore save " + data.input_data)
-                        }
-                    })
-                } else if (method == "restore") {
-                    this.show_dialog({
-                        title: "Restore",
-                        msg: "Enter the filename of the context to load.",
-                        answers: ["OK", "Cancel"],
-                        input: true,
-                        dropdown: ["file1", "file2"],
-                        material_image: "restore",
-                        callback: (data, answer) => {
-                            console.log("do_save_restore restore " + data.input_data)
-                        }
-                    })
-                }
+                api.file_get_list((raw) => {
+                    file_list = JSON.parse(raw);
+                    if (method == "save") {
+                        this.show_dialog({
+                            title: "Save",
+                            msg: "Enter a filename to save the current context to.",
+                            answers: ["OK", "Cancel"],
+                            input: true,
+                            dropdown: file_list,
+                            material_image: "save",
+                            callback: (data, answer) => {
+                                if (answer == "OK") {
+                                    api.file_context_save(data.input_data, () => {
+                                        this.poll_data()
+                                    })
+                                }
+                            }
+                        })
+                    } else if (method == "restore") {
+                        this.show_dialog({
+                            title: "Restore",
+                            msg: "Enter the filename of the context to load.",
+                            answers: ["OK", "Cancel"],
+                            input: true,
+                            dropdown: file_list,
+                            material_image: "restore",
+                            callback: (data, answer) => {
+                                if (answer == "OK") {
+                                    api.file_context_save(data.input_data, () => {
+                                        this.poll_data()
+                                    })
+                                }
+                            }
+                        })
+                    }
+                })
             },
 
 
             do_modify_bom_doplace(bom, i) {
-                console.log("do_modify_bom_doplace")
+                api.bom_modify("place", i, bom.place, () => {
+                    this.poll_data()
+                })
             },
             do_modify_bom_isfiducial(bom, i) {
-                console.log("do_modify_bom_isfiducial")
+                api.bom_modify("fiducial", i, bom.fiducial, () => {
+                    this.poll_data()
+                })
             },
             do_modify_bom_footprint(bom, i) {
                 let footprint_names = []
@@ -313,7 +328,11 @@ function start() {
                     answers: ["OK", "Cancel"],
                     material_image: "edit",
                     callback: (data, answer) => {
-                        console.log("do_modify_bom_footprint " + data.input_data)
+                        if (answer == "OK") {
+                            api.bom_modify("footprint", i, data.input_data, () => {
+                                this.poll_data()
+                            })
+                        }
                     }
                 })
             },
@@ -332,15 +351,23 @@ function start() {
                     answers: ["OK", "Cancel"],
                     material_image: "edit",
                     callback: (data, answer) => {
-                        console.log("do_modify_bom_feeder " + data.input_data)
+                        if (answer == "OK") {
+                            api.bom_modify("feeder", i, data.input_data, () => {
+                                this.poll_data()
+                            })
+                        }
                     }
                 })
             },
             do_modify_bom_rotation(bom, i) {
-                console.log("do_modify_bom_rotation")
+                api.bom_modify("rotation", i, null, () => {
+                    this.poll_data()
+                })
             },
             do_modify_part_state(id) {
-                console.log("do_modify_part_state")
+                api.bom_modify("state", id, null, () => {
+                    this.poll_data()
+                })
             },
 
             do_modify_feeder_name(feeder) {
@@ -352,12 +379,28 @@ function start() {
                     input_data: feeder,
                     material_image: "edit",
                     callback: (data, answer) => {
-                        console.log("do_modify_feeder_name " + data.input_data)
+                        if (answer == "OK") {
+                            api.feeder_modify("rename", feeder, data.input_data, () => {
+                                this.poll_data()
+                            })
+                        }
                     }
                 })
             },
             do_modify_feeder_type(feeder) {
-                console.log("do_modify_feeder_type")
+                api.feeder_modify("type", feeder, null, () => {
+                    this.poll_data()
+                })
+            },
+            do_modify_feeder_rotation(feeder) {
+                api.feeder_modify("rotation", feeder, null, () => {
+                    this.poll_data()
+                })
+            },
+            do_modify_feeder_state(feeder) {
+                api.feeder_modify("state", feeder, null, () => {
+                    this.poll_data()
+                })
             },
             do_modify_feeder_attribute(feeder, feeder_obj, attribute) {
                 this.show_dialog({
@@ -368,16 +411,22 @@ function start() {
                     answers: ["OK", "Cancel"],
                     material_image: "edit",
                     callback: (data, answer) => {
-                        console.log("do_modify_feeder_attribute " + attribute + " " + data.input_data)
+                        if (answer == "OK") {
+                            api.feeder_modify(attribute, feeder, data.input_data, () => {
+                                this.poll_data()
+                            })
+                        }
                     }
                 })
             },
-            do_modify_feeder_rotation(feeder) {
-                console.log("do_modify_feeder_rotation")
+
+            do_feeder_goto(feeder) {
+                console.log("do_feeder_goto")
             },
-            do_modify_feeder_state(feeder) {
-                console.log("do_modify_feeder_state")
+            do_feeder_test(feeder) {
+                console.log("do_feeder_test")
             },
+
 
 
             do_upload() {
@@ -396,7 +445,6 @@ function start() {
                     this.show_dialog({
                         title: "Upload",
                         msg: msg,
-                        answers: ["ok"],
                         material_image: image
                     })
                 })
@@ -812,12 +860,17 @@ api = {
         apicall("debug", {}, cb, true)
     },
     fiducial_assing_current_location(x_global, y_global, id, mode) {
-        apicall("setfiducal", {
-            x: x_global,
-            y: y_global,
-            id: id,
-            mode: mode
-        })
+        let methods = ["assign", "unassign"]
+        if (methods.includes(mode)) {
+            apicall("setfiducal", {
+                x: x_global,
+                y: y_global,
+                id: id,
+                mode: mode
+            })
+        } else {
+            api_exception("fiducial_assing_current_location rejected the request client side '" + method + "'");
+        }
     },
     robot_setpos(x_global, y_global, system) {
         if (system == undefined) {
@@ -837,52 +890,20 @@ api = {
             method: method
         })
     },
+    feeder_action(feeder, action) { //TODO: python implemenation
+        apicall("feederaction", {
+            feeder: feeder,
+            action: action
+        })
+    },
     alert_quit(id, answer) {
         apicall("alertquit", {
             id: id,
             answer: answer
         })
     },
-    bom_set_place(index, active) {
-        alert("unimplemented 'bommodify'")
-        apicall("bommodify", {
-            method: "place",
-            index: index,
-            active: active
-        })
-    },
-    bom_set_fiducial(index, active) {
-        alert("unimplemented 'bommodify'")
-        apicall("bommodify", {
-            method: "fiducial",
-            index: index,
-            active: active
-        })
-    },
-    bom_set_rotation(index, rotation) {
-        alert("unimplemented 'bommodify'")
-        apicall("bommodify", {
-            method: "rotation_bom",
-            index: index,
-            rotation: rotation
-        })
-    },
-    part_set_rotation(id, rotation) {
-        alert("unimplemented 'bommodify'")
-        apicall("bommodify", {
-            method: "rotation_part",
-            id: id,
-            rotation: rotation
-        })
-    },
-    part_set_status(id, status) {
-        alert("unimplemented 'bommodify'")
-        apicall("bommodify", {
-            method: "status",
-            id: id,
-            status: status
-        })
-    },
+
+    //file handling
     do_upload(form, event) {
         var form_data = new FormData(form);
         console.log("api 'upload'")
@@ -891,7 +912,65 @@ api = {
                 event(json)
             }
         })
-    }
+    },
+    file_get_list(callback) { //TODO: python implemenation
+        apicall("file_context", {
+            method: "list"
+        }, callback)
+    },
+    file_context_save(filename, callback) { //TODO: python implemenation
+        apicall("file_context", {
+            method: "save",
+            filename: filename
+        }, callback)
+    },
+    file_context_read(filename, callback) { //TODO: python implemenation
+        apicall("file_context", {
+            method: "read",
+            filename: filename
+        }, callback)
+    },
+
+
+    bom_modify(method, index, data, callback) { //TODO: python implemenation
+        let methods = ["place", "fiducial", "footprint", "feeder", "rotation"]
+        if (methods.includes(method)) {
+            apicall("bom_modify", {
+                method: method,
+                index: index,
+                data: data
+            }, callback)
+        } else {
+            api_exception("bom_modify rejected the request client side '" + method + "'");
+        }
+    },
+    part_modify(method, id, data, callback) { //TODO: python implemenation
+        let methods = ["state"]
+        if (methods.includes(method)) {
+            apicall("part_modify", {
+                method: method,
+                id: id,
+                data: data,
+            }, callback)
+        } else {
+            api_exception("part_modify rejected the request client side '" + method + "'");
+        }
+    },
+    feeder_modify(method, feeder, data, callback) { //TODO: python implemenation
+        let methods = ["rename", "type", "rotation", "state", "x", "y", "width", "height", "pitch"]
+        if (methods.includes(method)) {
+            apicall("feeder_modify", {
+                method: method,
+                feeder: feeder,
+                data: data,
+            }, callback)
+        } else {
+            api_exception("feeder_modify rejected the request client side '" + method + "'");
+        }
+    },
+
+
+
 }
 
 function apicall(scope, arguments, cb, debug_print) {
@@ -902,7 +981,19 @@ function apicall(scope, arguments, cb, debug_print) {
         type: "POST",
         dataType: "application/json",
         url: "/api/" + scope + build_query_parameter(arguments),
-        success: cb
+        success: cb,
+        error: (data) => {
+            api_exception("Apicall to '" + scope + "' failed.");
+        }
+    })
+}
+
+function api_exception(msg) {
+    app.show_dialog({
+        title: "API Exception",
+        msg: msg,
+        material_image: "new_releases", //nearby_error
+        answers: ["Ouch!"]
     })
 }
 
