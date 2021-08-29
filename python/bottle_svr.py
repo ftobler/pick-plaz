@@ -10,15 +10,16 @@ import threading
 
 import json
 
+import debug
+
 class BottleServer:
 
-    def __init__(self, get_camera_fcn, event_put_fcn, data, nav_fcn, debug_data, listen="0.0.0.0", port=8080):
+    def __init__(self, get_camera_fcn, event_put_fcn, data, nav_fcn, listen="0.0.0.0", port=8080):
 
         self.get_camera_fcn = get_camera_fcn
         self.event_put_fcn = event_put_fcn
         self.data = data
         self.nav_fcn = nav_fcn
-        self.debug_data = debug_data
 
         self.port = port
         self.listen = listen
@@ -49,7 +50,7 @@ class BottleServer:
         return self.data.get()
 
     def _debug(self):
-        return self.debug_data.get_dict()
+        return debug.data
 
     def _setpos(self):
         r = dict(request.query.decode())

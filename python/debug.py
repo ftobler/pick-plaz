@@ -2,52 +2,24 @@ import os
 
 import cv2
 
-class DebugItem:
+active = True
+dir = "debug"
+file_dir = "web/debug"
+if not os.path.exists(file_dir):
+    os.mkdir(file_dir)
+data = {}
 
-    def __init__(self, debug_data, name):
-        self.name = name
-        self.debug_data = debug_data
-        self.data = {}
+def set_image(name, image):
+    cv2.imwrite(f"{file_dir}/{name}.jpg", image)
+    data[name] = {
+        "type" : "image",
+        "src" : f"{dir}/{name}.jpg",
+    }
 
-    @property
-    def active(self):
-        return self.debug_data.active
+def set_text(name, text):
+    data[name] = {
+        "type" : "text",
+        "text" : text,
+    }
 
-    def set_image(self, image):
-
-        cv2.imwrite(f"{self.debug_data.file_dir}/{self.name}.jpg", image)
-
-        self.data = {
-            "type" : "image",
-            "src" : f"{self.debug_data.dir}/{self.name}.jpg",
-        }
-
-    def set_text(self, text):
-        self.data = {
-            "type" : "text",
-            "text" : text,
-        }
-
-
-class DebugData:
-
-    def __init__(self):
-        self.active = True
-        self.dir = "debug"
-        self.file_dir = "web/debug"
-        if not os.path.exists(self.file_dir):
-            os.mkdir(self.file_dir)
-        self.data = {}
-
-        i = self.get("test1")
-        i.set_text("please püll")
-
-    def get_dict(self):
-        return {name : item.data for name, item in self.data.items()}
-
-    def get(self, name):
-        item = self.data.get(name)
-        if item is None:
-            item = DebugItem(self, name)
-            self.data[name] = item
-        return item
+set_text("test1", "please püll")
