@@ -7,6 +7,8 @@ import cv2
 
 import calibrator
 
+import debug
+
 class NoPartFoundException(Exception):
     pass
 
@@ -114,7 +116,7 @@ class Picker():
         cv2.floodFill(outer, None, (0,0), 0)
         projected = inner
 
-        cv2.imwrite("out.jpg", projected)
+        debug.set_image("PickDetection", projected)
 
         if plot > 1:
             plt.imshow(projected)
