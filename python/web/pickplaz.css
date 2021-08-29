@@ -466,7 +466,7 @@ input:checked + .slider:before {
     margin-right: -5px;
 }
 
-.debug-page h1 {
+.debug-page h1, .debug-page h2, .debug-page h3 {
     margin-top: 0;
     margin-left: 5px;
     margin-bottom: 10px;

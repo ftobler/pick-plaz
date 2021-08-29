@@ -171,7 +171,8 @@
         </div>
 
         <div v-if="page == 3" class="debug-page">
-            <h1>Debug View</h1>
+            <h3>Debug View<div class="table-button material" v-on:click="debug = {}; setTimeout(() => {poll_debug()})">refresh</div></h3>
+            <br>
             <div class="debug-section" v-for="(entry, name) in debug" v-if="Object.keys(entry).length">
                 <span v-if="entry.type == 'image'">
                     <p>{{name}}</p>
