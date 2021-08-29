@@ -15,13 +15,11 @@ class DebugItem:
 
     def set_image(self, image):
 
-        filename = f"{self.debug_data.dir}/{self.name}.jpg"
-
-        cv2.imwrite(filename, image)
+        cv2.imwrite(f"{self.debug_data.file_dir}/{self.name}.jpg", image)
 
         self.data = {
             "type" : "image",
-            "src" : filename,
+            "src" : f"{self.debug_data.dir}/{self.name}.jpg",
         }
 
     def set_text(self, text):
@@ -35,9 +33,10 @@ class DebugData:
 
     def __init__(self):
         self.active = True
-        self.dir = "web/debug"
-        if not os.path.exists(self.dir):
-            os.mkdir(self.dir)
+        self.dir = "debug"
+        self.file_dir = "web/debug"
+        if not os.path.exists(self.file_dir):
+            os.mkdir(self.file_dir)
         self.data = {}
 
         i = self.get("test1")
