@@ -76,8 +76,8 @@ class BottleServer:
                 "y" : _float(r["y"]),
                 "id" : _str(r["id"]),
             })
-        except:
-            pass
+        except Exception as e:
+            raise e
 
     def _sequencecontrol(self):
         r = dict(request.query.decode())
@@ -86,8 +86,8 @@ class BottleServer:
                 "type" : "sequence",
                 "method" : _str(r["method"])
             })
-        except:
-            pass
+        except Exception as e:
+            raise e
 
     def _alertquit(self):
         r = dict(request.query.decode())
@@ -97,8 +97,8 @@ class BottleServer:
                 "id": _int(r["id"]),
                 "answer": _str(r["answer"])
             })
-        except:
-            pass
+        except Exception as e:
+            raise e
 
     def _upload(self):
         bom = request.files.get('bom_upload')
@@ -131,8 +131,8 @@ class BottleServer:
                 return self.data.file_save(_str(r["filename"]))
             elif method == "read":
                 return self.data.file_read(_str(r["filename"]))
-        except:
-            pass
+        except Exception as e:
+            raise e
 
     def _bom_modify(self):
         r = dict(request.query.decode())
@@ -149,8 +149,8 @@ class BottleServer:
                 self.data.modify_bom_feeder(index, _str(r["data"]))
             elif method == "rotation":
                 self.data.modify_bom_rot(index, _int_none(r["data"]))
-        except:
-            pass
+        except Exception as e:
+            raise e
 
     def _part_modify(self):
         r = dict(request.query.decode())
@@ -159,8 +159,8 @@ class BottleServer:
             id = _str(r["id"])
             if method == "state":
                 self.data.modify_part_state(id, _int_none(r["data"]))
-        except:
-            pass
+        except Exception as e:
+            raise e
 
     def _feeder_modify(self):
         r = dict(request.query.decode())
@@ -175,10 +175,14 @@ class BottleServer:
                 self.data.modify_feeder_rot(feeder, _int_none(r["data"]))
             elif method == "state":
                 self.data.modify_feeder_state(feeder, _int_none(r["data"]))
+            elif method == "delete":
+                self.data.modify_feeder_delete(feeder)
+            elif method == "create":
+                self.data.modify_feeder_create(feeder)
             elif method in self.data.feeder_attribute:
                 self.data.modify_feeder_attribute(feeder, method, _int(r["data"]))
-        except:
-            pass
+        except Exception as e:
+            raise e
 
     def _home(self):
         return static_file("pickplaz.html", root='web')

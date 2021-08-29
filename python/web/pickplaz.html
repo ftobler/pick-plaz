@@ -151,9 +151,13 @@
                     <td>
                         <button v-on:click="do_feeder_test(name)">test pick</button>
                         <button v-on:click="do_feeder_goto(name)">goto</button>
+                        <button v-on:click="do_feeder_delete(name)">delete</button>
                     </td>
                 </tr>
             </table>
+            <div style="margin-top: 20px; margin-bottom: 20px">
+                <button style="float: right"  v-on:click="do_feeder_create()">New Feeder</button>
+            </div >
         </div></transition>
 
         <transition name="transition-page"><div class="page" v-if="page == 2">

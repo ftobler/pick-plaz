@@ -93,7 +93,7 @@ class DataManager:
         if rotation == None:
             rot = feeder["rot"]
             rot = rot + 90
-            if rot > 360:
+            if rot >= 360:
                 rot = rot - 360
             feeder["rot"] = rot
         else:
@@ -108,6 +108,24 @@ class DataManager:
             feeder["state"] = (feeder["state"] + 1) % len(self.feeder_state)
         else:
             feeder["state"] = state
+
+
+    def modify_feeder_delete(self, feeder_id):
+        if feeder_id in self.data["feeder"]:
+            del self.data["feeder"][feeder_id]
+
+
+    def modify_feeder_create(self, feeder_id):
+        self.data["feeder"][feeder_id] = {
+            "type": 0,
+            "x": 100,
+            "y": 100,
+            "width": 50,
+            "height": 50,
+            "pitch": None,
+            "rot": 0,
+            "state": 1
+        }
 
 
     def modify_feeder_attribute(self, feeder_id, attribute, value):
