@@ -400,7 +400,7 @@ input:checked + .slider:before {
     margin-left: 80px;
     margin-right: 80px;
     margin-top: 20px;
-    margin-bottom: 70px;
+    margin-bottom: 90px;
 }
 
 .alert-inner input,.alert-inner select {
@@ -411,6 +411,12 @@ input:checked + .slider:before {
     border: 1px solid grey;
     text-decoration: none;
     width: 330px
+}
+.alert-inner select::-webkit-scrollbar {
+    width: 8px;
+}
+.alert-inner select::-webkit-scrollbar-thumb {
+    background-color: rgb(116, 116, 116);
 }
 .alert-button-list {
     position: absolute;
@@ -488,5 +494,8 @@ input:checked + .slider:before {
 .debug-section img{
     max-width: 410px;
     max-height: 400px;
+}
+.debug-text {
+    font-weight: bold;
 }
 

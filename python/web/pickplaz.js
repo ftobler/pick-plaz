@@ -11,6 +11,8 @@ function start() {
             menu_hamburger: false,
             nav: {
             },
+            debug: {
+            },
             nav_init: false,
             db: {
             },
@@ -114,6 +116,12 @@ function start() {
                     }
                 })
             },
+            poll_debug() {
+                api.debug((data) => {
+                    this.debug = JSON.parse(data)
+                })
+            },
+
             px_to_mm(px) {
                 return this.px_to_mm_save(this.canvas.pos_mm, px)
             },
@@ -255,7 +263,7 @@ function start() {
                     return
                 }
                 this.show_dialog({
-                    title: "Edit",
+                    title: "Edit BOM",
                     msg: "Select a new Footprint name",
                     dropdown: footprint_names,
                     answers: ["OK", "Cancel"],
@@ -274,7 +282,7 @@ function start() {
                     return
                 }
                 this.show_dialog({
-                    title: "Edit",
+                    title: "Edit BOM",
                     msg: "Select a new Feeder name.",
                     dropdown: feeder_names,
                     answers: ["OK", "Cancel"],
@@ -293,7 +301,7 @@ function start() {
 
             do_modify_feeder_name(feeder) {
                 this.show_dialog({
-                    title: "Edit",
+                    title: "Edit Feeder",
                     msg: "Enter a new Feeder name.",
                     input: true,
                     answers: ["OK", "Cancel"],
@@ -308,7 +316,7 @@ function start() {
             },
             do_modify_feeder_attribute(feeder, feeder_obj, attribute) {
                 this.show_dialog({
-                    title: "Edit",
+                    title: "Edit Feeder",
                     msg: "Enter a new numerical value for '" + attribute + "'.",
                     input: true,
                     input_data: feeder_obj[attribute],
@@ -736,6 +744,9 @@ api = {
     },
     nav(cb) {
         apicall("nav.json", {}, cb, false)
+    },
+    debug(cb) {
+        apicall("debug", {}, cb, true)
     },
     fiducial_assing_current_location(x_global, y_global, id, mode) {
         apicall("setfiducal", {

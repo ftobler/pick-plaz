@@ -43,7 +43,7 @@
                 <div class="menu-menu-item" v-on:click="do_sequence('motor_on')">Motor On</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('calibrate_topdn')">Calibrate Camera</div>
                 <div class="menu-menu-item" v-on:click="dialog_user_confirm('Do you want to shutdown the computer? This shuts down the operating system and not just the pick-plaz application.', () => {do_sequence('shutdown')})">Shutdown</div>
-                <div class="menu-menu-item" v-on:click="do_nav(3)">Debug View</div>
+                <div class="menu-menu-item" v-on:click="do_nav(3); poll_debug()">Debug View</div>
             </div>
         </div>
 
@@ -172,16 +172,16 @@
 
         <div v-if="page == 3" class="debug-page">
             <h1>Debug View</h1>
-            <div class="debug-section">
-                <p>topdn.jpg</p>
-                <a href="api/topdn.jpg"><img src="api/topdn.jpg"></a>
+            <div class="debug-section" v-for="(entry, name) in debug" v-if="Object.keys(entry).length">
+                <span v-if="entry.type == 'image'">
+                    <p>{{name}}</p>
+                    <a v-bind:href="entry.src"><img v-bind:src="entry.src"></a>
+                </span>
+                <span v-if="entry.type == 'text'">
+                    <p>{{name}}</p>
+                    <p class="debug-text">{{entry.text}}</p>
+                </span>
             </div>
-            <div class="debug-section">asdf2</div>
-            <div class="debug-section">asdf3</div>
-            <div class="debug-section">asdf4</div>
-            <div class="debug-section">asdf5</div>
-            <div class="debug-section">asdf6</div>
-            <div class="debug-section">asdf7</div>
         </div>
     </div>
 
