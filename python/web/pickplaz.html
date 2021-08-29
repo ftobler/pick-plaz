@@ -14,23 +14,24 @@
 <body onload="start()" class="noselect" style="text-align: center;">
 <div id="app" style="width: 100%; max-width: 2600px; margin:0 auto; visibility: hidden;">
 
-    <div class="alert" v-if="dialogs.length > 0">
+    <transition name="transition-alert"><div class="alert" v-if="dialogs.length > 0">
         <div class="alert-content">
             <h1>{{dialogs[0].title}}</h1>
             <div class="alert-icon">{{dialogs[0].material_image}}</div>
             <div class="alert-inner">
                 <p>{{dialogs[0].msg}}</p>
-                <div v-if="dialogs[0].input"><input type="text" v-model="dialogs[0].input_data"> {{dialogs[0].unit}}</div>
-                <select v-if="dialogs[0].dropdown" v-model="dialogs[0].dropdown_selection">
+                <div v-if="dialogs[0].input"><input type="text" v-model="dialogs[0].input_data" list="datalist"> {{dialogs[0].unit}}</div>
+                <!-- <select v-if="dialogs[0].dropdown" v-model="dialogs[0].dropdown_selection"> -->
+                <datalist  v-if="dialogs[0].dropdown" id="datalist">
                     <option v-for="s in dialogs[0].dropdown">{{s}}</option>
-                </select>
+                </datalist >
                 <div class="alert-selection" v-for='text in dialogs[0].selection'>{{dialogs[0].text}}</div>
             </div>
             <div class="alert-button-list">
                 <div class="alert-button" v-for="answer in dialogs[0].answers" v-on:click="do_dialog_quit(answer)">{{answer}}</div>
             </div>
         </div>
-    </div>
+    </div></transition>
 
     <div class="menu">
         <a class="logo" href="https://github.com/ftobler/pick-plaz" target="_blank">pick-plaz</a>
@@ -38,14 +39,16 @@
         <div class="menu-item" v-bind:class="{active : page == 1}" v-on:click="do_nav(1)">Feeder</div>
         <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="do_nav(2); setTimeout(() => {draw_stuff()})">Navigate</div>
         <div class="menu-item menu-material" v-on:click="menu_hamburger = !menu_hamburger" v-bind:class="{active : menu_hamburger}">menu
-            <div v-if="menu_hamburger">
-                <div class="menu-menu-item" v-on:click="do_sequence('home')"><div class="menu-item-material">home</div>Home</div>
+            <transition name="transition-hamburger"><div v-if="menu_hamburger">
+                <div class="menu-menu-item" v-on:click="do_sequence('home')"><div class="menu-item-material">home</div>Home Robot</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('motor_off')"><div class="menu-item-material">power_off</div>Motor Off</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('motor_on')"><div class="menu-item-material">power</div>Motor On</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('calibrate_topdn')"><div class="menu-item-material">photo_camera</div>Calibrate Camera</div>
                 <div class="menu-menu-item" v-on:click="dialog_user_confirm('Do you want to shutdown the computer? This shuts down the operating system and not just the pick-plaz application.', () => {do_sequence('shutdown')})"><div class="menu-item-material">power_settings_new</div>Shutdown</div>
+                <div class="menu-menu-item" v-on:click="do_save_restore('save')"><div class="menu-item-material">save</div>Save Context</div>
+                <div class="menu-menu-item" v-on:click="do_save_restore('restore')"><div class="menu-item-material">restore</div>Restore Context</div>
                 <div class="menu-menu-item" v-on:click="do_nav(3); poll_debug()"><div class="menu-item-material">analytics</div>Debug View</div>
-            </div>
+            </div></transition>
         </div>
 
         <div style="float: right;">
@@ -65,7 +68,7 @@
 
     <div class="content">
 
-        <div v-if="page == 0">
+        <transition name="transition-page"><div class="page" v-if="page == 0">
 
             <table>
                 <tr>
@@ -85,7 +88,7 @@
                     <th width="70px">State</th>
                     <th width="200px">Action</th>
                 </tr>
-                <tr v-for="(entry, i) in db.bom">
+                <tr v-for="(entry, i) in db.bom" v-bind:class="{ inactive: !entry.place }">
                     <td :rowspan="entry.parts.length">{{i}}</td>
                     <td><input type="checkbox" v-model="entry.place" v-on:change="do_modify_bom_doplace(entry, i)" v-if="!entry.fiducial"></td>
                     <td><input type="checkbox" v-model="entry.fiducial" v-on:change="do_modify_bom_isfiducial(entry, i)"></td>
@@ -119,9 +122,9 @@
                 </tr>
 
             </table>
-        </div>
+        </div></transition>
 
-        <div v-if="page == 1">
+        <transition name="transition-page"><div class="page" v-if="page == 1">
             <table>
                 <tr>
                     <th width="100px">Name</th>
@@ -148,9 +151,9 @@
                     <td><button>test pick</button> <button>goto</button></td>
                 </tr>
             </table>
-        </div>
+        </div></transition>
 
-        <div v-if="page == 2">
+        <transition name="transition-page"><div class="page" v-if="page == 2">
             <div style="margin-bottom: 20px">
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_camera"><span class="slider round"></span></label>
                 <label class="switcher-label">show camera</label>
@@ -169,10 +172,10 @@
             <canvas id="canvas-view" width="1850" height="800" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 
 
-        </div>
+        </div></transition>
 
-        <div v-if="page == 3" class="debug-page">
-            <h3>Debug View<div class="table-button material" v-on:click="debug = {}; setTimeout(() => {poll_debug()})">refresh</div></h3>
+        <transition name="transition-page"><div class="page debug-page" v-if="page == 3">
+            <h3>Debug View <div class="table-button material" v-on:click="debug = {}; setTimeout(() => {poll_debug()})">refresh</div></h3>
             <div class="debug-section" v-for="(entry, name) in debug" v-if="Object.keys(entry).length">
                 <span v-if="entry.type == 'image'">
                     <p>{{name}}</p>
@@ -183,7 +186,9 @@
                     <p class="debug-text">{{entry.text}}</p>
                 </span>
             </div>
-        </div>
+        </div></transition>
+
+
     </div>
 
 

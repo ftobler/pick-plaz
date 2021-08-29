@@ -264,6 +264,32 @@ function start() {
             do_sequence(method) {
                 api.sequence(method)
             },
+            do_save_restore(method) {
+                if (method == "save") {
+                    this.show_dialog({
+                        title: "Save",
+                        msg: "Enter a filename to save the current context to.",
+                        answers: ["OK", "Cancel"],
+                        input: true,
+                        material_image: "save",
+                        callback: (data, answer) => {
+                            console.log("do_save_restore save " + data.input_data)
+                        }
+                    })
+                } else if (method == "restore") {
+                    this.show_dialog({
+                        title: "Restore",
+                        msg: "Enter the filename of the context to load.",
+                        answers: ["OK", "Cancel"],
+                        input: true,
+                        dropdown: ["file1", "file2"],
+                        material_image: "restore",
+                        callback: (data, answer) => {
+                            console.log("do_save_restore restore " + data.input_data)
+                        }
+                    })
+                }
+            },
 
 
             do_modify_bom_doplace(bom, i) {
@@ -285,10 +311,9 @@ function start() {
                     msg: "Select a new Footprint name",
                     dropdown: footprint_names,
                     answers: ["OK", "Cancel"],
-                    dropdown_selection: footprint_names[0],
                     material_image: "edit",
                     callback: (data, answer) => {
-                        console.log("do_modify_bom_footprint " + data.dropdown_selection)
+                        console.log("do_modify_bom_footprint " + data.input_data)
                     }
                 })
             },
@@ -305,10 +330,9 @@ function start() {
                     msg: "Select a new Feeder name.",
                     dropdown: feeder_names,
                     answers: ["OK", "Cancel"],
-                    dropdown_selection: feeder_names[0],
                     material_image: "edit",
                     callback: (data, answer) => {
-                        console.log("do_modify_bom_feeder " + data.dropdown_selection)
+                        console.log("do_modify_bom_feeder " + data.input_data)
                     }
                 })
             },
@@ -403,6 +427,16 @@ function start() {
                 }
                 if (config.material_image == undefined) {
                     config.material_image = "notifications"
+                }
+                if (config.dropdown) {
+                    config.input = true
+                }
+                if (config.dropdown && config.input_data == undefined) {
+                    if (config.dropdown.length > 0) {
+                        config.input_data = config.dropdown[0]
+                    } else {
+                        config.input_data = ""
+                    }
                 }
                 this.dialogs.push(config)
             },
