@@ -310,6 +310,9 @@ tr.inactive {
       );
     opacity: 0.5;
 }
+tr.error {
+    background-color: #ff000038;
+}
 
 
 

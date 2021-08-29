@@ -103,7 +103,6 @@ def pnp_bom_parse_internal(pnp, bom):
         #search the matching PNP table entry for each designator
         for id in id_list:
             parts_data = {
-                "place": False,
                 "state": 0,
             }
             for part in pnp_data[1:]:

@@ -134,19 +134,19 @@
                     <th width="80px">width</th>
                     <th width="80px">height</th>
                     <th width="80px">Pitch</th>
-                    <th width="80px">Orientation</th>
+                    <th width="80px">Rotation</th>
                     <th width="100px">State</th>
                     <th width="100px">Action</th>
                 </tr>
-                <tr v-for="(entry, name) in db.feeder">
+                <tr v-for="(entry, name) in db.feeder"  v-bind:class="{ inactive: entry.state == 0, error: entry.state == 2 }">
                     <td><div class="table-button material" v-on:click="do_modify_feeder_name(name)">edit</div> {{name}}</td>
-                    <td><div class="table-button material" v-on:click="do_modify_feeder_type(name)">swap_calls</div> {{entry.type}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_type(name)">swap_calls</div> {{feeder_type(entry.type)}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'x')">edit</div> {{entry.x}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'y')">edit</div> {{entry.y}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'width')">edit</div> {{entry.width}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'height')">edit</div> {{entry.height}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'pitch')">edit</div> {{entry.pitch}}</td>
-                    <td><div class="table-button material" v-on:click="do_modify_feeder_rotation(name)">refresh</div> {{entry.Orientation}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_feeder_rotation(name)">refresh</div> {{entry.rot}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_state(name)">swap_calls</div> {{feeder_state(entry.state)}}</td>
                     <td>
                         <button v-on:click="do_feeder_test(name)">test pick</button>

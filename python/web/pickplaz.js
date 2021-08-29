@@ -73,8 +73,9 @@ function start() {
                     try {
                         this.nav = JSON.parse(data)
                         this.nav_init = true
-                    } catch {
+                    } catch (e) {
                         console.log("Failed to load nav.json. More related errors might follow.")
+                        throw e;
                     }
 
                     if (this.elements.show_camera && this.page==NAVPAGE) {
@@ -265,39 +266,44 @@ function start() {
             },
             do_save_restore(method) {
                 api.file_get_list((raw) => {
-                    file_list = JSON.parse(raw);
-                    if (method == "save") {
-                        this.show_dialog({
-                            title: "Save",
-                            msg: "Enter a filename to save the current context to.",
-                            answers: ["OK", "Cancel"],
-                            input: true,
-                            dropdown: file_list,
-                            material_image: "save",
-                            callback: (data, answer) => {
-                                if (answer == "OK") {
-                                    api.file_context_save(data.input_data, () => {
-                                        this.poll_data()
-                                    })
+                    try {
+                        file_list = JSON.parse(raw);
+                        if (method == "save") {
+                            this.show_dialog({
+                                title: "Save",
+                                msg: "Enter a filename to save the current context to.",
+                                answers: ["OK", "Cancel"],
+                                input: true,
+                                dropdown: file_list,
+                                material_image: "save",
+                                callback: (data, answer) => {
+                                    if (answer == "OK") {
+                                        api.file_context_save(data.input_data, () => {
+                                            this.poll_data()
+                                        })
+                                    }
                                 }
-                            }
-                        })
-                    } else if (method == "restore") {
-                        this.show_dialog({
-                            title: "Restore",
-                            msg: "Enter the filename of the context to load.",
-                            answers: ["OK", "Cancel"],
-                            input: true,
-                            dropdown: file_list,
-                            material_image: "restore",
-                            callback: (data, answer) => {
-                                if (answer == "OK") {
-                                    api.file_context_save(data.input_data, () => {
-                                        this.poll_data()
-                                    })
+                            })
+                        } else if (method == "restore") {
+                            this.show_dialog({
+                                title: "Restore",
+                                msg: "Enter the filename of the context to load.",
+                                answers: ["OK", "Cancel"],
+                                input: true,
+                                dropdown: file_list,
+                                material_image: "restore",
+                                callback: (data, answer) => {
+                                    if (answer == "OK") {
+                                        api.file_context_save(data.input_data, () => {
+                                            this.poll_data()
+                                        })
+                                    }
                                 }
-                            }
-                        })
+                            })
+                        }
+                    } catch (e) {
+                        api_exception("file_get_list failed");
+                        throw e;
                     }
                 })
             },
@@ -365,7 +371,7 @@ function start() {
                 })
             },
             do_modify_part_state(id) {
-                api.bom_modify("state", id, null, () => {
+                api.part_modify("state", id, null, () => {
                     this.poll_data()
                 })
             },
@@ -421,10 +427,14 @@ function start() {
             },
 
             do_feeder_goto(feeder) {
-                console.log("do_feeder_goto")
+                api.feeder_action(feeder, "goto", () => {
+                    this.poll_data()
+                })
             },
             do_feeder_test(feeder) {
-                console.log("do_feeder_test")
+                api.feeder_action(feeder, "test", () => {
+                    this.poll_data()
+                })
             },
 
 
@@ -823,6 +833,9 @@ function start() {
             },
             feeder_state: function(i) {
                 return this.db.const.feeder_state[i]
+            },
+            feeder_type: function(i) {
+                return this.db.const.feeder_type[i]
             }
         },
         filters: {
@@ -869,16 +882,13 @@ api = {
                 mode: mode
             })
         } else {
-            api_exception("fiducial_assing_current_location rejected the request client side '" + method + "'");
+            api_exception("fiducial_assing_current_location rejected the request client side '" + mode + "'");
         }
     },
     robot_setpos(x_global, y_global, system) {
         if (system == undefined) {
             system = "global"
         }
-        // else {
-        //     alert("need /api/setpos but with pcb coordinate system\nproposal: /api/setpos?x=0&y=0&system=pcb")
-        // }
         apicall("setpos", {
             x: x_global,
             y: y_global,
@@ -891,10 +901,15 @@ api = {
         })
     },
     feeder_action(feeder, action) { //TODO: python implemenation
-        apicall("feederaction", {
-            feeder: feeder,
-            action: action
-        })
+        let methods = ["goto", "test"]
+        if (methods.includes(action)) {
+            apicall("feeder_action", {
+                feeder: feeder,
+                action: action
+            })
+        } else {
+            api_exception("feeder_action rejected the request client side '" + action + "'");
+        }
     },
     alert_quit(id, answer) {
         apicall("alertquit", {
@@ -931,7 +946,7 @@ api = {
         }, callback)
     },
 
-
+    // bom/part/feeder handling
     bom_modify(method, index, data, callback) { //TODO: python implemenation
         let methods = ["place", "fiducial", "footprint", "feeder", "rotation"]
         if (methods.includes(method)) {
@@ -968,8 +983,6 @@ api = {
             api_exception("feeder_modify rejected the request client side '" + method + "'");
         }
     },
-
-
 
 }
 

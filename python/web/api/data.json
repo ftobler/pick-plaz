@@ -413,33 +413,33 @@
 
     "feeder": {
         "tray 0": {
-            "type": "auto_detect_zone",
+            "type": 0,
             "x": 53,
             "y": 269,
             "width": 48,
             "height": 30,
             "pitch": null,
-            "orientation": 0,
+            "rot": 0,
             "state": 1
         },
         "tray 1": {
-            "type": "auto_detect_zone",
+            "type": 0,
             "x": 53,
             "y": 299,
             "width": 48,
             "height": 30,
             "pitch": null,
-            "orientation": 90,
+            "rot": 90,
             "state": 2
         },
         "tray 2": {
-            "type": "auto_detect_zone",
+            "type": 0,
             "x": 53,
             "y": 329,
             "width": 48,
             "height": 30,
             "pitch": null,
-            "orientation": 0,
+            "rot": 0,
             "state": 0
         }
     }

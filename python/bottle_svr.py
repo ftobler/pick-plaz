@@ -12,6 +12,9 @@ import json
 
 import debug
 
+
+
+
 class BottleServer:
 
     def __init__(self, get_camera_fcn, event_put_fcn, data, nav_fcn, listen="0.0.0.0", port=8080):
@@ -57,21 +60,21 @@ class BottleServer:
         try:
             self.event_put_fcn({
                 "type" : "setpos",
-                "x" : float(r["x"]),
-                "y" : float(r["y"]),
-                "system" : r.get("system", "cam")
+                "x" : _float(r["x"]),
+                "y" : _float(r["y"]),
+                "system" : _str(r.get("system", "cam"))
             })
-        except:
-            pass
+        except Exception as e:
+            raise e
 
     def _setfiducial(self):
         r = dict(request.query.decode())
         try:
             self.event_put_fcn({
                 "type" : "setfiducial",
-                "x" : float(r["x"]),
-                "y" : float(r["y"]),
-                "id" : r["id"],
+                "x" : _float(r["x"]),
+                "y" : _float(r["y"]),
+                "id" : _str(r["id"]),
             })
         except:
             pass
@@ -81,7 +84,7 @@ class BottleServer:
         try:
             self.event_put_fcn({
                 "type" : "sequence",
-                "method" : r["method"]
+                "method" : _str(r["method"])
             })
         except:
             pass
@@ -89,13 +92,15 @@ class BottleServer:
     def _alertquit(self):
         r = dict(request.query.decode())
         try:
-            r["type"] = "alertquit"
-            self.event_put_fcn(r)
+            self.event_put_fcn( {
+                "type" : "alertquit",
+                "id": _int(r["id"]),
+                "answer": _str(r["answer"])
+            })
         except:
             pass
 
     def _upload(self):
-        r = dict(request.query.decode())
         bom = request.files.get('bom_upload')
         pnp = request.files.get('pnp_upload')
         #print(bom.filename)
@@ -110,6 +115,70 @@ class BottleServer:
         else:
             error = "Need a BOM and a PNP file"
         return {'error': error}
+
+    def _feeder_action(self):
+        r = dict(request.query.decode())
+        print("_feeder_action: feeder='%s' action='%s' (['goto', 'test'])" % (_str(r["feeder"]), _str(r["action"])))
+        raise Exception("TODO: @Nic implement dis")
+
+    def _file_context(self):
+        r = dict(request.query.decode())
+        try:
+            method = _str(r["method"])
+            if method == "list":
+                return self.data.file_list()
+            elif method == "save":
+                return self.data.file_save(_str(r["filename"]))
+            elif method == "read":
+                return self.data.file_read(_str(r["filename"]))
+        except:
+            pass
+
+    def _bom_modify(self):
+        r = dict(request.query.decode())
+        try:
+            method = _str(r["method"])
+            index = _int(r["index"])
+            if method == "place":
+                self.data.modify_bom_place(index, _bool(r["data"]))
+            elif method == "fiducial":
+                self.data.modify_bom_fiducial(index, _bool(r["data"]))
+            elif method == "footprint":
+                self.data.modify_bom_foorprint(index, _str(r["data"]))
+            elif method == "feeder":
+                self.data.modify_bom_feeder(index, _str(r["data"]))
+            elif method == "rotation":
+                self.data.modify_bom_rot(index, _int_none(r["data"]))
+        except:
+            pass
+
+    def _part_modify(self):
+        r = dict(request.query.decode())
+        try:
+            method = _str(r["method"])
+            id = _str(r["id"])
+            if method == "state":
+                self.data.modify_part_state(id, _int_none(r["data"]))
+        except:
+            pass
+
+    def _feeder_modify(self):
+        r = dict(request.query.decode())
+        try:
+            method = _str(r["method"])
+            feeder = _str(r["feeder"])
+            if method == "rename":
+                self.data.modify_feeder_name(feeder, _str(r["data"]))
+            elif method == "type":
+                self.data.modify_feeder_type(feeder, _int_none(r["data"]))
+            elif method == "rotation":
+                self.data.modify_feeder_rot(feeder, _int_none(r["data"]))
+            elif method == "state":
+                self.data.modify_feeder_rot(feeder, _int_none(r["data"]))
+            elif method in self.data.feeder_attribute:
+                self.data.modify_feeder_attribute(feeder, method, _int(r["data"]))
+        except:
+            pass
 
     def _home(self):
         return static_file("pickplaz.html", root='web')
@@ -130,10 +199,17 @@ class BottleServer:
         route('/api/alertquit', method='POST')(self._alertquit)
         route('/api/upload', method='POST')(self._upload)
         route('/api/debug', method='POST')(self._debug)
+        route('/api/feeder_action', method='POST')(self._feeder_action)
+        route('/api/file_context', method='POST')(self._file_context)
+        route('/api/bom_modify', method='POST')(self._bom_modify)
+        route('/api/part_modify', method='POST')(self._part_modify)
+        route('/api/feeder_modify', method='POST')(self._feeder_modify)
         route('/<name:path>')(self._files)
 
         print(f"Starting server at {self.listen}:{self.port}")
         run(host=self.listen, port=self.port, debug=False, threaded=True, quiet=True)
+
+
 
 class BottleServerMock(BottleServer):
 
@@ -168,3 +244,38 @@ def mock():
 
 if __name__ == "__main__":
     mock()
+
+
+
+
+
+
+
+def _int(string):
+    return int(string)
+
+def _int_none(string):
+    if string == None:
+        return None
+    if string == "null" or string == "":
+        return None
+    return int(string)
+
+def _float(string):
+    return float(string)
+
+def _str(string):
+    if string == None:
+        raise Exception("None is not a string.")
+    if string == "":
+        raise Exception("String is empty.")
+    return string
+
+def _bool(string):
+    if string == None:
+        raise Exception("None is not a bool.")
+    if string == "true":
+        return True
+    if string == "false":
+        return False
+    raise Exception("'%s' is not a bool." % string)
