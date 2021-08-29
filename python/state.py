@@ -73,6 +73,19 @@ class StateContext:
         self.ip = None
         self.fd = None
 
+        self._center_pcb()
+
+    def _center_pcb(self):
+        positions = []
+        for x in self.data["bom"]:
+            for part in x["parts"].values():
+                if "x" in part:
+                    positions.append((float(part["x"]), float(part["y"])))
+        positions = np.asarray(positions)
+        bed_center = [self.nav["bed"]["width"] / 2, self.nav["bed"]["height"] / 2]
+        x, y = -(np.min(positions, axis=0) + np.max(positions, axis=0)) / 2 + bed_center
+        self.nav["pcb"]["transform"] = [1, 0, 0, -1, float(x), float(y)]
+
     def get_cam(self):
 
         cam_image = self.camera.cache["image"]

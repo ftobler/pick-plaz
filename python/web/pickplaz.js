@@ -415,13 +415,16 @@ function start() {
                     this.draw_camera(ctx, this.image.topdn, this.nav.camera)
 
                     //draw camera position
-                    ctx.strokeStyle = "yellow"
+                    ctx.save();
+                    ctx.globalAlpha = 0.5;
+                    ctx.strokeStyle = "yellow";
                     ctx.beginPath();
                     ctx.moveTo(this.nav.camera.x, this.nav.bed.x-10);
                     ctx.lineTo(this.nav.camera.x, this.nav.bed.x+this.nav.bed.width+10);
                     ctx.moveTo(this.nav.bed.y-10, this.nav.camera.y);
                     ctx.lineTo(this.nav.bed.y+this.nav.bed.height+10, this.nav.camera.y);
                     ctx.stroke();
+                    ctx.restore();
                 }
 
                 //draw bed outline
