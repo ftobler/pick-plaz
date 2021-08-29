@@ -12,12 +12,13 @@ import json
 
 class BottleServer:
 
-    def __init__(self, get_camera_fcn, event_put_fcn, data, nav_fcn, listen="0.0.0.0", port=8080):
+    def __init__(self, get_camera_fcn, event_put_fcn, data, nav_fcn, debug_data, listen="0.0.0.0", port=8080):
 
         self.get_camera_fcn = get_camera_fcn
         self.event_put_fcn = event_put_fcn
         self.data = data
         self.nav_fcn = nav_fcn
+        self.debug_data = debug_data
 
         self.port = port
         self.listen = listen
@@ -46,6 +47,9 @@ class BottleServer:
 
     def _data(self):
         return self.data.get()
+
+    def _debug(self):
+        return self.debug_data.get_dict()
 
     def _setpos(self):
         r = dict(request.query.decode())
@@ -124,6 +128,7 @@ class BottleServer:
         route('/api/sequencecontrol', method='POST')(self._sequencecontrol)
         route('/api/alertquit', method='POST')(self._alertquit)
         route('/api/upload', method='POST')(self._upload)
+        route('/api/debug', method='POST')(self._debug)
         route('/<name:path>')(self._files)
 
         print(f"Starting server at {self.listen}:{self.port}")

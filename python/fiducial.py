@@ -9,7 +9,7 @@ class NoFiducialFoundException(Exception):
 
 class FiducialDetector:
 
-    def __init__(self, cal):
+    def __init__(self, cal, debug_item):
 
         self.res = 60 # pixel per mm
         self.range = 5 # range in mm
@@ -19,6 +19,8 @@ class FiducialDetector:
 
         self.h = calibrator.Homography(cal, self.res, (self.res*self.range,self.res*self.range))
         self.ip = calibrator.ImageProjector(self.h)
+
+        self.debug_item = debug_item
 
     def __call__(self, camera_image, robot_pos):
 
@@ -31,7 +33,7 @@ class FiducialDetector:
 
         _, image = cv2.threshold(image, 50, 255, cv2.THRESH_BINARY)
 
-        cv2.imwrite("b.png", cv2.cvtColor(image, cv2.COLOR_GRAY2BGR))
+        self.debug_item.set_image(cv2.cvtColor(image, cv2.COLOR_GRAY2BGR))
 
         circles = cv2.HoughCircles(image,cv2.HOUGH_GRADIENT,1,0.1,
                             param1=50,param2=10, # 50,20

@@ -14,6 +14,7 @@ import calibrator
 import pick
 import camera_cal
 import data_manager
+import debug
 
 class AbortException(Exception):
     """ All calibration is broken"""
@@ -23,11 +24,13 @@ DX, DY = 200 - 127.33, 200 - 218.39
 PICK_Z = -18
 
 class StateContext:
-    def __init__(self, robot, camera, data, event_queue):
+    def __init__(self, robot, camera, data, event_queue, debug_data):
         self.robot = robot
         self.camera = camera
         self.event_queue = event_queue
         self.data = data
+
+        self.debug_data = debug_data
 
         self.alert_id = 0
 
@@ -137,7 +140,7 @@ class StateContext:
             height = self.nav["camera"]["height"]
             h = calibrator.Homography(self.cal, int(res), (int(res*width),int(res*height)))
             self.ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
-            self.fd = fiducial.FiducialDetector(self.cal)
+            self.fd = fiducial.FiducialDetector(self.cal, self.debug_data.get("FiducialDetector"))
 
             self.picker = pick.Picker(self.cal)
 
@@ -359,13 +362,16 @@ def main(mock=False):
 
     d = data_manager.DataManager()
 
-    s = StateContext(robot, c, d.get(), event_queue)
+    dd = debug.DebugData()
+
+    s = StateContext(robot, c, d.get(), event_queue, dd)
 
     b = bottle_svr.BottleServer(
         lambda: s.get_cam(),
         lambda x: event_queue.put(x),
         d,
-        lambda: s.nav)
+        lambda: s.nav,
+        dd)
 
     with c:
         try:
