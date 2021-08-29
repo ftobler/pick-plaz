@@ -140,7 +140,7 @@ class StateContext:
             height = self.nav["camera"]["height"]
             h = calibrator.Homography(self.cal, int(res), (int(res*width),int(res*height)))
             self.ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
-            self.fd = fiducial.FiducialDetector(self.cal, self.debug_data.get("FiducialDetector"))
+            self.fd = fiducial.FiducialDetector(self.cal, self.debug_data)
 
             self.picker = pick.Picker(self.cal)
 
