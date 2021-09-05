@@ -170,7 +170,7 @@ class Calibration():
     def __init__(self, all_positions_bot, all_ids, all_positions_pix):
         self.calibrate(all_positions_bot, all_ids, all_positions_pix)
 
-    def calibrate(self, all_positions_bot, all_ids, all_positions_pix, plot=False):
+    def calibrate(self, all_positions_bot, all_ids, all_positions_pix, extrinsic_count=9, plot=False):
 
         batch_obj = []
         batch_pix = []
@@ -211,7 +211,7 @@ class Calibration():
             pix_calculated = pix_calculated[:,0]
 
             mse = np.mean(np.square(pix - pix_calculated))
-            assert mse < 1.5, f"Calibration has abnormaly high MSE ({mse})"
+            assert mse < 3, f"Calibration has abnormaly high MSE ({mse})"
             print("cal mse", mse)
 
         #build 4x4 extrinsics
@@ -223,12 +223,12 @@ class Calibration():
             for rvec, tvec in zip(rvecs, tvecs)
         ]
 
-        cam_positions = np.array([-e[:3,:3].T @ np.concatenate((e[:2,3:], [[0]]), 0) for e in extrinsics])[...,:2,  0]
+        # cam_positions = np.array([-e[:3,:3].T @ np.concatenate((e[:2,3:], [[0]]), 0) for e in extrinsics])[...,:2,  0]
+        cam_positions = np.array([-e[:3,:3].T @ e[:3,3:] for e in extrinsics])[...,:2,  0]
 
-
-        warp_mat, mse = fit_affine(cam_positions, all_positions_bot)
+        warp_mat, mse = fit_affine(cam_positions[:extrinsic_count], all_positions_bot[:extrinsic_count])
         if mse > 0.1:
-            raise CalibrationError("Calibration resulted in abnormaly high residual error")
+            raise CalibrationError(f"Calibration resulted in abnormally high MSE ({mse})")
 
         if plot:
             pattern = np.array([[0,0,39,39,1], [1,39,39,0,0], [1,1,1,1,1]]).T

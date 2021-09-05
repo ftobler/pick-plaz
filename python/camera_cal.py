@@ -6,7 +6,8 @@ import calibrator
 
 import debug
 
-CALIBRATION_POS = (155.7,124.2)
+CALIBRATION_POS = (18.3,17.3)
+CALIBRATION_POS2 = (74.25,66.36)
 
 aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_100)
 arucoParams = cv2.aruco.DetectorParameters_create()
@@ -28,6 +29,20 @@ def calibrate(robot, camera):
         (1,-1),
     ]) * 10 + np.asarray(CALIBRATION_POS)[np.newaxis]
 
+    positions2 = np.array([
+        (0,0),
+        (1,0),
+        (1,1),
+        (0,1),
+        (-1,1),
+        (-1,0),
+        (-1,-1),
+        (0,-1),
+        (1,-1),
+    ]) * 10 + np.asarray(CALIBRATION_POS2)[np.newaxis]
+
+    positions = np.concatenate((positions, positions2), axis=0)
+
     markers_corners = []
     marker_ids = []
 
@@ -48,6 +63,5 @@ def calibrate(robot, camera):
         debug.set_image(f"Calibrate{i}", image)
 
     cal = calibrator.Calibration(positions, marker_ids, markers_corners)
-    mp = calibrator.ModelPixConverter(cal)
 
     return cal
