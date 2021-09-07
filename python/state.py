@@ -197,7 +197,11 @@ class StateContext:
 
             elif item["type"] == "setfiducial":
                 self.nav["pcb"]["fiducials"][item["id"]] = (item["x"], item["y"])
-                transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], self.data["bom"])
+                for x in self.data["bom"]:
+                    if x["fiducial"]:
+                        fiducial_parts = x
+                        break
+                transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], fiducial_parts)
                 self.nav["pcb"]["transform"] = transform
                 self.nav["pcb"]["transform_mse"] = float(mse)
             elif item["type"] == "autosetfiducial":
