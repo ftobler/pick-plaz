@@ -204,22 +204,6 @@ class StateContext:
                 transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], fiducial_parts)
                 self.nav["pcb"]["transform"] = transform
                 self.nav["pcb"]["transform_mse"] = float(mse)
-            elif item["type"] == "autosetfiducial":
-                #TODO make button in web ui, test
-
-                fiducial_parts = [x["parts"] for x in self.data["bom"] if x["fiducial"]]
-
-                for name, part in fiducial_parts.items():
-                    x, y = self._pcb2robot(float(part["x"]), float(part["y"]))
-
-                    self.robot.drive(x,y)
-                    self.robot.done()
-
-                    time.sleep(0.5)
-                    cache = self.camera.cache
-                    cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
-
-                    self.nav["pcb"]["fiducials"][name] = self.fd(cam_image, (x, y))
 
             elif item["type"] == "sequence":
                 if item["method"] == "play":
@@ -235,6 +219,20 @@ class StateContext:
                     self.cal = camera_cal.calibrate(self.robot, self.camera)
                     with open("cal.pkl", "wb") as f:
                         pickle.dump(self.cal, f)
+                elif item["method"] == "auto_set_fiducial":
+
+                    fiducial_parts = [x["parts"] for x in self.data["bom"] if x["fiducial"]][0]
+
+                    for name, part in fiducial_parts.items():
+                        x, y = self._pcb2robot(float(part["x"]), float(part["y"]))
+
+                        self.robot.drive(x,y)
+                        self.robot.done()
+                        time.sleep(0.5)
+                        cache = self.camera.cache
+                        cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
+                        self.nav["pcb"]["fiducials"][name] = self.fd(cam_image, (x, y))
+
                 elif item["method"] == "shutdown":
                     import subprocess
                     process = subprocess.run(['shutdown', '-h', '+0'],
