@@ -14,7 +14,7 @@ function start() {
             debug: {
             },
             nav_init: false,
-            db: {
+            context: {
             },
             image: {
                 botup : null,
@@ -56,11 +56,11 @@ function start() {
         methods: {
             poll_data() {
                 api.data((data) => {
-                    this.db = JSON.parse(data)
+                    this.context = JSON.parse(data)
                     let index = 0
-                    for (let bom of this.db.bom) {
+                    for (let bom of this.context.bom) {
                         if (bom.fiducial == true) {
-                            this.db.fiducial = index
+                            this.context.fiducial = index
                             this.fiducial_bom = bom;
                             break;
                         }
@@ -344,7 +344,7 @@ function start() {
             },
             do_modify_bom_feeder(bom, i) {
                 let feeder_names = []
-                for (const [name, feeder] of Object.entries(this.db.feeder)) {
+                for (const [name, feeder] of Object.entries(this.context.feeder)) {
                     feeder_names.push(name)
                 }
                 if (feeder_names.length == 0) {
@@ -631,9 +631,9 @@ function start() {
                     ctx.stroke()
                 }
                 //draw the parts
-                for (let entry of this.db.bom) {
+                for (let entry of this.context.bom) {
                     if (entry.place == true || entry.fiducial == true) {
-                        for (let [id, part] of Object.entries(entry.parts)) {
+                        for (let [id, part] of Object.entries(entry.designators)) {
                             let deg = 0
                             if (entry.rot != undefined) deg += entry.rot
                             if (part.rot != undefined) deg += part.rot
@@ -695,9 +695,9 @@ function start() {
                 ctx.restore();
 
                 //draw feeder
-                for (const [name, feeder] of Object.entries(this.db.feeder)) {
+                for (const [name, feeder] of Object.entries(this.context.feeder)) {
                     let part = undefined;
-                    for (let entry of this.db.bom) {
+                    for (let entry of this.context.bom) {
                         if (entry.feeder == name) {
                             part = entry
                         }
@@ -848,7 +848,7 @@ function start() {
 
                 ctx.save();
                 ctx.font = "5px Arial";
-                let txt = this.db.const.feeder_state[feeder.state]
+                let txt = this.context.const.feeder_state[feeder.state]
 
                 if (feeder.state == 1) {ctx.fillStyle = "green"; ctx.strokeStyle = "green"}
                 if (feeder.state == 2) {ctx.fillStyle = "red"; ctx.strokeStyle = "red"}
@@ -876,13 +876,13 @@ function start() {
                 ctx.restore();
             },
             part_state: function(i) {
-                return this.db.const.part_state[i]
+                return this.context.const.part_state[i]
             },
             feeder_state: function(i) {
-                return this.db.const.feeder_state[i]
+                return this.context.const.feeder_state[i]
             },
             feeder_type: function(i) {
-                return this.db.const.feeder_type[i]
+                return this.context.const.feeder_type[i]
             }
         },
         filters: {
@@ -911,7 +911,7 @@ function start() {
 
 api = {
     data(cb) {
-        apicall("data.json", {}, cb, false)
+        apicall("context.json", {}, cb, false)
     },
     nav(cb) {
         apicall("nav.json", {}, cb, false)

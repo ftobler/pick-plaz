@@ -57,7 +57,7 @@ class FiducialDetector:
 
         raise NoFiducialFoundException("No fiducial found")
 
-def get_transform(fid_map, fiducial_parts):
+def get_transform(fid_map, fiducial_designators):
     """
     Fit transform between fiducials and robot coordinates
 
@@ -66,7 +66,7 @@ def get_transform(fid_map, fiducial_parts):
     bot_pos = np.asarray(list(fid_map.values()))
 
     fid_pos = np.asarray([
-        (float(fiducial_parts[id]["x"]), float(fiducial_parts[id]["y"]))
+        (float(fiducial_designators[id]["x"]), float(fiducial_designators[id]["y"]))
         for id in fid_map.keys()
     ])
 

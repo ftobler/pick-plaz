@@ -90,30 +90,30 @@
                     <th width="70px">State</th>
                     <th width="200px">Action</th>
                 </tr>
-                <tr v-for="(entry, i) in db.bom" v-bind:class="{ inactive: !entry.place }">
-                    <td :rowspan="entry.parts.length">{{i}}</td>
-                    <td><input type="checkbox" v-model="entry.place" v-on:change="do_modify_bom_doplace(entry, i)" v-if="!entry.fiducial"></td>
-                    <td><input type="checkbox" v-model="entry.fiducial" v-on:change="do_modify_bom_isfiducial(entry, i)"></td>
-                    <td>{{entry.value}}</td>
-                    <td><div class="table-button material" v-on:click="do_modify_bom_footprint(entry, i)">edit</div> {{entry.footprint}}</td>
-                    <td><img v-bind:src="entry.footprint | footprint_img_path"/> &nbsp;&nbsp;<img v-bind:src="entry.footprint | footprint_sym_path"/></td>
-                    <td><a v-bind:href="'https://lcsc.com/search?q=' + entry.partnr" target="_blank">{{entry.partnr}}</a></td>
-                    <td><div class="table-button material" v-on:click="do_modify_bom_feeder(entry, i)">edit</div> {{entry.feeder}}</td>
-                    <td><div class="table-button material" v-on:click="do_modify_bom_rotation(entry, i)">refresh</div> {{entry.rot}}</td>
+                <tr v-for="(part, i) in context.bom" v-bind:class="{ inactive: !part.place }">
+                    <td :rowspan="part.designators.length">{{i}}</td>
+                    <td><input type="checkbox" v-model="part.place" v-on:change="do_modify_bom_doplace(part, i)" v-if="!part.fiducial"></td>
+                    <td><input type="checkbox" v-model="part.fiducial" v-on:change="do_modify_bom_isfiducial(part, i)"></td>
+                    <td>{{part.value}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_bom_footprint(part, i)">edit</div> {{part.footprint}}</td>
+                    <td><img v-bind:src="part.footprint | footprint_img_path"/> &nbsp;&nbsp;<img v-bind:src="part.footprint | footprint_sym_path"/></td>
+                    <td><a v-bind:href="'https://lcsc.com/search?q=' + part.partnr" target="_blank">{{part.partnr}}</a></td>
+                    <td><div class="table-button material" v-on:click="do_modify_bom_feeder(part, i)">edit</div> {{part.feeder}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_bom_rotation(part, i)">refresh</div> {{part.rot}}</td>
                     <td class="cell-inline-table" colspan=6>
                         <table class="cell-inline-table">
-                            <tr v-for="(part, id, index) in entry.parts">
+                            <tr v-for="(designator, id, index) in part.designators">
                                 <td width="40px">{{id}}</td>
-                                <td width="40px">{{part.x}}</td>
-                                <td width="40px">{{part.y}}</td>
-                                <td width="40px">{{part.rot}}</td>
-                                <td width="70px"><div class="table-button material" v-on:click="do_modify_part_state(id)">swap_calls</div> {{part_state(part.state)}}</td>
-                                <td v-if="entry.fiducial == false" width="200px">
-                                    <button v-on:click="do_part_goto(part)">view place</button>
-                                    <button v-on:click="do_feeder_goto(entry.feeder)">view pick</button>
+                                <td width="40px">{{designator.x}}</td>
+                                <td width="40px">{{designator.y}}</td>
+                                <td width="40px">{{designator.rot}}</td>
+                                <td width="70px"><div class="table-button material" v-on:click="do_modify_part_state(id)">swap_calls</div> {{part_state(designator.state)}}</td>
+                                <td v-if="part.fiducial == false" width="200px">
+                                    <button v-on:click="do_part_goto(designator)">view place</button>
+                                    <button v-on:click="do_feeder_goto(part.feeder)">view pick</button>
                                 </td>
-                                <td v-if="entry.fiducial == true"  width="200px">
-                                    <button v-on:click="do_part_goto(part)">goto</button>
+                                <td v-if="part.fiducial == true"  width="200px">
+                                    <button v-on:click="do_part_goto(designator)">goto</button>
                                     <button v-on:click="fiducial_assing_current_location(id, 'assign')">assign</button>
                                     <button v-on:click="fiducial_assing_current_location(id, 'unassign')">unassign</button>
                                 </td>
@@ -139,7 +139,7 @@
                     <th width="100px">State</th>
                     <th width="100px">Action</th>
                 </tr>
-                <tr v-for="(entry, name) in db.feeder"  v-bind:class="{ inactive: entry.state == 0, error: entry.state == 2 }">
+                <tr v-for="(entry, name) in context.feeder"  v-bind:class="{ inactive: entry.state == 0, error: entry.state == 2 }">
                     <td><div class="table-button material" v-on:click="do_modify_feeder_name(name)">edit</div> {{name}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_type(name)">swap_calls</div> {{feeder_type(entry.type)}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'x')">edit</div> {{entry.x}}</td>
@@ -175,7 +175,7 @@
                 <label class="switcher-label">show parts</label>
                 <span style="width: 250px; display: inline-block; text-align: left;"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm</label></span>
                 <span style="width: 250px; display: inline-block; text-align: left;"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
-                <button class="fiducial-assign" v-for="(part, id)  in fiducial_bom.parts" v-on:click="fiducial_assing_current_location(id, 'assign')">{{id}}<div class="fiducial-assign-hint">Assign Fiducial</div></button>
+                <button class="fiducial-assign" v-for="(part, id)  in fiducial_bom.designators" v-on:click="fiducial_assing_current_location(id, 'assign')">{{id}}<div class="fiducial-assign-hint">Assign Fiducial</div></button>
                 <button class="fiducial-assign" v-on:click="do_sequence('auto_set_fiducial')" v-if="nav.pcb ? Object.keys(nav.pcb.fiducials).length >= 2 : false">Auto<div class="fiducial-assign-hint">Automagically assign fiducials</div></button>
             </div >
             <canvas id="canvas-view" width="1850" height="800" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>

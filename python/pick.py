@@ -313,7 +313,7 @@ def picker_test():
     with open("web/api/data.json", "r") as f:
         data = json.load(f)
 
-    p.pick_from_tray(data["feeder"]["tray 0"], None, None)
+    p.pick_from_feeder(data["feeder"]["tray 0"], None, None)
 
     print("done")
 

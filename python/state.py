@@ -21,11 +21,11 @@ class AbortException(Exception):
     pass
 
 class StateContext:
-    def __init__(self, robot, camera, data, event_queue):
+    def __init__(self, robot, camera, context, event_queue):
         self.robot = robot
         self.camera = camera
         self.event_queue = event_queue
-        self.data = data
+        self.context = context
 
         self.alert_id = 0
 
@@ -75,10 +75,10 @@ class StateContext:
 
     def _center_pcb(self):
         positions = []
-        for x in self.data["bom"]:
-            for part in x["parts"].values():
-                if "x" in part:
-                    positions.append((float(part["x"]), float(part["y"])))
+        for part in self.context["bom"]:
+            for designator in part["designators"].values():
+                if "x" in designator:
+                    positions.append((float(designator["x"]), float(designator["y"])))
         positions = np.asarray(positions)
         bed_center = [self.nav["bed"]["width"] / 2, self.nav["bed"]["height"] / 2]
         x, y = -(np.min(positions, axis=0) + np.max(positions, axis=0)) / 2 + bed_center
@@ -193,11 +193,8 @@ class StateContext:
 
             elif item["type"] == "setfiducial":
                 self.nav["pcb"]["fiducials"][item["id"]] = (item["x"], item["y"])
-                for x in self.data["bom"]:
-                    if x["fiducial"]:
-                        fiducial_parts = x
-                        break
-                transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], fiducial_parts)
+                fiducial_designators = [part["designators"] for part in self.context["bom"] if part["fiducial"]][0]
+                transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], fiducial_designators)
                 self.nav["pcb"]["transform"] = transform
                 self.nav["pcb"]["transform_mse"] = float(mse)
 
@@ -223,9 +220,9 @@ class StateContext:
                         print(e)
                 elif item["method"] == "auto_set_fiducial":
 
-                    fiducial_parts = [x["parts"] for x in self.data["bom"] if x["fiducial"]][0]
+                    fiducial_designators = [part["designators"] for part in self.context["bom"] if part["fiducial"]][0]
 
-                    for name, part in fiducial_parts.items():
+                    for name, part in fiducial_designators.items():
                         x, y = self._pcb2robot(float(part["x"]), float(part["y"]))
 
                         self.robot.drive(x,y)
@@ -258,8 +255,8 @@ class StateContext:
 
     def _get_next_part(self):
         """ find next part in bom that is eligable for placing"""
-        for part in self.data["bom"]:
-            for name, partdes in part["parts"].items():
+        for part in self.context["bom"]:
+            for name, partdes in part["designators"].items():
                 if "x" not in partdes:
                     continue
                 part_pos = float(partdes["x"]), float(partdes["y"])
@@ -282,10 +279,10 @@ class StateContext:
                 return self.setup_state
             place_pos = float(partdes["x"]), float(partdes["y"])
             place_angle = float(partdes["rot"]) + float(part["rot"])
-            tray = self.data["feeder"][part["feeder"]]
+            tray = self.context["feeder"][part["feeder"]]
 
             print("get pick position")
-            pick_pos = self.picker.pick_from_tray(tray, self.robot, self.camera)
+            pick_pos = self.picker.pick_from_feeder(tray, self.robot, self.camera)
             self.nav["detection"]["part"] = pick_pos
 
             print("pick part")
@@ -350,7 +347,7 @@ def main(mock=False):
     else:
         c = camera.CameraThreadMock()
 
-    d = data_manager.DataManager()
+    d = data_manager.ContextManager()
 
     s = StateContext(robot, c, d.get(), event_queue)
 

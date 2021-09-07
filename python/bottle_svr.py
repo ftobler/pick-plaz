@@ -17,11 +17,11 @@ import debug
 
 class BottleServer:
 
-    def __init__(self, get_camera_fcn, event_put_fcn, data, nav_fcn, listen="0.0.0.0", port=8080):
+    def __init__(self, get_camera_fcn, event_put_fcn, context, nav_fcn, listen="0.0.0.0", port=8080):
 
         self.get_camera_fcn = get_camera_fcn
         self.event_put_fcn = event_put_fcn
-        self.data = data
+        self.context = context
         self.nav_fcn = nav_fcn
 
         self.port = port
@@ -49,8 +49,8 @@ class BottleServer:
     def _nav(self):
         return self.nav_fcn()
 
-    def _data(self):
-        return self.data.get()
+    def _context(self):
+        return self.context.get()
 
     def _debug(self):
         return debug.data
@@ -109,7 +109,7 @@ class BottleServer:
             try:
                 bom_lines = [b.decode("utf-8") for b in bom.file.read().splitlines()]
                 pnp_lines = [b.decode("utf-8") for b in pnp.file.read().splitlines()]
-                self.data.replace(bom_lines, pnp_lines)
+                self.context.replace(bom_lines, pnp_lines)
             except Exception as e:
                 error = "Parsing of BOM or PNP failed. Exception: '" + str(e) + "'"
         else:
@@ -126,11 +126,11 @@ class BottleServer:
         try:
             method = _str(r["method"])
             if method == "list":
-                return self.data.file_list()
+                return self.context.file_list()
             elif method == "save":
-                return self.data.file_save(_str(r["filename"]))
+                return self.context.file_save(_str(r["filename"]))
             elif method == "read":
-                return self.data.file_read(_str(r["filename"]))
+                return self.context.file_read(_str(r["filename"]))
         except Exception as e:
             raise e
 
@@ -140,15 +140,15 @@ class BottleServer:
             method = _str(r["method"])
             index = _int(r["index"])
             if method == "place":
-                self.data.modify_bom_place(index, _bool(r["data"]))
+                self.context.modify_bom_place(index, _bool(r["data"]))
             elif method == "fiducial":
-                self.data.modify_bom_fiducial(index, _bool(r["data"]))
+                self.context.modify_bom_fiducial(index, _bool(r["data"]))
             elif method == "footprint":
-                self.data.modify_bom_foorprint(index, _str(r["data"]))
+                self.context.modify_bom_foorprint(index, _str(r["data"]))
             elif method == "feeder":
-                self.data.modify_bom_feeder(index, _str(r["data"]))
+                self.context.modify_bom_feeder(index, _str(r["data"]))
             elif method == "rotation":
-                self.data.modify_bom_rot(index, _int_none(r["data"]))
+                self.context.modify_bom_rot(index, _int_none(r["data"]))
         except Exception as e:
             raise e
 
@@ -158,7 +158,7 @@ class BottleServer:
             method = _str(r["method"])
             id = _str(r["id"])
             if method == "state":
-                self.data.modify_part_state(id, _int_none(r["data"]))
+                self.context.modify_part_state(id, _int_none(r["data"]))
         except Exception as e:
             raise e
 
@@ -168,19 +168,19 @@ class BottleServer:
             method = _str(r["method"])
             feeder = _str(r["feeder"])
             if method == "rename":
-                self.data.modify_feeder_name(feeder, _str(r["data"]))
+                self.context.modify_feeder_name(feeder, _str(r["data"]))
             elif method == "type":
-                self.data.modify_feeder_type(feeder, _int_none(r["data"]))
+                self.context.modify_feeder_type(feeder, _int_none(r["data"]))
             elif method == "rotation":
-                self.data.modify_feeder_rot(feeder, _int_none(r["data"]))
+                self.context.modify_feeder_rot(feeder, _int_none(r["data"]))
             elif method == "state":
-                self.data.modify_feeder_state(feeder, _int_none(r["data"]))
+                self.context.modify_feeder_state(feeder, _int_none(r["data"]))
             elif method == "delete":
-                self.data.modify_feeder_delete(feeder)
+                self.context.modify_feeder_delete(feeder)
             elif method == "create":
-                self.data.modify_feeder_create(feeder)
-            elif method in self.data.feeder_attribute:
-                self.data.modify_feeder_attribute(feeder, method, _int(r["data"]))
+                self.context.modify_feeder_create(feeder)
+            elif method in self.context.feeder_attribute:
+                self.context.modify_feeder_attribute(feeder, method, _int(r["data"]))
         except Exception as e:
             raise e
 
@@ -196,7 +196,7 @@ class BottleServer:
         #route('/api/<name>')(self._api)
         route('/api/topdn.jpg', method='GET')(self._camera_topdn)
         route('/api/nav.json', method='POST')(self._nav)
-        route('/api/data.json', method='POST')(self._data)
+        route('/api/context.json', method='POST')(self._context)
         route('/api/setpos', method='POST')(self._setpos)
         route('/api/setfiducal', method='POST')(self._setfiducial)
         route('/api/sequencecontrol', method='POST')(self._sequencecontrol)
@@ -240,7 +240,7 @@ def mock():
         pass
 
     import data_manager
-    d = data_manager.DataManager()
+    d = data_manager.ContextManager()
 
     b = BottleServer(dummy_fcn, dummy_fcn, d, dummy_fcn)
     while(True):
