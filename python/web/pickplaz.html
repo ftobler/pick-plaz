@@ -45,6 +45,7 @@
                 <div class="menu-menu-item" v-on:click="do_sequence('motor_off')"><div class="menu-item-material">power_off</div>Motor Off</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('motor_on')"><div class="menu-item-material">power</div>Motor On</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('calibrate_topdn')"><div class="menu-item-material">photo_camera</div>Calibrate Camera</div>
+                <div class="menu-menu-item" v-on:click="do_sequence('calibrate_picker')"><div class="menu-item-material">vertical_align_bottom</div>Calibrate Picker</div>
                 <div class="menu-menu-item" v-on:click="dialog_user_confirm('Do you want to shutdown the computer? This shuts down the operating system and not just the pick-plaz application.', () => {do_sequence('shutdown')})"><div class="menu-item-material">power_settings_new</div>Shutdown</div>
                 <div class="menu-menu-item" v-on:click="do_save_restore('save')"><div class="menu-item-material">save</div>Save Context</div>
                 <div class="menu-menu-item" v-on:click="do_save_restore('restore')"><div class="menu-item-material">restore</div>Restore Context</div>
