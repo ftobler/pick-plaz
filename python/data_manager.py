@@ -3,9 +3,6 @@ import json
 from importlib import reload
 import pnp_bom_parser
 
-
-
-
 class DataManager:
 
     part_state = ["skip", "not placed", "placed"]
@@ -22,6 +19,19 @@ class DataManager:
             self.data["const"]["feeder_attribute"] = self.feeder_attribute
             self.data["const"]["feeder_state"] = self.feeder_state
 
+    def file_save(self, filename):
+        #TODO use filename
+        with open("web/api/data.json", "w") as f:
+            json.dump(self.data, f)
+        print("data saved")
+
+    def file_list(self):
+        #TODO implement
+        return {}
+
+    def file_read(self, filename):
+        #TODO implement
+        pass
 
     def get(self):
         return self.data
