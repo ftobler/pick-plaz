@@ -57,25 +57,18 @@ class FiducialDetector:
 
         raise NoFiducialFoundException("No fiducial found")
 
-def get_transform(fid_map, bom):
+def get_transform(fid_map, fiducial_parts):
     """
     Fit transform between fiducials and robot coordinates
 
-    Return transform as used by cairo and mean squared error in mm^2"""
+    Return affine transform (as used by cairo contect) and mean squared error in mm^2"""
 
-    import json
+    bot_pos = np.asarray(list(fid_map.values()))
 
-    with open("web/api/data.json", "r") as f:
-        data = json.load(f)
-
-    bot_pos = []
-    fid_pos = []
-    for x in bom:
-        if x["fiducial"]:
-            for id, pos in fid_map.items():
-                part =  x["parts"][id]
-                bot_pos.append(pos)
-                fid_pos.append((float(part["x"]), float(part["y"])))
+    fid_pos = np.asarray([
+        (float(fiducial_parts[id]["x"]), float(fiducial_parts[id]["y"]))
+        for id in fid_map.keys()
+    ])
 
     fid_pos = np.asarray(fid_pos)
     bot_pos = np.asarray(bot_pos)
