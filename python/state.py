@@ -20,9 +20,6 @@ class AbortException(Exception):
     """ All calibration is broken"""
     pass
 
-DX, DY = 200 - 127.33, 200 - 218.39
-PICK_Z = -18
-
 class StateContext:
     def __init__(self, robot, camera, data, event_queue):
         self.robot = robot
@@ -187,7 +184,6 @@ class StateContext:
                 cache = self.camera.cache
                 cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
 
-                # self.nav["detection"]["part"] = self.picker.detect_pick_location2((x, y), self.robot, self.camera)
                 # p.make_collage(self.robot, self.camera)
 
                 try:
@@ -219,6 +215,12 @@ class StateContext:
                     self.cal = camera_cal.calibrate(self.robot, self.camera)
                     with open("cal.pkl", "wb") as f:
                         pickle.dump(self.cal, f)
+                elif item["method"] == "calibrate_picker":
+                    try:
+                        pos = (self.nav["camera"]["x"], self.nav["camera"]["y"])
+                        self.picker.calibrate(pos, self.robot, self.camera)
+                    except Exception as e:
+                        print(e)
                 elif item["method"] == "auto_set_fiducial":
 
                     fiducial_parts = [x["parts"] for x in self.data["bom"] if x["fiducial"]][0]
@@ -246,6 +248,8 @@ class StateContext:
             self._push_alert(f"Calibration Failed: {e}")
         except save_robot.OutOfSaveSpaceException as e:
             self._push_alert(e)
+        except fiducial.NoFiducialFoundException as e:
+            self._push_alert(e)
         except AbortException as e:
             self._push_alert(e)
             return self.idle_state
@@ -259,7 +263,7 @@ class StateContext:
                 if "x" not in partdes:
                     continue
                 part_pos = float(partdes["x"]), float(partdes["y"])
-                if partdes["state"] == 0 and partdes["place"] and not part["fiducial"]:
+                if partdes["state"] == 1 and partdes["place"] and not part["fiducial"]:
                     return part, partdes
         return None, None
 
@@ -277,7 +281,7 @@ class StateContext:
                 self._push_alert("Placing finished")
                 return self.setup_state
             place_pos = float(partdes["x"]), float(partdes["y"])
-            place_angle = float(partdes["rot"])
+            place_angle = float(partdes["rot"]) + float(part["rot"])
             tray = self.data["feeder"][part["feeder"]]
 
             print("get pick position")
@@ -285,32 +289,16 @@ class StateContext:
             self.nav["detection"]["part"] = pick_pos
 
             print("pick part")
-
-            self.robot.vacuum(True)
-            self.robot.valve(False)
-            x, y, angle_rad = pick_pos
-            self.robot.drive(x=x+DX, y=y+DY)
-            self.robot.drive(e=angle_rad*180/np.pi, f=350)
-            self.robot.drive(z=PICK_Z)
-            self.robot.done()
-            self.robot.valve(True)
-            self.robot.drive(z=0)
-            self.robot.drive(e=0, f=350)
+            x, y, a = pick_pos
+            self.picker.pick(self.robot, x, y, a)
 
             print("place part")
-
             x, y = place_pos
             x, y, place_angle = self._pcb2robot2(x, y, place_angle)
-            self.robot.drive(x=x+DX, y=y+DY)
-            self.robot.drive(e=-place_angle, f=350)
-            self.robot.drive(z=PICK_Z)
-            self.robot.done()
-            self.robot.valve(False)
-            self.robot.vacuum(False)
-            self.robot.drive(z=0)
+            self.picker.place(self.robot, x, y, -place_angle)
 
             print("update part")
-            partdes["state"] = 1
+            partdes["state"] = 2
 
             try:
                 item = self.event_queue.get(block=False)
@@ -325,6 +313,8 @@ class StateContext:
         except pick.NoPartFoundException as e:
             self._push_alert(e)
             return self.setup_state
+        except save_robot.OutOfSaveSpaceException as e:
+            self._push_alert(e)
         except AbortException as e:
             self._push_alert(e)
             return self.idle_state

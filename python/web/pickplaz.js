@@ -761,13 +761,16 @@ function start() {
                 ctx.translate(part.x, part.y);
                 ctx.rotate(part.rot*Math.PI/180);
                 if (footprint && this.elements.show_parts) {
-                    ctx.drawImage(
-                        footprint.imageImg,
-                        -footprint.x/2,
-                        -footprint.y/2,
-                        footprint.x,
-                        footprint.y
-                    );
+                    try {
+                        ctx.drawImage(
+                            footprint.imageImg,
+                            -footprint.x/2,
+                            -footprint.y/2,
+                            footprint.x,
+                            footprint.y
+                        );
+                    } catch {
+                    }
                 }
                 ctx.restore();
             },
@@ -796,20 +799,32 @@ function start() {
                         let h = footprint.imageSym.height / factor;
                         let w = footprint.imageSym.width / factor;
 
-                        ctx.drawImage(
-                            footprint.imageSym,
-                            feeder.width / 3  - w / 2,
-                            feeder.height / 2 - h / 2,
-                            w,
-                            h
-                        );
-                        ctx.drawImage(
-                            footprint.imageImg,
-                            feeder.width / 3 * 2 - footprint.x/2,
-                            feeder.height / 2 - footprint.y/2,
-                            footprint.x,
-                            footprint.y
-                        );
+                        ctx.save();
+                        ctx.translate(feeder.width / 3, feeder.height / 2);
+                        ctx.rotate(feeder.rot*Math.PI/180)
+                        try {
+                            ctx.drawImage(
+                                footprint.imageSym,
+                                -w / 2,
+                                -h / 2,
+                                w,
+                                h
+                            );
+                        } catch {}
+                        ctx.restore()
+                        ctx.save();
+                        ctx.translate(feeder.width / 3 * 2, feeder.height / 2);
+                        ctx.rotate(feeder.rot*Math.PI/180)
+                        try {
+                            ctx.drawImage(
+                                footprint.imageImg,
+                                -footprint.x / 2,
+                                -footprint.y / 2,
+                                footprint.x,
+                                footprint.y
+                            );
+                        } catch {}
+                        ctx.restore()
                     } else {
                         let txt = "no part symbol"
                         let metrics = ctx.measureText(txt);

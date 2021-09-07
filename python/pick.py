@@ -1,6 +1,7 @@
 
 
 import time
+import json
 
 import numpy as np
 import cv2
@@ -8,6 +9,8 @@ import cv2
 import calibrator
 
 import debug
+
+AUTO_DETECT_ZONE_MARGIN = 4
 
 class NoPartFoundException(Exception):
     pass
@@ -19,24 +22,51 @@ class Picker():
         self.min_area_mm2 = 1.5
 
         self.res = 20
-        self.range = 20
+        self.cam_range = 20
 
-        h = calibrator.Homography(cal, self.res, (int(self.res*self.range),int(self.res*self.range)))
+        self.DX = 70.75
+        self.DY = -17.59
+
+        try:
+            with open("picker.json", "r") as f:
+                d = json.load(f)
+            self.DX = d["DX"]
+            self.DY = d["DY"]
+        except FileNotFoundError:
+            pass
+
+        self.PICK_Z = -18
+
+        h = calibrator.Homography(cal, self.res, (int(self.res*self.cam_range),int(self.res*self.cam_range)))
         self.ip = calibrator.ImageProjector(h, border_value=(0,0,0))
 
-    def pick_from_tray(self, tray, robot, camera):
+    def pick_from_feeder(self, feeder, robot, camera):
 
-        r = self.range + 4 #TODO check correct ranging
+        if feeder["type"] == 0:
+            return self._pick_from_auto_detect_zone(feeder, robot, camera)
+        else:
+            raise ValueError(f"feeder type {feeder['type']} pick is not implemented'")
 
-        w = tray["width"] - r
-        h = tray["height"] - r
-        xs = tray["x"] + r/2 + np.linspace(0, w, 2 + int(np.floor(w/(r*2/3))))
-        ys = tray["y"] + r/2 + np.linspace(0, h, 2 + int(np.floor(h/(r*2/3))))
+    def _pick_from_auto_detect_zone(self, feeder, robot, camera):
+
+        r = self.cam_range + AUTO_DETECT_ZONE_MARGIN
+
+        w = feeder["width"] - r
+        h = feeder["height"] - r
+        xs = feeder["x"] + r/2 + np.linspace(0, w, 2 + int(np.floor(w/(r*2/3))))
+        ys = feeder["y"] + r/2 + np.linspace(0, h, 2 + int(np.floor(h/(r*2/3))))
+        tray_angle = feeder["rot"] #FIXME not used yet
         search_positions = np.stack(np.meshgrid(xs, ys), axis=-1).reshape((-1,2))
 
-        # self._plot_search_positions(search_positions, tray)
+        # self._plot_search_positions(search_positions, feeder)
 
         robot.light_topdn(False)
+
+        if "last_found_index" in feeder:
+            last_found_index = feeder["last_found_index"]
+            search_positions = np.roll(search_positions, -last_found_index, axis=0)
+        else:
+            last_found_index = 0
 
         for robot_pos in search_positions:
 
@@ -49,11 +79,15 @@ class Picker():
             p, a = self._find_components(image)
             if len(p):
                 break
+            last_found_index = last_found_index + 1 % len(search_positions)
         else:
+            last_found_index = 0
             raise NoPartFoundException("Could not find part to pick")
 
+        feeder["last_found_index"] = last_found_index
+
         pos = np.array(p[0])
-        pos = tuple((pos / self.res) - (self.range/2) + robot_pos)
+        pos = tuple((pos / self.res) - (self.cam_range/2) + robot_pos)
 
         #drive to part and measure again without paralax
         robot_pos = pos
@@ -66,18 +100,19 @@ class Picker():
         p, a = self._find_components(image)
         if len(p):
             pos = np.array(p[0])
-            pos = tuple((pos / self.res) - (self.range/2) + robot_pos)
+            pos = tuple((pos / self.res) - (self.cam_range/2) + robot_pos)
         else:
             raise NoPartFoundException("Could not find part to pick")
 
         robot.light_topdn(True)
 
-        return (pos[0], pos[1], a[0]/180*np.pi)
+        #angle in degrees
+        return (pos[0], pos[1], a[0])
 
-
-    def detect_pick_location2(self, robot_pos, robot, camera):
+    def detect_pick_location(self, robot_pos, robot, camera):
 
         robot.light_topdn(False)
+        robot.drive(*robot_pos)
         robot.done()
         time.sleep(0.5)
         image = camera.cache["image"]
@@ -87,11 +122,57 @@ class Picker():
         p, a = self._find_components(image)
         if len(p):
             pos = np.array(p[0])
-            pos = tuple((pos / self.res) - (self.range/2) + robot_pos)
-            return pos[0], pos[1], a[0]/180*np.pi
+            pos = tuple((pos / self.res) - (self.cam_range/2) + robot_pos)
         else:
-            return (0,0,0)
+            raise NoPartFoundException("Could not find part to pick")
 
+        return pos[0], pos[1], a[0]
+
+    def pick(self, robot, x, y, a):
+        robot.vacuum(True)
+        robot.valve(False)
+        robot.drive(x=x+self.DX, y=y+self.DY)
+        robot.drive(e=a, f=200)
+        robot.drive(z=self.PICK_Z)
+        robot.done()
+        robot.valve(True)
+        robot.drive(z=0)
+        robot.drive(e=0, f=200)
+
+    def place(self, robot, x, y, a):
+        robot.drive(x=x+self.DX, y=y+self.DY)
+        robot.drive(e=a, f=200)
+        robot.drive(z=self.PICK_Z)
+        robot.done()
+        robot.valve(False)
+        robot.vacuum(False)
+        robot.drive(z=0)
+
+    def calibrate(self, pos, robot, camera):
+
+        x1, y1, a = self.detect_pick_location(pos, robot, camera)
+        self.pick(robot, x1, y1, 0)
+        self.place(robot, x1, y1, 180)
+
+        x2, y2, a = self.detect_pick_location((x1, y1), robot, camera)
+        self.pick(robot, x1, y1, 0)
+        self.place(robot, x1, y1, 180)
+
+        robot.drive(x1, y1)
+
+        correction_x = (x2-x1)/2
+        correction_y = (y2-y1)/2
+        self.DX -= correction_x
+        self.DY -= correction_y
+
+        d = {
+            "DX" : self.DX,
+            "DY" : self.DY,
+        }
+        with open("picker.json", "w") as f:
+            json.dump(d, f)
+
+        print(correction_x, correction_y)
 
     def _find_components(self, image, plot=False):
 
@@ -177,9 +258,9 @@ class Picker():
 
 
     def make_collage(self, robot, camera):
+        # TODO move this somewhere else
 
         x0, y0 = 103, 125
-
 
         mm_step = self.ip.homography.size_mm[0]
         pix_step = self.ip.homography.size_pix[0]
@@ -205,40 +286,36 @@ class Picker():
 
         cv2.imwrite(f"collage.jpg", res)
 
-        pass
-
-    def _plot_search_positions(self, search_positions, tray):
+    def _plot_search_positions(self, search_positions, feeder):
         import matplotlib.pyplot as plt
 
-        r = self.range/2
+        r = self.cam_range/2
         for x, y in search_positions:
             plt.plot([x-r, x-r, x+r, x+r, x-r],[y-r, y+r, y+r, y-r, y-r], "-")
             plt.plot([x],[y], "o")
 
-        x, y, w, h = tray["x"], tray["y"], tray["width"], tray["height"]
+        x, y, w, h = feeder["x"], feeder["y"], feeder["width"], feeder["height"]
 
         plt.plot([x, x, x+w, x+w, x], [y, y+h, y+h, y, y], "o-")
         plt.axis("equal")
         plt.savefig("plot.png")
         plt.close()
 
-
-if __name__ == "__main__":
-
+def picker_test():
     import pickle
 
     with open("cal.pkl", "rb") as f:
         cal = pickle.load(f)
 
-
     p = Picker(cal)
-
 
     import json
     with open("web/api/data.json", "r") as f:
         data = json.load(f)
 
-
     p.pick_from_tray(data["feeder"]["tray 0"], None, None)
 
     print("done")
+
+if __name__ == "__main__":
+    picker_test()

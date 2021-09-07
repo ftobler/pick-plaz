@@ -176,6 +176,7 @@
                 <span style="width: 250px; display: inline-block; text-align: left;"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm</label></span>
                 <span style="width: 250px; display: inline-block; text-align: left;"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
                 <button class="fiducial-assign" v-for="(part, id)  in fiducial_bom.parts" v-on:click="fiducial_assing_current_location(id, 'assign')">{{id}}<div class="fiducial-assign-hint">Assign Fiducial</div></button>
+                <button class="fiducial-assign" v-on:click="do_sequence('auto_set_fiducial')" v-if="nav.pcb ? Object.keys(nav.pcb.fiducials).length >= 2 : false">Auto<div class="fiducial-assign-hint">Automagically assign fiducials</div></button>
             </div >
             <canvas id="canvas-view" width="1850" height="800" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
 
