@@ -640,13 +640,13 @@ function start() {
                             let rad = deg * 2 * Math.PI / 360
                             const size = 1.5
 
-                            let footprint = getFootprint(entry.footprint)
-                            this.draw_part(ctx, part, footprint)
-
                             ctx.save()
                             ctx.translate(part.x, part.y)
                             ctx.save()
                             ctx.rotate(rad)
+
+                            let footprint = getFootprint(entry.footprint)
+                            this.draw_part(ctx, footprint)
 
                             if (this.elements.show_symbol) {
                                 ctx.strokeStyle = "red"
@@ -756,10 +756,7 @@ function start() {
 
                 ctx.restore();
             },
-            draw_part(ctx, part, footprint) {
-                ctx.save();
-                ctx.translate(part.x, part.y);
-                ctx.rotate(part.rot*Math.PI/180);
+            draw_part(ctx, footprint) {
                 if (footprint && this.elements.show_parts) {
                     try {
                         ctx.drawImage(
@@ -772,7 +769,6 @@ function start() {
                     } catch {
                     }
                 }
-                ctx.restore();
             },
             draw_feeder(ctx, name, feeder, part) {
 
