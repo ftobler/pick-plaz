@@ -64,9 +64,9 @@ class ContextManager:
         bom = self._get_bom_by_index(index)
         if rotation == None:
             rot = bom["rot"]
-            rot = rot + 90
-            if rot >= 360:
-                rot = rot - 360
+            rot = rot - 90 # clockwhise in pcb frame
+            if rot < 0:
+                rot = rot + 360
             bom["rot"] = rot
         else:
             bom["rot"] = rotation
@@ -102,7 +102,7 @@ class ContextManager:
         feeder = self._get_feeder_by_id(feeder_id)
         if rotation == None:
             rot = feeder["rot"]
-            rot = rot + 90
+            rot = rot + 90 #clockwhise in pick-platz frame
             if rot >= 360:
                 rot = rot - 360
             feeder["rot"] = rot

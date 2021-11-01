@@ -299,6 +299,12 @@ class StateContext:
             print("place part")
             x, y = place_pos
             x, y, place_angle = self._pcb2robot2(x, y, place_angle)
+            # make sure rotation is minimal
+            if place_angle < -180:
+                place_angle += 360
+            if place_angle > 180:
+                place_angle -= 360
+            # angle is is pcb coordinates, thus inverted
             self.picker.place(self.robot, x, y, -place_angle)
 
             print("update part")

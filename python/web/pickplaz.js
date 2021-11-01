@@ -615,6 +615,7 @@ function start() {
                 //draw pcb origin
                 if (this.elements.show_symbol) {
                     ctx.strokeStyle = "white"
+                    ctx.fillStyle = "white"
                     ctx.beginPath();
                     ctx.moveTo(0, +10)
                     ctx.lineTo(0, 0)
@@ -629,6 +630,13 @@ function start() {
                     ctx.beginPath();
                     ctx.arc(0, 0, 1, 0, 2 * Math.PI)
                     ctx.stroke()
+
+                    ctx.save()
+                    // text is drawn in cairo coordinates
+                    ctx.transform(1, 0, 0, -1, 0, 0)
+                    ctx.fillText("x", 10.2, 0.2);
+                    ctx.fillText("y", 0.2, -10.2);
+                    ctx.restore()
                 }
                 //draw the parts
                 for (let entry of this.context.bom) {
@@ -637,57 +645,17 @@ function start() {
                             let deg = 0
                             if (entry.rot != undefined) deg += entry.rot
                             if (part.rot != undefined) deg += part.rot
-                            let rad = deg * 2 * Math.PI / 360
-                            const size = 1.5
+                            let rad = deg * Math.PI / 180
 
                             ctx.save()
                             ctx.translate(part.x, part.y)
-                            ctx.save()
                             ctx.rotate(rad)
+                            // PCB has coordinate origin bottom left
+                            // this must be corrected here
+                            ctx.transform(1, 0, 0, -1, 0, 0)
 
-                            let footprint = getFootprint(entry.footprint)
-                            this.draw_part(ctx, footprint)
+                            this.drawSymbol(ctx, entry, id)
 
-                            if (this.elements.show_symbol) {
-                                ctx.strokeStyle = "red"
-                                ctx.beginPath();
-                                ctx.moveTo(0,0)
-                                ctx.lineTo(0, size)
-                                ctx.stroke();
-
-                                ctx.strokeStyle = "green"
-                                ctx.beginPath();
-                                ctx.moveTo(0,0)
-                                ctx.lineTo(size, 0)
-                                ctx.stroke();
-
-                                ctx.strokeStyle = "yellow"
-                                ctx.beginPath();
-                                ctx.moveTo(0,0)
-                                ctx.lineTo(0, -size)
-                                ctx.stroke();
-
-                                ctx.strokeStyle = "blue"
-                                ctx.beginPath();
-                                ctx.moveTo(0,0)
-                                ctx.lineTo(-size, 0)
-                                ctx.stroke();
-
-                                if (entry.fiducial == true) {
-                                    ctx.strokeStyle = "white"
-                                    ctx.beginPath();
-                                    ctx.arc(0, 0, 1, 0, 2 * Math.PI)
-                                    ctx.stroke()
-                                }
-
-                                ctx.save()
-                                ctx.transform(1, 0, 0, -1, 0, 0)
-                                ctx.fillText(id, 0.2, -0.2);
-                                ctx.restore()
-                            }
-
-
-                            ctx.restore()
                             ctx.restore()
                         }
                     }
@@ -756,8 +724,20 @@ function start() {
 
                 ctx.restore();
             },
-            draw_part(ctx, footprint) {
+            drawSymbol(ctx, entry, id) {
+
+                const crossSize = 1.0
+                const textSize = 0.5
+
+                ctx.strokeStyle = "red"
+                ctx.fillStyle = "red"
+
+                let footprint = getFootprint(entry.footprint)
+
                 if (footprint && this.elements.show_parts) {
+
+                    ctx.save()
+                    ctx.globalAlpha = 0.8
                     try {
                         ctx.drawImage(
                             footprint.imageImg,
@@ -767,6 +747,46 @@ function start() {
                             footprint.y
                         );
                     } catch {
+                    }
+                    ctx.restore()
+                }
+
+                if (this.elements.show_symbol) {
+
+                    ctx.save()
+                    ctx.transform(crossSize, 0, 0, crossSize, 0, 0)
+
+                    ctx.beginPath();
+                    ctx.moveTo(0,-1)
+                    ctx.lineTo(0, 1)
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, -1)
+                    ctx.lineTo(-0.1, -0.8)
+                    ctx.lineTo(0.1, -0.8)
+                    ctx.lineTo(0, -1)
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.moveTo(-1,0)
+                    ctx.lineTo(1, 0)
+                    ctx.stroke();
+
+                    if (entry.fiducial == true) {
+                        ctx.strokeStyle = "white"
+                        ctx.beginPath();
+                        ctx.arc(0, 0, 1, 0, 2 * Math.PI)
+                        ctx.stroke()
+                    }
+
+                    ctx.restore()
+
+                    if (id !== undefined) {
+                        ctx.save()
+                        ctx.transform(textSize, 0, 0, textSize, 0, 0)
+                        ctx.fillText(id, 0.2, -0.2);
+                        ctx.restore()
                     }
                 }
             },
@@ -808,6 +828,7 @@ function start() {
                             );
                         } catch {}
                         ctx.restore()
+
                         ctx.save();
                         ctx.translate(feeder.width / 3 * 2, feeder.height / 2);
                         ctx.rotate(feeder.rot*Math.PI/180)
@@ -821,6 +842,7 @@ function start() {
                             );
                         } catch {}
                         ctx.restore()
+
                     } else {
                         let txt = "no part symbol"
                         let metrics = ctx.measureText(txt);
