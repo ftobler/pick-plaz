@@ -148,7 +148,7 @@ class Picker():
         robot.vacuum(False)
         robot.drive(z=0)
 
-    def calibrate(self, pos, robot, camera):
+    def calibrate_legacy(self, pos, robot, camera):
 
         x1, y1, a = self.detect_pick_location(pos, robot, camera)
         self.pick(robot, x1, y1, 0)
@@ -172,7 +172,38 @@ class Picker():
         with open("picker.json", "w") as f:
             json.dump(d, f)
 
-        print(correction_x, correction_y)
+        print(f"Picker calibration correction : x={correction_x:.3f}, y={correction_y:.3f}")
+
+    def calibrate(self, pos, robot, camera):
+
+        x, y = pos
+        positions = []
+        x0, y0, _ = self.detect_pick_location((x, y), robot, camera)
+        for _ in range(6):
+            self.pick(robot, x0, y0, 0)
+            self.place(robot, x0, y0, 360/6)
+            x, y, _ = self.detect_pick_location((x, y), robot, camera)
+            positions.append((x, y))
+
+        positions = np.asarray(positions)
+        a, b, r = taubin(positions)
+
+        distances = np.linalg.norm(positions - [a, b], axis=-1)
+        rms_error = np.sqrt(np.mean((distances - r)**2))
+
+        correction_x = a - x0
+        correction_y = b - y0
+        self.DX -= correction_x
+        self.DY -= correction_y
+
+        d = {
+            "DX" : self.DX,
+            "DY" : self.DY,
+        }
+        with open("picker.json", "w") as f:
+            json.dump(d, f)
+
+        print(f"Picker calibration correction : x={correction_x:.3f}, y={correction_y:.3f}, rms_error={rms_error:.3f}")
 
     def _find_components(self, image, plot=False):
 
@@ -316,6 +347,32 @@ def picker_test():
     p.pick_from_feeder(data["feeder"]["tray 0"], None, None)
 
     print("done")
+
+def taubin(p):
+    """
+    Circle fit by Taubin
+    p : array[number of samples, 2]
+
+    returns (x, y, r) coordinates and radius
+    """
+    p = np.asarray(p)
+    X = p[:,0] - np.mean(p[:,0])
+    Y = p[:,1] - np.mean(p[:,1])
+
+    Z = X * X + Y * Y
+    Zmean = np.mean(Z)
+    Z0 = (Z - Zmean) / (2 * np.sqrt(Zmean))
+    ZXY = np.array([Z0, X, Y]).T
+    U, S, V = np.linalg.svd(ZXY, full_matrices=False)
+    A0, A1, A2 = V[2]
+
+    A0 /= np.sqrt(Zmean)
+
+    x = -A1 / (2*A0) + np.mean(p[:,0])
+    y = -A2 / (2*A0) + np.mean(p[:,1])
+    r = np.abs(np.sqrt(A1*A1 + A2*A2 + A0*A0*Zmean) / A0)
+
+    return x, y, r
 
 if __name__ == "__main__":
     picker_test()
