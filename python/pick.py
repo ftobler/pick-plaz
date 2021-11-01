@@ -19,7 +19,7 @@ class Picker():
 
     def __init__(self, cal):
 
-        self.min_area_mm2 = 1.5
+        self.min_area_mm2 = 0.75
 
         self.res = 20
         self.cam_range = 20

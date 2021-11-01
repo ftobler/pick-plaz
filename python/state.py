@@ -279,7 +279,14 @@ class StateContext:
                 return self.setup_state
             place_pos = float(partdes["x"]), float(partdes["y"])
             place_angle = float(partdes["rot"]) + float(part["rot"])
-            tray = self.context["feeder"][part["feeder"]]
+
+            #skip if feeder not defined
+            #TODO maybe a bit ugly:
+            feeder = part["feeder"]
+            if feeder is None:
+                partdes["state"] = 0
+                return self.run_state
+            tray = self.context["feeder"][feeder]
 
             print("get pick position")
             pick_pos = self.picker.pick_from_feeder(tray, self.robot, self.camera)
