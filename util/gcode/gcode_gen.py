@@ -39,13 +39,14 @@ class gcode:
             print("G1 F%f Z%f" % (self.f_mill, z))
         print("G1 F%f X%f Y%f Z%f" % (self.f_mill, x, y, z))
 
-    def mill_circle(self, x, y, z, r):
-        n = int(2*r*math.pi*2/0.5)
+    def mill_circle(self, x, y, z, r, angle=360):
+        rotations = angle / 360
+        n = int(2*r*math.pi*2/0.5*rotations)
         if n < 36:
             n = 36
         self.travel(x, y + r)
         for i in range(n+1):
-            rad = 2 * math.pi * i / n
+            rad = 2 * math.pi * i / n * rotations
             self.mill(x + math.sin(rad)*r, y + math.cos(rad)*r, z)
 
     def mill_hole(self, x, y, z, r, pitch=1.0, r_backout = 0.3):

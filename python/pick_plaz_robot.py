@@ -312,6 +312,14 @@ class Robot:
         return self
 
 
+    def default_settings(self):
+        """
+        Set Stepper Acceleration and Speeds to default (like after reset)
+        """
+        self.__send_commands(["M512"])
+        return self
+
+
     def raw_command(self, gcode):
         """
         Send a raw GCODE command
@@ -343,7 +351,7 @@ class Robot:
             self.con.flush()
             self.__full = True #assume it
             self.__receive_answer()
-            while self.__full: #if it it full we need to wait until queue gets consumed
+            while self.__full: #if it is full we need to wait until queue gets consumed
                 self.__receive_answer()
 
 
