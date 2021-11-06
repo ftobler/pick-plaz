@@ -3,6 +3,14 @@ import json
 from importlib import reload
 import pnp_bom_parser
 
+FEEDER_STATE_DIABLED = 0
+FEEDER_STATE_READY = 1
+FEEDER_STATE_EMPTY = 2
+
+PART_SATE_SKIP = 0
+PART_SATE_NOT_PLACED = 1
+PART_SATE_PLACED = 2
+
 class ContextManager:
 
     part_state = ["skip", "not placed", "placed"]

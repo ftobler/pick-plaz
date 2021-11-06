@@ -1,5 +1,4 @@
 
-
 import time
 import json
 
@@ -40,14 +39,14 @@ class Picker():
         h = calibrator.Homography(cal, self.res, (int(self.res*self.cam_range),int(self.res*self.cam_range)))
         self.ip = calibrator.ImageProjector(h, border_value=(0,0,0))
 
-    def pick_from_feeder(self, feeder, robot, camera):
+    def find_part_from_feeder(self, feeder, robot, camera):
 
         if feeder["type"] == 0:
-            return self._pick_from_auto_detect_zone(feeder, robot, camera)
+            return self._find_in_tray(feeder, robot, camera)
         else:
             raise ValueError(f"feeder type {feeder['type']} pick is not implemented'")
 
-    def _pick_from_auto_detect_zone(self, feeder, robot, camera):
+    def _find_in_tray(self, feeder, robot, camera):
 
         r = self.cam_range + AUTO_DETECT_ZONE_MARGIN
 
@@ -344,7 +343,7 @@ def picker_test():
     with open("web/api/data.json", "r") as f:
         data = json.load(f)
 
-    p.pick_from_feeder(data["feeder"]["tray 0"], None, None)
+    p.find_part_from_feeder(data["feeder"]["tray 0"], None, None)
 
     print("done")
 

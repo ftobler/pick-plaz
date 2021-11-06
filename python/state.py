@@ -22,6 +22,7 @@ class AbortException(Exception):
 
 class StateContext:
     def __init__(self, robot, camera, context, event_queue):
+
         self.robot = robot
         self.camera = camera
         self.event_queue = event_queue
@@ -166,6 +167,7 @@ class StateContext:
         return x, y, a
 
     def setup_state(self):
+        """ In this state, the user makes machine setup and can freely roam the pick-platz bed"""
 
         self.nav["state"] = "setup"
 
@@ -181,13 +183,13 @@ class StateContext:
                 self.robot.drive(x,y)
                 self.robot.done()
                 time.sleep(0.5)
-                cache = self.camera.cache
-                cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
+                cam_image = self.camera.cache["image"]
+                cam_image = cv2.cvtColor(cam_image, cv2.COLOR_GRAY2BGR)
 
                 # p.make_collage(self.robot, self.camera)
 
                 try:
-                    self.nav["detection"]["fiducial"] =  self.fd(cam_image, (x, y))
+                    self.nav["detection"]["fiducial"] = self.fd(cam_image, (x, y))
                 except fiducial.NoFiducialFoundException:
                     self.nav["detection"]["fiducial"] = (0, 0)
 
@@ -228,8 +230,8 @@ class StateContext:
                         self.robot.drive(x,y)
                         self.robot.done()
                         time.sleep(0.5)
-                        cache = self.camera.cache
-                        cam_image = cv2.cvtColor(cache["image"], cv2.COLOR_GRAY2BGR)
+                        cam_image = self.camera.cache["image"]
+                        cam_image = cv2.cvtColor(cam_image, cv2.COLOR_GRAY2BGR)
                         self.nav["pcb"]["fiducials"][name] = self.fd(cam_image, (x, y))
 
                 elif item["method"] == "shutdown":
@@ -253,19 +255,19 @@ class StateContext:
 
         return self.setup_state
 
-    def _get_next_part(self):
+    def _get_next_part_from_bom(self):
         """ find next part in bom that is eligable for placing"""
         for part in self.context["bom"]:
             for name, partdes in part["designators"].items():
                 if "x" not in partdes:
                     continue
-                part_pos = float(partdes["x"]), float(partdes["y"])
-                if partdes["state"] == 1 and partdes["place"] and not part["fiducial"]:
+                if partdes["state"] == data_manager.PART_SATE_NOT_PLACED and partdes["place"] and not part["fiducial"]:
                     return part, partdes
         return None, None
 
 
     def run_state(self):
+        """ Parts of the BOM are being pick-and-placed """
 
         self.nav["state"] = "run"
 
@@ -273,7 +275,7 @@ class StateContext:
 
             print("get next part information")
 
-            part, partdes = self._get_next_part()
+            part, partdes = self._get_next_part_from_bom()
             if part is None:
                 self._push_alert("Placing finished")
                 return self.setup_state
@@ -282,14 +284,14 @@ class StateContext:
 
             #skip if feeder not defined
             #TODO maybe a bit ugly:
-            feeder = part["feeder"]
+            feeder = part.get("feeder")
             if feeder is None:
-                partdes["state"] = 0
+                partdes["state"] = data_manager.PART_SATE_SKIP
                 return self.run_state
-            tray = self.context["feeder"][feeder]
+            feeder = self.context["feeder"][feeder]
 
             print("get pick position")
-            pick_pos = self.picker.pick_from_feeder(tray, self.robot, self.camera)
+            pick_pos = self.picker.find_part_from_feeder(feeder, self.robot, self.camera)
             self.nav["detection"]["part"] = pick_pos
 
             print("pick part")
@@ -307,8 +309,8 @@ class StateContext:
             # angle is is pcb coordinates, thus inverted
             self.picker.place(self.robot, x, y, -place_angle)
 
-            print("update part")
-            partdes["state"] = 2
+            print("update part state")
+            partdes["state"] = data_manager.PART_SATE_PLACED
 
             try:
                 item = self.event_queue.get(block=False)
@@ -345,7 +347,8 @@ class StateContext:
 
     def _handle_common_event(self, item):
         if item["type"] == "alertquit":
-            del self.nav["alert"]
+            if "alert" in self.nav:
+                del self.nav["alert"]
 
 def main(mock=False):
     if mock:
