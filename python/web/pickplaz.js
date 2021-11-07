@@ -671,7 +671,10 @@ function start() {
                         }
                     }
 
-                    this.draw_feeder(ctx, name, feeder, part)
+                    if (feeder.type == 0)
+                        this.draw_feeder(ctx, name, feeder, part)
+                    if (feeder.type == 1)
+                        this.draw_belt(ctx, name, feeder, part)
                 }
             },
             draw_camera(ctx, image, position) {
@@ -892,6 +895,31 @@ function start() {
                 ctx.stroke();
 
                 ctx.restore();
+            },
+            draw_belt(ctx, name, feeder, part) {
+
+                ctx.fillStyle = "cyan"
+                ctx.strokeStyle = "cyan"
+
+                this.draw_cross(ctx, feeder.x, feeder.y)
+                this.draw_cross(ctx, feeder.x_end, feeder.y_end)
+
+
+                this.draw_cross(ctx, feeder.x + feeder.x_offset, feeder.y + feeder.y_offset)
+
+            },
+            draw_cross(ctx, x, y) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.beginPath();
+                ctx.moveTo(0,-1)
+                ctx.lineTo(0, 1)
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(-1,0)
+                ctx.lineTo( 1,0)
+                ctx.stroke();
+                ctx.restore()
             },
             part_state: function(i) {
                 return this.context.const.part_state[i]
