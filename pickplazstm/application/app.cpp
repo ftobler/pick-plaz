@@ -15,6 +15,7 @@
 #include "cmsis_gcc.h"
 
 
+static void default_settings();
 static bool is_steppers_on_position();
 static void do_cmd_drive_to_position(Gcode_command cmd);
 static void do_cmd_home(Gcode_command cmd);
@@ -128,16 +129,26 @@ bool job_prelling = false;
  * Does run once
  */
 void setup() {
-	float steps_per_mm =   50.0f;
-	float speed_cap =     175.0f;
-	float speed =         175.0f;
-	float accel =        1000.0f;
 
 	//set microstepping to 4x
 	//works only on board v1e or later
 	digitalWrite(PIN_MOT_MS1, 0);
 	digitalWrite(PIN_MOT_MS2, 1);
 	digitalWrite(PIN_MOT_MS3, 0);
+
+	default_settings();
+
+	uart_init();
+
+	do_cmd_stepper_power(false);
+}
+
+
+static void default_settings() {
+	float steps_per_mm =   50.0f;
+	float speed_cap =     175.0f;
+	float speed =         175.0f;
+	float accel =        1000.0f;
 
 	stepperX.setStepsPer_mm(steps_per_mm);
 	stepperX.setAcceleration_mm(accel);
@@ -179,10 +190,6 @@ void setup() {
 	stepperC.setAcceleration_mm(accel);
 	stepperC.setMaxSpeed_cap_mm(speed_cap);
 	stepperC.setMaxSpeed_mm(speed);
-
-	uart_init();
-
-	do_cmd_stepper_power(false);
 }
 
 /**
@@ -273,6 +280,9 @@ void loop() {
 			//the given speed is multiplied with this factor before setting it.
 			//this allows slow rotating axies to kind of ignore the F-Parameter
 			do_cmd_set_max_speed_multiplier(cmd);
+		} else if (cmd.id == 'M' && (cmd.num == 512)) {
+			//set default state for feedrate & accelerations
+			default_settings();
 		} else if (cmd.id == 'M' && (cmd.num == 1000)) {
 			//send sync back to uart
 			uart_message("SYNC");
