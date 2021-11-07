@@ -61,7 +61,10 @@ class CameraThread:
         self.thread.daemon = False
 
         self.thread_exit_request = False
-        self.cache = {}
+        self.cache = {
+            "image" : np.zeros((100,100), dtype=np.uint8),
+            "timestamp": 0
+        }
 
     def _update(self):
         try:
