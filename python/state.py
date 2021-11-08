@@ -14,7 +14,29 @@ import calibrator
 import pick
 import camera_cal
 import data_manager
-import debug
+import belt
+import tray
+import eye
+
+class LiveCam:
+
+    def __init__(self, camera, cal, nav_camera):
+        self.camera = camera
+        res = nav_camera["res"]
+        width = nav_camera["width"]
+        height = nav_camera["height"]
+        h = calibrator.Homography(cal, int(res), (int(res*width),int(res*height)))
+        self.ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
+
+    def get_cam(self):
+
+        cam_image = self.camera.cache["image"]
+        cam_image = cv2.cvtColor(cam_image, cv2.COLOR_GRAY2BGR)
+        if self.ip is not None:
+            cam_image = self.ip.project(cam_image)
+        else:
+            cam_image = cam_image
+        return cam_image
 
 class AbortException(Exception):
     """ All calibration is broken"""
@@ -68,9 +90,23 @@ class StateContext:
 
         self.robot.pos_logger = self.nav["camera"]
 
-        self.cal = None
-        self.ip = None
-        self.fd = None
+        #Load camera calibration
+        try:
+            with open("cal.pkl", "rb") as f:
+                self.cal = pickle.load(f)
+        except FileNotFoundError:
+            self._push_alert(f"Calibration not found. Using default calibration instead. Please calibrate.")
+            with open("default_cal.pkl", "rb") as f:
+                self.cal = pickle.load(f)
+
+        wide_eye = eye.Eye(self.robot, self.camera, self.cal, res=20, cam_range=20)
+        narrow_eye = eye.Eye(self.robot, self.camera, self.cal, res=60, cam_range=5)
+
+        self.live_cam = LiveCam(self.camera, self.cal, self.nav["camera"])
+        self.fd = fiducial.FiducialDetector(narrow_eye)
+        self.picker = pick.Picker(wide_eye)
+        self.belt = belt.Belt(narrow_eye, self.picker)
+        self.tray = tray.Tray(self.picker)
 
         self._center_pcb()
 
@@ -84,16 +120,6 @@ class StateContext:
         bed_center = [self.nav["bed"]["width"] / 2, self.nav["bed"]["height"] / 2]
         x, y = -(np.min(positions, axis=0) + np.max(positions, axis=0)) / 2 + bed_center
         self.nav["pcb"]["transform"] = [1, 0, 0, -1, float(x), float(y)]
-
-    def get_cam(self):
-
-        cam_image = self.camera.cache["image"]
-        cam_image = cv2.cvtColor(cam_image, cv2.COLOR_GRAY2BGR)
-        if self.ip is not None:
-            cam_image = self.ip.project(cam_image)
-        else:
-            cam_image = cam_image
-        return cam_image
 
     def run(self):
 
@@ -123,28 +149,14 @@ class StateContext:
             self.robot.home()
             self.robot.light_topdn(True)
 
-            try:
-                with open("cal.pkl", "rb") as f:
-                    self.cal = pickle.load(f)
-            except FileNotFoundError:
-                self._push_alert(f"Calibration not found. Using default calibration instead. Please calibrate.")
-                with open("default_cal.pkl", "rb") as f:
-                    self.cal = pickle.load(f)
-
-            res = self.nav["camera"]["res"]
-            width = self.nav["camera"]["width"]
-            height = self.nav["camera"]["height"]
-            h = calibrator.Homography(self.cal, int(res), (int(res*width),int(res*height)))
-            self.ip = calibrator.ImageProjector(h, border_value=(31, 23, 21))
-            self.fd = fiducial.FiducialDetector(self.cal)
-
-            self.picker = pick.Picker(self.cal)
-
         except AbortException as e:
             self._push_alert(e)
             return self.idle_state
 
         return self.setup_state
+
+    def get_cam(self):
+        return self.live_cam.get_cam()
 
     def _pcb2robot(self, x, y):
         m = np.array(self.nav["pcb"]["transform"]).reshape((3,2)).T
@@ -181,15 +193,16 @@ class StateContext:
                     x, y = self._pcb2robot(x, y)
 
                 self.robot.drive(x,y)
-                self.robot.done()
-                time.sleep(0.5)
-                cam_image = self.camera.cache["image"]
-                cam_image = cv2.cvtColor(cam_image, cv2.COLOR_GRAY2BGR)
 
                 # p.make_collage(self.robot, self.camera)
 
                 try:
-                    self.nav["detection"]["fiducial"] = self.fd(cam_image, (x, y))
+                    self.belt.find_hole()
+                except belt.NoBeltHoleFoundException:
+                    pass
+
+                try:
+                    self.nav["detection"]["fiducial"] = self.fd()
                 except fiducial.NoFiducialFoundException:
                     self.nav["detection"]["fiducial"] = (0, 0)
 
@@ -228,11 +241,7 @@ class StateContext:
                         x, y = self._pcb2robot(float(part["x"]), float(part["y"]))
 
                         self.robot.drive(x,y)
-                        self.robot.done()
-                        time.sleep(0.5)
-                        cam_image = self.camera.cache["image"]
-                        cam_image = cv2.cvtColor(cam_image, cv2.COLOR_GRAY2BGR)
-                        self.nav["pcb"]["fiducials"][name] = self.fd(cam_image, (x, y))
+                        self.nav["pcb"]["fiducials"][name] = self.fd()
 
                 elif item["method"] == "shutdown":
                     import subprocess
@@ -241,6 +250,13 @@ class StateContext:
                                               universal_newlines=True)
                     if process.returncode != 0:
                         self._push_alert("Shutdown failed")
+
+                elif item["method"] == "belt_set_start":
+                    self.belt.set_start(self.context["feeder"]["belt_test"])
+                elif item["method"] == "belt_set_end":
+                    self.belt.set_end(self.context["feeder"]["belt_test"])
+                elif item["method"] == "belt_next":
+                    self.belt.pick(self.context["feeder"]["belt_test"], self.robot)
             else:
                 self._handle_common_event(item)
         except calibrator.CalibrationError as e:
@@ -261,7 +277,7 @@ class StateContext:
             for name, partdes in part["designators"].items():
                 if "x" not in partdes:
                     continue
-                if partdes["state"] == data_manager.PART_SATE_NOT_PLACED and partdes["place"] and not part["fiducial"]:
+                if partdes["state"] == data_manager.PART_STATE_NOT_PLACED and partdes["place"] and not part["fiducial"]:
                     return part, partdes
         return None, None
 
@@ -286,17 +302,17 @@ class StateContext:
             #TODO maybe a bit ugly:
             feeder = part.get("feeder")
             if feeder is None:
-                partdes["state"] = data_manager.PART_SATE_SKIP
+                partdes["state"] = data_manager.PART_STATE_SKIP
                 return self.run_state
             feeder = self.context["feeder"][feeder]
 
-            print("get pick position")
-            pick_pos = self.picker.find_part_from_feeder(feeder, self.robot, self.camera)
-            self.nav["detection"]["part"] = pick_pos
-
             print("pick part")
-            x, y, a = pick_pos
-            self.picker.pick(self.robot, x, y, a)
+            if feeder["type"] == tray.TYPE_NUMBER:
+                self.tray.pick(feeder, self.robot)
+            elif feeder["type"] == belt.TYPE_NUMBER:
+                belt.pick(feeder, self.robot)
+            else:
+                raise Exception(f"Feeder type {feeder['type']} unknown")
 
             print("place part")
             x, y = place_pos
@@ -310,7 +326,7 @@ class StateContext:
             self.picker.place(self.robot, x, y, -place_angle)
 
             print("update part state")
-            partdes["state"] = data_manager.PART_SATE_PLACED
+            partdes["state"] = data_manager.PART_STATE_PLACED
 
             try:
                 item = self.event_queue.get(block=False)

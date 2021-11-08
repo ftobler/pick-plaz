@@ -9,22 +9,16 @@ import calibrator
 
 import debug
 
-AUTO_DETECT_ZONE_MARGIN = 4
-
 class NoPartFoundException(Exception):
     pass
 
 class Picker():
 
-    def __init__(self, cal):
+    def __init__(self, eye):
 
         self.min_area_mm2 = 0.75
 
-        self.res = 20
-        self.cam_range = 20
-
-        self.DX = 70.75
-        self.DY = -17.59
+        self.eye = eye
 
         try:
             with open("picker.json", "r") as f:
@@ -32,96 +26,21 @@ class Picker():
             self.DX = d["DX"]
             self.DY = d["DY"]
         except FileNotFoundError:
-            pass
+            self.DX = 70.76
+            self.DY = -17.77
 
         self.PICK_Z = -18
 
-        h = calibrator.Homography(cal, self.res, (int(self.res*self.cam_range),int(self.res*self.cam_range)))
-        self.ip = calibrator.ImageProjector(h, border_value=(0,0,0))
-
-    def find_part_from_feeder(self, feeder, robot, camera):
-
-        if feeder["type"] == 0:
-            return self._find_in_tray(feeder, robot, camera)
-        else:
-            raise ValueError(f"feeder type {feeder['type']} pick is not implemented'")
-
-    def _find_in_tray(self, feeder, robot, camera):
-
-        r = self.cam_range + AUTO_DETECT_ZONE_MARGIN
-
-        w = feeder["width"] - r
-        h = feeder["height"] - r
-        xs = feeder["x"] + r/2 + np.linspace(0, w, 2 + int(np.floor(w/(r*2/3))))
-        ys = feeder["y"] + r/2 + np.linspace(0, h, 2 + int(np.floor(h/(r*2/3))))
-        tray_angle = feeder["rot"] #FIXME not used yet
-        search_positions = np.stack(np.meshgrid(xs, ys), axis=-1).reshape((-1,2))
-
-        # self._plot_search_positions(search_positions, feeder)
-
-        robot.light_topdn(False)
-
-        if "last_found_index" in feeder:
-            last_found_index = feeder["last_found_index"]
-            search_positions = np.roll(search_positions, -last_found_index, axis=0)
-        else:
-            last_found_index = 0
-
-        for robot_pos in search_positions:
-
-            robot.drive(*robot_pos)
-            robot.done()
-            time.sleep(0.5)
-            image = camera.cache["image"]
-            image = self.ip.project(image)
-
-            p, a = self._find_components(image)
-            if len(p):
-                break
-            last_found_index = last_found_index + 1 % len(search_positions)
-        else:
-            last_found_index = 0
-            raise NoPartFoundException("Could not find part to pick")
-
-        feeder["last_found_index"] = last_found_index
-
-        pos = np.array(p[0])
-        pos = tuple((pos / self.res) - (self.cam_range/2) + robot_pos)
-
-        #drive to part and measure again without paralax
-        robot_pos = pos
-        robot.drive(*pos)
-        robot.done()
-        time.sleep(0.5)
-        image = camera.cache["image"]
-        image = self.ip.project(image)
-
-        p, a = self._find_components(image)
-        if len(p):
-            pos = np.array(p[0])
-            pos = tuple((pos / self.res) - (self.cam_range/2) + robot_pos)
-        else:
-            raise NoPartFoundException("Could not find part to pick")
-
-        robot.light_topdn(True)
-
-        #angle in degrees
-        return (pos[0], pos[1], a[0])
-
-    def detect_pick_location(self, robot_pos, robot, camera):
+    def _detect_pick_location(self, robot_pos, robot, camera):
 
         robot.light_topdn(False)
         robot.drive(*robot_pos)
-        robot.done()
-        time.sleep(0.5)
-        image = camera.cache["image"]
-        robot.light_topdn(True)
-        image = self.ip.project(image)
+        image = self.eye.get_valid_image()
 
-        p, a = self._find_components(image)
+        p, a = self.find_components(image)
         if len(p):
             pos = np.array(p[0])
-            pos = tuple((pos / self.res) - (self.cam_range/2) + robot_pos)
+            pos = tuple((pos / self.eye.res) - (self.eye.cam_range/2) + robot_pos)
         else:
             raise NoPartFoundException("Could not find part to pick")
 
@@ -149,11 +68,11 @@ class Picker():
 
     def calibrate_legacy(self, pos, robot, camera):
 
-        x1, y1, a = self.detect_pick_location(pos, robot, camera)
+        x1, y1, a = self._detect_pick_location(pos, robot, camera)
         self.pick(robot, x1, y1, 0)
         self.place(robot, x1, y1, 180)
 
-        x2, y2, a = self.detect_pick_location((x1, y1), robot, camera)
+        x2, y2, a = self._detect_pick_location((x1, y1), robot, camera)
         self.pick(robot, x1, y1, 0)
         self.place(robot, x1, y1, 180)
 
@@ -177,11 +96,11 @@ class Picker():
 
         x, y = pos
         positions = []
-        x0, y0, _ = self.detect_pick_location((x, y), robot, camera)
+        x0, y0, _ = self._detect_pick_location((x, y), robot, camera)
         for _ in range(6):
             self.pick(robot, x0, y0, 0)
             self.place(robot, x0, y0, 360/6)
-            x, y, _ = self.detect_pick_location((x, y), robot, camera)
+            x, y, _ = self._detect_pick_location((x, y), robot, camera)
             positions.append((x, y))
 
         positions = np.asarray(positions)
@@ -204,7 +123,7 @@ class Picker():
 
         print(f"Picker calibration correction : x={correction_x:.3f}, y={correction_y:.3f}, rms_error={rms_error:.3f}")
 
-    def _find_components(self, image, plot=False):
+    def find_components(self, image, plot=False):
 
         from skimage.measure import label, regionprops
         import math
@@ -212,12 +131,8 @@ class Picker():
         blur = cv2.GaussianBlur(image,(11,11),0)
         threshold, binary = cv2.threshold(blur,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
 
-        projected = binary
-
-
-
         disk = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-        projected = cv2.morphologyEx(projected, cv2.MORPH_OPEN, disk)
+        binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, disk)
 
         #floodfill filter
         shape = (binary.shape[0]+2, binary.shape[1]+2)
@@ -225,16 +140,16 @@ class Picker():
         inner = outer[1:-1, 1:-1]
         inner[:] = binary
         cv2.floodFill(outer, None, (0,0), 0)
-        projected = inner
+        binary = inner
 
-        debug.set_image("PickDetection", projected)
+        debug.set_image("PickDetection", binary)
 
         if plot > 1:
-            plt.imshow(projected)
+            plt.imshow(binary)
             plt.show()
 
         # %% Find positions/rotations
-        image = projected
+        image = binary
 
         if plot > 1:
             fig, ax = plt.subplots()
@@ -250,7 +165,7 @@ class Picker():
 
         for props in regions:
 
-            if props.area < self.min_area_mm2 * (self.res ** 2):
+            if props.area < self.min_area_mm2 * (self.eye.res ** 2):
                 continue
 
             y0, x0 = props.centroid
@@ -319,7 +234,7 @@ class Picker():
     def _plot_search_positions(self, search_positions, feeder):
         import matplotlib.pyplot as plt
 
-        r = self.cam_range/2
+        r = self.eye.cam_range/2
         for x, y in search_positions:
             plt.plot([x-r, x-r, x+r, x+r, x-r],[y-r, y+r, y+r, y-r, y-r], "-")
             plt.plot([x],[y], "o")
@@ -330,22 +245,6 @@ class Picker():
         plt.axis("equal")
         plt.savefig("plot.png")
         plt.close()
-
-def picker_test():
-    import pickle
-
-    with open("cal.pkl", "rb") as f:
-        cal = pickle.load(f)
-
-    p = Picker(cal)
-
-    import json
-    with open("web/api/data.json", "r") as f:
-        data = json.load(f)
-
-    p.find_part_from_feeder(data["feeder"]["tray 0"], None, None)
-
-    print("done")
 
 def taubin(p):
     """
@@ -372,6 +271,3 @@ def taubin(p):
     r = np.abs(np.sqrt(A1*A1 + A2*A2 + A0*A0*Zmean) / A0)
 
     return x, y, r
-
-if __name__ == "__main__":
-    picker_test()
