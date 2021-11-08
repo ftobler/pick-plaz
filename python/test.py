@@ -10,7 +10,7 @@ try:
     robot = SaveRobot("/dev/ttyUSB0")
 except Exception as e:
     print(e)
-robot = SaveRobot("COM3")
+robot = SaveRobot("COM5")
 
 
 def test1():
@@ -93,9 +93,10 @@ def test4():
 
     time.sleep(t)
     robot.drive(z=-15, f=10)
-    time.sleep(t)
-
-    robot.drive(z=0, f=10)
+    robot.drive(z=0)
+    robot.default_settings()
+    robot.drive(z=-15)
+    robot.drive(z=0)
     robot.steppers(False)
 
 test4()

@@ -154,42 +154,49 @@ static void default_settings() {
 	stepperX.setAcceleration_mm(accel);
 	stepperX.setMaxSpeed_cap_mm(speed_cap);
 	stepperX.setMaxSpeed_mm(speed);
+	stepperX.setMaxSpeed_multiplier_mm(1.0);
 
 	stepperY0.setStepsPer_mm(steps_per_mm);
 	stepperY0.setAcceleration_mm(accel);
 	stepperY0.setMaxSpeed_cap_mm(speed_cap);
 	stepperY0.setMaxSpeed_mm(speed);
+	stepperY0.setMaxSpeed_multiplier_mm(1.0);
 
 	stepperY1.setStepsPer_mm(steps_per_mm);
 	stepperY1.setAcceleration_mm(accel);
 	stepperY1.setMaxSpeed_cap_mm(speed_cap);
 	stepperY1.setMaxSpeed_mm(speed);
+	stepperY1.setMaxSpeed_multiplier_mm(1.0);
 
 	stepperZ.setStepsPer_mm(steps_per_mm/2.0f);
 	stepperZ.setAcceleration_mm(accel);
 	stepperZ.setMaxSpeed_cap_mm(speed_cap*4.0f);
 	stepperZ.setMaxSpeed_mm(speed*4.0f);
+	stepperZ.setMaxSpeed_multiplier_mm(1.0);
 
 	stepperE.setStepsPer_mm(2.222222);
-	stepperE.setMaxSpeed_multiplier_mm(12.0);
 	stepperE.setAcceleration_mm(25000.0f);
 	stepperE.setMaxSpeed_cap_mm(2000.0f);
 	stepperE.setMaxSpeed_mm(2000.0f);
+	stepperE.setMaxSpeed_multiplier_mm(12.0);
 
 	stepperA.setStepsPer_mm(steps_per_mm);
 	stepperA.setAcceleration_mm(accel);
 	stepperA.setMaxSpeed_cap_mm(speed_cap);
 	stepperA.setMaxSpeed_mm(speed);
+	stepperA.setMaxSpeed_multiplier_mm(1.0);
 
 	stepperB.setStepsPer_mm(steps_per_mm);
 	stepperB.setAcceleration_mm(accel);
 	stepperB.setMaxSpeed_cap_mm(speed_cap);
 	stepperB.setMaxSpeed_mm(speed);
+	stepperB.setMaxSpeed_multiplier_mm(1.0);
 
 	stepperC.setStepsPer_mm(steps_per_mm);
 	stepperC.setAcceleration_mm(accel);
 	stepperC.setMaxSpeed_cap_mm(speed_cap);
 	stepperC.setMaxSpeed_mm(speed);
+	stepperC.setMaxSpeed_multiplier_mm(1.0);
 }
 
 /**
