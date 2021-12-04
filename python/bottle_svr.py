@@ -84,7 +84,8 @@ class BottleServer:
         try:
             self.event_put_fcn({
                 "type" : "sequence",
-                "method" : _str(r["method"])
+                "method" : _str(r["method"]),
+                "param": r.get("param")
             })
         except Exception as e:
             raise e

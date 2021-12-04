@@ -22,4 +22,4 @@ def set_text(name, text):
         "text" : text,
     }
 
-set_text("test1", "please püll")
+#set_text("test1", "please püll")

@@ -210,7 +210,7 @@ class Robot:
         Returns itself
         """
         cmd = [
-            "GM203"
+            "M204"
         ]
         if x != None:
             cmd.append(" X%f" % x)

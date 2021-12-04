@@ -7,15 +7,15 @@ FEEDER_STATE_DIABLED = 0
 FEEDER_STATE_READY = 1
 FEEDER_STATE_EMPTY = 2
 
-PART_STATE_SKIP = 0
-PART_STATE_NOT_PLACED = 1
-PART_STATE_PLACED = 2
+PART_STATE_READY = 0
+PART_STATE_PLACED = 1
+PART_STATE_ERROR = 2
+PART_STATE_SKIP = 3
 
 class ContextManager:
 
-    part_state = ["skip", "not placed", "placed"]
-    feeder_type = ["auto detect zone", "fixed grid", "strip"]
-    feeder_attribute = ["x", "y", "width", "height", "pitch"]
+    part_state = ["ready", "placed", "error", "skip"]
+    feeder_type = ["tray", "strip"]
     feeder_state = ["disabled", "ready", "empty"]
 
     def __init__(self):
@@ -24,7 +24,6 @@ class ContextManager:
             self.context["const"] = {}
             self.context["const"]["part_state"] = self.part_state
             self.context["const"]["feeder_type"] = self.feeder_type
-            self.context["const"]["feeder_attribute"] = self.feeder_attribute
             self.context["const"]["feeder_state"] = self.feeder_state
 
     def file_save(self, filename):
@@ -48,6 +47,7 @@ class ContextManager:
     def replace(self, bom_str, pnp_str):
         reload(pnp_bom_parser)
         self.context["bom"] = pnp_bom_parser.pnp_bom_parse(pnp_str, bom_str)
+        self._auto_assign_symbols()
 
 
     def modify_bom_place(self, index, do_place):
@@ -186,3 +186,42 @@ class ContextManager:
         except:
             raise Exception("id %s not found in Feeder" % id)
 
+    def _auto_assign_symbols(self):
+        for part in self.context["bom"]:
+            footprint = part["footprint"].upper()
+            size = None
+            type = None
+            if "01005" in footprint:
+                size = "01005"
+            if "0201" in footprint:
+                size = "0201"
+            if "0402" in footprint:
+                size = "0402"
+            if "0603" in footprint:
+                size = "0603"
+            if "0805" in footprint:
+                size = "0805"
+            if "1206" in footprint:
+                size = "1206"
+            if "1210" in footprint:
+                size = "1210"
+            if "1812" in footprint:
+                size = "1812"
+            if "2010" in footprint:
+                size = "2010"
+            if "2512" in footprint:
+                size = "2512"
+            if "R" in footprint:
+                type = "R"
+            if "C" in footprint:
+                type = "C"
+            if "L" in footprint:
+                type = "L"
+            if "RES" in footprint:
+                type = "R"
+            if "CAP" in footprint:
+                type = "C"
+            if "IND" in footprint:
+                type = "L"
+            if size != None and type != None:
+                part["footprint"] = size + "_" + type

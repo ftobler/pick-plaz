@@ -2,6 +2,7 @@
 const NAVPAGE = 2
 
 function start() {
+    initFootprints()
     app = new Vue({
         el: "#app",
         data: {
@@ -15,6 +16,8 @@ function start() {
             },
             nav_init: false,
             context: {
+                bom: [],
+                feeder: {}
             },
             image: {
                 botup : null,
@@ -261,8 +264,12 @@ function start() {
                 }
                 this.do_setpos(part.x, part.y, "pcb")
             },
-            do_sequence(method) {
-                api.sequence(method)
+            do_part_place(designator) {
+                api.sequence("place_part", designator)
+            },
+            do_sequence(method, param) {
+                //param is optional
+                api.sequence(method, param)
             },
             do_save_restore(method) {
                 api.file_get_list((raw) => {
@@ -741,16 +748,7 @@ function start() {
 
                     ctx.save()
                     ctx.globalAlpha = 0.8
-                    try {
-                        ctx.drawImage(
-                            footprint.imageImg,
-                            -footprint.x/2,
-                            -footprint.y/2,
-                            footprint.x,
-                            footprint.y
-                        );
-                    } catch {
-                    }
+                    this.draw_part(ctx, footprint)
                     ctx.restore()
                 }
 
@@ -759,22 +757,7 @@ function start() {
                     ctx.save()
                     ctx.transform(crossSize, 0, 0, crossSize, 0, 0)
 
-                    ctx.beginPath();
-                    ctx.moveTo(0,-1)
-                    ctx.lineTo(0, 1)
-                    ctx.stroke();
-
-                    ctx.beginPath();
-                    ctx.moveTo(0, -1)
-                    ctx.lineTo(-0.1, -0.8)
-                    ctx.lineTo(0.1, -0.8)
-                    ctx.lineTo(0, -1)
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.moveTo(-1,0)
-                    ctx.lineTo(1, 0)
-                    ctx.stroke();
+                    this.draw_part_cross(ctx)
 
                     if (entry.fiducial == true) {
                         ctx.strokeStyle = "white"
@@ -835,15 +818,8 @@ function start() {
                         ctx.save();
                         ctx.translate(feeder.width / 3 * 2, feeder.height / 2);
                         ctx.rotate(feeder.rot*Math.PI/180)
-                        try {
-                            ctx.drawImage(
-                                footprint.imageImg,
-                                -footprint.x / 2,
-                                -footprint.y / 2,
-                                footprint.x,
-                                footprint.y
-                            );
-                        } catch {}
+                        this.draw_part(ctx, footprint)
+                        this.draw_part_cross(ctx)
                         ctx.restore()
 
                     } else {
@@ -904,8 +880,15 @@ function start() {
                 this.draw_cross(ctx, feeder.x, feeder.y)
                 this.draw_cross(ctx, feeder.x_end, feeder.y_end)
 
+                ctx.save();
+                ctx.translate(feeder.x + feeder.x_offset, feeder.y + feeder.y_offset)
+                try {
+                    let footprint = getFootprint(part.footprint)
+                    this.draw_part(ctx, footprint)
+                    this.draw_part_cross(ctx)
+                } catch {}
 
-                this.draw_cross(ctx, feeder.x + feeder.x_offset, feeder.y + feeder.y_offset)
+                ctx.restore();
 
             },
             draw_cross(ctx, x, y) {
@@ -920,6 +903,52 @@ function start() {
                 ctx.lineTo( 1,0)
                 ctx.stroke();
                 ctx.restore()
+            },
+            draw_part(ctx, footprint) {
+                try {
+                    ctx.drawImage(
+                        footprint.imageImg,
+                        -footprint.x / 2,
+                        -footprint.y / 2,
+                        footprint.x,
+                        footprint.y
+                    );
+                    //draw the footprint name
+                    ctx.save()
+                    ctx.fillStyle = "#00000080"
+                    ctx.textAlign = "center";
+                    const textSize = 0.5
+                    ctx.transform(textSize/3, 0, 0, textSize/3, 0, 0)
+                    ctx.fillText(footprint.name, 0.0, 0.7);
+                    ctx.restore()
+                } catch {
+                    console.log("drawing error for part symbol")
+                }
+            },
+            draw_part_cross(ctx) {
+                ctx.strokeStyle = "red"
+                ctx.fillStyle = "red"
+
+                //first cross line
+                ctx.beginPath();
+                ctx.moveTo(0,-1)
+                ctx.lineTo(0, 1)
+                ctx.stroke();
+
+                //second cross line
+                ctx.beginPath();
+                ctx.moveTo(-1,0)
+                ctx.lineTo(1, 0)
+                ctx.stroke();
+
+                //arrow head
+                ctx.beginPath();
+                ctx.moveTo(0, -1)
+                ctx.lineTo(-0.1, -0.75)
+                ctx.lineTo(0, -0.8) // <- make them more fancy
+                ctx.lineTo(0.1, -0.75)
+                ctx.lineTo(0, -1)
+                ctx.fill();
             },
             part_state: function(i) {
                 return this.context.const.part_state[i]
@@ -988,9 +1017,10 @@ api = {
             system: system
         })
     },
-    sequence(method) {
+    sequence(method, param) {
         apicall("sequencecontrol", {
-            method: method
+            method: method,
+            param: param
         })
     },
     feeder_action(feeder, action) { //TODO: python implemenation

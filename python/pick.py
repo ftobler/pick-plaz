@@ -162,11 +162,13 @@ class Picker():
 
         positions = []
         angles = []
+        areas = []
 
         for props in regions:
 
             if props.area < self.min_area_mm2 * (self.eye.res ** 2):
                 continue
+            areas.append(props.area)
 
             y0, x0 = props.centroid
 
@@ -199,7 +201,7 @@ class Picker():
         positions = np.array(positions)
         angles = np.array(angles)
 
-        return positions, angles
+        return positions, angles, areas
 
 
     def make_collage(self, robot, camera):

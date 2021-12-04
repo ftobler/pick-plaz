@@ -192,6 +192,7 @@ class StateContext:
                 if item["system"] == "pcb":
                     x, y = self._pcb2robot(x, y)
 
+                self.robot.default_settings()
                 self.robot.drive(x,y)
 
                 # p.make_collage(self.robot, self.camera)
@@ -250,13 +251,34 @@ class StateContext:
                                               universal_newlines=True)
                     if process.returncode != 0:
                         self._push_alert("Shutdown failed")
-
+                elif item["method"] == "place_part":
+                    name = item["param"]
+                    part, partdes = self._get_part_from_designator(name)
+                    if part != None:
+                        try:
+                            self._place_part(part, partdes)
+                        except Exception as e:
+                            self._push_alert(e)
+                    else:
+                        self._push_alert("designator not found '%s'", name)
                 elif item["method"] == "belt_set_start":
-                    self.belt.set_start(self.context["feeder"]["belt_test"])
+                    name = item["param"]
+                    self.belt.set_start(self.context["feeder"][name])
                 elif item["method"] == "belt_set_end":
-                    self.belt.set_end(self.context["feeder"]["belt_test"])
-                elif item["method"] == "belt_next":
-                    self.belt.pick(self.context["feeder"]["belt_test"], self.robot)
+                    name = item["param"]
+                    self.belt.set_end(self.context["feeder"][name])
+                elif item["method"] == "test_feeder":
+                    name = item["param"]
+                    feeder = self.context["feeder"][name]
+                    if feeder["type"] == tray.TYPE_NUMBER:
+                        self.tray.pick(feeder, self.robot)
+                    elif feeder["type"] == belt.TYPE_NUMBER:
+                        self.belt.pick(feeder, self.robot)
+                    self.robot.dwell(1000)
+                    self.robot.vacuum(False)
+                    self.robot.valve(False)
+                    self.robot.default_settings()
+                    #TODO: place part again
             else:
                 self._handle_common_event(item)
         except calibrator.CalibrationError as e:
@@ -265,27 +287,20 @@ class StateContext:
             self._push_alert(e)
         except fiducial.NoFiducialFoundException as e:
             self._push_alert(e)
+        except pick.NoPartFoundException as e:
+            self._push_alert(e)
         except AbortException as e:
             self._push_alert(e)
             return self.idle_state
 
         return self.setup_state
 
-    def _get_next_part_from_bom(self):
-        """ find next part in bom that is eligable for placing"""
-        for part in self.context["bom"]:
-            for name, partdes in part["designators"].items():
-                if "x" not in partdes:
-                    continue
-                if partdes["state"] == data_manager.PART_STATE_NOT_PLACED and partdes["place"] and not part["fiducial"]:
-                    return part, partdes
-        return None, None
-
-
     def run_state(self):
         """ Parts of the BOM are being pick-and-placed """
 
         self.nav["state"] = "run"
+
+        self._reset_error_parts()
 
         try:
 
@@ -295,48 +310,7 @@ class StateContext:
             if part is None:
                 self._push_alert("Placing finished")
                 return self.setup_state
-            place_pos = float(partdes["x"]), float(partdes["y"])
-            place_angle = float(partdes["rot"]) + float(part["rot"])
-
-            #skip if feeder not defined
-            #TODO maybe a bit ugly:
-            feeder = part.get("feeder")
-            if feeder is None:
-                partdes["state"] = data_manager.PART_STATE_SKIP
-                return self.run_state
-            feeder = self.context["feeder"][feeder]
-
-            print("pick part")
-            if feeder["type"] == tray.TYPE_NUMBER:
-                self.tray.pick(feeder, self.robot)
-            elif feeder["type"] == belt.TYPE_NUMBER:
-                belt.pick(feeder, self.robot)
-            else:
-                raise Exception(f"Feeder type {feeder['type']} unknown")
-
-            print("place part")
-            x, y = place_pos
-            x, y, place_angle = self._pcb2robot2(x, y, place_angle)
-            # make sure rotation is minimal
-            if place_angle < -180:
-                place_angle += 360
-            if place_angle > 180:
-                place_angle -= 360
-            # angle is is pcb coordinates, thus inverted
-            self.picker.place(self.robot, x, y, -place_angle)
-
-            print("update part state")
-            partdes["state"] = data_manager.PART_STATE_PLACED
-
-            try:
-                item = self.event_queue.get(block=False)
-                if item["type"] == "sequence":
-                    if item["method"] == "pause":
-                        return self.setup_state
-                else:
-                    self._handle_common_event(item)
-            except queue.Empty:
-                pass
+            self._place_part(part, partdes)
 
         except pick.NoPartFoundException as e:
             self._push_alert(e)
@@ -347,6 +321,87 @@ class StateContext:
             self._push_alert(e)
             return self.idle_state
         return self.run_state
+
+    def _reset_error_parts(self):
+        for part in self.context["bom"]:
+            for name, partdes in part["designators"].items():
+                if "x" not in partdes:
+                    continue
+                if partdes["state"] == data_manager.PART_STATE_ERROR and partdes["place"] and not part["fiducial"]:
+                    partdes["state"] == data_manager.PART_STATE_READY
+
+    def _get_part_from_designator(self, name):
+        """ find part to place only from its designator """
+        for part in self.context["bom"]:
+            partdes = part["designators"].get(name)
+            if partdes != None:
+                return part, partdes
+        return None, None
+
+    def _place_part(self, part, partdes):
+        self.robot.default_settings()
+        partdes["state"] = data_manager.PART_STATE_ERROR
+
+        place_pos = float(partdes["x"]), float(partdes["y"])
+        place_angle = float(partdes["rot"]) + float(part["rot"])
+
+        #skip if feeder not defined
+        #TODO maybe a bit ugly:
+        feeder = part.get("feeder")
+        if feeder is None:
+            partdes["state"] = data_manager.PART_STATE_ERROR
+            return self.run_state
+        feeder = self.context["feeder"][feeder]
+
+        self._poll_for_pause()
+
+        print("pick part")
+        if feeder["type"] == tray.TYPE_NUMBER:
+            self.tray.pick(feeder, self.robot)
+        elif feeder["type"] == belt.TYPE_NUMBER:
+            self.belt.pick(feeder, self.robot)
+        else:
+            raise Exception(f"Feeder type {feeder['type']} unknown")
+
+        self._poll_for_pause()
+
+        print("place part")
+        x, y = place_pos
+        x, y, place_angle = self._pcb2robot2(x, y, place_angle)
+        # make sure rotation is minimal
+        if place_angle < -180:
+            place_angle += 360
+        if place_angle > 180:
+            place_angle -= 360
+        # angle is is pcb coordinates, thus inverted
+        self.picker.place(self.robot, x, y, -place_angle)
+
+        print("update part state")
+        partdes["state"] = data_manager.PART_STATE_PLACED
+
+        self.robot.default_settings()
+        self._poll_for_pause()
+
+    def _poll_for_pause(self):
+        try:
+            item = self.event_queue.get(block=False)
+            if item["type"] == "sequence":
+                if item["method"] == "pause":
+                    return self.setup_state
+            else:
+                self._handle_common_event(item)
+        except queue.Empty:
+            pass
+
+    def _get_next_part_from_bom(self):
+        """ find next part in bom that is eligable for placing"""
+        for part in self.context["bom"]:
+            for name, partdes in part["designators"].items():
+                if "x" not in partdes:
+                    continue
+                if partdes["state"] == data_manager.PART_STATE_ERROR and partdes["place"] and not part["fiducial"]:
+                    return part, partdes
+        return None, None
 
     def _push_alert(self, msg, answers=None):
 
@@ -372,8 +427,10 @@ def main(mock=False):
 
     event_queue = queue.Queue()
 
+    print("connect robot")
     robot = save_robot.SaveRobot(None if mock else "/dev/ttyUSB0")
 
+    print("connect camera")
     if not mock:
         c = camera.CameraThread(0)
     else:
@@ -389,12 +446,15 @@ def main(mock=False):
         d,
         lambda: s.nav)
 
+
+    time.sleep(0.1) #give webserver thread time to start
+    print("pick-plaz running. press [ctrl]+[C] to shutdown")
     with c:
         try:
             s.run()
         except KeyboardInterrupt:
             pass
-
+    print("")
     print("parking robot")
 
     # park robot
