@@ -1,0 +1,21 @@
+
+
+"""
+Pick-plaz configuration file. The configuration is read at programm launch.
+"""
+
+robot:
+    board_size : [400,400] # size of robot area in mm
+
+camera_calibration:
+    markerboard:
+        size_x :        10 #number of markers in x direction
+        size_y :        10 # number of markers in y direction
+        marker_size:     3 # size of a marker in mm
+        marker_stride:   4 # distance form marker to next marker
+fiducial_detection:
+    fiducial_radius:   0.7
+
+camera:
+    aquisition_delay: 0.5 # delay between robot movement and camera measurements
+    web_resolution: 10 #resolution of camera in web ui in pixel per mm
