@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 import pick
 
@@ -16,7 +17,8 @@ class Tray:
         pick_pos = self._find_in_tray(feeder, robot)
         # self.nav["detection"]["part"] = pick_pos #TODO remove nav/detection/part
 
-        x, y, a = pick_pos
+        x, y, a, A = pick_pos
+        self.apply_area_slowdown(robot, A)
         self.picker.pick(robot, x, y, a)
 
     def _find_in_tray(self, feeder, robot):
@@ -45,7 +47,7 @@ class Tray:
             robot.drive(*robot_pos)
             image = self.eye.get_valid_image()
 
-            p, a = self.picker.find_components(image)
+            p, a, _A = self.picker.find_components(image)
             if len(p):
                 break
             last_found_index = last_found_index + 1 % len(search_positions)
@@ -63,7 +65,7 @@ class Tray:
         robot.drive(*pos)
         image = self.eye.get_valid_image()
 
-        p, a = self.picker.find_components(image)
+        p, a, A = self.picker.find_components(image)
         if len(p):
             pos = np.array(p[0])
             pos = tuple((pos / self.eye.res) - (self.eye.cam_range/2) + robot_pos)
@@ -73,4 +75,23 @@ class Tray:
         robot.light_topdn(True)
 
         #angle in degrees
-        return (pos[0], pos[1], a[0])
+        return (pos[0], pos[1], a[0], A[0])
+
+    def apply_area_slowdown(self, robot, area):
+        size = math.sqrt(area)
+        #calculate a speed factor which goes from 1=fast to 0=slowest
+        factor = 1.0
+        if size > 175:
+            factor = 0.0
+        elif size > 75:
+            #fitting a cosine between (75/1) and (175/0)
+            factor = math.cos((size - 75) * math.pi / 100) * 0.5 + 0.5
+
+        rf = factor * 0.9 + 0.05  #rotation factor
+        tf = factor * 0.7 + 0.30  #travel factor
+        zf = factor * 0.7 + 0.15  #z axies factor
+        of = factor * 0.7 + 0.20  #other axies factor
+        print("area=%f, size=%f, factor=%f"% (area, size, factor))
+        # note: if we ever have a second picker the rotating motor needs also a factor of 12 here
+        #       and the STM32 Firmware also needs to reset it correctly.
+        robot.feedrate_multiplier(x=tf, y=tf, z=zf, e=rf*12, a=of, b=of, c=of)
