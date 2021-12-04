@@ -81,7 +81,7 @@ def pnp_bom_parse_internal(pnp, bom):
     #eagle uses '', jlcpcb uses 'side', easyeda uses '', altium uses 'layer'
     pnp_index_layer     = find_indexes(pnp_data[0], ["layer", "side"], default=-1)
 
-    #bild the data tree for every BOM entry
+    #build the data tree for every BOM entry
     data = []
     for bom in bom_data[1:]:
         #exctact the list of designators from the BOM table
@@ -96,7 +96,7 @@ def pnp_bom_parse_internal(pnp, bom):
             "partnr": bom[bom_index_part],
             "feeder": None,
             "rot": 0,
-            "parts": parts_list
+            "designators": parts_list
         }
 
         data.append(bom_entry)
