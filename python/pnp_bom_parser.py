@@ -53,11 +53,45 @@ def find_indexes(data, probable_list, default=None):
     else:
         return default
 
+def find_matching_footprint(footprints, footprint):
+    try:
+        #for speed first check obvious solutions
+        if footprint in footprints:
+            return footprint
+        footprint_reduced = footprint.upper().replace("-", "").replace("_", "")
+        if footprint_reduced in footprints:
+            return footprint_reduced
+
+        #check if it is matching without special characters
+        for footprint_name in footprints.keys():
+            footprint_name_reduced = footprint_name.replace("-", "").replace("_", "")
+            if footprint_reduced == footprint_name_reduced:
+                return footprint_name
+
+        #check if it is matching the alternative list
+        for footprint_name, x in footprints.items():
+            for footprint_name_alt in x["alt"]:
+                if footprint_reduced == footprint_name_alt:
+                    return footprint_name
+    except Exception as e:
+        print(
+            type(e).__name__,          # TypeError
+            __file__,                  # /tmp/example.py
+            e.__traceback__.tb_lineno  # 2
+        )
+        pass
+
+    return footprint
 
 def pnp_bom_parse_internal(pnp, bom):
     #parse file and get it to a python double array
     pnp_data = parse_raw_content(pnp)
     bom_data = parse_raw_content(bom)
+    footprints = {}
+    try:
+        footprints = json.load(open("web/footprints.json"))
+    except:
+        pass
 
     #get the matchig header indexes for the BOM file
     #eagle uses 'parts', jlcpcb uses 'designator', easyeda uses 'designator', altium uses 'designator'
@@ -91,13 +125,15 @@ def pnp_bom_parse_internal(pnp, bom):
         bom_entry = {
             "place": False,
             "fiducial": "fiducial" in bom[bom_index_footprint].lower(),
-            "footprint": bom[bom_index_footprint],
+            "footprint": find_matching_footprint(footprints, bom[bom_index_footprint]),
             "value": bom[bom_index_value],
             "partnr": bom[bom_index_part],
             "feeder": None,
             "rot": 0,
             "designators": parts_list
         }
+        if bom_entry["fiducial"]:
+            bom_entry["footprint"] = "fiducal"
 
         data.append(bom_entry)
         #search the matching PNP table entry for each designator
