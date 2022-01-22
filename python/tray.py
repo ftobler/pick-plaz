@@ -81,11 +81,13 @@ class Tray:
         size = math.sqrt(area)
         #calculate a speed factor which goes from 1=fast to 0=slowest
         factor = 1.0
-        if size > 175:
+        pos_zero = 100 #175
+        pos_one = 40   #75
+        if size > pos_zero:
             factor = 0.0
-        elif size > 75:
+        elif size > pos_one:
             #fitting a cosine between (75/1) and (175/0)
-            factor = math.cos((size - 75) * math.pi / 100) * 0.5 + 0.5
+            factor = math.cos((size - pos_one) * math.pi / (pos_zero - pos_one)) * 0.5 + 0.5
 
         rf = factor * 0.9 + 0.05  #rotation factor
         tf = factor * 0.7 + 0.30  #travel factor
