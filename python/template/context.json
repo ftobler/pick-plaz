@@ -1,0 +1,229 @@
+{
+    "bom": [
+    ],
+    "feeder": {
+        "tray 0": {
+            "type": 0,
+            "x": 54.8,
+            "y": 268,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 6
+        },
+        "tray 1": {
+            "type": 0,
+            "x": 54.8,
+            "y": 298,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 3
+        },
+        "tray 2": {
+            "type": 0,
+            "x": 54.8,
+            "y": 328,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 1
+        },
+        "tray 3": {
+            "type": 0,
+            "x": 103,
+            "y": 268,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 0
+        },
+        "tray 4": {
+            "type": 0,
+            "x": 103,
+            "y": 298,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 0
+        },
+        "tray 5": {
+            "type": 0,
+            "x": 103,
+            "y": 328,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 0
+        },
+        "tray 6": {
+            "type": 0,
+            "x": 155,
+            "y": 268,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 3
+        },
+        "tray 7": {
+            "type": 0,
+            "x": 155,
+            "y": 298,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 1
+        },
+        "tray 8": {
+            "type": 0,
+            "x": 155,
+            "y": 328,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 3
+        },
+        "tray 9": {
+            "type": 0,
+            "x": 202,
+            "y": 268,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 1
+        },
+        "tray 10": {
+            "type": 0,
+            "x": 202,
+            "y": 298,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 1
+        },
+        "tray 11": {
+            "type": 0,
+            "x": 202,
+            "y": 328,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 3
+        },
+        "tray 12": {
+            "type": 0,
+            "x": 255,
+            "y": 268,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 1
+        },
+        "tray 13": {
+            "type": 0,
+            "x": 255,
+            "y": 298,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1,
+            "last_found_index": 0
+        },
+        "tray 14": {
+            "type": 0,
+            "x": 255,
+            "y": 328,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1
+        },
+        "tray 15": {
+            "type": 0,
+            "x": 303,
+            "y": 268,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1
+        },
+        "tray 16": {
+            "type": 0,
+            "x": 303,
+            "y": 298,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1
+        },
+        "tray 17": {
+            "type": 0,
+            "x": 303,
+            "y": 328,
+            "width": 48,
+            "height": 30,
+            "pitch": null,
+            "rot": 0,
+            "state": 1
+        },
+        "belt_test": {
+            "type": 1,
+            "x": 238.6599404304515,
+            "y": 209.97347401052406,
+            "x_end": 282.5097372064126,
+            "y_end": 208.8079790544235,
+            "pitch": 4,
+            "x_offset": 2,
+            "y_offset": -4,
+            "rot": 0,
+            "state": 1
+        }
+    },
+    "const": {
+        "part_state": [
+            "ready",
+            "placed",
+            "error",
+            "skip"
+        ],
+        "feeder_type": [
+            "tray",
+            "strip"
+        ],
+        "feeder_state": [
+            "disabled",
+            "ready",
+            "empty"
+        ]
+    }
+}
