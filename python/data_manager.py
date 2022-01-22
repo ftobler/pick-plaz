@@ -2,6 +2,7 @@
 import json
 from importlib import reload
 import pnp_bom_parser
+import os
 
 FEEDER_STATE_DIABLED = 0
 FEEDER_STATE_READY = 1
@@ -19,26 +20,43 @@ class ContextManager:
     feeder_state = ["disabled", "ready", "empty"]
 
     def __init__(self):
-        with open("web/api/context.json", "r") as f:
-            self.context = json.load(f)
-            self.context["const"] = {}
-            self.context["const"]["part_state"] = self.part_state
-            self.context["const"]["feeder_type"] = self.feeder_type
-            self.context["const"]["feeder_state"] = self.feeder_state
+        self.createdir("user/context")
+        self.createdir("template")
+        self.file_read()
 
-    def file_save(self, filename):
-        #TODO use filename
-        with open("web/api/context.json", "w") as f:
+    def file_save(self, filename="context"):
+        filename = filename.lower()
+        if not filename.endswith(".json"):
+            filename += ".json"
+        with open("user/context/%s" % filename, "w") as f:
             json.dump(self.context, f)
-        print("data saved")
+        print("context data saved to '%s'" % filename)
 
     def file_list(self):
-        #TODO implement
-        return {}
+        return os.listdir("user/context")
 
-    def file_read(self, filename):
-        #TODO implement
-        pass
+    def file_read(self, filename="context"):
+        filename = filename.lower()
+        if not filename.endswith(".json"):
+            filename += ".json"
+        if "\\" in filename or "/" in filename:
+            raise Exception("filename '%s' not allowed")
+        try:
+            with open("user/context/%s" % filename, "r") as f:
+                        self.context = json.load(f)
+                        self.context["const"] = {}
+                        self.context["const"]["part_state"] = self.part_state
+                        self.context["const"]["feeder_type"] = self.feeder_type
+                        self.context["const"]["feeder_state"] = self.feeder_state
+            print("context data restored from '%s'" % filename)
+        except:
+            with open("template/context.json", "r") as f:
+                        self.context = json.load(f)
+                        self.context["const"] = {}
+                        self.context["const"]["part_state"] = self.part_state
+                        self.context["const"]["feeder_type"] = self.feeder_type
+                        self.context["const"]["feeder_state"] = self.feeder_state
+            print("context template loaded from '%s'" % filename)
 
     def get(self):
         return self.context
@@ -225,3 +243,9 @@ class ContextManager:
                 type = "L"
             if size != None and type != None:
                 part["footprint"] = size + "_" + type
+
+    def createdir(self, directory):
+        try:
+            os.makedirs(directory)
+        except:
+            pass

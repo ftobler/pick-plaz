@@ -17,11 +17,12 @@ import debug
 
 class BottleServer:
 
-    def __init__(self, get_camera_fcn, event_put_fcn, context, nav_fcn, listen="0.0.0.0", port=8080):
+    def __init__(self, get_camera_fcn, event_put_fcn, context, center_fcn, nav_fcn, listen="0.0.0.0", port=8080):
 
         self.get_camera_fcn = get_camera_fcn
         self.event_put_fcn = event_put_fcn
         self.context = context
+        self.center_fcn = center_fcn
         self.nav_fcn = nav_fcn
 
         self.port = port
@@ -59,10 +60,10 @@ class BottleServer:
         r = dict(request.query.decode())
         try:
             self.event_put_fcn({
-                "type" : "setpos",
-                "x" : _float(r["x"]),
-                "y" : _float(r["y"]),
-                "system" : _str(r.get("system", "cam"))
+                "type": "setpos",
+                "x": _float(r["x"]),
+                "y": _float(r["y"]),
+                "system": _str(r.get("system", "cam"))
             })
         except Exception as e:
             raise e
@@ -71,10 +72,10 @@ class BottleServer:
         r = dict(request.query.decode())
         try:
             self.event_put_fcn({
-                "type" : "setfiducial",
-                "x" : _float(r["x"]),
-                "y" : _float(r["y"]),
-                "id" : _str(r["id"]),
+                "type": "setfiducial",
+                "x": _float(r["x"]),
+                "y": _float(r["y"]),
+                "id": _str(r["id"]),
             })
         except Exception as e:
             raise e
@@ -83,8 +84,8 @@ class BottleServer:
         r = dict(request.query.decode())
         try:
             self.event_put_fcn({
-                "type" : "sequence",
-                "method" : _str(r["method"]),
+                "type": "sequence",
+                "method": _str(r["method"]),
                 "param": r.get("param")
             })
         except Exception as e:
@@ -94,7 +95,7 @@ class BottleServer:
         r = dict(request.query.decode())
         try:
             self.event_put_fcn( {
-                "type" : "alertquit",
+                "type": "alertquit",
                 "id": _int(r["id"]),
                 "answer": _str(r["answer"])
             })
@@ -111,6 +112,7 @@ class BottleServer:
                 bom_lines = [b.decode("utf-8") for b in bom.file.read().splitlines()]
                 pnp_lines = [b.decode("utf-8") for b in pnp.file.read().splitlines()]
                 self.context.replace(bom_lines, pnp_lines)
+                self.center_fcn()
             except Exception as e:
                 error = "Parsing of BOM or PNP failed. Exception: '" + str(e) + "'"
         else:
@@ -127,9 +129,17 @@ class BottleServer:
         try:
             method = _str(r["method"])
             if method == "list":
-                return self.context.file_list()
+                return { "files": self.context.file_list() }
             elif method == "save":
-                return self.context.file_save(_str(r["filename"]))
+                filename = None
+                try:
+                    filename = _str(r["filename"])
+                except:
+                    pass
+                if filename == None:
+                    return self.context.file_save()
+                else:
+                    return self.context.file_save(filename)
             elif method == "read":
                 return self.context.file_read(_str(r["filename"]))
         except Exception as e:
