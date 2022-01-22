@@ -53,6 +53,9 @@ button:active {
     background-color: rgb(0, 235, 145);
     transition: 0s;
 }
+td button {
+    height: 24px;
+}
 
 
 
@@ -261,8 +264,7 @@ td, th {
     padding-right: 5px;
 }
 td {
-    height: 50px;
-    padding-bottom: 6px;
+    height: 32px;
 }
 .table-button {
     display:  inline-block;
@@ -280,8 +282,7 @@ td {
 .table-button.material {
     font-family: "Material Icons";
     font-size: 20px;
-    padding: 8px;
-    margin-top: 5px;
+    padding: 6px;
     border-radius: 100%;
 }
 .cell-inline-table {
@@ -312,6 +313,12 @@ tr.inactive {
 }
 tr.error {
     background-color: #ff000038;
+}
+tr.placed {
+    background-color: #00ff7338;
+}
+tr.skip {
+    background-color: #ffffff38;
 }
 
 

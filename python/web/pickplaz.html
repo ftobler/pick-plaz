@@ -53,6 +53,7 @@
                 <div class="menu-menu-item" v-on:click="do_save_restore('save')"><div class="menu-item-material">save</div>Save Context</div>
                 <div class="menu-menu-item" v-on:click="do_save_restore('restore')"><div class="menu-item-material">restore</div>Restore Context</div>
                 <div class="menu-menu-item" v-on:click="do_nav(3); poll_debug()"><div class="menu-item-material">analytics</div>Debug View</div>
+                <div class="menu-menu-item" v-on:click="do_sequence('reset_board')"><div class="menu-item-material">restart_alt</div>Reset for new Board</div>
             </div></transition>
         </div>
 
@@ -82,7 +83,7 @@
                     <th class="small" width="20px">Fiducial</th>
                     <th width="130px">Value</th>
                     <th width="90px">Footprint</th>
-                    <th width="30px"></th>
+                    <th width="40px"></th>
                     <th width="130px">Part Nr</th>
                     <th width="100px">Feeder</th>
                     <th width="60px">Rotation</th>
@@ -97,7 +98,7 @@
                     <td :rowspan="part.designators.length">{{i}}</td>
                     <td><input type="checkbox" v-model="part.place" v-on:change="do_modify_bom_doplace(part, i)" v-if="!part.fiducial"></td>
                     <td><input type="checkbox" v-model="part.fiducial" v-on:change="do_modify_bom_isfiducial(part, i)"></td>
-                    <td>{{part.value}}</td>
+                    <td>{{Object.keys(part.designators).length}}x {{part.value}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_bom_footprint(part, i)">edit</div> {{part.footprint}}</td>
                     <td><img v-bind:src="part.footprint | footprint_img_path"/> &nbsp;&nbsp;<img v-bind:src="part.footprint | footprint_sym_path"/></td>
                     <td><a v-bind:href="'https://lcsc.com/search?q=' + part.partnr" target="_blank">{{part.partnr}}</a></td>
@@ -105,7 +106,7 @@
                     <td><div class="table-button material" v-on:click="do_modify_bom_rotation(part, i)">refresh</div> {{part.rot}}</td>
                     <td class="cell-inline-table" colspan=6>
                         <table class="cell-inline-table">
-                            <tr v-for="(designator, id, index) in part.designators">
+                            <tr v-for="(designator, id, index) in part.designators"  v-bind:class="{ error: designator.state==2, placed: designator.state==1, skip: designator.state==3 }">
                                 <td width="40px">{{id}}</td>
                                 <td width="40px">{{designator.x}}</td>
                                 <td width="40px">{{designator.y}}</td>

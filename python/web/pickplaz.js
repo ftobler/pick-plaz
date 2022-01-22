@@ -274,7 +274,7 @@ function start() {
             do_save_restore(method) {
                 api.file_get_list((raw) => {
                     try {
-                        file_list = JSON.parse(raw);
+                        file_list = JSON.parse(raw).files;
                         if (method == "save") {
                             this.show_dialog({
                                 title: "Save",
@@ -301,7 +301,7 @@ function start() {
                                 material_image: "restore",
                                 callback: (data, answer) => {
                                     if (answer == "OK") {
-                                        api.file_context_save(data.input_data, () => {
+                                        api.file_context_read(data.input_data, () => {
                                             this.poll_data()
                                         })
                                     }

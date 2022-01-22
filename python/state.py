@@ -43,12 +43,13 @@ class AbortException(Exception):
     pass
 
 class StateContext:
-    def __init__(self, robot, camera, context, event_queue):
+    def __init__(self, robot, camera, context, context_manager, event_queue):
 
         self.robot = robot
         self.camera = camera
         self.event_queue = event_queue
         self.context = context
+        self.context_manager = context_manager
 
         self.alert_id = 0
 
@@ -108,18 +109,19 @@ class StateContext:
         self.belt = belt.Belt(narrow_eye, self.picker)
         self.tray = tray.Tray(self.picker)
 
-        self._center_pcb()
+        self.center_pcb()
 
-    def _center_pcb(self):
+    def center_pcb(self):
         positions = []
         for part in self.context["bom"]:
             for designator in part["designators"].values():
                 if "x" in designator:
                     positions.append((float(designator["x"]), float(designator["y"])))
         positions = np.asarray(positions)
-        bed_center = [self.nav["bed"]["width"] / 2, self.nav["bed"]["height"] / 2]
-        x, y = -(np.min(positions, axis=0) + np.max(positions, axis=0)) / 2 + bed_center
-        self.nav["pcb"]["transform"] = [1, 0, 0, -1, float(x), float(y)]
+        if positions.size != 0:
+            bed_center = [self.nav["bed"]["width"] / 2, self.nav["bed"]["height"] / 2]
+            x, y = -(np.min(positions, axis=0) + np.max(positions, axis=0)) / 2 + bed_center
+            self.nav["pcb"]["transform"] = [1, 0, 0, -1, float(x), float(y)]
 
     def run(self):
 
@@ -216,6 +218,8 @@ class StateContext:
 
             elif item["type"] == "sequence":
                 if item["method"] == "play":
+                    self.context_manager.file_save()
+                    self._reset_error_parts()
                     return self.run_state
                 elif item["method"] == "home":
                     self.robot.home()
@@ -279,6 +283,8 @@ class StateContext:
                     self.robot.valve(False)
                     self.robot.default_settings()
                     #TODO: place part again
+                elif item["method"] == "reset_board":
+                    self._reset_for_new_board()
             else:
                 self._handle_common_event(item)
         except calibrator.CalibrationError as e:
@@ -300,12 +306,8 @@ class StateContext:
 
         self.nav["state"] = "run"
 
-        self._reset_error_parts()
-
         try:
-
             print("get next part information")
-
             part, partdes = self._get_next_part_from_bom()
             if part is None:
                 self._push_alert("Placing finished")
@@ -325,10 +327,13 @@ class StateContext:
     def _reset_error_parts(self):
         for part in self.context["bom"]:
             for name, partdes in part["designators"].items():
-                if "x" not in partdes:
-                    continue
                 if partdes["state"] == data_manager.PART_STATE_ERROR and partdes["place"] and not part["fiducial"]:
-                    partdes["state"] == data_manager.PART_STATE_READY
+                    partdes["state"] = data_manager.PART_STATE_READY
+
+    def _reset_for_new_board(self):
+        for part in self.context["bom"]:
+            for name, partdes in part["designators"].items():
+                partdes["state"] = data_manager.PART_STATE_READY
 
     def _get_part_from_designator(self, name):
         """ find part to place only from its designator """
@@ -399,7 +404,7 @@ class StateContext:
             for name, partdes in part["designators"].items():
                 if "x" not in partdes:
                     continue
-                if partdes["state"] == data_manager.PART_STATE_ERROR and partdes["place"] and not part["fiducial"]:
+                if partdes["state"] == data_manager.PART_STATE_READY and partdes["place"] and not part["fiducial"]:
                     return part, partdes
         return None, None
 
@@ -438,12 +443,13 @@ def main(mock=False):
 
     d = data_manager.ContextManager()
 
-    s = StateContext(robot, c, d.get(), event_queue)
+    s = StateContext(robot, c, d.get(), d, event_queue)
 
     b = bottle_svr.BottleServer(
         lambda: s.get_cam(),
         lambda x: event_queue.put(x),
         d,
+        lambda: s.center_pcb(),
         lambda: s.nav)
 
 
@@ -456,6 +462,8 @@ def main(mock=False):
             pass
     print("")
     print("parking robot")
+
+    d.file_save()
 
     # park robot
     robot.vacuum(False)
