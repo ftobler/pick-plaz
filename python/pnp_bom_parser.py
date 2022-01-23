@@ -7,7 +7,14 @@ from pprint import pprint
 
 
 def parse_csv(raw):
-    data = [re.split(";|,|\t", line) for line in raw]
+    data = []
+    for line in raw:
+        if line == "":
+            continue
+        if '"' in line:
+            data.append(re.split('";"|","|"\t"', line[1:-1]))
+        else:
+            data.append(re.split(';|,|\t', line))
     #pprint(data)
     return data
 
@@ -144,8 +151,8 @@ def pnp_bom_parse_internal(pnp, bom):
             for part in pnp_data[1:]:
                 if part[pnp_index_id] == id:
                     #matching PNP line found. Now assign it.
-                    parts_data["x"]     = float(part[pnp_index_x])
-                    parts_data["y"]     = float(part[pnp_index_y])
+                    parts_data["x"]     = float(part[pnp_index_x].replace("mm", ""))
+                    parts_data["y"]     = float(part[pnp_index_y].replace("mm", ""))
                     parts_data["rot"]   = float(part[pnp_index_rot])
                     if pnp_index_layer != -1: #this could be non existing
                         parts_data["layer"] = part[pnp_index_layer]
@@ -162,7 +169,7 @@ def pnp_bom_parse(pnp, bom):
     try:
         return pnp_bom_parse_internal(pnp, bom)
     except Exception as e:
-        #in case it's a Egale BOM, there is somehing to adjust and then try again
+        #in case it's a Eagle BOM, there is somehing to adjust and then try again
         bom = bom[1::]
         pnp = ["id	x	y	rot"] + pnp
         return pnp_bom_parse_internal(pnp, bom)

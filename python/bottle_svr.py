@@ -109,8 +109,14 @@ class BottleServer:
         error = None
         if bom != None and pnp != None:
             try:
-                bom_lines = [b.decode("utf-8") for b in bom.file.read().splitlines()]
-                pnp_lines = [b.decode("utf-8") for b in pnp.file.read().splitlines()]
+                bom_blob = bom.file.read()
+                pnp_blob = pnp.file.read()
+                try:
+                    bom_lines = bom_blob.decode("utf-8").replace("\r", "").split("\n")
+                    pnp_lines = pnp_blob.decode("utf-8").replace("\r", "").split("\n")
+                except Exception as e:
+                    bom_lines = bom_blob.decode("utf-16").replace("\r", "").split("\n")
+                    pnp_lines = pnp_blob.decode("utf-16").replace("\r", "").split("\n")
                 self.context.replace(bom_lines, pnp_lines)
                 self.center_fcn()
             except Exception as e:
