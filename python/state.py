@@ -2,6 +2,7 @@
 import time
 import queue
 import pickle
+import os
 
 import cv2
 import numpy as np
@@ -426,9 +427,20 @@ class StateContext:
             if "alert" in self.nav:
                 del self.nav["alert"]
 
+
+def createdir(directory):
+    try:
+        os.makedirs(directory)
+    except:
+        pass
+
 def main(mock=False):
+    print("pick-plaz starting...")
     if mock:
         print("starting in mock mode")
+
+    createdir("user/context")
+    createdir("template")
 
     event_queue = queue.Queue()
 

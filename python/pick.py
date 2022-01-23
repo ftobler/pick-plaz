@@ -21,13 +21,17 @@ class Picker():
         self.eye = eye
 
         try:
-            with open("picker.json", "r") as f:
+            with open("user/picker.json", "r") as f:
                 d = json.load(f)
-            self.DX = d["DX"]
-            self.DY = d["DY"]
+                self.DX = d["DX"]
+                self.DY = d["DY"]
+                print("read picker calibration")
         except FileNotFoundError:
-            self.DX = 70.76
-            self.DY = -17.77
+            with open("template/picker.json", "r") as f:
+                d = json.load(f)
+                self.DX = d["DX"]
+                self.DY = d["DY"]
+                print("picker default calibration")
 
         self.PICK_Z = -18
 
@@ -87,7 +91,7 @@ class Picker():
             "DX" : self.DX,
             "DY" : self.DY,
         }
-        with open("picker.json", "w") as f:
+        with open("user/picker.json", "w") as f:
             json.dump(d, f)
 
         print(f"Picker calibration correction : x={correction_x:.3f}, y={correction_y:.3f}")
@@ -118,7 +122,7 @@ class Picker():
             "DX" : self.DX,
             "DY" : self.DY,
         }
-        with open("picker.json", "w") as f:
+        with open("user/picker.json", "w") as f:
             json.dump(d, f)
 
         print(f"Picker calibration correction : x={correction_x:.3f}, y={correction_y:.3f}, rms_error={rms_error:.3f}")

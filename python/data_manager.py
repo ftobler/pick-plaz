@@ -20,8 +20,6 @@ class ContextManager:
     feeder_state = ["disabled", "ready", "empty"]
 
     def __init__(self):
-        self.createdir("user/context")
-        self.createdir("template")
         self.file_read()
 
     def file_save(self, filename="context"):
@@ -244,8 +242,3 @@ class ContextManager:
             if size != None and type != None:
                 part["footprint"] = size + "_" + type
 
-    def createdir(self, directory):
-        try:
-            os.makedirs(directory)
-        except:
-            pass
