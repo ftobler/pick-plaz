@@ -1,5 +1,3 @@
-pickplazstm/Debug/*
-pickplazstm/Release/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -146,3 +144,6 @@ conf.yml
 *.b#*
 *.s#*
 *.l#*
+pickplazstm/Debug/*
+pickplazstm/Release/*
+python/user/*
