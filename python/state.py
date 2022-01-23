@@ -327,6 +327,8 @@ class StateContext:
             self._push_alert(e)
         except AbortException as e:
             self._push_alert(e)
+        except Exception as e:
+            self._push_alert(e)
             return self.idle_state
 
         return self.setup_state
@@ -347,6 +349,9 @@ class StateContext:
         except pick.NoPartFoundException as e:
             self._push_alert(e)
             return self.setup_state
+        except belt.NoBeltHoleFoundException as e:
+            self.push_alert(e)
+            return self.idle_state
         except save_robot.OutOfSaveSpaceException as e:
             self._push_alert(e)
         except AbortException as e:
@@ -432,11 +437,12 @@ class StateContext:
     def _get_next_part_from_bom(self):
         """ find next part in bom that is eligable for placing"""
         for part in self.context["bom"]:
-            for name, partdes in part["designators"].items():
-                if "x" not in partdes:
-                    continue
-                if partdes["state"] == data_manager.PART_STATE_READY and partdes["place"] and not part["fiducial"]:
-                    return part, partdes
+            if part["place"] == True:
+                for name, partdes in part["designators"].items():
+                    if "x" not in partdes:
+                        continue
+                    if partdes["state"] == data_manager.PART_STATE_READY and partdes["place"] and not part["fiducial"]:
+                        return part, partdes
         return None, None
 
     def _push_alert(self, msg, answers=None):
