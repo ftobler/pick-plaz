@@ -974,12 +974,13 @@
 
 
 
-    "fiducal": {
-        "img": "fiducal_img.svg",
-        "sym": "fiducal_sym.svg",
+    "fiducial": {
+        "img": "fiducial_img.svg",
+        "sym": "fiducial_sym.svg",
         "x": 3.0,
         "y": 3.0,
         "alt": [
+            "fiducal"
         ]
     }
 }
