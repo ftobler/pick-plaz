@@ -81,18 +81,18 @@ class Tray:
         size = math.sqrt(area)
         #calculate a speed factor which goes from 1=fast to 0=slowest
         factor = 1.0
-        pos_zero = 100 #175
-        pos_one = 40   #75
+        pos_zero = 90 #175
+        pos_one = 35   #75
         if size > pos_zero:
             factor = 0.0
         elif size > pos_one:
             #fitting a cosine between (75/1) and (175/0)
             factor = math.cos((size - pos_one) * math.pi / (pos_zero - pos_one)) * 0.5 + 0.5
 
-        rf = factor * 0.9 + 0.05  #rotation factor
-        tf = factor * 0.7 + 0.30  #travel factor
-        zf = factor * 0.7 + 0.15  #z axies factor
-        of = factor * 0.7 + 0.20  #other axies factor
+        rf = factor * 0.95 + 0.05  #rotation factor
+        tf = factor * 0.70 + 0.30  #travel factor
+        zf = factor * 0.85 + 0.15  #z axies factor
+        of = factor * 0.80 + 0.20  #other axies factor
         print("area=%f, size=%f, factor=%f"% (area, size, factor))
         # note: if we ever have a second picker the rotating motor needs also a factor of 12 here
         #       and the STM32 Firmware also needs to reset it correctly.
