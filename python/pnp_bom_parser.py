@@ -140,7 +140,7 @@ def pnp_bom_parse_internal(pnp, bom):
             "designators": parts_list
         }
         if bom_entry["fiducial"]:
-            bom_entry["footprint"] = "fiducal"
+            bom_entry["footprint"] = "fiducial"
 
         data.append(bom_entry)
         #search the matching PNP table entry for each designator

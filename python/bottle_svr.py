@@ -72,10 +72,11 @@ class BottleServer:
         r = dict(request.query.decode())
         try:
             self.event_put_fcn({
-                "type": "setfiducial",
+                "type": "event_setfiducial",
                 "x": _float(r["x"]),
                 "y": _float(r["y"]),
                 "id": _str(r["id"]),
+                "method": _str(r["method"]),
             })
         except Exception as e:
             raise e
@@ -215,7 +216,7 @@ class BottleServer:
         route('/api/nav.json', method='POST')(self._nav)
         route('/api/context.json', method='POST')(self._context)
         route('/api/setpos', method='POST')(self._setpos)
-        route('/api/setfiducal', method='POST')(self._setfiducial)
+        route('/api/setfiducial', method='POST')(self._setfiducial)
         route('/api/sequencecontrol', method='POST')(self._sequencecontrol)
         route('/api/alertquit', method='POST')(self._alertquit)
         route('/api/upload', method='POST')(self._upload)

@@ -210,8 +210,21 @@ class StateContext:
                 except fiducial.NoFiducialFoundException:
                     self.nav["detection"]["fiducial"] = (0, 0)
 
-            elif item["type"] == "setfiducial":
-                self.nav["pcb"]["fiducials"][item["id"]] = (item["x"], item["y"])
+            elif item["type"] == "event_setfiducial":
+                if item["method"] == "assign":
+                    self.nav["pcb"]["fiducials"][item["id"]] = (item["x"], item["y"])
+                if item["method"] == "unassign":
+                    try:
+                        del self.nav["pcb"]["fiducials"][item["id"]]
+                    except:
+                        pass #just means fiducial was already not assigned
+                elif item["method"] == "reset":
+                    self.nav["pcb"] = {
+                        "transform": [1, 0, 0, -1, 10, -10],
+                        "transform_mse" : 0.1,
+                        "fiducials": {},
+                    }
+                #data change done, now recalcualte
                 fiducial_designators = [part["designators"] for part in self.context["bom"] if part["fiducial"]][0]
                 transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], fiducial_designators)
                 self.nav["pcb"]["transform"] = transform
@@ -284,6 +297,13 @@ class StateContext:
                     self.robot.valve(False)
                     self.robot.default_settings()
                     #TODO: place part again
+                elif item["method"] == "view_feeder":
+                    name = item["param"]
+                    feeder = self.context["feeder"][name]
+                    if feeder["type"] == tray.TYPE_NUMBER:
+                        self.tray.pick(feeder, self.robot, only_camera=True)
+                    elif feeder["type"] == belt.TYPE_NUMBER:
+                        self.belt.pick(feeder, self.robot, only_camera=True)
                 elif item["method"] == "reset_board":
                     self._reset_for_new_board()
             else:

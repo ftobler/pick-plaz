@@ -13,13 +13,16 @@ class Tray:
         self.picker = picker
         self.eye = picker.eye #TODO reference directly to self.picker.eye instead of self.eye
 
-    def pick(self, feeder, robot):
+    def pick(self, feeder, robot, only_camera=False):
         pick_pos = self._find_in_tray(feeder, robot)
         # self.nav["detection"]["part"] = pick_pos #TODO remove nav/detection/part
 
         x, y, a, A = pick_pos
         self.apply_area_slowdown(robot, A)
-        self.picker.pick(robot, x, y, a)
+        if only_camera:
+            robot.drive(pick_pos[0], pick_pos[1])
+        else:
+            self.picker.pick(robot, x, y, a)
 
     def _find_in_tray(self, feeder, robot):
 

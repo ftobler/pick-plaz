@@ -60,7 +60,7 @@ class Belt:
         state["x_end"] = x
         state["y_end"] = y
 
-    def pick(self, state, robot):
+    def pick(self, state, robot, only_camera=False):
 
         p = np.array((state["x"], state["y"]))
         p_end =np.array((state["x_end"], state["y_end"]))
@@ -92,7 +92,9 @@ class Belt:
         state["y"] = y
 
         #TODO test angle
-
-        self.picker.pick(robot, pick_pos[0], pick_pos[1], angle)
+        if only_camera:
+            robot.drive(pick_pos[0], pick_pos[1])
+        else:
+            self.picker.pick(robot, pick_pos[0], pick_pos[1], angle + state["rot"])
 
         # self.picker.place(robot, pick_pos[0], pick_pos[1] + 10, 0)

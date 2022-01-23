@@ -54,6 +54,7 @@
                 <div class="menu-menu-item" v-on:click="do_save_restore('restore')"><div class="menu-item-material">restore</div>Restore Context</div>
                 <div class="menu-menu-item" v-on:click="do_nav(3); poll_debug()"><div class="menu-item-material">analytics</div>Debug View</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('reset_board')"><div class="menu-item-material">restart_alt</div>Reset for new Board</div>
+                <div class="menu-menu-item" v-on:click="fiducial_reset()"><div class="menu-item-material">filter_center_focus</div>Reset all fiducial</div>
             </div></transition>
         </div>
 
@@ -160,6 +161,7 @@
                         <button v-on:click="do_feeder_goto(name)">goto</button>-->
                         <button v-on:click="do_feeder_delete(name)">delete</button>
                         <button v-on:click="do_sequence('test_feeder', name)">pick</button>
+                        <button v-on:click="do_sequence('view_feeder', name)">view</button>
                     </td>
                 </tr>
             </table>
@@ -193,6 +195,7 @@
                         <button v-on:click="do_feeder_goto(name)">goto</button>-->
                         <button v-on:click="do_feeder_delete(name)">delete</button>
                         <button v-on:click="do_sequence('test_feeder', name)">pick</button>
+                        <button v-on:click="do_sequence('view_feeder', name)">view</button>
                     </td>
                 </tr>
             </table>

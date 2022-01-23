@@ -18,6 +18,7 @@ class ContextManager:
     part_state = ["ready", "placed", "error", "skip"]
     feeder_type = ["tray", "strip"]
     feeder_state = ["disabled", "ready", "empty"]
+    feeder_attribute = ["x", "y", "width", "height", "pitch", "x_offset", "y_offset"]
 
     def __init__(self):
         self.file_read()

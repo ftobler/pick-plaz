@@ -253,6 +253,9 @@ function start() {
             fiducial_assing_current_location(id, mode) {
                 api.fiducial_assing_current_location(this.nav.detection.fiducial[0], this.nav.detection.fiducial[1], id, mode)
             },
+            fiducial_reset() {
+                api.fiducial_assing_current_location(0, 0, 0, "reset")
+            },
             do_part_goto(part) {
                 if (part.x == undefined || part.y == undefined) {
                     this.show_dialog({
@@ -882,11 +885,12 @@ function start() {
 
                 ctx.save();
                 ctx.translate(feeder.x + feeder.x_offset, feeder.y + feeder.y_offset)
+                ctx.rotate(feeder.rot*Math.PI/180)
                 try {
                     let footprint = getFootprint(part.footprint)
                     this.draw_part(ctx, footprint)
                     this.draw_part_cross(ctx)
-                } catch {}
+                } catch { }
 
                 ctx.restore();
 
@@ -994,17 +998,17 @@ api = {
     debug(cb) {
         apicall("debug", {}, cb, true)
     },
-    fiducial_assing_current_location(x_global, y_global, id, mode) {
-        let methods = ["assign", "unassign"]
-        if (methods.includes(mode)) {
-            apicall("setfiducal", {
+    fiducial_assing_current_location(x_global, y_global, id, method) {
+        let methods = ["assign", "unassign", "reset"]
+        if (methods.includes(method)) {
+            apicall("setfiducial", {
                 x: x_global,
                 y: y_global,
                 id: id,
-                mode: mode
+                method: method
             })
         } else {
-            api_exception("fiducial_assing_current_location rejected the request client side '" + mode + "'");
+            api_exception("fiducial_assing_current_location rejected the request client side '" + method + "'");
         }
     },
     robot_setpos(x_global, y_global, system) {
@@ -1095,7 +1099,7 @@ api = {
         }
     },
     feeder_modify(method, feeder, data, callback) { //TODO: python implemenation
-        let methods = ["rename", "type", "rotation", "state", "delete", "create", "x", "y", "width", "height", "pitch"]
+        let methods = ["rename", "type", "rotation", "state", "delete", "create", "x", "y", "width", "height", "pitch", "x_offset", "y_offset"]
         if (methods.includes(method)) {
             apicall("feeder_modify", {
                 method: method,
