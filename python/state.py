@@ -334,7 +334,8 @@ class StateContext:
     def _reset_for_new_board(self):
         for part in self.context["bom"]:
             for name, partdes in part["designators"].items():
-                partdes["state"] = data_manager.PART_STATE_READY
+                if partdes["state"] != data_manager.PART_STATE_SKIP:
+                    partdes["state"] = data_manager.PART_STATE_READY
 
     def _get_part_from_designator(self, name):
         """ find part to place only from its designator """
