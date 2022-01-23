@@ -18,6 +18,7 @@ import data_manager
 import belt
 import tray
 import eye
+import json
 
 class LiveCam:
 
@@ -90,6 +91,15 @@ class StateContext:
             "state": "idle",
         }
 
+        try:
+            with open("user/fiducial.json") as f:
+                self.nav["pcb"]["fiducials"] = json.load(f)
+                self._recalculate_fiducial_transform()
+                fiducals_assigned = True
+                print("fiducial data restored from 'fiducial.json'")
+        except FileNotFoundError:
+            fiducals_assigned = False
+
         self.robot.pos_logger = self.nav["camera"]
 
         #Load camera calibration
@@ -110,7 +120,8 @@ class StateContext:
         self.belt = belt.Belt(narrow_eye, self.picker)
         self.tray = tray.Tray(self.picker)
 
-        self.center_pcb()
+        if not fiducals_assigned:
+            self.center_pcb()
 
     def center_pcb(self):
         positions = []
@@ -123,6 +134,7 @@ class StateContext:
             bed_center = [self.nav["bed"]["width"] / 2, self.nav["bed"]["height"] / 2]
             x, y = -(np.min(positions, axis=0) + np.max(positions, axis=0)) / 2 + bed_center
             self.nav["pcb"]["transform"] = [1, 0, 0, -1, float(x), float(y)]
+        self._reset_fiducials()
 
     def run(self):
 
@@ -213,22 +225,19 @@ class StateContext:
             elif item["type"] == "event_setfiducial":
                 if item["method"] == "assign":
                     self.nav["pcb"]["fiducials"][item["id"]] = (item["x"], item["y"])
+                    self._recalculate_fiducial_transform()
+                    self._save_fiducial_transform()
                 if item["method"] == "unassign":
                     try:
                         del self.nav["pcb"]["fiducials"][item["id"]]
                     except:
                         pass #just means fiducial was already not assigned
+                    self._recalculate_fiducial_transform()
+                    self._save_fiducial_transform()
                 elif item["method"] == "reset":
-                    self.nav["pcb"] = {
-                        "transform": [1, 0, 0, -1, 10, -10],
-                        "transform_mse" : 0.1,
-                        "fiducials": {},
-                    }
-                #data change done, now recalcualte
-                fiducial_designators = [part["designators"] for part in self.context["bom"] if part["fiducial"]][0]
-                transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], fiducial_designators)
-                self.nav["pcb"]["transform"] = transform
-                self.nav["pcb"]["transform_mse"] = float(mse)
+                    self._reset_fiducials()
+                    self._recalculate_fiducial_transform()
+                    self._save_fiducial_transform()
 
             elif item["type"] == "sequence":
                 if item["method"] == "play":
@@ -447,6 +456,26 @@ class StateContext:
         if item["type"] == "alertquit":
             if "alert" in self.nav:
                 del self.nav["alert"]
+
+    def _reset_fiducials(self):
+        self.nav["pcb"] = {
+                "transform": [1, 0, 0, -1, 10, -10],
+                "transform_mse" : 0.1,
+                "fiducials": {},
+            }
+
+    def _recalculate_fiducial_transform(self):
+        #refreshes everything on pcb except the fiducial
+        fiducial_designators = [part["designators"] for part in self.context["bom"] if part["fiducial"]][0]
+        transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], fiducial_designators)
+        self.nav["pcb"]["transform"] = transform
+        self.nav["pcb"]["transform_mse"] = float(mse)
+
+    def _save_fiducial_transform(self):
+        #saves fiducial data to user files
+        with open("user/fiducial.json", "w") as f:
+            json.dump(self.nav["pcb"]["fiducials"], f)
+            print("fiducial data saved to 'fiducial.json'")
 
 
 def createdir(directory):
