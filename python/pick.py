@@ -5,8 +5,6 @@ import json
 import numpy as np
 import cv2
 
-import calibrator
-
 import debug
 
 class NoPartFoundException(Exception):
@@ -35,13 +33,13 @@ class Picker():
 
         self.PICK_Z = -18
 
-    def _detect_pick_location(self, robot_pos, robot, camera):
+    def _detect_pick_location(self, robot_pos, robot):
 
         robot.light_topdn(False)
         robot.drive(*robot_pos)
         image = self.eye.get_valid_image()
 
-        p, a = self.find_components(image)
+        p, a, _ = self.find_components(image)
         if len(p):
             pos = np.array(p[0])
             pos = tuple((pos / self.eye.res) - (self.eye.cam_range/2) + robot_pos)
@@ -72,11 +70,11 @@ class Picker():
 
     def calibrate_legacy(self, pos, robot, camera):
 
-        x1, y1, a = self._detect_pick_location(pos, robot, camera)
+        x1, y1, a = self._detect_pick_location(pos, robot)
         self.pick(robot, x1, y1, 0)
         self.place(robot, x1, y1, 180)
 
-        x2, y2, a = self._detect_pick_location((x1, y1), robot, camera)
+        x2, y2, a = self._detect_pick_location((x1, y1), robot)
         self.pick(robot, x1, y1, 0)
         self.place(robot, x1, y1, 180)
 
@@ -100,11 +98,11 @@ class Picker():
 
         x, y = pos
         positions = []
-        x0, y0, _ = self._detect_pick_location((x, y), robot, camera)
+        x0, y0, _ = self._detect_pick_location((x, y), robot)
         for _ in range(6):
             self.pick(robot, x0, y0, 0)
             self.place(robot, x0, y0, 360/6)
-            x, y, _ = self._detect_pick_location((x, y), robot, camera)
+            x, y, _ = self._detect_pick_location((x, y), robot)
             positions.append((x, y))
 
         positions = np.asarray(positions)
@@ -127,36 +125,31 @@ class Picker():
 
         print(f"Picker calibration correction : x={correction_x:.3f}, y={correction_y:.3f}, rms_error={rms_error:.3f}")
 
-    def find_components(self, image, plot=False):
+    def find_components(self, image, lock_angle="both", plot=False):
 
         from skimage.measure import label, regionprops
         import math
 
-        blur = cv2.GaussianBlur(image,(11,11),0)
+        blur = cv2.GaussianBlur(image, (11, 11), 0)
         threshold, binary = cv2.threshold(blur,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
 
         disk = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
         binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, disk)
 
-        #floodfill filter
-        shape = (binary.shape[0]+2, binary.shape[1]+2)
+        # Floodfill filter
+        shape = (binary.shape[0] + 2, binary.shape[1] + 2)
         outer = np.ones(shape, dtype=np.uint8)*255
         inner = outer[1:-1, 1:-1]
         inner[:] = binary
         cv2.floodFill(outer, None, (0,0), 0)
-        binary = inner
+        image = inner
 
-        debug.set_image("PickDetection", binary)
+        debug.set_image("PickDetection", image)
 
-        if plot > 1:
-            plt.imshow(binary)
-            plt.show()
-
-        # %% Find positions/rotations
-        image = binary
-
-        if plot > 1:
-            fig, ax = plt.subplots()
+        # Find positions/rotations
+        if plot:
+            import matplotlib.pyplot as plt
+            _, ax = plt.subplots()
             ax.imshow(image, cmap=plt.cm.gray)
 
         image = image.astype(np.float32) / 255
@@ -180,16 +173,25 @@ class Picker():
 
             orientation = props.orientation
             angle = (orientation*180/math.pi)
-            angle = angle % 90
-            if angle > 45: angle -= 90
+            if lock_angle == "both":
+                # lock angles to next 90 degree step
+                angle = angle % 90
+                if angle > 45: angle -= 90
+            elif lock_angle == "horizontal":
+                # lock angles to horizontal axis
+                angle = angle % 180
+                if angle > 90: angle -= 180
+            else:
+                raise ValueError("lock_angle not in ['both', 'horizontal']")
+
             angles.append(angle)
 
-            x1 = x0 + math.cos(orientation) * 0.5 * props.minor_axis_length
-            y1 = y0 - math.sin(orientation) * 0.5 * props.minor_axis_length
-            x2 = x0 - math.sin(orientation) * 0.5 * props.major_axis_length
-            y2 = y0 - math.cos(orientation) * 0.5 * props.major_axis_length
+            if plot:
+                x1 = x0 + math.cos(orientation) * 0.5 * props.minor_axis_length
+                y1 = y0 - math.sin(orientation) * 0.5 * props.minor_axis_length
+                x2 = x0 - math.sin(orientation) * 0.5 * props.major_axis_length
+                y2 = y0 - math.cos(orientation) * 0.5 * props.major_axis_length
 
-            if plot > 1:
                 ax.plot((x0, x1), (y0, y1), '-r', linewidth=2.5)
                 ax.plot((x0, x2), (y0, y2), '-r', linewidth=2.5)
                 ax.plot(x0, y0, '.g', markersize=15)
@@ -199,14 +201,15 @@ class Picker():
                 by = (minr, minr, maxr, maxr, minr)
                 ax.plot(bx, by, '-b', linewidth=2.5)
 
-        if plot > 1:
+                plt.text(x0, y0, f"{angle:.1f}")
+
+        if plot:
             plt.show()
 
         positions = np.array(positions)
         angles = np.array(angles)
 
         return positions, angles, areas
-
 
     def make_collage(self, robot, camera):
         # TODO move this somewhere else
