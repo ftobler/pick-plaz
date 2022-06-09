@@ -650,9 +650,9 @@ function start() {
                     }
 
                     if (feeder.type == 0)
-                        this.draw_feeder(ctx, name, feeder, part)
+                        this.draw_tray_feeder(ctx, name, feeder, part)
                     if (feeder.type == 1)
-                        this.draw_belt(ctx, name, feeder, part)
+                        this.draw_belt_feeder(ctx, name, feeder, part)
                 }
             },
             draw_camera(ctx, image, position) {
@@ -747,17 +747,17 @@ function start() {
                     }
                 }
             },
-            draw_feeder(ctx, name, feeder, part) {
+            draw_tray_feeder(ctx, name, feeder, part) {
 
                 let d = 2; // margin
 
                 ctx.save();
-                ctx.translate(feeder.x, feeder.y);
+                ctx.translate(feeder.position[0], feeder.position[1]);
 
                 ctx.fillStyle = "cyan"
                 ctx.strokeStyle = "cyan"
 
-                ctx.moveTo(0,feeder.height);
+                ctx.moveTo(0,feeder.position[3]);
 
                 textLines = [name]
 
@@ -773,7 +773,7 @@ function start() {
                         let w = footprint.imageSym.width / factor;
 
                         ctx.save();
-                        ctx.translate(feeder.width / 3, feeder.height / 2);
+                        ctx.translate(feeder.position[2] / 3, feeder.position[3] / 2);
                         ctx.rotate(feeder.rot*Math.PI/180)
                         try {
                             ctx.drawImage(
@@ -787,7 +787,7 @@ function start() {
                         ctx.restore()
 
                         ctx.save();
-                        ctx.translate(feeder.width / 3 * 2, feeder.height / 2);
+                        ctx.translate(feeder.position[2] / 3 * 2, feeder.position[3] / 2);
                         ctx.rotate(feeder.rot*Math.PI/180)
                         this.draw_part(ctx, footprint)
                         this.draw_part_cross(ctx)
@@ -798,8 +798,8 @@ function start() {
                         let metrics = ctx.measureText(txt);
                         ctx.fillText(
                             txt,
-                            feeder.width / 2 - metrics.width/2,
-                            feeder.height / 2
+                            feeder.position[2] / 2 - metrics.position[2]/2,
+                            feeder.position[3] / 2
                         );
 
                     }
@@ -824,33 +824,37 @@ function start() {
                 metrics = ctx.measureText(txt);
                 ctx.fillText(
                     txt,
-                    feeder.width / 2 - metrics.width/2,
-                    feeder.height - 3 - d
+                    feeder.position[2] / 2 - metrics.width /2,
+                    feeder.position[3] - 3 - d
                 );
 
                 if (feeder.state != 0) {
                     ctx.beginPath();
                     ctx.lineWidth = d;
                     ctx.globalAlpha = 0.5
-                    ctx.rect(d/2, d/2, feeder.width - d, feeder.height - d);
+                    ctx.rect(d/2, d/2, feeder.position[2] - d, feeder.position[3] - d);
                     ctx.stroke();
                 }
                 ctx.restore();
 
                 ctx.beginPath();
-                ctx.rect(0, 0, feeder.width, feeder.height);
+                ctx.rect(0, 0, feeder.position[2], feeder.position[3]);
                 ctx.stroke();
 
                 ctx.restore();
             },
-            draw_belt(ctx, name, feeder, part) {
+            draw_belt_feeder(ctx, name, feeder, part) {
+                let d = 2; // margin
+
+                //draw the crosses (main positions)
+                ctx.strokeStyle = "red"
+                this.draw_cross(ctx, feeder.start[0], feeder.start[1])
+                this.draw_cross(ctx, feeder.current[0], feeder.current[1])
+                this.draw_cross(ctx, feeder.current[0] + feeder.offset[0], feeder.current[1] + feeder.offset[1])
+                this.draw_cross(ctx, feeder.end[0], feeder.end[1])
 
                 ctx.fillStyle = "cyan"
                 ctx.strokeStyle = "cyan"
-
-                this.draw_cross(ctx, feeder.x, feeder.y)
-                this.draw_cross(ctx, feeder.x_end, feeder.y_end)
-
                 ctx.save();
                 ctx.translate(feeder.x + feeder.x_offset, feeder.y + feeder.y_offset)
                 ctx.rotate(feeder.rot*Math.PI/180)
@@ -858,8 +862,41 @@ function start() {
                     let footprint = getFootprint(part.footprint)
                     this.draw_part(ctx, footprint)
                     this.draw_part_cross(ctx)
-                } catch { }
+                } catch {}
 
+                ctx.fillText(name, feeder.position[0] + 2.5, feeder.position[1] + 4);
+
+                ctx.restore();
+
+                ctx.save();
+                ctx.translate(feeder.position[0], feeder.position[1])
+
+                ctx.save();
+                ctx.font = "5px Arial";
+                let txt = this.context.const.feeder_state[feeder.state]
+
+                if (feeder.state == 1) {ctx.fillStyle = "green"; ctx.strokeStyle = "green"}
+                if (feeder.state == 2) {ctx.fillStyle = "red"; ctx.strokeStyle = "red"}
+
+                metrics = ctx.measureText(txt);
+                ctx.fillText(
+                    txt,
+                    feeder.position[2] / 2 - metrics.width /2,
+                    feeder.position[3] - 3 - d
+                );
+
+                if (feeder.state != 0) {
+                    ctx.beginPath();
+                    ctx.lineWidth = d;
+                    ctx.globalAlpha = 0.5
+                    ctx.rect(d/2, d/2, feeder.position[2] - d, feeder.position[3] - d);
+                    ctx.stroke();
+                }
+                ctx.restore();
+
+                ctx.beginPath();
+                ctx.rect(0, 0, feeder.position[2], feeder.position[3]);
+                ctx.stroke();
                 ctx.restore();
 
             },

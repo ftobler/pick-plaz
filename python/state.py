@@ -471,11 +471,16 @@ class StateContext:
             }
 
     def _recalculate_fiducial_transform(self):
-        #refreshes everything on pcb except the fiducial
-        fiducial_designators = [part["designators"] for part in self.context["bom"] if part["fiducial"]][0]
-        transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], fiducial_designators)
-        self.nav["pcb"]["transform"] = transform
-        self.nav["pcb"]["transform_mse"] = float(mse)
+        try:
+            #refreshes everything on pcb except the fiducial
+            fiducial_designators = [part["designators"] for part in self.context["bom"] if part["fiducial"]][0]
+            transform, mse = fiducial.get_transform(self.nav["pcb"]["fiducials"], fiducial_designators)
+            self.nav["pcb"]["transform"] = transform
+            self.nav["pcb"]["transform_mse"] = float(mse)
+        except Exception as e:
+            print("unchecked exception!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (please fix)")
+            print(e)
+            pass
 
     def _save_fiducial_transform(self):
         #saves fiducial data to user files

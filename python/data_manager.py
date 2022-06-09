@@ -18,7 +18,7 @@ class ContextManager:
     part_state = ["ready", "placed", "error", "skip"]
     feeder_type = ["tray", "strip"]
     feeder_state = ["disabled", "ready", "empty"]
-    feeder_attribute = ["x", "y", "width", "height", "pitch", "x_offset", "y_offset"]
+    feeder_attribute = ["pitch", "x_offset", "y_offset"]
 
     def __init__(self):
         self.file_read()
@@ -146,12 +146,15 @@ class ContextManager:
 
 
     def modify_feeder_attribute(self, feeder_id, attribute, value):
-        if not attribute in self.feeder_attribute:
-            raise Exception("setting or modifying feeder attribute %s is not allowed" % attribute)
         feeder = self._get_feeder_by_id(feeder_id)
-        feeder[attribute] = value
-
-
+        if attribute == "pitch":
+            feeder[attribute] = value
+        if attribute == "x_offset":
+            feeder["offset"][0] = value
+        if attribute == "y_offset":
+            feeder["offset"][1] = value
+        if attribute == "position":
+            feeder[attribute] = int(value)
 
 
     def _get_feeder_by_id(self, feeder_id, state=None):

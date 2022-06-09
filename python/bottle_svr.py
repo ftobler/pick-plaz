@@ -194,7 +194,7 @@ class BottleServer:
             elif method == "state":
                 self.context.modify_feeder_state(feeder, _int_none(r["data"]))
             elif method in self.context.feeder_attribute:
-                self.context.modify_feeder_attribute(feeder, method, _int(r["data"]))
+                self.context.modify_feeder_attribute(feeder, method, _float(r["data"]))
         except Exception as e:
             raise e
 
