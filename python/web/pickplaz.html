@@ -17,6 +17,7 @@
     <transition name="transition-alert"><div class="alert" v-if="dialogs.length > 0">
         <div class="alert-content">
             <h1>{{dialogs[0].title}}</h1>
+            <div v-if="dialogs[0].close" class="alert-close" v-on:click="do_dialog_quit(null)">close</div>
             <div class="alert-icon">{{dialogs[0].material_image}}</div>
             <div class="alert-inner">
                 <div style="height: 12px" v-if="!dialogs[0].input"> </div>
@@ -26,7 +27,7 @@
                 <datalist  v-if="dialogs[0].dropdown" id="datalist">
                     <option v-for="s in dialogs[0].dropdown">{{s}}</option>
                 </datalist >
-                <div class="alert-selection" v-for='text in dialogs[0].selection'>{{dialogs[0].text}}</div>
+                <div class="alert-selection" v-for='text in dialogs[0].selection'>{{text}}</div>
             </div>
             <div class="alert-button-list">
                 <div class="alert-button" v-for="answer in dialogs[0].answers" v-on:click="do_dialog_quit(answer)">{{answer}}</div>
@@ -100,11 +101,11 @@
                     <td><input type="checkbox" v-model="part.place" v-on:change="do_modify_bom_doplace(part, i)" v-if="!part.fiducial"></td>
                     <td><input type="checkbox" v-model="part.fiducial" v-on:change="do_modify_bom_isfiducial(part, i)"></td>
                     <td>{{Object.keys(part.designators).length}}x {{part.value}}</td>
-                    <td><div class="table-button material" v-on:click="do_modify_bom_footprint(part, i)">edit</div> {{part.footprint}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_bom_footprint(part, i)">edit</div>{{part.footprint}}</td>
                     <td><img v-bind:src="part.footprint | footprint_img_path"/> &nbsp;&nbsp;<img v-bind:src="part.footprint | footprint_sym_path"/></td>
                     <td><a v-bind:href="'https://lcsc.com/search?q=' + part.partnr" target="_blank">{{part.partnr}}</a></td>
-                    <td><div class="table-button material" v-on:click="do_modify_bom_feeder(part, i)">edit</div> {{part.feeder}}</td>
-                    <td><div class="table-button material" v-on:click="do_modify_bom_rotation(part, i)">refresh</div> {{part.rot}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_bom_feeder(part, i)">edit</div>{{part.feeder}}</td>
+                    <td><div class="table-button material" v-on:click="do_modify_bom_rotation(part, i)">refresh</div>{{part.rot}}</td>
                     <td class="cell-inline-table" colspan=6>
                         <table class="cell-inline-table">
                             <tr v-for="(designator, id, index) in part.designators"  v-bind:class="{ error: designator.state==2, placed: designator.state==1, skip: designator.state==3 }">
@@ -173,6 +174,8 @@
                     </td>
                 </tr>
             </table>
+            <br>
+            <i style="float: right; color: gray">feeders can be added or removed by editing 'context.json'</i>
         </div></transition>
 
         <transition name="transition-page"><div class="page" v-if="page == 2">

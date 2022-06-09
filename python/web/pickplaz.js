@@ -363,12 +363,11 @@ function start() {
                 this.show_dialog({
                     title: "Edit BOM",
                     msg: "Select a new Feeder name.",
-                    dropdown: feeder_names,
-                    answers: ["OK", "Cancel"],
+                    answers: feeder_names,
                     material_image: "edit",
                     callback: (data, answer) => {
-                        if (answer == "OK") {
-                            api.bom_modify("feeder", i, data.input_data, () => {
+                        if (answer != null) {
+                            api.bom_modify("feeder", i, answer, () => {
                                 this.poll_data()
                             })
                         }
@@ -386,28 +385,6 @@ function start() {
                 })
             },
 
-            do_modify_feeder_name(feeder) {
-                this.show_dialog({
-                    title: "Edit Feeder",
-                    msg: "Enter a new Feeder name.",
-                    input: true,
-                    answers: ["OK", "Cancel"],
-                    input_data: feeder,
-                    material_image: "edit",
-                    callback: (data, answer) => {
-                        if (answer == "OK") {
-                            api.feeder_modify("rename", feeder, data.input_data, () => {
-                                this.poll_data()
-                            })
-                        }
-                    }
-                })
-            },
-            do_modify_feeder_type(feeder) {
-                api.feeder_modify("type", feeder, null, () => {
-                    this.poll_data()
-                })
-            },
             do_modify_feeder_rotation(feeder) {
                 api.feeder_modify("rotation", feeder, null, () => {
                     this.poll_data()
@@ -498,6 +475,9 @@ function start() {
                 }
                 if (config.dropdown) {
                     config.input = true
+                }
+                if (config.close == undefined) {
+                    config.close = true
                 }
                 if (config.dropdown && config.input_data == undefined) {
                     if (config.dropdown.length > 0) {

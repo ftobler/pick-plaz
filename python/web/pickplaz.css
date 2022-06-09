@@ -462,7 +462,7 @@ input:checked + .slider:before {
     text-align: left;
     vertical-align: top;
     min-height: 200px;
-    width: 550px;
+    width: 610px;
     transform: skew(-15deg);
     overflow: hidden;
     position: relative;
@@ -473,12 +473,27 @@ input:checked + .slider:before {
     margin-left: 15px;
     margin-bottom: 0px;
 }
+.alert-close {
+    float: right;
+    font-family: "Material Icons";
+    font-size: 24px;
+    margin-right: 20px;
+    margin-top: -37px;
+}
+.alert-close:hover {
+    background-color: rgb(175, 57, 57);
+}
+.alert-close:active {
+    background-color: rgb(245, 115, 115);
+}
+
+
 .alert-inner {
     transform: skew(15deg);
     margin-left: 110px;
     margin-right: 80px;
     margin-top: 20px;
-    margin-bottom: 90px;
+    margin-bottom: 50px;
 }
 
 .alert-inner input,.alert-inner select,.alert-inner option {
@@ -498,10 +513,10 @@ input:checked + .slider:before {
 }
 
 .alert-button-list {
-    position: absolute;
+    position: relative;
     bottom: 10px;
-    right: 10px;
-    left: 0px;
+    margin-right: 10px;
+    margin-left: 0px;
     text-align: right;
 }
 .alert-button {
