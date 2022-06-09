@@ -145,24 +145,6 @@ class ContextManager:
             feeder["state"] = state
 
 
-    def modify_feeder_delete(self, feeder_id):
-        if feeder_id in self.context["feeder"]:
-            del self.context["feeder"][feeder_id]
-
-
-    def modify_feeder_create(self, feeder_id):
-        self.context["feeder"][feeder_id] = {
-            "type": 0,
-            "x": 100,
-            "y": 100,
-            "width": 50,
-            "height": 50,
-            "pitch": None,
-            "rot": 0,
-            "state": 1
-        }
-
-
     def modify_feeder_attribute(self, feeder_id, attribute, value):
         if not attribute in self.feeder_attribute:
             raise Exception("setting or modifying feeder attribute %s is not allowed" % attribute)

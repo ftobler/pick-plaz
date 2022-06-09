@@ -28,7 +28,7 @@ class BottleServer:
         self.port = port
         self.listen = listen
 
-        self.thread = threading.Thread(target=self._run,args=())
+        self.thread = threading.Thread(target=self._run, args=())
         self.thread.name = "BottleServerThread"
         self.thread.daemon = True
         self.thread.start()
@@ -193,10 +193,6 @@ class BottleServer:
                 self.context.modify_feeder_rot(feeder, _int_none(r["data"]))
             elif method == "state":
                 self.context.modify_feeder_state(feeder, _int_none(r["data"]))
-            elif method == "delete":
-                self.context.modify_feeder_delete(feeder)
-            elif method == "create":
-                self.context.modify_feeder_create(feeder)
             elif method in self.context.feeder_attribute:
                 self.context.modify_feeder_attribute(feeder, method, _int(r["data"]))
         except Exception as e:

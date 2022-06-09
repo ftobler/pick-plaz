@@ -321,6 +321,25 @@ tr.skip {
     background-color: #ffffff38;
 }
 
+.badge {
+    background-color: #ffffff17;
+    border-radius: 100px;
+    display: inline-block;
+    margin: 3px;
+    padding-right: 10px;
+    padding-left: 10px;
+    vertical-align: middle;
+}
+.badge input {
+    margin: 8px;
+    vertical-align: middle
+}
+.badge b {
+    display: inline-block;
+    padding-top: 4px;
+    height: 28px;
+}
+
 
 
 

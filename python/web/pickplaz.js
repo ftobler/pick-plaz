@@ -446,38 +446,6 @@ function start() {
                     this.poll_data()
                 })
             },
-            do_feeder_delete(feeder) {
-                this.show_dialog({
-                    title: "Delete Feeder",
-                    msg: "Confirm to deltee Feeder '" + feeder + "'.",
-                    answers: ["OK", "Cancel"],
-                    material_image: "delete",
-                    callback: (data, answer) => {
-                        if (answer == "OK") {
-                            api.feeder_modify("delete", feeder, null, () => {
-                                this.poll_data()
-                            })
-                        }
-                    }
-                })
-
-            },
-            do_feeder_create() {
-                this.show_dialog({
-                    title: "Create Feeder",
-                    msg: "Enter a new Feeder name.",
-                    input: true,
-                    answers: ["OK", "Cancel"],
-                    material_image: "edit",
-                    callback: (data, answer) => {
-                        if (answer == "OK") {
-                            api.feeder_modify("create", data.input_data, null, () => {
-                                this.poll_data()
-                            })
-                        }
-                    }
-                })
-            },
 
 
 
