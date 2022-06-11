@@ -28,7 +28,7 @@ class ContextManager:
         if not filename.endswith(".json"):
             filename += ".json"
         with open("user/context/%s" % filename, "w") as f:
-            json.dump(self.context, f)
+            json.dump(self.context, f, indent=4)
         print("context data saved to '%s'" % filename)
 
     def file_list(self):

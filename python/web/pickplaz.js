@@ -538,17 +538,17 @@ function start() {
                     ctx.globalAlpha = 0.5;
                     ctx.strokeStyle = "yellow";
                     ctx.beginPath();
-                    ctx.moveTo(this.nav.camera.x, this.nav.bed.x-10);
-                    ctx.lineTo(this.nav.camera.x, this.nav.bed.x+this.nav.bed.width+10);
-                    ctx.moveTo(this.nav.bed.y-10, this.nav.camera.y);
-                    ctx.lineTo(this.nav.bed.y+this.nav.bed.height+10, this.nav.camera.y);
+                    ctx.moveTo(this.nav.camera.x, this.nav.bed[0]-10);
+                    ctx.lineTo(this.nav.camera.x, this.nav.bed[0]+this.nav.bed[2]+10);
+                    ctx.moveTo(this.nav.bed[1]-10, this.nav.camera.y);
+                    ctx.lineTo(this.nav.bed[1]+this.nav.bed[3]+10, this.nav.camera.y);
                     ctx.stroke();
                     ctx.restore();
                 }
 
                 //draw bed outline
                 ctx.strokeStyle = "white"
-                ctx.beginPath(); ctx.rect(this.nav.bed.x, this.nav.bed.y, this.nav.bed.width, this.nav.bed.height); ctx.stroke();
+                ctx.beginPath(); ctx.rect(this.nav.bed[0], this.nav.bed[1], this.nav.bed[2], this.nav.bed[3]); ctx.stroke();
                 ctx.scale(1, 1)
 
                 //draw detected fiducial

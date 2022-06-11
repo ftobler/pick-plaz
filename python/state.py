@@ -64,12 +64,7 @@ class StateContext:
                 "res": 20, # resolution in pixel per millimeter
                 "framenr": 1245,
             },
-            "bed": {
-                "x": -0.0,
-                "y": -0.0,
-                "width": 428,
-                "height": 415,
-            },
+            "bed": [0, 0, 428, 415],
             "pcb": {
                 "transform": [1, 0, 0, -1, 10, -10],
                 "transform_mse" : 0.1,
@@ -90,8 +85,8 @@ class StateContext:
             },
             "state": "idle",
         }
-        self.robot.x_bounds = (self.nav["bed"]["x"], self.nav["bed"]["width"])
-        self.robot.y_bounds = (self.nav["bed"]["y"], self.nav["bed"]["height"])
+        self.robot.x_bounds = (self.nav["bed"][0], self.nav["bed"][2])
+        self.robot.y_bounds = (self.nav["bed"][1], self.nav["bed"][2])
 
         try:
             with open("user/fiducial.json") as f:
