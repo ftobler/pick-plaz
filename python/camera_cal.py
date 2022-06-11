@@ -6,8 +6,8 @@ import calibrator
 
 import debug
 
+#should be the center pos of the aruco matrix in machine coordinates
 CALIBRATION_POS = (18.79,20.04)
-CALIBRATION_POS2 = (74.25+36,66.36-0)
 
 aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_100)
 arucoParams = cv2.aruco.DetectorParameters_create()
@@ -17,6 +17,8 @@ def calibrate(robot, camera):
     Drive to calibration board and calibrate
     """
 
+    #array of positions where a picture is taken. Ehere (0/0) is
+    #the aruco center position
     positions = np.array([
         (0,0),
         (1,0),
@@ -28,20 +30,6 @@ def calibrate(robot, camera):
         (0,-1),
         (1,-1),
     ]) * 10 + np.asarray(CALIBRATION_POS)[np.newaxis]
-
-    # positions2 = np.array([
-    #     (0,0),
-    #     (1,0),
-    #     (1,1),
-    #     (0,1),
-    #     (-1,1),
-    #     (-1,0),
-    #     (-1,-1),
-    #     (0,-1),
-    #     (1,-1),
-    # ]) * 10 + np.asarray(CALIBRATION_POS2)[np.newaxis]
-
-    # positions = np.concatenate((positions, positions2), axis=0)
 
     markers_corners = []
     marker_ids = []
