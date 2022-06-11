@@ -6,8 +6,8 @@ import calibrator
 
 import debug
 
-CALIBRATION_POS = (18.3,17.3)
-CALIBRATION_POS2 = (74.25,66.36)
+CALIBRATION_POS = (18.79,20.04)
+CALIBRATION_POS2 = (74.25+36,66.36-0)
 
 aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_100)
 arucoParams = cv2.aruco.DetectorParameters_create()
@@ -29,24 +29,25 @@ def calibrate(robot, camera):
         (1,-1),
     ]) * 10 + np.asarray(CALIBRATION_POS)[np.newaxis]
 
-    positions2 = np.array([
-        (0,0),
-        (1,0),
-        (1,1),
-        (0,1),
-        (-1,1),
-        (-1,0),
-        (-1,-1),
-        (0,-1),
-        (1,-1),
-    ]) * 10 + np.asarray(CALIBRATION_POS2)[np.newaxis]
+    # positions2 = np.array([
+    #     (0,0),
+    #     (1,0),
+    #     (1,1),
+    #     (0,1),
+    #     (-1,1),
+    #     (-1,0),
+    #     (-1,-1),
+    #     (0,-1),
+    #     (1,-1),
+    # ]) * 10 + np.asarray(CALIBRATION_POS2)[np.newaxis]
 
-    positions = np.concatenate((positions, positions2), axis=0)
+    # positions = np.concatenate((positions, positions2), axis=0)
 
     markers_corners = []
     marker_ids = []
 
     for i, (x,y) in enumerate(positions):
+        print(x, y)
         robot.drive(x, y)
         robot.done()
         time.sleep(0.5)

@@ -31,7 +31,7 @@ class Picker():
                 self.DY = d["DY"]
                 print("picker default calibration")
 
-        self.PICK_Z = -18
+        self.PICK_Z = -16.5
 
     def _detect_pick_location(self, robot_pos, robot):
 

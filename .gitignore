@@ -147,3 +147,4 @@ conf.yml
 pickplazstm/Debug/*
 pickplazstm/Release/*
 python/user/*
+backup/*

@@ -622,17 +622,21 @@ function start() {
 
                 //draw feeder
                 for (const [name, feeder] of Object.entries(this.context.feeder)) {
-                    let part = undefined;
-                    for (let entry of this.context.bom) {
-                        if (entry.feeder == name) {
-                            part = entry
+                    try {
+                        let part = undefined
+                        for (let entry of this.context.bom) {
+                            if (entry.feeder == name) {
+                                part = entry
+                            }
                         }
-                    }
 
-                    if (feeder.type == 0)
-                        this.draw_tray_feeder(ctx, name, feeder, part)
-                    if (feeder.type == 1)
-                        this.draw_belt_feeder(ctx, name, feeder, part)
+                        if (feeder.type == 0)
+                            this.draw_tray_feeder(ctx, name, feeder, part)
+                        if (feeder.type == 1)
+                            this.draw_belt_feeder(ctx, name, feeder, part)
+                    } catch (e) {
+                        console.log(e)
+                    }
                 }
             },
             draw_camera(ctx, image, position) {
