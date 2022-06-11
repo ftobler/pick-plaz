@@ -65,6 +65,11 @@ class StateContext:
                 "framenr": 1245,
             },
             "bed": [0, 0, 428, 415],
+            "bed_shapes": [
+                [18.79-55/2,20.04-55/2,55,55], #calibration pcb
+                [0,63.14,413.86,175.31],       #main area
+                [33.05, 254.15, 50, 90],       #bottomup
+            ],
             "pcb": {
                 "transform": [1, 0, 0, -1, 10, -10],
                 "transform_mse" : 0.1,

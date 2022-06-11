@@ -551,6 +551,14 @@ function start() {
                 ctx.beginPath(); ctx.rect(this.nav.bed[0], this.nav.bed[1], this.nav.bed[2], this.nav.bed[3]); ctx.stroke();
                 ctx.scale(1, 1)
 
+                //draw other bed shape stuff
+                ctx.strokeStyle = "gray"
+                for (let shape of this.nav.bed_shapes) {
+                    ctx.beginPath(); ctx.rect(shape[0], shape[1], shape[2], shape[3]);
+                    ctx.stroke();
+                }
+                ctx.scale(1, 1)
+
                 //draw detected fiducial
                 if (this.elements.show_symbol) {
                     ctx.strokeStyle = "yellow"
