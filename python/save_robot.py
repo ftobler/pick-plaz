@@ -10,8 +10,8 @@ class SaveRobot(pick_plaz_robot.Robot):
     def __init__(self, comport=None, pos_logger=None):
         super().__init__(comport)
 
-        self.x_bounds = (0,400)
-        self.y_bounds = (0,400)
+        self.x_bounds = (0,428)
+        self.y_bounds = (0,415)
 
         self.pos_logger = pos_logger
 
