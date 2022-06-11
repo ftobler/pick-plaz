@@ -90,6 +90,8 @@ class StateContext:
             },
             "state": "idle",
         }
+        self.robot.x_bounds = (self.nav["bed"]["x"], self.nav["bed"]["width"])
+        self.robot.y_bounds = (self.nav["bed"]["y"], self.nav["bed"]["height"])
 
         try:
             with open("user/fiducial.json") as f:

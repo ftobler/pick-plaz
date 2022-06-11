@@ -4,9 +4,6 @@
 Pick-plaz configuration file. The configuration is read at programm launch.
 """
 
-robot:
-    board_size : [400,400] # size of robot area in mm
-
 camera_calibration:
     markerboard:
         size_x :        10 #number of markers in x direction
