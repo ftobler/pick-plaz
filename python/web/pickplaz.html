@@ -42,9 +42,6 @@
         <div class="menu-item" v-bind:class="{active : page == 2}" v-on:click="do_nav(2); setTimeout(() => {draw_stuff()})">Navigate</div>
         <div class="menu-item menu-material" v-on:click="menu_hamburger = !menu_hamburger" v-bind:class="{active : menu_hamburger}">menu
             <transition name="transition-hamburger"><div v-if="menu_hamburger">
-                <div class="menu-menu-item" v-on:click="do_sequence('belt_set_start')">belt_set_start</div>
-                <div class="menu-menu-item" v-on:click="do_sequence('belt_set_end')">belt_set_end</div>
-                <div class="menu-menu-item" v-on:click="do_sequence('belt_next')">belt_next</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('home')"><div class="menu-item-material">home</div>Home Robot</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('motor_off')"><div class="menu-item-material">power_off</div>Motor Off</div>
                 <div class="menu-menu-item" v-on:click="do_sequence('motor_on')"><div class="menu-item-material">power</div>Motor On</div>
