@@ -184,12 +184,16 @@
                 <label class="switcher-label">show camera</label>
                 <label class="switch"><input type="checkbox" checked v-model="elements.center_camera"><span class="slider round"></span></label>
                 <label class="switcher-label">center camera</label>
-                <!--<label class="switch"><input type="checkbox" checked v-model="elements.show_components"><span class="slider round"></span></label>
-                <label class="switcher-label">show component graphics</label>-->
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_symbol"><span class="slider round"></span></label>
                 <label class="switcher-label">show symbols</label>
                 <label class="switch"><input type="checkbox" checked v-model="elements.show_parts"><span class="slider round"></span></label>
                 <label class="switcher-label">show parts</label>
+                <label class="switch"><input type="checkbox" checked v-model="elements.light_topdn" v-on:change="api.light_control('topdn', elements.light_topdn)"><span class="slider round"></span></label>
+                <label class="switcher-label">light topdn</label>
+                <!-- <label class="switch"><input type="checkbox" checked v-model="elements.light_botup" v-on:change="api.light_control('botup',  elements.light_botup)"><span class="slider round"></span></label>
+                <label class="switcher-label">light botup</label> --><!-- not working -->
+                <label class="switch"><input type="checkbox" checked v-model="elements.light_tray" v-on:change="api.light_control('tray', elements.light_tray)"><span class="slider round"></span></label>
+                <label class="switcher-label">light tray</label>
                 <span style="width: 250px; display: inline-block; text-align: left;"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm</label></span>
                 <span style="width: 250px; display: inline-block; text-align: left;"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
                 <button class="fiducial-assign" v-for="(part, id)  in fiducial_bom.designators" v-on:click="fiducial_assing_current_location(id, 'assign')">{{id}}<div class="fiducial-assign-hint">Assign Fiducial</div></button>

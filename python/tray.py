@@ -38,6 +38,7 @@ class Tray:
         # self._plot_search_positions(search_positions, feeder)
 
         robot.light_topdn(False)
+        self.robot.light_tray(True)
 
         if "last_found_index" in feeder:
             last_found_index = feeder["last_found_index"]
@@ -75,6 +76,7 @@ class Tray:
         else:
             raise pick.NoPartFoundException("Could not find part to pick")
 
+        self.robot.light_tray(False)
         robot.light_topdn(True)
 
         #angle in degrees

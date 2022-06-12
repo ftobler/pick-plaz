@@ -95,7 +95,7 @@ class BottleServer:
     def _alertquit(self):
         r = dict(request.query.decode())
         try:
-            self.event_put_fcn( {
+            self.event_put_fcn({
                 "type": "alertquit",
                 "id": _int(r["id"]),
                 "answer": _str(r["answer"])
@@ -198,6 +198,17 @@ class BottleServer:
         except Exception as e:
             raise e
 
+    def _light_control(self):
+        r = dict(request.query.decode())
+        try:
+            self.event_put_fcn({
+                "type": "light_control",
+                "light": _str(r["light"]),
+                "state": _bool(r["state"])
+            })
+        except Exception as e:
+            raise e
+
     def _home(self):
         return static_file("pickplaz.html", root='web')
 
@@ -222,6 +233,7 @@ class BottleServer:
         route('/api/bom_modify', method='POST')(self._bom_modify)
         route('/api/part_modify', method='POST')(self._part_modify)
         route('/api/feeder_modify', method='POST')(self._feeder_modify)
+        route('/api/light_control', method='POST')(self._light_control)
         route('/<name:path>')(self._files)
 
         print(f"Starting server at {self.listen}:{self.port}")

@@ -1107,6 +1107,12 @@ api = {
             api_exception("feeder_modify rejected the request client side '" + method + "'");
         }
     },
+    light_control(light, state, callback) {
+        apicall("light_control", {
+            light: light,
+            state: state
+        }, callback)
+    }
 
 }
 

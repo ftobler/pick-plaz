@@ -160,12 +160,12 @@ class StateContext:
 
         self.nav["state"] = "init"
 
+        #set robot to initial state
         try:
             self.robot.vacuum(False)
             self.robot.valve(False)
             self.robot.home()
-            self.robot.light_topdn(True)
-
+            self._prepare_light()
         except AbortException as e:
             self._push_alert(e)
             return self.idle_state
@@ -247,6 +247,7 @@ class StateContext:
                     self._reset_error_parts()
                     return self.run_state
                 elif item["method"] == "home":
+                    self._prepare_light()
                     self.robot.home()
                     self.robot.done()
                 elif item["method"] == "motor_off":
@@ -254,6 +255,7 @@ class StateContext:
                 elif item["method"] == "motor_on":
                     self.robot.steppers(True)
                 elif item["method"] == "calibrate_topdn":
+                    self._prepare_light()
                     self.cal = camera_cal.calibrate(self.robot, self.camera)
                     with open("cal.pkl", "wb") as f:
                         pickle.dump(self.cal, f)
@@ -264,7 +266,7 @@ class StateContext:
                     except Exception as e:
                         print(e)
                 elif item["method"] == "auto_set_fiducial":
-
+                    self._prepare_light()
                     fiducial_designators = [part["designators"] for part in self.context["bom"] if part["fiducial"]][0]
 
                     for name, part in fiducial_designators.items():
@@ -274,6 +276,9 @@ class StateContext:
                         self.nav["pcb"]["fiducials"][name] = self.fd()
 
                 elif item["method"] == "shutdown":
+                    self.robot.light_topdn(False)
+                    self.robot.light_botup(False)
+                    self.robot.light_tray(False)
                     import subprocess
                     process = subprocess.run(['shutdown', '-h', '+0'],
                                               stdout=subprocess.PIPE,
@@ -297,6 +302,7 @@ class StateContext:
                     name = item["param"]
                     self.belt.set_end(self.context["feeder"][name])
                 elif item["method"] == "test_feeder":
+                    self._prepare_light()
                     name = item["param"]
                     feeder = self.context["feeder"][name]
                     if feeder["type"] == tray.TYPE_NUMBER:
@@ -317,8 +323,18 @@ class StateContext:
                         self.belt.pick(feeder, self.robot, only_camera=True)
                 elif item["method"] == "reset_board":
                     self._reset_for_new_board()
-            else:
-                self._handle_common_event(item)
+            elif item["type"] == "alertquit":
+                if "alert" in self.nav:
+                    del self.nav["alert"]
+            elif item["type"] == "light_control":
+                channel = item["light"]
+                enable = item["state"]
+                if channel == "topdn":
+                    self.robot.light_topdn(enable)
+                elif channel == "botup":
+                    self.robot.light_botup(enable)
+                elif channel == "tray":
+                    self.robot.light_tray(enable)
         except calibrator.CalibrationError as e:
             self._push_alert(f"Calibration Failed: {e}")
         except save_robot.OutOfSaveSpaceException as e:
@@ -460,11 +476,6 @@ class StateContext:
 
         self.alert_id += 1
 
-    def _handle_common_event(self, item):
-        if item["type"] == "alertquit":
-            if "alert" in self.nav:
-                del self.nav["alert"]
-
     def _reset_fiducials(self):
         self.nav["pcb"] = {
                 "transform": [1, 0, 0, -1, 10, -10],
@@ -489,6 +500,12 @@ class StateContext:
         with open("user/fiducial.json", "w") as f:
             json.dump(self.nav["pcb"]["fiducials"], f)
             print("fiducial data saved to 'fiducial.json'")
+
+    #set all lamps to normal operating mode
+    def _prepare_light(self):
+        self.robot.light_topdn(True)
+        self.robot.light_botup(False)
+        self.robot.light_tray(False)
 
 
 def createdir(directory):

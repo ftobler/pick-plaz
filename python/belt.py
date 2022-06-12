@@ -90,6 +90,10 @@ class Belt:
         x = p[0] + x_pitch
         y = p[1] + y_pitch
 
+        #setup correct light
+        robot.light_topdn(True)
+        robot.light_tray(False)
+
         #drive to the hole and correct its position
         robot.drive(x, y)
         x, y = self.find_hole()

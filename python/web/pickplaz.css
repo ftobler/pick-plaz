@@ -355,8 +355,9 @@ canvas {
 .switch {
     position: relative;
     display: inline-block;
-    width: 40px;
-    height: 24px;
+    width: 30px;
+    height: 20px;
+    top: 2px
 }
 .switch input {
     opacity: 0;
@@ -377,10 +378,10 @@ canvas {
 .slider:before {
     position: absolute;
     content: "";
-    height: 16px;
-    width: 16px;
-    left: 4px;
-    bottom: 4px;
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
@@ -389,9 +390,9 @@ input:checked + .slider {
     background-color: #2196F3;
 }
 input:checked + .slider:before {
-    -webkit-transform: translateX(16px);
-    -ms-transform: translateX(16px);
-    transform: translateX(16px);
+    -webkit-transform: translateX(10px);
+    -ms-transform: translateX(10px);
+    transform: translateX(10px);
 }
 .slider.round { /* Rounded sliders */
     border-radius: 100px;
