@@ -3,6 +3,7 @@ import json
 from importlib import reload
 import pnp_bom_parser
 import os
+from belt import Belt
 
 FEEDER_STATE_DIABLED = 0
 FEEDER_STATE_READY = 1
@@ -143,6 +144,15 @@ class ContextManager:
             feeder["state"] = (feeder["state"] + 1) % len(self.feeder_state)
         else:
             feeder["state"] = state
+
+    def modify_feeder_pos(self, feeder_id, pos=None):
+        feeder = self._get_feeder_by_id(feeder_id)
+        if pos == None:
+            pos = 0
+        feeder["pos"] = pos
+        #make a temporary belt object to invoke recalculate_fields() on the belt
+        belt = Belt(None, None)
+        belt.recalculate_fields(feeder)
 
 
     def modify_feeder_attribute(self, feeder_id, attribute, value):

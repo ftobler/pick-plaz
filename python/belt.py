@@ -100,6 +100,7 @@ class Belt:
 
         #save the newly found hole position
         state["current"] = [x, y]
+        state["pos"] += 1
 
         #pick the part
         #TODO test angle
@@ -112,9 +113,10 @@ class Belt:
 
 
     def recalculate_fields(self, state):
-        self._recalculate_fields()
+        self._recalculate_fields(state)
 
-
+    #recalculate capacity and carry over pos or truncate it.
+    #reccalculate current-position from pos.
     def _recalculate_fields(self, state):
         p_start = np.array(state["start"])     #the start hole of the belt must be given
         p_end = np.array(state["end"])         #the last hole of the belt must be given

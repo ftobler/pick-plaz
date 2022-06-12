@@ -193,6 +193,8 @@ class BottleServer:
                 self.context.modify_feeder_rot(feeder, _int_none(r["data"]))
             elif method == "state":
                 self.context.modify_feeder_state(feeder, _int_none(r["data"]))
+            elif method == "pos":
+                self.context.modify_feeder_pos(feeder, _int_none(r["data"]))
             elif method in self.context.feeder_attribute:
                 self.context.modify_feeder_attribute(feeder, method, _float(r["data"]))
         except Exception as e:
