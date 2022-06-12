@@ -838,12 +838,6 @@ function start() {
             draw_belt_feeder(ctx, name, feeder, part) {
                 let d = 2; // margin
 
-                //draw the crosses (main positions)
-                ctx.strokeStyle = "red"
-                this.draw_cross(ctx, feeder.start[0], feeder.start[1])
-                this.draw_cross(ctx, feeder.current[0], feeder.current[1])
-                this.draw_cross(ctx, feeder.current[0] + feeder.offset[0], feeder.current[1] + feeder.offset[1])
-                this.draw_cross(ctx, feeder.end[0], feeder.end[1])
 
                 ctx.fillStyle = "cyan"
                 ctx.strokeStyle = "cyan"
@@ -871,11 +865,7 @@ function start() {
                 if (feeder.state == 2) {ctx.fillStyle = "red"; ctx.strokeStyle = "red"}
 
                 metrics = ctx.measureText(txt);
-                ctx.fillText(
-                    txt,
-                    feeder.position[2] / 2 - metrics.width /2,
-                    feeder.position[3] - 3 - d
-                );
+                ctx.fillText(txt, feeder.position[2] / 2 - metrics.width / 2, feeder.position[3] - 3 - d);
 
                 if (feeder.state != 0) {
                     ctx.beginPath();
@@ -890,6 +880,32 @@ function start() {
                 ctx.rect(0, 0, feeder.position[2], feeder.position[3]);
                 ctx.stroke();
                 ctx.restore();
+
+                //draw the crosses (main positions)
+                ctx.strokeStyle = "red"
+                ctx.fillStyle = "red"
+                this.draw_cross(ctx, feeder.start[0], feeder.start[1])  //start
+                this.draw_cross(ctx, feeder.end[0], feeder.end[1])  //end
+                this.draw_cross(ctx, feeder.current[0], feeder.current[1])  //current
+                this.draw_cross(ctx, feeder.current[0] + feeder.offset[0], feeder.current[1] + feeder.offset[1]) //current hole
+                ctx.beginPath();  //circle on the current hole
+                ctx.arc(feeder.current[0], feeder.current[1], 0.75, 0, 2 * Math.PI)
+                ctx.stroke()
+                ctx.beginPath(); //line between the current hole and the pick position
+                ctx.moveTo(feeder.current[0], feeder.current[1])
+                ctx.lineTo(feeder.current[0] + feeder.offset[0], feeder.current[1] + feeder.offset[1])
+                ctx.stroke()
+                ctx.beginPath(); //line between start and end
+                ctx.moveTo(feeder.start[0], feeder.start[1])
+                ctx.lineTo(feeder.end[0], feeder.end[1])
+                ctx.stroke()
+
+                //draw text markers and info to the belt
+                ctx.font = "2px Arial"
+                this.draw_centered_text(ctx, "start", feeder.start[0], feeder.start[1] + 2)
+                this.draw_centered_text(ctx, "end", feeder.end[0], feeder.end[1] + 2)
+                this.draw_centered_text(ctx, "current", feeder.current[0], feeder.current[1] + 2)
+                this.draw_centered_text(ctx, feeder.pos + "/" + feeder.capacity, feeder.current[0] + feeder.offset[0], feeder.current[1] + feeder.offset[1] - 1)
 
             },
             draw_cross(ctx, x, y) {
@@ -950,6 +966,10 @@ function start() {
                 ctx.lineTo(0.1, -0.75)
                 ctx.lineTo(0, -1)
                 ctx.fill();
+            },
+            draw_centered_text(ctx, txt, x, y) {
+                let metrics = ctx.measureText(txt);
+                ctx.fillText(txt, x - metrics.width / 2, y);
             },
             part_state: function(i) {
                 return this.context.const.part_state[i]
