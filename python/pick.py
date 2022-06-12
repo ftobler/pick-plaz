@@ -96,6 +96,9 @@ class Picker():
 
     def calibrate(self, pos, robot, camera):
 
+        robot.light_topdn(False)
+        robot.light_tray(True)
+
         x, y = pos
         positions = []
         x0, y0, _ = self._detect_pick_location((x, y), robot)
@@ -122,6 +125,9 @@ class Picker():
         }
         with open("user/picker.json", "w") as f:
             json.dump(d, f)
+
+        robot.light_topdn(False)
+        robot.light_tray(False)
 
         print(f"Picker calibration correction : x={correction_x:.3f}, y={correction_y:.3f}, rms_error={rms_error:.3f}")
 
