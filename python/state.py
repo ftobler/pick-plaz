@@ -323,9 +323,6 @@ class StateContext:
                         self.belt.pick(feeder, self.robot, only_camera=True)
                 elif item["method"] == "reset_board":
                     self._reset_for_new_board()
-            elif item["type"] == "alertquit":
-                if "alert" in self.nav:
-                    del self.nav["alert"]
             elif item["type"] == "light_control":
                 channel = item["light"]
                 enable = item["state"]
@@ -335,6 +332,9 @@ class StateContext:
                     self.robot.light_botup(enable)
                 elif channel == "tray":
                     self.robot.light_tray(enable)
+            else:
+                self._handle_common_event(item)
+
         except calibrator.CalibrationError as e:
             self._push_alert(f"Calibration Failed: {e}")
         except save_robot.OutOfSaveSpaceException as e:
@@ -376,6 +376,11 @@ class StateContext:
             self._push_alert(e)
             return self.idle_state
         return self.run_state
+
+    def _handle_common_event(self, item):
+        if item["type"] == "alertquit":
+            if "alert" in self.nav:
+                del self.nav["alert"]
 
     def _reset_error_parts(self):
         for part in self.context["bom"]:
