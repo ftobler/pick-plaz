@@ -89,6 +89,11 @@ class StateContext:
                 "part" : [0,0,0],
             },
             "state": "idle",
+            "light": {
+                "topdn": True,
+                "botup": False,
+                "tray": False
+            }
         }
         self.robot.x_bounds = (self.nav["bed"][0], self.nav["bed"][2])
         self.robot.y_bounds = (self.nav["bed"][1], self.nav["bed"][2])
@@ -165,7 +170,6 @@ class StateContext:
             self.robot.vacuum(False)
             self.robot.valve(False)
             self.robot.home()
-            self._prepare_light()
         except AbortException as e:
             self._push_alert(e)
             return self.idle_state
@@ -199,6 +203,7 @@ class StateContext:
         """ In this state, the user makes machine setup and can freely roam the pick-platz bed"""
 
         self.nav["state"] = "setup"
+        self._prepare_light()
 
         try:
             item = self.event_queue.get()
@@ -210,7 +215,7 @@ class StateContext:
                     x, y = self._pcb2robot(x, y)
 
                 self.robot.default_settings()
-                self.robot.drive(x,y)
+                self.robot.drive(x, y)
 
                 # p.make_collage(self.robot, self.camera)
 
@@ -247,15 +252,14 @@ class StateContext:
                     self._reset_error_parts()
                     return self.run_state
                 elif item["method"] == "home":
-                    self._prepare_light()
                     self.robot.home()
                     self.robot.done()
+                    self.robot.drive(0, 0)
                 elif item["method"] == "motor_off":
                     self.robot.steppers(False)
                 elif item["method"] == "motor_on":
                     self.robot.steppers(True)
                 elif item["method"] == "calibrate_topdn":
-                    self._prepare_light()
                     self.cal = camera_cal.calibrate(self.robot, self.camera)
                     with open("cal.pkl", "wb") as f:
                         pickle.dump(self.cal, f)
@@ -266,7 +270,8 @@ class StateContext:
                     except Exception as e:
                         print(e)
                 elif item["method"] == "auto_set_fiducial":
-                    self._prepare_light()
+                    self.robot.light_topdn(True)
+                    self.robot.light_tray(False)
                     fiducial_designators = [part["designators"] for part in self.context["bom"] if part["fiducial"]][0]
 
                     for name, part in fiducial_designators.items():
@@ -302,7 +307,6 @@ class StateContext:
                     name = item["param"]
                     self.belt.set_end(self.context["feeder"][name])
                 elif item["method"] == "test_feeder":
-                    self._prepare_light()
                     name = item["param"]
                     feeder = self.context["feeder"][name]
                     if feeder["type"] == tray.TYPE_NUMBER:
@@ -327,11 +331,11 @@ class StateContext:
                 channel = item["light"]
                 enable = item["state"]
                 if channel == "topdn":
-                    self.robot.light_topdn(enable)
+                    self.nav["light"]["topdn"] = enable
                 elif channel == "botup":
-                    self.robot.light_botup(enable)
+                    self.nav["light"]["botup"] = enable
                 elif channel == "tray":
-                    self.robot.light_tray(enable)
+                    self.nav["light"]["tray"] = enable
             else:
                 self._handle_common_event(item)
 
@@ -508,9 +512,10 @@ class StateContext:
 
     #set all lamps to normal operating mode
     def _prepare_light(self):
-        self.robot.light_topdn(True)
-        self.robot.light_botup(False)
-        self.robot.light_tray(False)
+        light = self.nav["light"]
+        self.robot.light_topdn(light["topdn"])
+        self.robot.light_tray(light["tray"])
+        #botup is missing, but it's not working or used
 
 
 def createdir(directory):
@@ -572,6 +577,7 @@ def main(mock=False):
     robot.steppers(False)
     robot.light_topdn(False)
     robot.light_botup(False)
+    robot.light_tray(False)
 
     print("finished")
 

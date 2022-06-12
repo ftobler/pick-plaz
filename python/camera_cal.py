@@ -34,6 +34,9 @@ def calibrate(robot, camera):
     markers_corners = []
     marker_ids = []
 
+    robot.light_topdn(True)
+    robot.light_tray(False)
+
     for i, (x,y) in enumerate(positions):
         print(x, y)
         robot.drive(x, y)
