@@ -535,6 +535,8 @@ public:
     bool    isRunning();
     void           computeNewSpeed();
 
+    boolean _isTrinamic;  //ftobler
+
 protected:
 
     /// \brief Direction indicator
@@ -618,6 +620,7 @@ protected:
     /// Current direction motor is spinning in
     /// Protected because some peoples subclasses need it to be so
     boolean _direction; // 1 == CW
+    boolean _pulse;  //ftobler
     
 private:
     /// Number of pins on the stepper motor. Permits 2 or 4. 2 pins is a

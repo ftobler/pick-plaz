@@ -145,7 +145,7 @@ void setup() {
 
 
 static void default_settings() {
-	float steps_per_mm =   50.0f;
+	float steps_per_mm =   50.0f*2.0f;
 	float speed_cap =     175.0f;
 	float speed =         175.0f;
 	float accel =        1000.0f;
@@ -155,6 +155,7 @@ static void default_settings() {
 	stepperX.setMaxSpeed_cap_mm(speed_cap);
 	stepperX.setMaxSpeed_mm(speed);
 	stepperX.setMaxSpeed_multiplier_mm(1.0);
+	stepperX._isTrinamic = true;
 
 	stepperY0.setStepsPer_mm(steps_per_mm);
 	stepperY0.setAcceleration_mm(accel);
@@ -173,12 +174,14 @@ static void default_settings() {
 	stepperZ.setMaxSpeed_cap_mm(speed_cap*4.0f);
 	stepperZ.setMaxSpeed_mm(speed*4.0f);
 	stepperZ.setMaxSpeed_multiplier_mm(1.0);
+	stepperZ._isTrinamic = true;
 
-	stepperE.setStepsPer_mm(2.222222);
+	stepperE.setStepsPer_mm(2.222222f*2.0f);
 	stepperE.setAcceleration_mm(25000.0f);
 	stepperE.setMaxSpeed_cap_mm(2000.0f);
 	stepperE.setMaxSpeed_mm(2000.0f);
 	stepperE.setMaxSpeed_multiplier_mm(12.0);
+	stepperE._isTrinamic = true;
 
 	stepperA.setStepsPer_mm(steps_per_mm);
 	stepperA.setAcceleration_mm(accel);
