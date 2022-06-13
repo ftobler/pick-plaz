@@ -60,11 +60,14 @@ boolean AccelStepper::runSpeed()
 		//step(_currentPos);
 
 		//custom ultra fast handling
-		digitalWrite(_pin[1], _direction);
-		digitalPulse(_pin[0]);
-		//digitalWrite(_pin[0], 1);
-		////delayMicroseconds(_minPulseWidth);
-		//digitalWrite(_pin[0], 0);
+		if (_isTrinamic) {
+			digitalWrite(_pin[1], !_direction);
+		} else {
+			digitalWrite(_pin[1], _direction);
+		}
+		digitalWrite(_pin[0], _pulse);
+		_pulse = !_pulse;
+		//digitalPulse(_pin[0]);
 
 		_lastStepTime = time; // Caution: does not account for costs in step()
 
@@ -213,6 +216,8 @@ AccelStepper::AccelStepper(uint8_t interface, uint8_t pin1, uint8_t pin2, uint8_
     _pin[2] = pin3;
     _pin[3] = pin4;
     _enableInverted = false;
+    _pulse = false;  //ftobler
+    _isTrinamic = false; //ftobler
     
     // NEW
     _n = 0;
