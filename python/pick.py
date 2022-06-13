@@ -6,6 +6,7 @@ import numpy as np
 import cv2
 
 import debug
+import config
 
 class NoPartFoundException(Exception):
     pass
@@ -31,8 +32,6 @@ class Picker():
                 self.DY = d["DY"]
                 print("picker default calibration")
 
-        self.PICK_Z = -16.5
-
     def _detect_pick_location(self, robot_pos, robot):
 
         robot.light_topdn(False)
@@ -53,7 +52,7 @@ class Picker():
         robot.valve(False)
         robot.drive(x=x+self.DX, y=y+self.DY)
         robot.drive(e=a, f=200)
-        robot.drive(z=self.PICK_Z)
+        robot.drive(z=config.PICK_Z)
         robot.done()
         robot.valve(True)
         robot.drive(z=0)
@@ -62,7 +61,7 @@ class Picker():
     def place(self, robot, x, y, a):
         robot.drive(x=x+self.DX, y=y+self.DY)
         robot.drive(e=a, f=200)
-        robot.drive(z=self.PICK_Z)
+        robot.drive(z=config.PICK_Z)
         robot.done()
         robot.valve(False)
         robot.vacuum(False)

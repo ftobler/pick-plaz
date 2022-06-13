@@ -1,0 +1,8 @@
+
+
+
+
+BED_AREA = [0, 0, 428, 415]
+CALIBRATION_CENTER = (18.79, 20.04)
+SERIALPORT = "/dev/ttyUSB0"
+PICK_Z = -16.5

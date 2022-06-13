@@ -19,6 +19,7 @@ import belt
 import tray
 import eye
 import json
+import config
 
 class LiveCam:
 
@@ -64,7 +65,7 @@ class StateContext:
                 "res": 20, # resolution in pixel per millimeter
                 "framenr": 1245,
             },
-            "bed": [0, 0, 428, 415],
+            "bed": config.BED_AREA,
             "bed_shapes": [
                 [18.79-55/2,20.04-55/2,55,55], #calibration pcb
                 [0,63.14,413.86,175.31],       #main area
@@ -95,8 +96,8 @@ class StateContext:
                 "tray": False
             }
         }
-        self.robot.x_bounds = (self.nav["bed"][0], self.nav["bed"][2])
-        self.robot.y_bounds = (self.nav["bed"][1], self.nav["bed"][2])
+        self.robot.x_bounds = (config.BED_AREA[0], config.BED_AREA[2])
+        self.robot.y_bounds = (config.BED_AREA[1], config.BED_AREA[3])
 
         try:
             with open("user/fiducial.json") as f:
@@ -219,15 +220,20 @@ class StateContext:
 
                 # p.make_collage(self.robot, self.camera)
 
-                try:
-                    self.belt.find_hole()
-                except belt.NoBeltHoleFoundException:
-                    pass
-
-                try:
-                    self.nav["detection"]["fiducial"] = self.fd()
-                except fiducial.NoFiducialFoundException:
-                    self.nav["detection"]["fiducial"] = (0, 0)
+                if self.event_queue.empty():
+                    #only do the image work if no other command is pending.
+                    #this makes it move quicker between waypoints and navigating.
+                    #there is still a big lag spike everytime this section is attempted
+                    try:
+                        self.belt.find_hole()
+                    except belt.NoBeltHoleFoundException:
+                        pass
+                    if self.event_queue.empty():
+                        #try to abort if possible, else make the next visual search
+                        try:
+                            self.nav["detection"]["fiducial"] = self.fd()
+                        except fiducial.NoFiducialFoundException:
+                            self.nav["detection"]["fiducial"] = (0, 0)
 
             elif item["type"] == "event_setfiducial":
                 if item["method"] == "assign":
@@ -535,7 +541,7 @@ def main(mock=False):
     event_queue = queue.Queue()
 
     print("connect robot")
-    robot = save_robot.SaveRobot(None if mock else "/dev/ttyUSB0")
+    robot = save_robot.SaveRobot(None if mock else config.SERIALPORT)
 
     print("connect camera")
     if not mock:
