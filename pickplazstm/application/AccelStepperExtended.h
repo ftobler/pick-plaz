@@ -15,6 +15,8 @@ private:
 	float speed_multiplier;
 	float steps_per_mm;
 	float max_speed_cap_mm;
+	long move_start_pos;
+	float move_length;
 public:
 	AccelStepperExtended(int pin1, int pin2);
 	void moveTo_mm(float position_mm);
@@ -25,6 +27,7 @@ public:
 	void setAcceleration_mm(float accel_mm);
 	void setStepsPer_mm(float steps_per);
 	float getMaxSpeed_mm();
+	float getMovementProgress();
 };
 
 

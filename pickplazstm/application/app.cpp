@@ -123,6 +123,7 @@ Prelling_input input_res2(PIN_INPUT_RES2);
 
 
 bool job_prelling = false;
+static float target_completeness = NaN;
 
 /**
  * Program setup
@@ -239,6 +240,7 @@ void loop() {
 	uart_loop();
 	if (uart_command_available() && is_steppers_on_position()) {
 		Gcode_command cmd = uart_command_get();
+		target_completeness = NaN; //initialize default
 		if (cmd.id == 'G' && (cmd.num == 0 || cmd.num == 1)) {
 			//drive to position
 			//there is no difference between G0 and G1
@@ -310,14 +312,26 @@ void loop() {
 }
 
 static bool is_steppers_on_position() {
-	if (stepperX.isRunning()) return false;
-	if (stepperY0.isRunning()) return false;
-	if (stepperY1.isRunning()) return false;
-	if (stepperZ.isRunning()) return false;
-	if (stepperE.isRunning()) return false;
-	if (stepperA.isRunning()) return false;
-	if (stepperB.isRunning()) return false;
-	if (stepperC.isRunning()) return false;
+	if (target_completeness == NaN) {
+		if (stepperX.isRunning()) return false;
+		if (stepperY0.isRunning()) return false;
+		if (stepperY1.isRunning()) return false;
+		if (stepperZ.isRunning()) return false;
+		if (stepperE.isRunning()) return false;
+		if (stepperA.isRunning()) return false;
+		if (stepperB.isRunning()) return false;
+		if (stepperC.isRunning()) return false;
+	} else {
+		float complete = target_completeness; //buffer float
+		if (stepperX.getMovementProgress() < complete) return false;
+		if (stepperY0.getMovementProgress() < complete) return false;
+		if (stepperY1.getMovementProgress() < complete) return false;
+		if (stepperZ.getMovementProgress() < complete) return false;
+		if (stepperE.getMovementProgress() < complete) return false;
+		if (stepperA.getMovementProgress() < complete) return false;
+		if (stepperB.getMovementProgress() < complete) return false;
+		if (stepperC.getMovementProgress() < complete) return false;
+	}
 	return true;
 }
 
@@ -356,10 +370,21 @@ static void do_cmd_drive_to_position(Gcode_command cmd) {
 	if (cmd.valueC != NaN) {
 		stepperC.moveTo_mm(cmd.valueC);
 	}
+	if (cmd.valueO != NaN) {
+		if (cmd.valueO > 1.0f) {
+			cmd.valueO = 1.0f;
+		}
+		if (cmd.valueO < 0.0f) {
+			cmd.valueO = 0.0f;
+		}
+		target_completeness = cmd.valueO;
+	}
 }
 
 
 static void do_cmd_home(Gcode_command cmd) {
+	target_completeness = NaN; //can't have that here
+
 	//home all axles if no extra parameters given
 	if (cmd.valueX == NaN && cmd.valueX == NaN && cmd.valueZ == NaN) {
 		cmd.valueX = 0;
@@ -390,6 +415,7 @@ static void do_cmd_home(Gcode_command cmd) {
 static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int homDirection, float home_speed, int home_timeout,
 		float home_travel_mm, float home_travel_back_mm, float sensor_position) {
 	uint32_t endtime;
+	target_completeness = NaN; //can't have that here
 
 
 	stepper->setMaxSpeed_mm(home_speed);                         //set homing fast speed for 1st travel
@@ -425,6 +451,8 @@ static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int
 static void homeAxleDual(AccelStepperExtended* stepper1, AccelStepperExtended* stepper2, Prelling_input* endstop1, Prelling_input* endstop2,
 		int homDirection, float home_speed, int home_timeout, float home_travel_mm, float home_travel_back_mm, float sensor_position) {
 	uint32_t endtime;
+
+	target_completeness = NaN; //can't have that here
 
 	float tmpSpeed = stepper1->getMaxSpeed_mm();                  //save current motor speed for later
 	stepper1->setMaxSpeed_mm(home_speed);                         //set homing fast speed for 1st travel

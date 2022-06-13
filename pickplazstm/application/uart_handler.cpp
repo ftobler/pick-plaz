@@ -93,6 +93,7 @@ static void process_parse_command() {
 		cmd.valueS = NaN;
 		cmd.valueP = NaN;
 		cmd.valueT = NaN;
+		cmd.valueO = NaN;
 		seek_space(&index);
 		cmd.id = to_upper(buf[index++]);
 		cmd.num = round(read_num(&index));
@@ -143,6 +144,9 @@ static void process_parse_command() {
 				break;
 			case 'T':
 				cmd.valueT = read_num(&index);
+				break;
+			case 'O':
+				cmd.valueO = read_num(&index);
 				break;
 			default:
 				end_reached = true;

@@ -533,7 +533,7 @@ public:
     /// Checks to see if the motor is currently running to a target
     /// \return true if the speed is not zero or not at the target position
     bool    isRunning();
-    void           computeNewSpeed();
+    void    computeNewSpeed();
 
     boolean _isTrinamic;  //ftobler
 
@@ -622,6 +622,16 @@ protected:
     boolean _direction; // 1 == CW
     boolean _pulse;  //ftobler
     
+    //moved to protected by ftobler
+    /// The target position in steps. The AccelStepper library will move the
+    /// motor from the _currentPos to the _targetPos, taking into account the
+    /// max speed, acceleration and deceleration
+    long           _targetPos;     // Steps
+
+    //moved to protected by ftobler
+    /// The current absolution position in steps.
+    long           _currentPos;    // Steps
+
 private:
     /// Number of pins on the stepper motor. Permits 2 or 4. 2 pins is a
     /// bipolar, and 4 pins is a unipolar.
@@ -634,13 +644,7 @@ private:
     /// Whether the _pins is inverted or not
     uint8_t        _pinInverted[4];
 
-    /// The current absolution position in steps.
-    long           _currentPos;    // Steps
 
-    /// The target position in steps. The AccelStepper library will move the
-    /// motor from the _currentPos to the _targetPos, taking into account the
-    /// max speed, acceleration and deceleration
-    long           _targetPos;     // Steps
 
     /// The current motos speed in steps per second
     /// Positive is clockwise

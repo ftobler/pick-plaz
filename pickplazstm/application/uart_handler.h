@@ -14,17 +14,18 @@
 typedef struct {
 	char id;
 	int num;
-	float valueX;
-	float valueY;
-	float valueZ;
-	float valueE;
-	float valueA;
-	float valueB;
-	float valueC;
-	float valueF;
-	float valueS;
-	float valueP;
-	float valueT;
+	float valueX;  //x-axies
+	float valueY;  //y-axies
+	float valueZ;  //z-axies
+	float valueE;  //e-axies
+	float valueA;  //a-axies
+	float valueB;  //b-axies
+	float valueC;  //c-axies
+	float valueF;  //feedrate
+	float valueS;  //value for io
+	float valueP;  //number for io
+	float valueT;  //dwell time
+	float valueO;  //command overlap
 } Gcode_command;
 
 void uart_init();
