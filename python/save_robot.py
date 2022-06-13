@@ -10,8 +10,8 @@ class SaveRobot(pick_plaz_robot.Robot):
     def __init__(self, comport=None, pos_logger=None):
         super().__init__(comport)
 
-        self.x_bounds = (0,100)
-        self.y_bounds = (0,100)
+        self.x_bounds = (0,350)
+        self.y_bounds = (0,350)
 
         self.pos_logger = pos_logger
 
@@ -25,7 +25,7 @@ class SaveRobot(pick_plaz_robot.Robot):
         else:
             return False
 
-    def drive(self, x=None, y=None, z=None, e=None, a=None, b=None, c=None, f=None):
+    def drive(self, x=None, y=None, z=None, e=None, a=None, b=None, c=None, f=None, o=None):
 
         if self.pos_logger is not None:
             if x is not None:
@@ -39,4 +39,4 @@ class SaveRobot(pick_plaz_robot.Robot):
         if self.__check_range(y, self.y_bounds):
             raise OutOfSaveSpaceException(f"Attempting to drive y={y}, which is outside of save bounds {self.y_bounds}.")
 
-        return super().drive(x=x, y=y, z=z, e=e, b=b, c=c, f=f)
+        return super().drive(x=x, y=y, z=z, e=e, b=b, c=c, f=f, o=o)
