@@ -50,22 +50,22 @@ class Picker():
     def pick(self, robot, x, y, a):
         robot.vacuum(True)
         robot.valve(False)
-        robot.drive(x=x+self.DX, y=y+self.DY)
+        robot.drive(x=x+self.DX, y=y+self.DY, o=0.80)
         robot.drive(e=a, f=200)
         robot.drive(z=config.PICK_Z)
         robot.done()
         robot.valve(True)
         robot.drive(z=0)
-        robot.drive(e=0, f=200)
+        robot.drive(e=0, f=200, o=0.75)
 
     def place(self, robot, x, y, a):
-        robot.drive(x=x+self.DX, y=y+self.DY)
+        robot.drive(x=x+self.DX, y=y+self.DY, o=0.80)
         robot.drive(e=a, f=200)
         robot.drive(z=config.PICK_Z)
         robot.done()
         robot.valve(False)
         robot.vacuum(False)
-        robot.drive(z=0)
+        robot.drive(z=0, o=0.75)
 
     def calibrate_legacy(self, pos, robot, camera):
 
@@ -98,6 +98,8 @@ class Picker():
         robot.light_topdn(False)
         robot.light_tray(True)
 
+        print("old calibration: %f/%f" % (self.DX, self.DY))
+
         x, y = pos
         positions = []
         x0, y0, _ = self._detect_pick_location((x, y), robot)
@@ -118,6 +120,8 @@ class Picker():
         self.DX -= correction_x
         self.DY -= correction_y
 
+
+        print("new calibration: %f/%f" % (self.DX, self.DY))
         d = {
             "DX" : self.DX,
             "DY" : self.DY,

@@ -10,7 +10,7 @@ try:
     robot = SaveRobot("/dev/ttyUSB0")
 except Exception as e:
     print(e)
-robot = SaveRobot("COM5")
+#robot = SaveRobot("COM5")
 
 
 def test1():
@@ -99,4 +99,30 @@ def test4():
     robot.drive(z=0)
     robot.steppers(False)
 
-test4()
+def test5():
+    robot.steppers(True)
+    robot.home()
+    for i in range(10):
+        robot.drive(100, 100)
+        robot.drive(100, 140)
+        robot.drive(140, 140)
+        robot.drive(140, 100)
+        robot.drive(100, 100)
+        robot.drive(100, 140)
+        robot.drive(140, 140)
+        robot.drive(140, 100)
+        robot.drive(100, 100, o=0.5)
+        robot.drive(100, 140, o=0.5)
+        robot.drive(140, 140, o=0.5)
+        robot.drive(140, 100, o=0.5)
+        robot.drive(100, 100, o=0.5)
+        robot.drive(100, 140, o=0.5)
+        robot.drive(140, 140, o=0.5)
+        robot.drive(140, 100, o=0.5)
+    robot.drive(100, 100)
+    robot.drive(10, 10)
+    robot.steppers(False)
+
+
+
+test5()
