@@ -122,8 +122,9 @@ Prelling_input input_res1(PIN_INPUT_RES1);
 Prelling_input input_res2(PIN_INPUT_RES2);
 
 
-bool job_prelling = false;
+static bool job_prelling = false;
 static float target_completeness = NaN;
+static float current_speed = 175.0f;
 
 /**
  * Program setup
@@ -150,12 +151,18 @@ static void default_settings() {
 	float speed_cap =     175.0f;
 	float speed =         175.0f;
 	float accel =        1000.0f;
+	current_speed = speed;
+	//note:
+	//Trinamic drivers seem to 'wander' slowly, could have to do with
+	//their interpolation and the fact that the step pin
+	//might be stuck at high.
 
 	stepperX.setStepsPer_mm(steps_per_mm);
 	stepperX.setAcceleration_mm(accel);
 	stepperX.setMaxSpeed_cap_mm(speed_cap);
 	stepperX.setMaxSpeed_mm(speed);
 	stepperX.setMaxSpeed_multiplier_mm(1.0);
+//	stepperX._isTrinamic = true;
 
 	stepperY0.setStepsPer_mm(steps_per_mm);
 	stepperY0.setAcceleration_mm(accel);
@@ -171,17 +178,15 @@ static void default_settings() {
 
 	stepperZ.setStepsPer_mm(steps_per_mm/2.0f);
 	stepperZ.setAcceleration_mm(accel);
-	stepperZ.setMaxSpeed_cap_mm(speed_cap*4.0f);
-	stepperZ.setMaxSpeed_mm(speed*4.0f);
+	stepperZ.setMaxSpeed_cap_mm(speed_cap*2.0f);
+	stepperZ.setMaxSpeed_mm(speed*2.0f);
 	stepperZ.setMaxSpeed_multiplier_mm(1.0);
-	stepperZ._isTrinamic = true;
 
 	stepperE.setStepsPer_mm(2.222222f*2.0f);
-	stepperE.setAcceleration_mm(25000.0f);
+	stepperE.setAcceleration_mm(15000.0f);
 	stepperE.setMaxSpeed_cap_mm(2000.0f);
 	stepperE.setMaxSpeed_mm(2000.0f);
 	stepperE.setMaxSpeed_multiplier_mm(12.0);
-	stepperE._isTrinamic = true;
 
 	stepperA.setStepsPer_mm(steps_per_mm);
 	stepperA.setAcceleration_mm(accel);
@@ -336,16 +341,17 @@ static bool is_steppers_on_position() {
 
 static void do_cmd_drive_to_position(Gcode_command cmd) {
 	if (cmd.valueF != NaN) {
-		float speed = cmd.valueF;
-		stepperX.setMaxSpeed_mm(speed);
-		stepperY0.setMaxSpeed_mm(speed);
-		stepperY1.setMaxSpeed_mm(speed);
-		stepperZ.setMaxSpeed_mm(speed);
-		stepperE.setMaxSpeed_mm(speed);
-		stepperA.setMaxSpeed_mm(speed);
-		stepperB.setMaxSpeed_mm(speed);
-		stepperC.setMaxSpeed_mm(speed);
+		current_speed = cmd.valueF;
 	}
+	float speed = current_speed;
+	stepperX.setMaxSpeed_mm(speed);
+	stepperY0.setMaxSpeed_mm(speed);
+	stepperY1.setMaxSpeed_mm(speed);
+	stepperZ.setMaxSpeed_mm(speed);
+	stepperE.setMaxSpeed_mm(speed);
+	stepperA.setMaxSpeed_mm(speed);
+	stepperB.setMaxSpeed_mm(speed);
+	stepperC.setMaxSpeed_mm(speed);
 
 	if (cmd.valueX != NaN) {
 		stepperX.moveTo_mm(cmd.valueX);
