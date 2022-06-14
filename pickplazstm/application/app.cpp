@@ -156,7 +156,6 @@ static void default_settings() {
 	stepperX.setMaxSpeed_cap_mm(speed_cap);
 	stepperX.setMaxSpeed_mm(speed);
 	stepperX.setMaxSpeed_multiplier_mm(1.0);
-	stepperX._isTrinamic = true;
 
 	stepperY0.setStepsPer_mm(steps_per_mm);
 	stepperY0.setAcceleration_mm(accel);
@@ -323,14 +322,14 @@ static bool is_steppers_on_position() {
 		if (stepperC.isRunning()) return false;
 	} else {
 		float complete = target_completeness; //buffer float
-		if (stepperX.getMovementProgress() < complete) return false;
-		if (stepperY0.getMovementProgress() < complete) return false;
-		if (stepperY1.getMovementProgress() < complete) return false;
-		if (stepperZ.getMovementProgress() < complete) return false;
-		if (stepperE.getMovementProgress() < complete) return false;
-		if (stepperA.getMovementProgress() < complete) return false;
-		if (stepperB.getMovementProgress() < complete) return false;
-		if (stepperC.getMovementProgress() < complete) return false;
+		if (stepperX.getRemainingMoveLength() > complete) return false;
+		if (stepperY0.getRemainingMoveLength() > complete) return false;
+		if (stepperY1.getRemainingMoveLength() > complete) return false;
+		if (stepperZ.getRemainingMoveLength() > complete) return false;
+		if (stepperE.getRemainingMoveLength() > complete) return false;
+		if (stepperA.getRemainingMoveLength() > complete) return false;
+		if (stepperB.getRemainingMoveLength() > complete) return false;
+		if (stepperC.getRemainingMoveLength() > complete) return false;
 	}
 	return true;
 }
@@ -370,14 +369,12 @@ static void do_cmd_drive_to_position(Gcode_command cmd) {
 	if (cmd.valueC != NaN) {
 		stepperC.moveTo_mm(cmd.valueC);
 	}
-	if (cmd.valueO != NaN) {
-		if (cmd.valueO > 1.0f) {
-			cmd.valueO = 1.0f;
+	if (cmd.valueR != NaN) {
+		if (cmd.valueR < 0.0f) {
+			target_completeness = 0.0f;
+		} else {
+			target_completeness = cmd.valueR;
 		}
-		if (cmd.valueO < 0.0f) {
-			cmd.valueO = 0.0f;
-		}
-		target_completeness = cmd.valueO;
 	}
 }
 

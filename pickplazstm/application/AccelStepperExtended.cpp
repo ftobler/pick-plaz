@@ -19,8 +19,6 @@ AccelStepperExtended::AccelStepperExtended(int pin1, int pin2)
 
 void AccelStepperExtended::moveTo_mm(float position_mm) {
 	moveTo(position_mm * steps_per_mm);
-	move_start_pos = _currentPos;
-	move_length = _targetPos - _currentPos;
 }
 
 
@@ -66,7 +64,10 @@ float AccelStepperExtended::getMaxSpeed_mm() {
 	return maxSpeed() / steps_per_mm;
 }
 
-float AccelStepperExtended::getMovementProgress() {
-    long travelled = _currentPos - move_start_pos;
-    return (float)travelled / move_length;
+float AccelStepperExtended::getRemainingMoveLength() {
+	float delta = float(_targetPos - _currentPos) / steps_per_mm;
+	if (delta > 0.0f) {
+		return delta;
+	}
+	return -delta;
 }
