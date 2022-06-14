@@ -68,7 +68,7 @@ class Robot:
             self.__receive_answer()
         return self
 
-    def drive(self, x=None, y=None, z=None, e=None, a=None, b=None, c=None, f=None, o=None):
+    def drive(self, x=None, y=None, z=None, e=None, a=None, b=None, c=None, f=None, r=None):
         """
         drives to a new Location. All Axies can be driven at the same time. Command finishes when the slowest Motor has reached its target.
 
@@ -105,8 +105,8 @@ class Robot:
             cmd.append(" C%f" % c)
         if f != None:
             cmd.append(" F%f" % f)
-        if o != None:
-            cmd.append(" O%f" % o)
+        if r != None:
+            cmd.append(" R%f" % r)
         self.__send_commands(["".join(cmd)])
         return self
 

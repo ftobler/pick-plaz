@@ -47,25 +47,26 @@ class Picker():
 
         return pos[0], pos[1], a[0]
 
-    def pick(self, robot, x, y, a):
+    def pick(self, robot, x, y, angle):
         robot.vacuum(True)
         robot.valve(False)
-        robot.drive(x=x+self.DX, y=y+self.DY, o=0.80)
-        robot.drive(e=a, f=200)
+        robot.drive(x=x+self.DX, y=y+self.DY, e=angle, f=200, r=10.0)
+        robot.drive(e=angle) #finish angle
         robot.drive(z=config.PICK_Z)
         robot.done()
         robot.valve(True)
         robot.drive(z=0)
-        robot.drive(e=0, f=200, o=0.75)
+        # robot.drive(e=0, r=10.0)
+        # robot.drive(e=0, f=200, r=0.75)
 
-    def place(self, robot, x, y, a):
-        robot.drive(x=x+self.DX, y=y+self.DY, o=0.80)
-        robot.drive(e=a, f=200)
+    def place(self, robot, x, y, angle):
+        robot.drive(x=x+self.DX, y=y+self.DY, e=angle, f=200, r=10.0)
+        robot.drive(e=angle)
         robot.drive(z=config.PICK_Z)
         robot.done()
         robot.valve(False)
         robot.vacuum(False)
-        robot.drive(z=0, o=0.75)
+        robot.drive(z=0)
 
     def calibrate_legacy(self, pos, robot, camera):
 

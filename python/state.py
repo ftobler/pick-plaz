@@ -53,6 +53,7 @@ class StateContext:
         self.event_queue = event_queue
         self.context = context
         self.context_manager = context_manager
+        self.testplacepos = 0
 
         self.alert_id = 0
 
@@ -319,11 +320,10 @@ class StateContext:
                         self.tray.pick(feeder, self.robot)
                     elif feeder["type"] == belt.TYPE_NUMBER:
                         self.belt.pick(feeder, self.robot)
-                    self.robot.dwell(1000)
-                    self.robot.vacuum(False)
-                    self.robot.valve(False)
+                    #drive to testplaceposition and place
+                    self.testplacepos = (self.testplacepos + 1) % 35
+                    self.picker.place(self.robot, 15 + self.testplacepos * 10, 226, 90)
                     self.robot.default_settings()
-                    #TODO: place part again
                 elif item["method"] == "view_feeder":
                     name = item["param"]
                     feeder = self.context["feeder"][name]
