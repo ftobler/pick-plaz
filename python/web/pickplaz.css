@@ -8,7 +8,7 @@ body {
     margin: 0px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
-    position:relative;
+    position: relative;
     height: 100%;
     display: flex;
     flex-flow: column;
@@ -240,16 +240,10 @@ td button {
 
 
 .content {
-    /*margin: 20px;
-    margin-top: 80px;
-    margin-bottom: 0px;*/
     position: relative;
     top: 65px;
-
-
     display: inline-block;
     width: 100%;
-    //overflow: hidden;
 }
 
 
@@ -359,16 +353,20 @@ tr.skip {
 
 
 canvas {
-    border: 1px solid rgb(50,50,50);
-    position: absolute;
-    display: flex;
-    top: 35px;
-    left: 0px;
+    margin: 0 auto;
+    position: relative;
+    display: block;
     width: 100%;
-    height: 800px;
 }
 
-
+.canvas_container {
+    position: fixed;
+    display: flex;
+    width: 100vw;
+    left: 10px;
+    top: 130px;
+    bottom: 10px;
+}
 
 .switch {
     position: relative;
@@ -631,8 +629,9 @@ input:checked + .slider:before {
 
 .page {
     position: absolute;
+    width: 100%;
+    height: 100%;
     margin: 10px;
-    //background-color: gray;
 }
 
 .transition-page-enter-active {

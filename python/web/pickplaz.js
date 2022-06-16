@@ -7,7 +7,6 @@ function start() {
         el: "#app",
         data: {
             page: NAVPAGE,
-            shownav: false,
             dialogs: [],
             last_put_alert: -1,
             menu_hamburger: false,
@@ -238,7 +237,7 @@ function start() {
             },
             do_nav(target_page) {
                 this.page = target_page
-                this.poll_data();
+                this.poll_data()
             },
             do_key_move(x, y) {
                 this.canvas.pos_mm.x += x

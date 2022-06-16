@@ -195,8 +195,10 @@
                 <span style="width: 240px; display: inline-block; text-align: left;"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
                 <button class="fiducial-assign" v-for="(part, id)  in fiducial_bom.designators" v-on:click="fiducial_assing_current_location(id, 'assign')">{{id}}<div class="fiducial-assign-hint">Assign Fiducial</div></button>
                 <button class="fiducial-assign" v-on:click="do_sequence('auto_set_fiducial')" v-if="nav.pcb ? Object.keys(nav.pcb.fiducials).length >= 2 : false">Auto<div class="fiducial-assign-hint">Automagically assign fiducials</div></button>
-            </div >
-            <canvas id="canvas-view" width="185" height="80" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
+            </div>
+            <div class="canvas_container">
+                <canvas id="canvas-view" width="185" height="80" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
+            </div>
         </div></transition>
 
         <transition name="transition-page"><div class="page debug-page" v-if="page == 3">
@@ -215,8 +217,6 @@
 
 
     </div>
-
-
 
 
 </div>
