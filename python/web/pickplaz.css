@@ -428,10 +428,9 @@ input:checked + .slider:before {
 .fiducial-assign-hint {
     opacity: 0;
     position: absolute;
-    top: 34px;
     left: 50%;
-    margin-left: -44px;
-    width: 88px;
+    margin-left: -40px;
+    width: 95px;
     padding: 2px;
     background-color: rgb(50,50,50);
     transform: skew(15deg);
@@ -450,8 +449,11 @@ input:checked + .slider:before {
     content: " ";
     z-index: -1;  /* to be below the parent element */
 }
-.fiducial-assign:hover .fiducial-assign-hint {
+.hint-parent:hover .fiducial-assign-hint {
     opacity: 1;
+}
+.fiducial-assign .fiducial-assign-hint {
+    top: 34px;
 }
 
 
