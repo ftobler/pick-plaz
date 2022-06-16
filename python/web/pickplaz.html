@@ -12,7 +12,7 @@
     <link rel="alternate icon" href="/favicon.ico">
 </head>
 <body onload="start()" class="noselect" style="text-align: center;">
-<div id="app" style="width: 100%; max-width: 2600px; margin:0 auto; visibility: hidden;">
+<div id="app" style="width: 100%; margin:0 auto; visibility: hidden;">
 
     <transition name="transition-alert"><div class="alert" v-if="dialogs.length > 0">
         <div class="alert-content">
@@ -80,7 +80,7 @@
                     <th width="10px">#</th>
                     <th class="small" width="15px">Place</th>
                     <th class="small" width="20px">Fiducial</th>
-                    <th width="130px">Value</th>
+                    <th width="120px">Value</th>
                     <th width="90px">Footprint</th>
                     <th width="40px"></th>
                     <th width="130px">Part Nr</th>
@@ -134,11 +134,11 @@
             <table>
                 <!--table for all tray feeders-->
                 <tr>
-                    <th width="80px">Name</th>
+                    <th width="70px">Name</th>
                     <th width="300px">Custom Settings</th>
-                    <th width="60px">Rotation</th>
+                    <th width="50px">Rotation</th>
                     <th width="60px">State</th>
-                    <th width="100px">Action</th>
+                    <th width="60px">Action</th>
                 </tr>
                 <tr v-for="(entry, name) in context.feeder"  v-bind:class="{ inactive: entry.state == 0, error: entry.state == 2 }">
                     <td>{{name}} ({{feeder_type(entry.type)}})</td>
@@ -152,7 +152,7 @@
                     </td>
                     <td v-if="entry.type == 1">
                         <!-- static belt feeder -->
-                        <div class="badge">position: <input type="range" min="0" :max="entry.capacity" style="width: 500px" v-model="entry.pos" v-on:change="api.feeder_modify('pos', name, entry.pos)"/> {{entry.pos}}/{{entry.capacity}}</div>
+                        <div class="badge">position: <input type="range" min="0" :max="entry.capacity" style="width: 400px" v-model="entry.pos" v-on:change="api.feeder_modify('pos', name, entry.pos)"/> {{entry.pos}}/{{entry.capacity}}</div>
                         <div class="badge">pitch: <div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'pitch')">edit</div> {{entry.pitch}}</div>
                         <div class="badge">x_offset: <div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'x_offset')">edit</div>{{entry.offset[0]}} |
                                            y_offset: <div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'y_offset')">edit</div>{{entry.offset[1]}}</div>
@@ -191,14 +191,12 @@
                 <label class="switcher-label">light botup</label> --><!-- not working -->
                 <label class="switch"><input type="checkbox" checked v-model="nav.light.tray" v-on:change="api.light_control('tray', nav.light.tray)"><span class="slider round"></span></label>
                 <label class="switcher-label">light tray</label>
-                <span style="width: 250px; display: inline-block; text-align: left;"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm</label></span>
-                <span style="width: 250px; display: inline-block; text-align: left;"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
+                <span style="width: 240px; display: inline-block; text-align: left;"><label v-if="nav_init">mouse: ({{canvas.cursor_mm.x | round}}/{{canvas.cursor_mm.y | round}})mm</label></span>
+                <span style="width: 240px; display: inline-block; text-align: left;"><label v-if="nav_init">robot ({{nav.camera.x | round}}/{{nav.camera.y | round}})mm</label></span>
                 <button class="fiducial-assign" v-for="(part, id)  in fiducial_bom.designators" v-on:click="fiducial_assing_current_location(id, 'assign')">{{id}}<div class="fiducial-assign-hint">Assign Fiducial</div></button>
                 <button class="fiducial-assign" v-on:click="do_sequence('auto_set_fiducial')" v-if="nav.pcb ? Object.keys(nav.pcb.fiducials).length >= 2 : false">Auto<div class="fiducial-assign-hint">Automagically assign fiducials</div></button>
             </div >
-            <canvas id="canvas-view" width="1850" height="800" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
-
-
+            <canvas id="canvas-view" width="185" height="80" @mousemove="mousemove" v-on:click="mouseclick" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup"></canvas>
         </div></transition>
 
         <transition name="transition-page"><div class="page debug-page" v-if="page == 3">

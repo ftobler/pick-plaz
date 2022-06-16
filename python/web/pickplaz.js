@@ -7,6 +7,7 @@ function start() {
         el: "#app",
         data: {
             page: NAVPAGE,
+            shownav: false,
             dialogs: [],
             last_put_alert: -1,
             menu_hamburger: false,
@@ -513,8 +514,13 @@ function start() {
                 if (c == null || this.nav_init == false) {
                     return
                 }
+                //canvas pixel size to element size
+                c.width = c.clientWidth
+                c.height = c.clientHeight
+                //note the pixel size
                 this.canvas.size.x = c.width
                 this.canvas.size.y = c.height
+
                 let ctx = c.getContext('2d');
                 ctx.font = "2px Arial";
                 ctx.lineWidth = 1 / this.canvas.zoom
