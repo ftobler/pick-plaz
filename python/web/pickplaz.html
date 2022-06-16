@@ -163,6 +163,12 @@
                         <div class="badge">width: <div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'width')">edit</div> {{entry.position[2]}}</div>
                         <div class="badge">height: <div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'height')">edit</div> {{entry.position[3]}}</div> -->
                     </td>
+                    <td v-if="entry.type == 2">
+                        <!-- roll belt feeder (motorized) -->
+                        <div class="badge">pick_pos: <div class="table-button material" v-on:click="do_sequence('set_roll_pickpos', name)">filter_center_focus</div>{{entry.pickpos[0] | round}} / {{entry.pickpos[1] | round}}</div>
+                        <div class="badge">counter: <div class="table-button material" v-on:click="do_modify_feeder_attribute(name, entry, 'counter')">edit</div> {{entry.counter}}</div>
+                        <button v-on:click="do_sequence('roll_advance', name)">advance</button>
+                    </td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_rotation(name)">refresh</div> {{entry.rot}}</td>
                     <td><div class="table-button material" v-on:click="do_modify_feeder_state(name)">swap_calls</div> {{feeder_state(entry.state)}}</td>
                     <td>

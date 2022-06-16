@@ -17,6 +17,7 @@ import camera_cal
 import data_manager
 import belt
 import tray
+import roll
 import eye
 import json
 import config
@@ -320,6 +321,8 @@ class StateContext:
                         self.tray.pick(feeder, self.robot)
                     elif feeder["type"] == belt.TYPE_NUMBER:
                         self.belt.pick(feeder, self.robot)
+                    elif feeder["type"] == roll.TYPE_NUMBER:
+                        self.roll.pick(feeder, self.robot)
                     #drive to testplaceposition and place
                     self.testplacepos = (self.testplacepos + 1) % 35
                     self.picker.place(self.robot, 15 + self.testplacepos * 10, 226, 90)

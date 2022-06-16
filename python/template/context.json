@@ -326,6 +326,23 @@
             ],
             "y_offset": -3.75,
             "current_number": 0
+        },
+        "roll 0": {
+            "type": 2,
+            "rot": 0,
+            "state": 1,
+            "channel": 0,
+            "counter": 0,
+            "pickpos": [
+                35,
+                355
+            ],
+            "position": [
+                30,
+                350,
+                20,
+                50
+            ]
         }
     },
     "const": {
