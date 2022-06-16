@@ -234,6 +234,13 @@ function start() {
                         this.do_key_move(stepwidth, 0)
                     }
                 }
+                if (event.code == 'KeyZ') {
+                    this.do_nav(0)
+                } else if (event.code == 'KeyX') {
+                    this.do_nav(1)
+                } else if (event.code == 'KeyC') {
+                    this.do_nav(2)
+                }
             },
             do_nav(target_page) {
                 this.page = target_page
