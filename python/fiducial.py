@@ -54,7 +54,8 @@ def get_transform(fid_map, fiducial_designators):
     """
     Fit transform between fiducials and robot coordinates
 
-    Return affine transform (as used by cairo contect) and mean squared error in mm^2"""
+    Return affine transform (as used by cairo contect) and mean squared error in mm^2
+    """
 
     bot_pos = np.asarray(list(fid_map.values()))
 
