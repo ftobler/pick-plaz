@@ -234,10 +234,17 @@ function start() {
                         this.do_key_move(stepwidth, 0)
                     }
                 }
+                if (event.code == 'KeyZ') {
+                    this.do_nav(0)
+                } else if (event.code == 'KeyX') {
+                    this.do_nav(1)
+                } else if (event.code == 'KeyC') {
+                    this.do_nav(2)
+                }
             },
             do_nav(target_page) {
                 this.page = target_page
-                this.poll_data();
+                this.poll_data()
             },
             do_key_move(x, y) {
                 this.canvas.pos_mm.x += x
@@ -513,8 +520,13 @@ function start() {
                 if (c == null || this.nav_init == false) {
                     return
                 }
+                //canvas pixel size to element size
+                c.width = c.clientWidth
+                c.height = c.clientHeight
+                //note the pixel size
                 this.canvas.size.x = c.width
                 this.canvas.size.y = c.height
+
                 let ctx = c.getContext('2d');
                 ctx.font = "2px Arial";
                 ctx.lineWidth = 1 / this.canvas.zoom

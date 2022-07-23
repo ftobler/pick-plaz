@@ -17,6 +17,7 @@ import camera_cal
 import data_manager
 import belt
 import tray
+import roll
 import eye
 import json
 import config
@@ -53,6 +54,7 @@ class StateContext:
         self.event_queue = event_queue
         self.context = context
         self.context_manager = context_manager
+        self.testplacepos = 0
 
         self.alert_id = 0
 
@@ -67,9 +69,9 @@ class StateContext:
             },
             "bed": config.BED_AREA,
             "bed_shapes": [
-                [18.79-55/2,20.04-55/2,55,55], #calibration pcb
+                [config.CALIBRATION_CENTER[0]-55/2,config.CALIBRATION_CENTER[1]-55/2,55,55], #calibration pcb
                 [0,63.14,413.86,175.31],       #main area
-                [33.05, 254.15, 50, 90],       #bottomup
+                [33.75, 253.4, 50, 90],       #bottomup
             ],
             "pcb": {
                 "transform": [1, 0, 0, -1, 10, -10],
@@ -319,11 +321,12 @@ class StateContext:
                         self.tray.pick(feeder, self.robot)
                     elif feeder["type"] == belt.TYPE_NUMBER:
                         self.belt.pick(feeder, self.robot)
-                    self.robot.dwell(1000)
-                    self.robot.vacuum(False)
-                    self.robot.valve(False)
+                    elif feeder["type"] == roll.TYPE_NUMBER:
+                        self.roll.pick(feeder, self.robot)
+                    #drive to testplaceposition and place
+                    self.testplacepos = (self.testplacepos + 1) % 35
+                    self.picker.place(self.robot, 15 + self.testplacepos * 10, 226, 90)
                     self.robot.default_settings()
-                    #TODO: place part again
                 elif item["method"] == "view_feeder":
                     name = item["param"]
                     feeder = self.context["feeder"][name]

@@ -7,6 +7,8 @@ TYPE_NUMBER = 0
 
 AUTO_DETECT_ZONE_MARGIN = 4
 
+# Tray feeder.
+# SMD part is on a backlit area. The robot searches for the part using the camera. Rotation is corrected for.
 class Tray:
 
     def __init__(self, picker):

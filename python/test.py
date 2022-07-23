@@ -111,18 +111,33 @@ def test5():
         robot.drive(100, 140)
         robot.drive(140, 140)
         robot.drive(140, 100)
-        robot.drive(100, 100, o=0.5)
-        robot.drive(100, 140, o=0.5)
-        robot.drive(140, 140, o=0.5)
-        robot.drive(140, 100, o=0.5)
-        robot.drive(100, 100, o=0.5)
-        robot.drive(100, 140, o=0.5)
-        robot.drive(140, 140, o=0.5)
-        robot.drive(140, 100, o=0.5)
+        robot.drive(100, 100, r=10)
+        robot.drive(100, 140, r=10)
+        robot.drive(140, 140, r=10)
+        robot.drive(140, 100, r=10)
+        robot.drive(100, 100, r=10)
+        robot.drive(100, 140, r=10)
+        robot.drive(140, 140, r=10)
+        robot.drive(140, 100, r=10)
     robot.drive(100, 100)
     robot.drive(10, 10)
     robot.steppers(False)
 
+def test6():
+    robot.steppers(True)
+    #robot.home()
+    robot.feedrate_multiplier(x=1, y=1, z=1, e=1, a=1, b=1, c=1)  #revert 'apply_area_slowdown'
+    for i in range(2):
+        robot.drive(e=-360)
+        robot.drive(z=0)
+        robot.drive(e=0)
+        robot.drive(z=-10)
+    robot.default_settings()
+    for i in range(2):
+        robot.drive(e=-360)
+        robot.drive(z=0)
+        robot.drive(e=0)
+        robot.drive(z=-10)
+    robot.steppers(False)
 
-
-test5()
+test6()

@@ -42,7 +42,7 @@ def calibrate(robot, camera):
         print(x, y)
         robot.drive(x, y)
         robot.done()
-        time.sleep(0.5)
+        time.sleep(1.0) #@0.5s camera image was skewed/blurred
 
         image = cv2.cvtColor(camera.cache["image"], cv2.COLOR_GRAY2BGR)
 

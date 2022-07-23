@@ -25,7 +25,7 @@ typedef struct {
 	float valueS;  //value for io
 	float valueP;  //number for io
 	float valueT;  //dwell time
-	float valueO;  //command overlap
+	float valueR;  //complete radius
 } Gcode_command;
 
 void uart_init();

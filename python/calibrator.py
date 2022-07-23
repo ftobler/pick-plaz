@@ -227,8 +227,12 @@ class Calibration():
         cam_positions = np.array([-e[:3,:3].T @ e[:3,3:] for e in extrinsics])[...,:2,  0]
 
         warp_mat, mse = fit_affine(cam_positions[:extrinsic_count], all_positions_bot[:extrinsic_count])
-        if mse > 0.1:
-            raise CalibrationError(f"Calibration resulted in abnormally high MSE ({mse})")
+
+        print("Calibration MSE value %f" % mse)
+        max_mse = 0.5
+        if mse > max_mse:
+            #MSE = mean square (pixel) error
+            raise CalibrationError(f"Calibration resulted in abnormally high MSE={mse} (max={max_mse})")
 
         if plot:
             pattern = np.array([[0,0,39,39,1], [1,39,39,0,0], [1,1,1,1,1]]).T

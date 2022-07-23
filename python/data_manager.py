@@ -17,7 +17,7 @@ PART_STATE_SKIP = 3
 class ContextManager:
 
     part_state = ["ready", "placed", "error", "skip"]
-    feeder_type = ["tray", "strip"]
+    feeder_type = ["tray", "belt", "roll"]
     feeder_state = ["disabled", "ready", "empty"]
     feeder_attribute = ["pitch", "x_offset", "y_offset"]
 

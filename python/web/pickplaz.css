@@ -3,18 +3,19 @@ html {
     height: 100%;
 }
 body {
-    /*background-color: rgb(20,20,20);*/
     background-color: rgb(21, 23, 31);
     padding: 0px;
     margin: 0px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
-    position:relative;
+    position: relative;
     height: 100%;
     display: flex;
     flex-flow: column;
     overflow-y: scroll; /* Show vertical scrollbar */
+    overflow-x: hidden;
     font-size: 12pt;
+    min-width: 1425px;
 }
 body::-webkit-scrollbar {
     width: 8px;
@@ -61,10 +62,17 @@ td button {
 
 
 .menu {
-    margin: 10px;
-    margin-bottom: 0px;
     height: 70px;
     text-align: center;
+    /* make it fix on top */
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    padding: 10px;
+    padding-bottom: 0;
+    background-color: rgba(21, 23, 31, 0.58);
+    z-index: 1;
 }
 .menu-item {
     text-align: center;
@@ -232,12 +240,10 @@ td button {
 
 
 .content {
-    /*background-color: black;*/
-    margin: 20px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    flex-grow: 1;
     position: relative;
+    top: 65px;
+    display: inline-block;
+    width: 100%;
 }
 
 
@@ -347,10 +353,20 @@ tr.skip {
 
 
 canvas {
-    border: 1px solid rgb(50,50,50);
+    margin: 0 auto;
+    position: relative;
+    display: block;
+    width: 100%;
 }
 
-
+.canvas_container {
+    position: fixed;
+    display: flex;
+    width: 100vw;
+    left: 10px;
+    top: 130px;
+    bottom: 10px;
+}
 
 .switch {
     position: relative;
@@ -412,10 +428,9 @@ input:checked + .slider:before {
 .fiducial-assign-hint {
     opacity: 0;
     position: absolute;
-    top: 34px;
     left: 50%;
-    margin-left: -44px;
-    width: 88px;
+    margin-left: -40px;
+    width: 95px;
     padding: 2px;
     background-color: rgb(50,50,50);
     transform: skew(15deg);
@@ -434,8 +449,11 @@ input:checked + .slider:before {
     content: " ";
     z-index: -1;  /* to be below the parent element */
 }
-.fiducial-assign:hover .fiducial-assign-hint {
+.hint-parent:hover .fiducial-assign-hint {
     opacity: 1;
+}
+.fiducial-assign .fiducial-assign-hint {
+    top: 34px;
 }
 
 
@@ -613,8 +631,9 @@ input:checked + .slider:before {
 
 .page {
     position: absolute;
-    left: 0;
-    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 10px;
 }
 
 .transition-page-enter-active {

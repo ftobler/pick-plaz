@@ -9,6 +9,9 @@ class NoBeltHoleFoundException(Exception):
 
 TYPE_NUMBER = 1
 
+# Belt feeder.
+# SMD belt is in a 3d printed fixture and pnp head advances its position every
+# time (belt does not move)
 class Belt:
 
     def __init__(self, eye, picker):
