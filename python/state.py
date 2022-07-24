@@ -57,6 +57,7 @@ class StateContext:
         self.testplacepos = 0
 
         self.alert_id = 0
+        self.do_pause = False
 
         self.nav = {
             "camera": {
@@ -388,6 +389,9 @@ class StateContext:
         except AbortException as e:
             self._push_alert(e)
             return self.idle_state
+        if self.do_pause == True:
+            #pause was requested.
+            return self.idle_state
         return self.run_state
 
     def _handle_common_event(self, item):
@@ -464,7 +468,10 @@ class StateContext:
             item = self.event_queue.get(block=False)
             if item["type"] == "sequence":
                 if item["method"] == "pause":
+                    self.do_pause = True
                     return self.setup_state
+                if item["method"] == "stop":
+                    raise AbortException()
             else:
                 self._handle_common_event(item)
         except queue.Empty:
