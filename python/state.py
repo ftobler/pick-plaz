@@ -141,7 +141,7 @@ class StateContext:
                     positions.append((float(designator["x"]), float(designator["y"])))
         positions = np.asarray(positions)
         if positions.size != 0:
-            bed_center = [self.nav["bed"]["width"] / 2, self.nav["bed"]["height"] / 2]
+            bed_center = [self.nav["bed"][2] / 2, self.nav["bed"][3] / 2]
             x, y = -(np.min(positions, axis=0) + np.max(positions, axis=0)) / 2 + bed_center
             self.nav["pcb"]["transform"] = [1, 0, 0, -1, float(x), float(y)]
         self._reset_fiducials()
