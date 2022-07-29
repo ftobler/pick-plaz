@@ -73,6 +73,8 @@ void Error_Handler(void);
 #define SW_FORWARD_GPIO_Port GPIOB
 #define SW_BACKWARD_Pin GPIO_PIN_10
 #define SW_BACKWARD_GPIO_Port GPIOB
+#define LED4_Pin GPIO_PIN_11
+#define LED4_GPIO_Port GPIOB
 #define LED3_Pin GPIO_PIN_8
 #define LED3_GPIO_Port GPIOA
 #define LED2_Pin GPIO_PIN_9

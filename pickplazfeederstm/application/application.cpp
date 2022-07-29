@@ -13,6 +13,18 @@
 #include "button.h"
 
 
+typedef enum {
+	FEED_none,
+	FEED_short,   // <= 9ms
+	FEED_long     // >= 105ms
+} FEED_en;
+
+
+typedef enum {
+	FEED_fsm_low,
+	FEED_fsm_high
+} FEED_fsm_en;
+
 
 typedef enum {
 	MOTOR_init,
@@ -51,8 +63,14 @@ static Button btnForward(SW_FORWARD_GPIO_Port, SW_FORWARD_Pin);
 static Button btnBackward(SW_BACKWARD_GPIO_Port, SW_BACKWARD_Pin);
 
 static uint32_t opto_is_indexed = 0;
-static uint32_t last_feed_signal_state = 0;
 
+//feed stuff
+static uint32_t feed_timer = 0;
+static FEED_fsm_en feed_state;
+static FEED_en feed_signal_state;
+static void run_feed_fsm();
+
+//application stuff
 static uint32_t app_forward_request = 0;
 static uint32_t app_backward_request = 0;
 static uint32_t app_forward_continious_rq = 0;
@@ -61,12 +79,16 @@ static APP_en app_state = APP_init;
 static uint32_t app_timer = 0;
 static void run_app_fsm();
 
+//motor stuff
 static int32_t motor_target = 0;   // -2047..+2047. 0 = not running
 static MOTOR_en motor_state = MOTOR_init;
 static uint32_t motor_timer = 0;
 static void run_motor_fsm();
 static void set_motor(uint32_t pwm, uint32_t direction);
 
+//led stuff
+extern uint8_t sintab[256];
+uint32_t sine_speed = 55;
 static void eval_led();
 
 
@@ -85,12 +107,7 @@ void app_init() {
 
 void app_systick() {
 
-	//if feed signal is present, request a forward request once.
-	uint32_t feed_signal_state = !gpio_ReadPin(FEED_GPIO_Port, FEED_Pin);
-	if (last_feed_signal_state != feed_signal_state && feed_signal_state) {
-		app_forward_request = 1;
-	}
-	last_feed_signal_state = feed_signal_state;
+	gpio_write(LED4_GPIO_Port, LED4_Pin, uwTick % 1024 < 16);
 
 	//handle button action
 	switch (btnForward.update()) {
@@ -138,59 +155,41 @@ void app_systick() {
 //	htim1.Instance->CCR1 = opto_is_indexed ? 2047 : 0;
 //	htim1.Instance->CCR4 = gpio_ReadPin(FEED_GPIO_Port, FEED_Pin) ? 2047 : 0;
 
+	run_feed_fsm();
 	run_app_fsm();
 	run_motor_fsm();
 	eval_led();
 }
 
 
-extern uint8_t sintab[256];
-uint32_t sine_speed = 55;
 
-static void eval_led() {
-	if (app_state == APP_idle) {
-		if (opto_is_indexed) {
-			htim1.Instance->CCR4 = 2048;
-			htim1.Instance->CCR3 = 0;
-			htim1.Instance->CCR2 = 0;
-			htim1.Instance->CCR1 = 0;
-		} else {
-			uint32_t t1 = uwTick;
-			uint32_t t2 = t1 + 128;
-			htim1.Instance->CCR4 = 0;
-			htim1.Instance->CCR3 = sintab[t1 % 256] * 8;
-			htim1.Instance->CCR2 = sintab[t2 % 256] * 8;
-			htim1.Instance->CCR1 = 0;
+
+
+static void run_feed_fsm() {
+	uint32_t feed_pin_state = !gpio_ReadPin(FEED_GPIO_Port, FEED_Pin);
+
+	switch (feed_state) {
+	case FEED_fsm_low:
+		if (feed_pin_state == 1) {
+			feed_timer = 0;
+			feed_state = FEED_fsm_high;
 		}
-	} else if (app_state == APP_increment_forward1 || app_state == APP_increment_forward2 || app_state == APP_free_forward) {
-		uint32_t t1 = uwTick;
-		uint32_t t2 = t1 + sine_speed;
-		uint32_t t3 = t2 + sine_speed;
-		uint32_t t4 = t3 + sine_speed;
-		htim1.Instance->CCR1 = sintab[t1 % 256] * 8;
-		htim1.Instance->CCR2 = sintab[t2 % 256] * 8;
-		htim1.Instance->CCR3 = sintab[t3 % 256] * 8;
-		htim1.Instance->CCR4 = sintab[t4 % 256] * 8;
-	} else if (app_state == APP_increment_backward1 || app_state == APP_increment_backward2 || app_state == APP_free_backward) {
-		uint32_t t4 = uwTick;
-		uint32_t t3 = t4 + sine_speed;
-		uint32_t t2 = t3 + sine_speed;
-		uint32_t t1 = t2 + sine_speed;
-		htim1.Instance->CCR1 = sintab[t1 % 256] * 8;
-		htim1.Instance->CCR2 = sintab[t2 % 256] * 8;
-		htim1.Instance->CCR3 = sintab[t3 % 256] * 8;
-		htim1.Instance->CCR4 = sintab[t4 % 256] * 8;
-	} else {
-		uint32_t t1 = uwTick;
-		uint32_t t2 = t1 + 128;
-		uint32_t t3 = t2 + 128;
-		uint32_t t4 = t3 + 128;
-		htim1.Instance->CCR1 = sintab[t1 % 256] * 8;
-		htim1.Instance->CCR2 = sintab[t2 % 256] * 8;
-		htim1.Instance->CCR3 = sintab[t3 % 256] * 8;
-		htim1.Instance->CCR4 = sintab[t4 % 256] * 8;
+		break;
+	case FEED_fsm_high:
+	default:
+		if (feed_pin_state == 0) {
+			if (feed_timer > 10) {
+				feed_signal_state = FEED_long;
+			} else {
+				feed_signal_state = FEED_short;
+			}
+			feed_state = FEED_fsm_low;
+		}
+		feed_timer++;
+		break;
 	}
 }
+
 
 
 
@@ -203,15 +202,21 @@ static void run_app_fsm() {
 		break;
 	case APP_idle:
 		motor_target = MOTOR_STOP;
-		if (app_forward_request) {
+		if (app_forward_request || feed_signal_state == FEED_short) {
 			app_state = APP_increment_forward1;
 			app_forward_request = 0;
 			app_timer = 500;
+			if (feed_signal_state == FEED_short) {
+				feed_signal_state = FEED_none;  //reset only if needed
+			}
 		}
-		if (app_backward_request) {
+		if (app_backward_request || feed_signal_state == FEED_long) {
 			app_state = APP_increment_backward1;
 			app_backward_request = 0;
 			app_timer = 500;
+			if (feed_signal_state == FEED_long) {
+				feed_signal_state = FEED_none;  //reset only if needed
+			}
 		}
 		if (app_forward_continious_rq) {
 			app_state = APP_free_forward;
@@ -356,3 +361,49 @@ static void set_motor(uint32_t pwm, uint32_t direction) {
 		htim3.Instance->CCR2 = 0;
 	}
 }
+
+static void eval_led() {
+	if (app_state == APP_idle) {
+		if (opto_is_indexed) {
+			htim1.Instance->CCR4 = 2048;
+			htim1.Instance->CCR3 = 0;
+			htim1.Instance->CCR2 = 0;
+			htim1.Instance->CCR1 = 0;
+		} else {
+			uint32_t t1 = uwTick;
+			uint32_t t2 = t1 + 128;
+			htim1.Instance->CCR4 = 0;
+			htim1.Instance->CCR3 = sintab[t1 % 256] * 8;
+			htim1.Instance->CCR2 = sintab[t2 % 256] * 8;
+			htim1.Instance->CCR1 = 0;
+		}
+	} else if (app_state == APP_increment_forward1 || app_state == APP_increment_forward2 || app_state == APP_free_forward) {
+		uint32_t t1 = uwTick;
+		uint32_t t2 = t1 + sine_speed;
+		uint32_t t3 = t2 + sine_speed;
+		uint32_t t4 = t3 + sine_speed;
+		htim1.Instance->CCR1 = sintab[t1 % 256] * 8;
+		htim1.Instance->CCR2 = sintab[t2 % 256] * 8;
+		htim1.Instance->CCR3 = sintab[t3 % 256] * 8;
+		htim1.Instance->CCR4 = sintab[t4 % 256] * 8;
+	} else if (app_state == APP_increment_backward1 || app_state == APP_increment_backward2 || app_state == APP_free_backward) {
+		uint32_t t4 = uwTick;
+		uint32_t t3 = t4 + sine_speed;
+		uint32_t t2 = t3 + sine_speed;
+		uint32_t t1 = t2 + sine_speed;
+		htim1.Instance->CCR1 = sintab[t1 % 256] * 8;
+		htim1.Instance->CCR2 = sintab[t2 % 256] * 8;
+		htim1.Instance->CCR3 = sintab[t3 % 256] * 8;
+		htim1.Instance->CCR4 = sintab[t4 % 256] * 8;
+	} else {
+		uint32_t t1 = uwTick;
+		uint32_t t2 = t1 + 128;
+		uint32_t t3 = t2 + 128;
+		uint32_t t4 = t3 + 128;
+		htim1.Instance->CCR1 = sintab[t1 % 256] * 8;
+		htim1.Instance->CCR2 = sintab[t2 % 256] * 8;
+		htim1.Instance->CCR3 = sintab[t3 % 256] * 8;
+		htim1.Instance->CCR4 = sintab[t4 % 256] * 8;
+	}
+}
+
