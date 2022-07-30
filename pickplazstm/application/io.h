@@ -21,6 +21,7 @@ public:
 	bool get();
 };
 
+
 class Overloading_output {
 private:
 	int pin;
@@ -34,6 +35,7 @@ public:
 	bool get();
 };
 
+
 class Simple_input {
 private:
 	int pin;
@@ -41,6 +43,7 @@ public:
 	Simple_input(int a_pin);
 	bool get();
 };
+
 
 class Prelling_input {
 private:
@@ -50,6 +53,16 @@ public:
 	Prelling_input(int a_pin);
 	void update();
 	bool get();
+};
+
+
+
+class Feeder_automatic {
+private:
+	int pin;
+public:
+	Feeder_automatic(int a_pin);
+	void feed(bool forward);
 };
 
 #endif /* IO_H_ */

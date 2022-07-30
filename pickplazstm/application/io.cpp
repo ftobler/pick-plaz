@@ -28,10 +28,10 @@ bool Simple_output::get() {
 
 
 Overloading_output::Overloading_output(int a_pin, int a_max_heat) {
-	pin = pin;
+	pin = a_pin;
 	state = 0;
 	heat = 0;
-	max_heat = max_heat;
+	max_heat = a_max_heat;
 }
 
 
@@ -106,4 +106,16 @@ void Prelling_input::update() {
 
 bool Prelling_input::get() {
 	return consecutive_ticks > 0;
+}
+
+
+
+Feeder_automatic::Feeder_automatic(int a_pin) {
+	pin = a_pin;
+}
+
+void Feeder_automatic::feed(bool forward) {
+    digitalWrite(pin, 1);
+    delay(forward ? 2 : 15);
+    digitalWrite(pin, 0);
 }

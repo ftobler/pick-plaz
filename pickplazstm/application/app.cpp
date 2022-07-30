@@ -32,6 +32,7 @@ static void do_cmd_stepper_power(bool on);
 static void do_cmd_set_max_acceleration(Gcode_command cmd);
 static void do_cmd_set_max_speed(Gcode_command cmd);
 static void do_cmd_set_max_speed_multiplier(Gcode_command cmd);
+static void do_cmd_feeder(Gcode_command cmd);
 static void job_prelling_handle();
 
 //output pin cluster (these have FET driver to either 5V or 12V)
@@ -94,6 +95,12 @@ static void job_prelling_handle();
 #define PIN_MOT_MS2    portpin('E', 11)
 #define PIN_MOT_MS3    portpin('E', 12)
 
+//feeder pins
+#define PIN_FEEDER0    portpin('A', 4)
+#define PIN_FEEDER1    portpin('C', 4)
+#define PIN_FEEDER2    portpin('C', 5)
+#define PIN_FEEDER3    portpin('B', 0)
+
 //Steper Motor instances
 AccelStepperExtended stepperX( PIN_MOTX_STEP,  PIN_MOTX_DIR);
 AccelStepperExtended stepperY0(PIN_MOTY0_STEP, PIN_MOTY0_DIR);
@@ -121,6 +128,12 @@ Prelling_input input_endZ(PIN_INPUT_ZEND);
 Prelling_input input_res1(PIN_INPUT_RES1);
 Prelling_input input_res2(PIN_INPUT_RES2);
 
+
+//feeder cluster
+Feeder_automatic feeder0(PIN_FEEDER0);
+Feeder_automatic feeder1(PIN_FEEDER1);
+Feeder_automatic feeder2(PIN_FEEDER2);
+Feeder_automatic feeder3(PIN_FEEDER3);
 
 static bool job_prelling = false;
 static float target_completeness = NaN;
@@ -302,6 +315,11 @@ void loop() {
 			//the given speed is multiplied with this factor before setting it.
 			//this allows slow rotating axies to kind of ignore the F-Parameter
 			do_cmd_set_max_speed_multiplier(cmd);
+		} else if (cmd.id == 'M' && (cmd.num == 205)) {
+			//control feeders (all of them)
+			//feeder number is specified on 'P'    - P = 0..3
+			//feeder direction is specified on 'S' - S > 0 => forward, s <= 0 => backward
+			do_cmd_feeder(cmd);
 		} else if (cmd.id == 'M' && (cmd.num == 512)) {
 			//set default state for feedrate & accelerations
 			default_settings();
@@ -674,6 +692,21 @@ static void do_cmd_set_max_speed_multiplier(Gcode_command cmd) {
 		stepperC.setMaxSpeed_multiplier_mm(cmd.valueC);
 	}
 }
+
+
+static void do_cmd_feeder(Gcode_command cmd) {
+	if (cmd.valueP != NaN && cmd.valueS != NaN) {
+	    uint32_t feeder_nr = round(cmd.valueP);
+		uint32_t is_direction_forward = cmd.valueS > 0;
+		switch (feeder_nr) {
+			case 0: feeder0.feed(is_direction_forward); break;
+			case 1: feeder1.feed(is_direction_forward); break;
+			case 2: feeder2.feed(is_direction_forward); break;
+			case 3: feeder3.feed(is_direction_forward); break;
+	    }
+	}
+}
+
 
 static void job_prelling_handle() {
 	if (job_prelling) {
