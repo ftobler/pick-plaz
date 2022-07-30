@@ -18,10 +18,9 @@ python/*.png
 pickplazstm/Debug/*
 pickplazstm/Release/*
 pickplazstm/Debug/*
-pickplazstm/Rel.settings/*
+pickplazstm/.settings/*
 pickplazfeederstm/Debug/*
 pickplazfeederstm/Release/*
-pickplazfeederstm/Debug/*
-pickplazfeederstm/Rel.settings/*
+pickplazfeederstm/.settings/*
 python/user/*
 backup/*
