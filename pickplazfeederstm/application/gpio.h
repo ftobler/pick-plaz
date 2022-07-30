@@ -14,8 +14,8 @@ extern "C" {
 #endif
 
 
-#include "stm32f4xx_hal.h"
-#include <stdint.h>
+#include "stm32f0xx_hal.h"
+#include "stdint.h"
 
 
 typedef struct {
@@ -24,9 +24,7 @@ typedef struct {
 } IoPin;
 
 
-uint8_t gpio_read(IoPin* pin);
-void gpio_write(IoPin* pin, uint8_t on);
-
+void gpio_write(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, uint8_t on);
 uint8_t gpio_ReadPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
 void gpio_SetPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
 void gpio_ResetPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);

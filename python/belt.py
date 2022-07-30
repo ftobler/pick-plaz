@@ -110,7 +110,12 @@ class Belt:
         if only_camera:
             robot.drive(pick_pos[0], pick_pos[1])
         else:
+            #must apply a slowdown on pick, because some belts are loose in the tray
+            #and because the packing tape is missing, the picker could generate enough
+            #vibrations that the parts are flying out.
+            self._apply_general_pick_slowdown(robot, apply=True)
             self.picker.pick(robot, pick_pos[0], pick_pos[1], angle + state["rot"])
+            self._apply_general_pick_slowdown(robot, apply=False)
 
         # self.picker.place(robot, pick_pos[0], pick_pos[1] + 10, 0)
 
@@ -149,3 +154,7 @@ class Belt:
         x_current = p_start[0] + np.cos(angle) * pitch * pos
         y_current = p_start[1] + np.sin(angle) * pitch * pos
         state["current"] = [x_current, y_current]
+
+    def _apply_general_pick_slowdown(self, robot, apply):
+        z_speed = 0.2 if apply else 1.0
+        robot.feedrate_multiplier(x=1.0, y=1.0, z=z_speed, e=1.0*12, a=1.0, b=1.0, c=1.0)
