@@ -35,6 +35,7 @@ static void do_cmd_set_max_speed_multiplier(Gcode_command cmd);
 static void do_cmd_feeder(Gcode_command cmd);
 static void job_prelling_handle();
 
+
 //output pin cluster (these have FET driver to either 5V or 12V)
 #define PIN_OUTPUT_PUMP  portpin('C', 6)  //12V
 #define PIN_OUTPUT_AUX1  portpin('D', 15) //written as VALVE on PCB on early revision. 5V
@@ -119,7 +120,6 @@ Simple_output output_topdn(PIN_OUTPUT_TOPDN);
 Simple_output output_aux1(PIN_OUTPUT_AUX1);
 Simple_output output_tray(PIN_OUTPUT_TRAY);
 
-
 //input pin cluster
 Prelling_input input_endX(PIN_INPUT_XEND);
 Prelling_input input_endY0(PIN_INPUT_YEND0);
@@ -128,16 +128,17 @@ Prelling_input input_endZ(PIN_INPUT_ZEND);
 Prelling_input input_res1(PIN_INPUT_RES1);
 Prelling_input input_res2(PIN_INPUT_RES2);
 
-
 //feeder cluster
 Feeder_automatic feeder0(PIN_FEEDER0);
 Feeder_automatic feeder1(PIN_FEEDER1);
 Feeder_automatic feeder2(PIN_FEEDER2);
 Feeder_automatic feeder3(PIN_FEEDER3);
 
+
 static bool job_prelling = false;
 static float target_completeness = NaN;
 static float current_speed = 175.0f;
+
 
 /**
  * Program setup
@@ -159,6 +160,10 @@ void setup() {
 }
 
 
+/*
+ * apply defaultl settings on the controller
+ * This is used as a revert back to normal
+ */
 static void default_settings() {
 	float steps_per_mm =   50.0f*2.0f;
 	//this is stable speed, but it seems a bit slow
@@ -226,6 +231,7 @@ static void default_settings() {
 	stepperC.setMaxSpeed_multiplier_mm(1.0);
 }
 
+
 /**
  * Fast timer ISR. Frequency is around multiple kHz
  */
@@ -240,6 +246,7 @@ void timer_isr() {
 	if (stepperC.isRunning())  stepperC.run();
 }
 
+
 /**
  * Slow ISR. Frquency is 1kHz
  */
@@ -249,16 +256,9 @@ void systick_isr() {
 
 
 /**
- * Background loop
+ * Background loop of Microcontroller
  */
 void loop() {
-
-	/*digitalWrite(PIN_OUTPUT_PUMP, millis() % 700 > 100);
-	digitalWrite(PIN_OUTPUT_VALVE, millis() % 700 > 200);
-	digitalWrite(PIN_OUTPUT_BOTUP, millis() % 700 > 300);
-	digitalWrite(PIN_OUTPUT_TOPDN, millis() % 700 > 400);
-	digitalWrite(PIN_OUTPUT_AUX1, millis() % 700 > 500);
-	digitalWrite(PIN_OUTPUT_AUX2, millis() % 700 > 600);*/
 
 	uart_loop();
 	if (uart_command_available() && is_steppers_on_position()) {
@@ -267,46 +267,65 @@ void loop() {
 		if (cmd.id == 'G' && (cmd.num == 0 || cmd.num == 1)) {
 			//drive to position
 			//there is no difference between G0 and G1
+			//Each motor drives at its own max speed. Some axies might reach the target
+			//before others
+			//eg:  G0 X10 Y20 => drive X to 10 and Y to 20. All other motors are not changed in position
+			//axies are: X, Y, Z, E, A, B, C
 			do_cmd_drive_to_position(cmd);
 		} else if (cmd.id == 'G' && (cmd.num == 28)) {
-			//home
+			//home all axies. They are homed in an order which is safe for the machine
+			//eg:  G28
+			//axies which are homed are: Z, X, Y (in that order)
 			do_cmd_stepper_power(true);  //switch it on first.
 			do_cmd_home(cmd);
 		} else if (cmd.id == 'G' && (cmd.num == 4)) {
-			//dwell
+			//dwell / wait for a given amount of time
+			//eg: G4 T5.5 => wait for 5.5s
 			do_cmd_dwell(cmd);
 		} else if (cmd.id == 'G' && (cmd.num == 92)) {
-			//set position
+			//set position ot the motors without driving them
+			//eg:  G0 X10 Y20 => set X to 10 and Y to 20
 			do_cmd_set_position(cmd);
 		} else if (cmd.id == 'M' && (cmd.num == 6)) {
-			//tool change
-			//????????
+			//tool change command
+			//not implemented
 		} else if (cmd.id == 'M' && (cmd.num == 10)) {
-			//vacuum on
+			//vacuum pump on
+			//eg: M10
 			do_cmd_vacuum_pump(true);
 		} else if (cmd.id == 'M' && (cmd.num == 11)) {
-			//vacuum off
+			//vacuum pump off
+			//eg: M11
 			do_cmd_vacuum_pump(false);
 		} else if (cmd.id == 'M' && (cmd.num == 17)) {
 			//steppers ON
+			//eg: M17
 			do_cmd_stepper_power(true);
 		} else if (cmd.id == 'M' && (cmd.num == 18)) {
 			//steppers OFF
+			//eg: M18
 			do_cmd_stepper_power(false);
 		} else if (cmd.id == 'M' && (cmd.num == 126)) {
-			//open valve
+			//open valve (powers it)
+			//eg: M126
 			do_cmd_vacuum_valve(true);
 		} else if (cmd.id == 'M' && (cmd.num == 127)) {
-			//close valve
+			//close valve (un-powers it)
+			//eg: M127
 			do_cmd_vacuum_valve(false);
 		} else if (cmd.id == 'M' && (cmd.num == 42)) {
 			//switch io pin
+			//eg M42 P0 S1 => turns output 0 on
+			//the outputs are driven by a low side FET and either 5V or 12V
 			do_cmd_io(cmd);
 		} else if (cmd.id == 'M' && (cmd.num == 201)) {
 			//set max acceleration
+			//eg: M201 X500 => sets only X-axies to 500mm/s^2
 			do_cmd_set_max_acceleration(cmd);
 		} else if (cmd.id == 'M' && (cmd.num == 203)) {
 			//set max feedrate
+			//set max acceleration
+			//eg: M203 X50 => sets only X-axies to 50mm/s
 			do_cmd_set_max_speed(cmd);
 		} else if (cmd.id == 'M' && (cmd.num == 204)) {
 			//set max feedrate multiplier
@@ -314,17 +333,22 @@ void loop() {
 			//it will be applied on G0/G1 commands when the F-Parameter is given
 			//the given speed is multiplied with this factor before setting it.
 			//this allows slow rotating axies to kind of ignore the F-Parameter
+			//eg: M204 X1.00
 			do_cmd_set_max_speed_multiplier(cmd);
 		} else if (cmd.id == 'M' && (cmd.num == 205)) {
 			//control feeders (all of them)
 			//feeder number is specified on 'P'    - P = 0..3
 			//feeder direction is specified on 'S' - (S > 0.5) => forward, (s <= 0.5) => backward
+			//eg: M205 P2 S1 => will advance feeder 2 to the next part
 			do_cmd_feeder(cmd);
 		} else if (cmd.id == 'M' && (cmd.num == 512)) {
 			//set default state for feedrate & accelerations
+			//eg: M512
 			default_settings();
 		} else if (cmd.id == 'M' && (cmd.num == 1000)) {
 			//send sync back to uart
+			//use this to detect when the machine has successfully cleared the queue to this point.
+			//eg: M1000
 			uart_message("SYNC");
 		} else {
 			//unknown command
@@ -338,6 +362,7 @@ void loop() {
 	job_prelling_handle();
 
 }
+
 
 static bool is_steppers_on_position() {
 	if (target_completeness == NaN) {
@@ -362,6 +387,7 @@ static bool is_steppers_on_position() {
 	}
 	return true;
 }
+
 
 static void do_cmd_drive_to_position(Gcode_command cmd) {
 	if (cmd.valueF != NaN) {
@@ -438,6 +464,7 @@ static void do_cmd_home(Gcode_command cmd) {
 		stepperY1.setMaxSpeed_mm(tmpSpeed);
 	}
 }
+
 
 static void homeAxle(AccelStepperExtended* stepper, Prelling_input* endstop, int homDirection, float home_speed, int home_timeout,
 		float home_travel_mm, float home_travel_back_mm, float sensor_position) {
@@ -544,6 +571,7 @@ static void homeAxleDual(AccelStepperExtended* stepper1, AccelStepperExtended* s
 	stepper2->setMaxSpeed_mm(tmpSpeed);                           //restore motor speed
 }
 
+
 static void do_cmd_dwell(Gcode_command cmd) {
 	if (cmd.valueT != NaN) {
 		int milliseconds = round(cmd.valueT * 1000.0f);
@@ -615,6 +643,7 @@ static void do_cmd_stepper_power(bool on) {
 	digitalWrite(PIN_MOTB_EN,  on);
 	digitalWrite(PIN_MOTC_EN,  on);
 }
+
 
 static void do_cmd_set_max_acceleration(Gcode_command cmd) {
 	if (cmd.valueX != NaN) {

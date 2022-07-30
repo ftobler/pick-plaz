@@ -13,11 +13,12 @@
 #include "stm32f4xx_hal.h"
 #include "math.h"
 
-#define NaN (0x400000)
 
 extern TIM_HandleTypeDef htim2;  //counts in 1us interval. until it overflows at 2^32
 
+
 typedef bool boolean;
+
 
 enum {
 	LOW = 0,
@@ -32,6 +33,7 @@ enum {
 
 
 
+#define NaN ((float)(0x400000))  //floating point NaN
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
 #define abs(x) ((x)>0?(x):-(x))
@@ -53,5 +55,6 @@ void digitalWrite(int pin, int value);
 void digitalPulse(int pin);
 uint8_t digitalRead(int pin);
 void pinMode(int pin, int mode);
+
 
 #endif /* ARDUINO_LIKE_HAL_H_ */

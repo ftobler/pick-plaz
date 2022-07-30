@@ -10,10 +10,6 @@
 #include "stm32f4xx_hal_def.h"
 #include "gpio.h"
 
-//public functions
-
-
-
 
 Serial serial1;
 
@@ -33,15 +29,18 @@ inline uint8_t Buffer::getByte() {
 	tail = (_tail + 1) % BUFFER_LEN;
 	return data;
 }
+
+
 inline uint32_t Buffer::getAvailable() {
 	return (head - tail) % BUFFER_LEN;
 }
+
+
 inline void Buffer::setByte(uint8_t data) {
 	uint32_t _head = head;
 	buf[_head] = data;
 	head = (_head + 1) % BUFFER_LEN;
 }
-
 
 
 void Serial::ISR() {
@@ -93,7 +92,6 @@ void Serial::ISR() {
 }
 
 
-
 void Serial::init(UART_HandleTypeDef* handler) {
 	huart = handler;
 	flow = 0;
@@ -114,17 +112,21 @@ void Serial::initFlow(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin) {
 	flowPin = GPIO_Pin;
 }
 
+
 uint16_t Serial::available(){
 	return in.getAvailable();
 }
+
 
 void Serial::flushRX(){
 	in.init();
 }
 
+
 void Serial::flushTX(){
 	out.init();
 }
+
 
 void Serial::print(const char* str){
 	const uint8_t* ptr = (uint8_t*)str;
@@ -135,6 +137,7 @@ void Serial::print(const char* str){
 	enableTx();
 }
 
+
 /**
  * unguarded about overflow!
  * use Serial_available!
@@ -142,6 +145,7 @@ void Serial::print(const char* str){
 uint8_t Serial::read() {
 	return in.getByte();
 }
+
 
 uint16_t Serial::readBuf(uint8_t* buf, uint16_t len) {
 	uint16_t count = 0;
@@ -159,6 +163,8 @@ void Serial::writeBuf(const uint8_t* buf, uint16_t len) {
 	}
 	enableTx();
 }
+
+
 void Serial::write(const uint8_t data) {
 	out.setByte(data);
 	enableTx();
@@ -169,14 +175,6 @@ void Serial::enableTx() {
 	if (flow) {
 		gpio_SetPin(flowPort, flowPin);
 	}
-//	if (huart->gState == HAL_UART_STATE_READY) {
-//		huart->ErrorCode = HAL_UART_ERROR_NONE;
-//		huart->gState = HAL_UART_STATE_BUSY_TX;
-//		/* Enable the UART Transmit data register empty Interrupt */
-//		    __HAL_UART_ENABLE_IT(huart, UART_IT_TXE);
-//	} else {
-//		//huart->gState = HAL_UART_STATE_BUSY_TX;
-//	}
 	__HAL_UART_ENABLE_IT(huart, UART_IT_TXE);
 	txnComplete = 0;
 }

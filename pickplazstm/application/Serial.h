@@ -9,10 +9,10 @@
 #ifndef SERIAL_H_
 #define SERIAL_H_
 
-//public types
 
 #include "main.h"
 #include "stm32f4xx.h"
+
 
 #define BUFFER_LEN 256
 
@@ -54,7 +54,6 @@ public:
 	void writeBuf(const uint8_t* buf, uint16_t len);
 	void write(const uint8_t data);
 };
-
 
 
 #endif /* SERIAL_H_ */
