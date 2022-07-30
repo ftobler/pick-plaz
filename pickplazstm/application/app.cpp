@@ -148,9 +148,15 @@ void setup() {
 
 static void default_settings() {
 	float steps_per_mm =   50.0f*2.0f;
-	float speed_cap =     175.0f;
-	float speed =         175.0f;
-	float accel =        1000.0f;
+	//this is stable speed, but it seems a bit slow
+	float speed_cap =     120.0f;
+	float speed =         120.0f;
+	float accel =         600.0f;
+
+	//this was too fast
+	// float speed_cap =     175.0f;
+	// float speed =         175.0f;
+	// float accel =        1000.0f;
 	current_speed = speed;
 	//note:
 	//Trinamic drivers seem to 'wander' slowly, could have to do with
