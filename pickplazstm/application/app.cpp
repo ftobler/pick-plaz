@@ -318,7 +318,7 @@ void loop() {
 		} else if (cmd.id == 'M' && (cmd.num == 205)) {
 			//control feeders (all of them)
 			//feeder number is specified on 'P'    - P = 0..3
-			//feeder direction is specified on 'S' - S > 0 => forward, s <= 0 => backward
+			//feeder direction is specified on 'S' - (S > 0.5) => forward, (s <= 0.5) => backward
 			do_cmd_feeder(cmd);
 		} else if (cmd.id == 'M' && (cmd.num == 512)) {
 			//set default state for feedrate & accelerations
@@ -697,7 +697,7 @@ static void do_cmd_set_max_speed_multiplier(Gcode_command cmd) {
 static void do_cmd_feeder(Gcode_command cmd) {
 	if (cmd.valueP != NaN && cmd.valueS != NaN) {
 	    uint32_t feeder_nr = round(cmd.valueP);
-		uint32_t is_direction_forward = cmd.valueS > 0;
+		uint32_t is_direction_forward = cmd.valueS > 0.5f;
 		switch (feeder_nr) {
 			case 0: feeder0.feed(is_direction_forward); break;
 			case 1: feeder1.feed(is_direction_forward); break;
