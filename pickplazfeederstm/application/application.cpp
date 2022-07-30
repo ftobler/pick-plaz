@@ -89,7 +89,8 @@ static void set_motor(uint32_t pwm, uint32_t direction);
 //led stuff
 extern uint8_t sintab[256];
 uint32_t sine_speed = 55;
-static void eval_led();
+static void eval_led_pwm();
+static void eval_led_feed();
 
 
 void app_init() {
@@ -107,7 +108,6 @@ void app_init() {
 
 void app_systick() {
 
-	gpio_write(LED4_GPIO_Port, LED4_Pin, uwTick % 1024 < 16);
 
 	//handle button action
 	switch (btnForward.update()) {
@@ -158,7 +158,8 @@ void app_systick() {
 	run_feed_fsm();
 	run_app_fsm();
 	run_motor_fsm();
-	eval_led();
+	eval_led_pwm();
+	eval_led_feed();
 }
 
 
@@ -362,7 +363,8 @@ static void set_motor(uint32_t pwm, uint32_t direction) {
 	}
 }
 
-static void eval_led() {
+
+static void eval_led_pwm() {
 	if (app_state == APP_idle) {
 		if (opto_is_indexed) {
 			htim1.Instance->CCR4 = 2048;
@@ -405,5 +407,18 @@ static void eval_led() {
 		htim1.Instance->CCR3 = sintab[t3 % 256] * 8;
 		htim1.Instance->CCR4 = sintab[t4 % 256] * 8;
 	}
+}
+
+
+static void eval_led_feed() {
+	static uint32_t counter = 2000;
+	if (feed_signal_state != FEED_none) {
+		counter = 500;
+	}
+	if (counter) {
+		counter--;
+	}
+	gpio_write(LED4_GPIO_Port, LED4_Pin, counter);
+
 }
 
