@@ -18,7 +18,8 @@ class Roll:
         self.detected_pos = (0,0)
 
     def set_pickpos(self, state, pos):
-        x, y = pos
+        x = pos["x"]
+        y = pos["y"]
         state["pickpos"] = [x, y]
 
     def set_channel(self, state, channel):
@@ -38,5 +39,12 @@ class Roll:
         robot.feeder_advance(state["channel"])
         if "counter" in state:
             state["counter"] += 1
+        else:
+            state["counter"] = 1
+
+    def retract(self, state, robot):
+        robot.feeder_advance(state["channel"], direction_forward=False)
+        if "counter" in state:
+            state["counter"] -= 1
         else:
             state["counter"] = 1

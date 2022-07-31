@@ -316,6 +316,9 @@ class StateContext:
                 elif item["method"] == "belt_set_end":
                     name = item["param"]
                     self.belt.set_end(self.context["feeder"][name])
+                elif item["method"] == "set_roll_pickpos":
+                    name = item["param"]
+                    self.roll.set_pickpos(self.context["feeder"][name], self.nav["camera"])
                 elif item["method"] == "test_feeder":
                     name = item["param"]
                     feeder = self.context["feeder"][name]
@@ -336,8 +339,20 @@ class StateContext:
                         self.tray.pick(feeder, self.robot, only_camera=True)
                     elif feeder["type"] == belt.TYPE_NUMBER:
                         self.belt.pick(feeder, self.robot, only_camera=True)
+                    elif feeder["type"] == roll.TYPE_NUMBER:
+                        self.robot.drive(feeder["pickpos"][0], feeder["pickpos"][1])
                 elif item["method"] == "reset_board":
                     self._reset_for_new_board()
+                elif item["method"] == "roll_advance":
+                    name = item["param"]
+                    feeder = self.context["feeder"][name]
+                    if feeder["type"] == roll.TYPE_NUMBER:
+                        self.roll.advance(feeder, self.robot)
+                elif item["method"] == "roll_retract":
+                    name = item["param"]
+                    feeder = self.context["feeder"][name]
+                    if feeder["type"] == roll.TYPE_NUMBER:
+                        self.roll.retract(feeder, self.robot)
             elif item["type"] == "light_control":
                 channel = item["light"]
                 enable = item["state"]
