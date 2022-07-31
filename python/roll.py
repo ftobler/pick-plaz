@@ -37,14 +37,14 @@ class Roll:
 
     def advance(self, state, robot):
         robot.feeder_advance(state["channel"])
-        if "counter" in state:
-            state["counter"] += 1
+        if "pos" in state:
+            state["pos"] += 1
         else:
-            state["counter"] = 1
+            state["pos"] = 1
 
     def retract(self, state, robot):
         robot.feeder_advance(state["channel"], direction_forward=False)
-        if "counter" in state:
-            state["counter"] -= 1
+        if "pos" in state:
+            state["pos"] -= 1
         else:
-            state["counter"] = 1
+            state["pos"] = 1

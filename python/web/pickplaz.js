@@ -1111,7 +1111,7 @@ api = {
         }
     },
     feeder_modify(method, feeder, data, callback) { //TODO: python implemenation
-        let methods = ["rename", "type", "rotation", "state", "pos"]
+        let methods = ["rotation", "state", "pos", "pitch", "x_offset", "y_offset"]
         if (methods.includes(method)) {
             apicall("feeder_modify", {
                 method: method,
