@@ -769,24 +769,19 @@ function start() {
                     }
                 }
             },
-            draw_tray_feeder(ctx, name, feeder, part) {
-
+            draw_base_feeder(ctx, name, feeder, part) {
                 let d = 2; // margin
-
-                ctx.save();
-                ctx.translate(feeder.position[0], feeder.position[1]);
 
                 ctx.fillStyle = "cyan"
                 ctx.strokeStyle = "cyan"
-
-                ctx.moveTo(0,feeder.position[3]);
-
+                ctx.font = "3px Arial";
                 textLines = [name]
 
-                if (part) {
-
+                //draw the part in the middle of the feeder
+                ctx.save();
+                ctx.translate(feeder.position[0], feeder.position[1]);
+                try {
                     textLines.push(part.partnr)
-
                     let footprint = getFootprint(part.footprint)
                     if (footprint) {
                         // scale sym size into a 10x10mm box
@@ -794,8 +789,9 @@ function start() {
                         let h = footprint.imageSym.height / factor;
                         let w = footprint.imageSym.width / factor;
 
+                        //draw the symbol
                         ctx.save();
-                        ctx.translate(feeder.position[2] / 3, feeder.position[3] / 2);
+                        ctx.translate(feeder.position[2] / 2 - 6, feeder.position[3] / 2);
                         ctx.rotate(feeder.rot*Math.PI/180)
                         try {
                             ctx.drawImage(
@@ -808,8 +804,9 @@ function start() {
                         } catch {}
                         ctx.restore()
 
+                        //draw the part
                         ctx.save();
-                        ctx.translate(feeder.position[2] / 3 * 2, feeder.position[3] / 2);
+                        ctx.translate(feeder.position[2] / 2 + 6, feeder.position[3] / 2);
                         ctx.rotate(feeder.rot*Math.PI/180)
                         this.draw_part(ctx, footprint)
                         this.draw_part_cross(ctx)
@@ -823,80 +820,25 @@ function start() {
                             feeder.position[2] / 2 - metrics.width / 2,
                             feeder.position[3] / 2
                         );
-
                     }
-
-                }
-
-                let metrics = ctx.measureText("");
-                let fontHeight = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
-                let y = fontHeight;
-                for (let line of textLines) {
-                    ctx.fillText(line, d+1, d+y);
-                    y += fontHeight;
-                }
-
-                ctx.save();
-                ctx.font = "5px Arial";
-                let txt = this.context.const.feeder_state[feeder.state]
-
-                if (feeder.state == 1) {ctx.fillStyle = "green"; ctx.strokeStyle = "green"}
-                if (feeder.state == 2) {ctx.fillStyle = "red"; ctx.strokeStyle = "red"}
-
-                metrics = ctx.measureText(txt);
-                ctx.fillText(
-                    txt,
-                    feeder.position[2] / 2 - metrics.width /2,
-                    feeder.position[3] - 3 - d
-                );
-
-                if (feeder.state != 0) {
-                    ctx.beginPath();
-                    ctx.lineWidth = d;
-                    ctx.globalAlpha = 0.5
-                    ctx.rect(d/2, d/2, feeder.position[2] - d, feeder.position[3] - d);
-                    ctx.stroke();
-                }
-                ctx.restore();
-
-                ctx.beginPath();
-                ctx.rect(0, 0, feeder.position[2], feeder.position[3]);
-                ctx.stroke();
-
-                ctx.restore();
-            },
-            draw_belt_feeder(ctx, name, feeder, part) {
-                let d = 2; // margin
-
-
-                ctx.fillStyle = "cyan"
-                ctx.strokeStyle = "cyan"
-                ctx.save();
-                ctx.translate(feeder.x + feeder.x_offset, feeder.y + feeder.y_offset)
-                ctx.rotate(feeder.rot*Math.PI/180)
-                try {
-                    let footprint = getFootprint(part.footprint)
-                    this.draw_part(ctx, footprint)
-                    this.draw_part_cross(ctx)
                 } catch {}
 
-                ctx.fillText(name, feeder.position[0] + 2.5, feeder.position[1] + 4);
-
-                ctx.restore();
-
+                //draw feeder name and part info
+                let metrics = ctx.measureText("");
+                let fontHeight = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
+                let y = fontHeight - 1;
+                for (let line of textLines) {
+                    ctx.fillText(line, d, d+y);
+                    y += fontHeight;
+                }
+                
+                //draw the fat outline
                 ctx.save();
-                ctx.translate(feeder.position[0], feeder.position[1])
-
-                ctx.save();
-                ctx.font = "5px Arial";
                 let txt = this.context.const.feeder_state[feeder.state]
-
                 if (feeder.state == 1) {ctx.fillStyle = "green"; ctx.strokeStyle = "green"}
                 if (feeder.state == 2) {ctx.fillStyle = "red"; ctx.strokeStyle = "red"}
-
                 metrics = ctx.measureText(txt);
                 ctx.fillText(txt, feeder.position[2] / 2 - metrics.width / 2, feeder.position[3] - 3 - d);
-
                 if (feeder.state != 0) {
                     ctx.beginPath();
                     ctx.lineWidth = d;
@@ -905,11 +847,19 @@ function start() {
                     ctx.stroke();
                 }
                 ctx.restore();
-
+ 
+                //draw the thin outline
                 ctx.beginPath();
                 ctx.rect(0, 0, feeder.position[2], feeder.position[3]);
                 ctx.stroke();
                 ctx.restore();
+            },
+            draw_tray_feeder(ctx, name, feeder, part) {
+
+                this.draw_base_feeder(ctx, name, feeder, part) 
+            },
+            draw_belt_feeder(ctx, name, feeder, part) {
+                this.draw_base_feeder(ctx, name, feeder, part) 
 
                 //draw the crosses (main positions)
                 ctx.strokeStyle = "red"
@@ -939,55 +889,19 @@ function start() {
 
             },
             draw_roll_feeder(ctx, name, feeder, part) {
-                let d = 2; // margin
-
-
-                ctx.fillStyle = "cyan"
-                ctx.strokeStyle = "cyan"
-                ctx.save();
-                ctx.translate(feeder.x + feeder.x_offset, feeder.y + feeder.y_offset)
-                ctx.rotate(feeder.rot*Math.PI/180)
-                try {
-                    let footprint = getFootprint(part.footprint)
-                    this.draw_part(ctx, footprint)
-                    this.draw_part_cross(ctx)
-                } catch {}
-
-                ctx.fillText(name, feeder.position[0] + 2.5, feeder.position[1] + 4);
-
-                ctx.restore();
-
-                ctx.save();
-                ctx.translate(feeder.position[0], feeder.position[1])
-
-                ctx.save();
-                ctx.font = "5px Arial";
-                let txt = this.context.const.feeder_state[feeder.state]
-
-                if (feeder.state == 1) {ctx.fillStyle = "green"; ctx.strokeStyle = "green"}
-                if (feeder.state == 2) {ctx.fillStyle = "red"; ctx.strokeStyle = "red"}
-
-                metrics = ctx.measureText(txt);
-                ctx.fillText(txt, feeder.position[2] / 2 - metrics.width / 2, feeder.position[3] - 3 - d);
-
-                if (feeder.state != 0) {
-                    ctx.beginPath();
-                    ctx.lineWidth = d;
-                    ctx.globalAlpha = 0.5
-                    ctx.rect(d/2, d/2, feeder.position[2] - d, feeder.position[3] - d);
-                    ctx.stroke();
-                }
-                ctx.restore();
-
-                ctx.beginPath();
-                ctx.rect(0, 0, feeder.position[2], feeder.position[3]);
-                ctx.stroke();
-                ctx.restore();
+                this.draw_base_feeder(ctx, name, feeder, part) 
 
                 //draw cross for pickup
                 ctx.strokeStyle = "red"
                 ctx.fillStyle = "red"
                 this.draw_cross(ctx, feeder.pickpos[0], feeder.pickpos[1])
+                ctx.beginPath();  //circle on the pickpos hole
+                ctx.arc(feeder.pickpos[0], feeder.pickpos[1], 0.75, 0, 2 * Math.PI)
+                ctx.stroke()
+                ctx.beginPath(); //line between the pickpos hole and the pick position
+                ctx.moveTo(feeder.pickpos[0], feeder.pickpos[1])
+                ctx.lineTo(feeder.pickpos[0] + feeder.offset[0], feeder.pickpos[1] + feeder.offset[1])
+                ctx.stroke()
             },
             draw_cross(ctx, x, y) {
                 ctx.save();
