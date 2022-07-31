@@ -549,6 +549,7 @@ function start() {
                     ctx.save();
                     ctx.globalAlpha = 0.5;
                     ctx.strokeStyle = "yellow";
+                    ctx.fillStyle = "yellow"
                     ctx.beginPath();
                     ctx.moveTo(this.nav.camera.x, this.nav.bed[0]-10);
                     ctx.lineTo(this.nav.camera.x, this.nav.bed[0]+this.nav.bed[2]+10);
@@ -572,9 +573,14 @@ function start() {
                 //draw detected fiducial
                 if (this.elements.show_symbol) {
                     ctx.strokeStyle = "yellow"
+                    ctx.fillStyle = "yellow"
                     this.draw_detection_fiducial(ctx, this.nav.detection.fiducial, "fiducial")
+                    ctx.strokeStyle = "orange"
+                    ctx.fillStyle = "orange"
                     this.draw_detection_belt(ctx, this.nav.detection.belt, "belt")
                     //draw detected fiducials
+                    ctx.strokeStyle = "pink"
+                    ctx.fillStyle = "pink"
                     for (let [id, coord] of Object.entries(this.nav.pcb.fiducials)) {
                         this.draw_fiducial(ctx, coord, id)
                     }
@@ -697,8 +703,9 @@ function start() {
             draw_detection_fiducial(ctx, coord) {
                 ctx.save();
                 ctx.translate(coord[0], coord[1]);
+                ctx.rotate(0.2)
 
-                ctx.fillText("fiducial", 0.2, 0.2);
+                ctx.fillText("fiducial", 2.0, 0.2);
 
                 ctx.rotate(-coord[2]);
                 ctx.beginPath()
@@ -716,6 +723,10 @@ function start() {
             draw_detection_belt(ctx, coord) {
                 ctx.save();
                 ctx.translate(coord[0], coord[1]);
+                ctx.rotate(-0.2)
+
+                
+                ctx.fillText("belt", 2.0, 0.2);
 
                 ctx.beginPath();
                 ctx.arc(0, 0, 0.75, 0, 2 * Math.PI);
@@ -723,8 +734,7 @@ function start() {
                 ctx.beginPath();
                 ctx.arc(0, 0, 1.5, 0, 2 * Math.PI);
                 ctx.stroke();
-                ctx.fillText("belt", 0.2, 0.2);
-
+                
                 ctx.restore();
             },
             drawSymbol(ctx, entry, id) {
@@ -772,8 +782,8 @@ function start() {
             draw_base_feeder(ctx, name, feeder, part) {
                 let d = 2; // margin
 
-                ctx.fillStyle = "cyan"
-                ctx.strokeStyle = "cyan"
+                ctx.fillStyle = "white"
+                ctx.strokeStyle = "white"
                 ctx.font = "3px Arial";
                 textLines = [name]
 
@@ -789,9 +799,17 @@ function start() {
                         let h = footprint.imageSym.height / factor;
                         let w = footprint.imageSym.width / factor;
 
+                        let x_offset = 0
+                        let y_offset = 0
+                        if (feeder.position[2] > feeder.position[3]) {
+                            x_offset = 6
+                        } else {
+                            y_offset = 6
+                        }
+
                         //draw the symbol
                         ctx.save();
-                        ctx.translate(feeder.position[2] / 2 - 6, feeder.position[3] / 2);
+                        ctx.translate(feeder.position[2] / 2 - x_offset, feeder.position[3] / 2 - y_offset);
                         ctx.rotate(feeder.rot*Math.PI/180)
                         try {
                             ctx.drawImage(
@@ -806,7 +824,7 @@ function start() {
 
                         //draw the part
                         ctx.save();
-                        ctx.translate(feeder.position[2] / 2 + 6, feeder.position[3] / 2);
+                        ctx.translate(feeder.position[2] / 2 + x_offset, feeder.position[3] / 2 + y_offset);
                         ctx.rotate(feeder.rot*Math.PI/180)
                         this.draw_part(ctx, footprint)
                         this.draw_part_cross(ctx)
@@ -894,7 +912,7 @@ function start() {
                 //draw cross for pickup
                 ctx.strokeStyle = "red"
                 ctx.fillStyle = "red"
-                this.draw_cross(ctx, feeder.pickpos[0], feeder.pickpos[1])
+                this.draw_cross(ctx, feeder.pickpos[0] + feeder.offset[0], feeder.pickpos[1] + feeder.offset[1])
                 ctx.beginPath();  //circle on the pickpos hole
                 ctx.arc(feeder.pickpos[0], feeder.pickpos[1], 0.75, 0, 2 * Math.PI)
                 ctx.stroke()
