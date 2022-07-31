@@ -90,7 +90,7 @@ class StateContext:
             # },
             "detection": {
                 "fiducial": [0, 0],
-                "part" : [0,0,0],
+                "belt": [0,0]
             },
             "state": "idle",
             "light": {
@@ -229,7 +229,7 @@ class StateContext:
                     #this makes it move quicker between waypoints and navigating.
                     #there is still a big lag spike everytime this section is attempted
                     try:
-                        self.belt.find_hole()
+                        self.nav["detection"]["belt"] = self.belt.find_hole()
                     except belt.NoBeltHoleFoundException:
                         pass
                     if self.event_queue.empty():

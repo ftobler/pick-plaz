@@ -574,9 +574,8 @@ function start() {
                 //draw detected fiducial
                 if (this.elements.show_symbol) {
                     ctx.strokeStyle = "yellow"
-                    this.draw_fiducial(ctx, this.nav.detection.fiducial, "detection")
-
-                    this.draw_detection(ctx, this.nav.detection.part, "part")
+                    this.draw_detection_fiducial(ctx, this.nav.detection.fiducial, "fiducial")
+                    this.draw_detection_belt(ctx, this.nav.detection.belt, "belt")
                     //draw detected fiducials
                     if (this.elements.show_symbol) {
                         ctx.strokeStyle = "yellow"
@@ -681,16 +680,40 @@ function start() {
                     ); ctx.stroke();
                 }
             },
-            draw_fiducial(ctx, coord, text) {
-                ctx.beginPath();
-                ctx.arc(coord[0], coord[1], 0.75, 0, 2 * Math.PI)
+            draw_fiducial(ctx, coord, name) {
+                ctx.save();
+                ctx.translate(coord[0], coord[1]);
+                ctx.rotate(Math.PI / 4)  // 45°
+
+                ctx.fillText(name, 0.2, 0.2);
+
+                ctx.rotate(-coord[2]);
+                ctx.moveTo(-2,0);
+                ctx.lineTo(2,0);
                 ctx.stroke();
-                ctx.beginPath();
-                ctx.arc(coord[0], coord[1], 1.5, 0, 2 * Math.PI)
+                ctx.moveTo(0,-3);
+                ctx.lineTo(0,3);
                 ctx.stroke();
-                ctx.fillText(text, coord[0] + 0.2, coord[1] - 0.2);
+
+                ctx.restore();
             },
-            draw_detection(ctx, coord, text) {
+            draw_detection_fiducial(ctx, coord) {
+                ctx.save();
+                ctx.translate(coord[0], coord[1]);
+
+                ctx.fillText("fiducial", 0.2, 0.2);
+
+                ctx.rotate(-coord[2]);
+                ctx.moveTo(-2,0);
+                ctx.lineTo(2,0);
+                ctx.stroke();
+                ctx.moveTo(0,-3);
+                ctx.lineTo(0,3);
+                ctx.stroke();
+
+                ctx.restore();
+            },
+            draw_detection_belt(ctx, coord) {
                 ctx.save();
                 ctx.translate(coord[0], coord[1]);
 
@@ -700,15 +723,7 @@ function start() {
                 ctx.beginPath();
                 ctx.arc(0, 0, 1.5, 0, 2 * Math.PI);
                 ctx.stroke();
-                ctx.fillText(text, 0.2, 0.2);
-
-                ctx.rotate(-coord[2]);
-                ctx.moveTo(-2,0);
-                ctx.lineTo(2,0);
-                ctx.stroke();
-                ctx.moveTo(0,-3);
-                ctx.lineTo(0,3);
-                ctx.stroke();
+                ctx.fillText("belt", 0.2, 0.2);
 
                 ctx.restore();
             },
