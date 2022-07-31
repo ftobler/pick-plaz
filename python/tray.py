@@ -1,6 +1,6 @@
 import numpy as np
 import math
-
+import debug
 import pick
 
 TYPE_NUMBER = 0
@@ -70,11 +70,12 @@ class Tray:
         robot_pos = pos
         robot.drive(*pos)
         image = self.eye.get_valid_image()
+        debug.set_image("TrayImage", image)
 
         p, a, A = self.picker.find_components(image)
         if len(p):
             pos = np.array(p[0])
-            pos = tuple((pos / self.eye.res) - (self.eye.cam_range/2) + robot_pos)
+            pos = tuple((pos / self.eye.res) - (self.eye.cam_range / 2) + robot_pos)
         else:
             raise pick.NoPartFoundException("Could not find part to pick")
 
