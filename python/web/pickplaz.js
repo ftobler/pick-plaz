@@ -802,7 +802,7 @@ function start() {
                         let metrics = ctx.measureText(txt);
                         ctx.fillText(
                             txt,
-                            feeder.position[2] / 2 - metrics.position[2]/2,
+                            feeder.position[2] / 2 - metrics.width / 2,
                             feeder.position[3] / 2
                         );
 
