@@ -21,6 +21,8 @@ import roll
 import eye
 import json
 import config
+from hole_finder import NoBeltHoleFoundException
+from hole_finder import HoleFinder
 
 class LiveCam:
 
@@ -127,10 +129,11 @@ class StateContext:
 
         self.live_cam = LiveCam(self.camera, self.cal, self.nav["camera"])
         self.fd = fiducial.FiducialDetector(narrow_eye)
+        self.hole_finder = HoleFinder(narrow_eye)
         self.picker = pick.Picker(wide_eye)
         self.belt = belt.Belt(narrow_eye, self.picker)
         self.tray = tray.Tray(self.picker)
-        self.roll = roll.Roll(self.picker)
+        self.roll = roll.Roll(narrow_eye, self.picker)
 
         if not fiducals_assigned:
             self.center_pcb()
@@ -229,8 +232,8 @@ class StateContext:
                     #this makes it move quicker between waypoints and navigating.
                     #there is still a big lag spike everytime this section is attempted
                     try:
-                        self.nav["detection"]["belt"] = self.belt.find_hole()
-                    except belt.NoBeltHoleFoundException:
+                        self.nav["detection"]["belt"] = self.hole_finder.find_hole()
+                    except NoBeltHoleFoundException:
                         pass
                     if self.event_queue.empty():
                         #try to abort if possible, else make the next visual search
@@ -312,13 +315,13 @@ class StateContext:
                         self._push_alert("designator not found '%s'", name)
                 elif item["method"] == "belt_set_start":
                     name = item["param"]
-                    self.belt.set_start(self.context["feeder"][name])
+                    self.belt.set_start(self.context["feeder"][name], self.nav["detection"]["belt"])
                 elif item["method"] == "belt_set_end":
                     name = item["param"]
-                    self.belt.set_end(self.context["feeder"][name])
+                    self.belt.set_end(self.context["feeder"][name], self.nav["detection"]["belt"])
                 elif item["method"] == "set_roll_pickpos":
                     name = item["param"]
-                    self.roll.set_pickpos(self.context["feeder"][name], self.nav["camera"])
+                    self.roll.set_pickpos(self.context["feeder"][name], self.nav["detection"]["belt"])
                 elif item["method"] == "test_feeder":
                     name = item["param"]
                     feeder = self.context["feeder"][name]
@@ -397,7 +400,7 @@ class StateContext:
         except pick.NoPartFoundException as e:
             self._push_alert(e)
             return self.setup_state
-        except belt.NoBeltHoleFoundException as e:
+        except NoBeltHoleFoundException as e:
             self.push_alert(e)
             return self.idle_state
         except save_robot.OutOfSaveSpaceException as e:

@@ -1,13 +1,9 @@
-
-import cv2
+import hole_finder
 import numpy as np
 
-import debug
-
-class NoBeltHoleFoundException(Exception):
-    pass
 
 TYPE_NUMBER = 1
+
 
 # Belt feeder.
 # SMD belt is in a 3d printed fixture and pnp head advances its position every
@@ -15,55 +11,18 @@ TYPE_NUMBER = 1
 class Belt:
 
     def __init__(self, eye, picker):
-        self.eye = eye
         self.picker = picker
+        self.hole_finder = hole_finder.HoleFinder(eye)
 
-        self.radius = 1.5/2
-        self.r_tol= 0.2
-
-        self.detected_pos = (0,0)
-
-    def find_hole(self):
-
-        image = self.eye.get_valid_image()
-
-        image = cv2.GaussianBlur(image, (5, 5), 1, 1)
-
-        circles = cv2.HoughCircles(image,cv2.HOUGH_GRADIENT,1,0.1,
-                            param1=50,param2=10, # 50,20
-                            minRadius=int((self.radius - self.r_tol) * self.eye.res),
-                            maxRadius=int((self.radius + self.r_tol) * self.eye.res))
-
-        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-
-        if circles is not None:
-            circles = np.uint16(np.around(circles))
-            circle = circles[0,0]
-
-            # draw the outer circle
-            image = cv2.circle(image,(circle[0], circle[1]), circle[2], (0,255,0),1)
-            # draw the center of the circle
-            image = cv2.circle(image,(circle[0], circle[1]), 2, (0,0,255), 3)
-            debug.set_image("BeltHole", image)
-
-            pos = self.eye.get_pos_from_image_indices(circle[0], circle[1])
-
-            self.detected_pos = pos
-            return pos
-
-        raise NoBeltHoleFoundException("No belt found")
-
-    def set_start(self, state):
-        # this works because belt.find_hole() is executed on robot idle
-        x, y = self.detected_pos
+    def set_start(self, state, hole_pos):
+        x, y = hole_pos
         state["start"] = [x, y]
         state["current_number"] = 0          #the part nuber
         state["current"] = [x, y]
         self._recalculate_fields(state)
 
-    def set_end(self, state):
-        # this works because belt.find_hole() is executed on robot idle
-        x, y = self.detected_pos
+    def set_end(self, state, hole_pos):
+        x, y = hole_pos
         state["end"] = [x, y]
         self._recalculate_fields(state)
 
@@ -101,7 +60,7 @@ class Belt:
 
         #drive to the hole and correct its position
         robot.drive(x, y)
-        x, y = self.find_hole()
+        x, y = self.hole_finder.find_hole()
 
         #save the newly found hole position
         state["current"] = [x, y]
