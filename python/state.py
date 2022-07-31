@@ -130,6 +130,7 @@ class StateContext:
         self.picker = pick.Picker(wide_eye)
         self.belt = belt.Belt(narrow_eye, self.picker)
         self.tray = tray.Tray(self.picker)
+        self.roll = roll.Roll(self.picker)
 
         if not fiducals_assigned:
             self.center_pcb()

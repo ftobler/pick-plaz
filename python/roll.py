@@ -1,4 +1,4 @@
-
+import time
 
 
 TYPE_NUMBER = 2
@@ -9,8 +9,7 @@ TYPE_NUMBER = 2
 # same location.
 class Roll:
 
-    def __init__(self, eye, picker):
-        self.eye = eye
+    def __init__(self, picker):
         self.picker = picker
 
         self.radius = 1.5/2
@@ -31,11 +30,12 @@ class Roll:
             rot = 0
         else:
             rot = state["rot"]
+        t = time.time() + 1.5
         self.advance(state, robot)
-        self.picker.pick(robot, pickpos[0], pickpos[1], rot)
+        self.picker.pick(robot, pickpos[0], pickpos[1], rot, done_time=t)
 
     def advance(self, state, robot):
-        #robot.feeder_advance(state["channel"])
+        robot.feeder_advance(state["channel"])
         if "counter" in state:
             state["counter"] += 1
         else:

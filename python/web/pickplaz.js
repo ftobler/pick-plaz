@@ -650,10 +650,13 @@ function start() {
                             }
                         }
 
-                        if (feeder.type == 0)
+                        if (feeder.type == 0) {
                             this.draw_tray_feeder(ctx, name, feeder, part)
-                        if (feeder.type == 1)
+                        } else if (feeder.type == 1) {
                             this.draw_belt_feeder(ctx, name, feeder, part)
+                        } else if (feeder.type == 2) {
+                            this.draw_roll_feeder(ctx, name, feeder, part)
+                        }
                     } catch (e) {
                         console.log(e)
                     }
@@ -919,6 +922,57 @@ function start() {
                 this.draw_centered_text(ctx, "current", feeder.current[0], feeder.current[1] + 2)
                 this.draw_centered_text(ctx, feeder.pos + "/" + feeder.capacity, feeder.current[0] + feeder.offset[0], feeder.current[1] + feeder.offset[1] - 1)
 
+            },
+            draw_roll_feeder(ctx, name, feeder, part) {
+                let d = 2; // margin
+
+
+                ctx.fillStyle = "cyan"
+                ctx.strokeStyle = "cyan"
+                ctx.save();
+                ctx.translate(feeder.x + feeder.x_offset, feeder.y + feeder.y_offset)
+                ctx.rotate(feeder.rot*Math.PI/180)
+                try {
+                    let footprint = getFootprint(part.footprint)
+                    this.draw_part(ctx, footprint)
+                    this.draw_part_cross(ctx)
+                } catch {}
+
+                ctx.fillText(name, feeder.position[0] + 2.5, feeder.position[1] + 4);
+
+                ctx.restore();
+
+                ctx.save();
+                ctx.translate(feeder.position[0], feeder.position[1])
+
+                ctx.save();
+                ctx.font = "5px Arial";
+                let txt = this.context.const.feeder_state[feeder.state]
+
+                if (feeder.state == 1) {ctx.fillStyle = "green"; ctx.strokeStyle = "green"}
+                if (feeder.state == 2) {ctx.fillStyle = "red"; ctx.strokeStyle = "red"}
+
+                metrics = ctx.measureText(txt);
+                ctx.fillText(txt, feeder.position[2] / 2 - metrics.width / 2, feeder.position[3] - 3 - d);
+
+                if (feeder.state != 0) {
+                    ctx.beginPath();
+                    ctx.lineWidth = d;
+                    ctx.globalAlpha = 0.5
+                    ctx.rect(d/2, d/2, feeder.position[2] - d, feeder.position[3] - d);
+                    ctx.stroke();
+                }
+                ctx.restore();
+
+                ctx.beginPath();
+                ctx.rect(0, 0, feeder.position[2], feeder.position[3]);
+                ctx.stroke();
+                ctx.restore();
+
+                //draw cross for pickup
+                ctx.strokeStyle = "red"
+                ctx.fillStyle = "red"
+                this.draw_cross(ctx, feeder.pickpos[0], feeder.pickpos[1])
             },
             draw_cross(ctx, x, y) {
                 ctx.save();

@@ -47,11 +47,18 @@ class Picker():
 
         return pos[0], pos[1], a[0]
 
-    def pick(self, robot, x, y, angle):
+    def pick(self, robot, x, y, angle, done_time=None):
         robot.vacuum(True)
         robot.valve(False)
         robot.drive(x=x+self.DX, y=y+self.DY, e=angle, f=200, r=10.0)
         robot.drive(e=angle) #finish angle
+        robot.done()
+        if done_time != None:
+            #must sleep until done-time is reached
+            t = done_time - time.time()
+            if t > 0:
+                print("sleeping for %fs" % t)
+                time.sleep(t)
         robot.drive(z=config.PICK_Z)
         robot.done()
         robot.valve(True)

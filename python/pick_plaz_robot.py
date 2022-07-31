@@ -314,6 +314,14 @@ class Robot:
         self.__set_io(5, enable)
         return self
 
+    def feeder_advance(self, channel, direction_forward=True):
+        """
+        advance feeder (forward / backward)
+        """
+        dir = 1 if direction_forward else 0
+        self.__send_commands(["M205P%dS%d" % (channel, dir)])
+        return self
+
 
     def default_settings(self):
         """
