@@ -566,10 +566,8 @@ function start() {
                 //draw other bed shape stuff
                 ctx.strokeStyle = "gray"
                 for (let shape of this.nav.bed_shapes) {
-                    ctx.beginPath(); ctx.rect(shape[0], shape[1], shape[2], shape[3]);
-                    ctx.stroke();
+                    ctx.beginPath(); ctx.rect(shape[0], shape[1], shape[2], shape[3]); ctx.stroke();
                 }
-                ctx.scale(1, 1)
 
                 //draw detected fiducial
                 if (this.elements.show_symbol) {
@@ -577,11 +575,8 @@ function start() {
                     this.draw_detection_fiducial(ctx, this.nav.detection.fiducial, "fiducial")
                     this.draw_detection_belt(ctx, this.nav.detection.belt, "belt")
                     //draw detected fiducials
-                    if (this.elements.show_symbol) {
-                        ctx.strokeStyle = "yellow"
-                        for (let [id, coord] of Object.entries(this.nav.pcb.fiducials)) {
-                            this.draw_fiducial(ctx, coord, id)
-                        }
+                    for (let [id, coord] of Object.entries(this.nav.pcb.fiducials)) {
+                        this.draw_fiducial(ctx, coord, id)
                     }
                 }
 
@@ -630,9 +625,7 @@ function start() {
                             // PCB has coordinate origin bottom left
                             // this must be corrected here
                             ctx.transform(1, 0, 0, -1, 0, 0)
-
                             this.drawSymbol(ctx, entry, id)
-
                             ctx.restore()
                         }
                     }
@@ -688,9 +681,13 @@ function start() {
                 ctx.fillText(name, 0.2, 0.2);
 
                 ctx.rotate(-coord[2]);
+                
+                ctx.beginPath()
                 ctx.moveTo(-2,0);
                 ctx.lineTo(2,0);
                 ctx.stroke();
+                
+                ctx.beginPath()
                 ctx.moveTo(0,-3);
                 ctx.lineTo(0,3);
                 ctx.stroke();
@@ -704,9 +701,12 @@ function start() {
                 ctx.fillText("fiducial", 0.2, 0.2);
 
                 ctx.rotate(-coord[2]);
+                ctx.beginPath()
                 ctx.moveTo(-2,0);
                 ctx.lineTo(2,0);
                 ctx.stroke();
+
+                ctx.beginPath()
                 ctx.moveTo(0,-3);
                 ctx.lineTo(0,3);
                 ctx.stroke();
