@@ -810,7 +810,7 @@ function start() {
                         //draw the symbol
                         ctx.save();
                         ctx.translate(feeder.position[2] / 2 - x_offset, feeder.position[3] / 2 - y_offset);
-                        ctx.rotate(feeder.rot*Math.PI/180)
+                        ctx.rotate(feeder.rot * Math.PI/180)
                         try {
                             ctx.drawImage(
                                 footprint.imageSym,
@@ -825,7 +825,7 @@ function start() {
                         //draw the part
                         ctx.save();
                         ctx.translate(feeder.position[2] / 2 + x_offset, feeder.position[3] / 2 + y_offset);
-                        ctx.rotate(feeder.rot*Math.PI/180)
+                        ctx.rotate(feeder.rot * Math.PI/180)
                         this.draw_part(ctx, footprint)
                         this.draw_part_cross(ctx)
                         ctx.restore()
@@ -905,6 +905,19 @@ function start() {
                 this.draw_centered_text(ctx, "current", feeder.current[0], feeder.current[1] + 2)
                 this.draw_centered_text(ctx, feeder.pos + "/" + feeder.capacity, feeder.current[0] + feeder.offset[0], feeder.current[1] + feeder.offset[1] - 1)
 
+                try {
+                    //draw the part
+                    let footprint = getFootprint(part.footprint)
+                    if (footprint) {
+                        ctx.save();
+                        ctx.translate(feeder.current[0] + feeder.offset[0], feeder.current[1] + feeder.offset[1]);
+                        ctx.rotate(feeder.rot * Math.PI/180)
+                        this.draw_part(ctx, footprint)
+                        this.draw_part_cross(ctx)
+                        ctx.restore()
+                    }
+                } catch {}
+
             },
             draw_roll_feeder(ctx, name, feeder, part) {
                 this.draw_base_feeder(ctx, name, feeder, part) 
@@ -920,6 +933,19 @@ function start() {
                 ctx.moveTo(feeder.pickpos[0], feeder.pickpos[1])
                 ctx.lineTo(feeder.pickpos[0] + feeder.offset[0], feeder.pickpos[1] + feeder.offset[1])
                 ctx.stroke()
+
+                try {
+                    //draw the part
+                    let footprint = getFootprint(part.footprint)
+                    if (footprint) {
+                        ctx.save();
+                        ctx.translate(feeder.pickpos[0] + feeder.offset[0], feeder.pickpos[1] + feeder.offset[1]);
+                        ctx.rotate(feeder.rot * Math.PI/180)
+                        this.draw_part(ctx, footprint)
+                        this.draw_part_cross(ctx)
+                        ctx.restore()
+                    }
+                } catch {}
             },
             draw_cross(ctx, x, y) {
                 ctx.save();
