@@ -22,7 +22,7 @@ class Roll:
     def set_channel(self, state, channel):
         state["channel"] = channel
 
-    def pick(self, state, robot):
+    def pick(self, state, robot, only_camera=False):
         #setup correct light
         robot.light_topdn(True)
         robot.light_tray(False)
@@ -34,18 +34,13 @@ class Roll:
         x = x + state["offset"][0]
         y = y + state["offset"][1]
 
-        t = time.time() + 1.5
-        self.advance(state, robot)
-        self.picker.pick(robot, x, y, state["rot"], done_time=t)
-
-        # pickpos = state["pickpos"]
-        # if not "rot" in state:
-        #     rot = 0
-        # else:
-        #     rot = state["rot"]
-        # t = time.time() + 1.5
-        # self.advance(state, robot)
-        # self.picker.pick(robot, pickpos[0], pickpos[1], rot, done_time=t)
+        if only_camera == False:
+            #normal case
+            t = time.time() + 1.5
+            self.advance(state, robot)
+            self.picker.pick(robot, x, y, state["rot"], done_time=t)
+        else:
+            robot.drive(x, y)
 
     def advance(self, state, robot):
         robot.feeder_advance(state["channel"])

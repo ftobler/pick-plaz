@@ -64,16 +64,15 @@ class Belt:
 
         #save the newly found hole position
         state["current"] = [x, y]
-        state["pos"] += 1
 
         #pick the part
-        #TODO test angle
         if only_camera:
             robot.drive(pick_pos[0], pick_pos[1])
         else:
             #must apply a slowdown on pick, because some belts are loose in the tray
             #and because the packing tape is missing, the picker could generate enough
             #vibrations that the parts are flying out.
+            state["pos"] += 1
             self._apply_general_pick_slowdown(robot, apply=True)
             self.picker.pick(robot, pick_pos[0], pick_pos[1], angle + state["rot"])
             self._apply_general_pick_slowdown(robot, apply=False)

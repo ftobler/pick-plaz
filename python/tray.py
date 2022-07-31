@@ -20,10 +20,10 @@ class Tray:
         # self.nav["detection"]["part"] = pick_pos #TODO remove nav/detection/part
 
         x, y, a, A = pick_pos
-        self.apply_area_slowdown(robot, A)
         if only_camera:
-            robot.drive(pick_pos[0], pick_pos[1])
+            robot.drive(x, y)
         else:
+            self.apply_area_slowdown(robot, A)
             self.picker.pick(robot, x, y, a)
 
     def _find_in_tray(self, feeder, robot):

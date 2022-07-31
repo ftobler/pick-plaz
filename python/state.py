@@ -343,7 +343,7 @@ class StateContext:
                     elif feeder["type"] == belt.TYPE_NUMBER:
                         self.belt.pick(feeder, self.robot, only_camera=True)
                     elif feeder["type"] == roll.TYPE_NUMBER:
-                        self.robot.drive(feeder["pickpos"][0], feeder["pickpos"][1])
+                        self.roll.pick(feeder, self.robot, only_camera=True)
                 elif item["method"] == "reset_board":
                     self._reset_for_new_board()
                 elif item["method"] == "roll_advance":
