@@ -54,6 +54,7 @@ class Belt:
         raise NoBeltHoleFoundException("No belt found")
 
     def set_start(self, state):
+        # this works because belt.find_hole() is executed on robot idle
         x, y = self.detected_pos
         state["start"] = [x, y]
         state["current_number"] = 0          #the part nuber
@@ -61,6 +62,7 @@ class Belt:
         self._recalculate_fields(state)
 
     def set_end(self, state):
+        # this works because belt.find_hole() is executed on robot idle
         x, y = self.detected_pos
         state["end"] = [x, y]
         self._recalculate_fields(state)
