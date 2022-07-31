@@ -47,7 +47,8 @@ class Picker():
 
         return pos[0], pos[1], a[0]
 
-    def pick(self, robot, x, y, angle, done_time=None):
+    def pick(self, robot, x, y, angle, done_time=None, pick_depth=config.PICK_Z):
+        vacuum_time = time.time() + 1
         robot.vacuum(True)
         robot.valve(False)
         robot.drive(x=x+self.DX, y=y+self.DY, e=angle, f=200, r=10.0)
@@ -57,19 +58,23 @@ class Picker():
             #must sleep until done-time is reached
             t = done_time - time.time()
             if t > 0:
-                print("sleeping for %fs" % t)
+                print("sleeping %fs" % t) #need to wait for something else before pick
                 time.sleep(t)
-        robot.drive(z=config.PICK_Z)
+        t = vacuum_time - time.time() 
+        if t > 0:
+            print("sleeping for %fs (vacuum)" % t)
+            time.sleep(t) #need to wait for vacuum line to purge
+        robot.drive(z=pick_depth)
         robot.done()
         robot.valve(True)
         robot.drive(z=0)
         # robot.drive(e=0, r=10.0)
         # robot.drive(e=0, f=200, r=0.75)
 
-    def place(self, robot, x, y, angle):
+    def place(self, robot, x, y, angle, pick_depth=config.PICK_Z):
         robot.drive(x=x+self.DX, y=y+self.DY, e=angle, f=200, r=10.0)
         robot.drive(e=angle)
-        robot.drive(z=config.PICK_Z)
+        robot.drive(z=pick_depth)
         robot.done()
         robot.valve(False)
         robot.vacuum(False)
