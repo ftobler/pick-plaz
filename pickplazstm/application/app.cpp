@@ -39,7 +39,7 @@ static void job_prelling_handle();
 //output pin cluster (these have FET driver to either 5V or 12V)
 #define PIN_OUTPUT_PUMP  portpin('C', 6)  //12V
 #define PIN_OUTPUT_AUX1  portpin('D', 15) //written as VALVE on PCB on early revision. 5V
-#define PIN_OUTPUT_BOTUP portpin('D', 14) //12V
+#define PIN_OUTPUT_FAN   portpin('D', 14) //written as BOTUP on PCB. 12V
 #define PIN_OUTPUT_TOPDN portpin('D', 13) //12V
 #define PIN_OUTPUT_VALVE portpin('D', 12) //written as AUX1 on PCB on early revision. 12V
 #define PIN_OUTPUT_TRAY  portpin('D', 11) //written as AUX2 on PCB on early revision. 12V
@@ -114,10 +114,10 @@ AccelStepperExtended stepperC( PIN_MOTC_STEP,  PIN_MOTC_DIR);
 
 //output pin cluster
 Simple_output output_pump(PIN_OUTPUT_PUMP);
-Simple_output output_valve(PIN_OUTPUT_VALVE);
-Simple_output output_botup(PIN_OUTPUT_BOTUP);
-Simple_output output_topdn(PIN_OUTPUT_TOPDN);
 Simple_output output_aux1(PIN_OUTPUT_AUX1);
+Delay_off_out output_fan(PIN_OUTPUT_FAN, 60000);
+Simple_output output_topdn(PIN_OUTPUT_TOPDN);
+Simple_output output_valve(PIN_OUTPUT_VALVE);
 Simple_output output_tray(PIN_OUTPUT_TRAY);
 
 //input pin cluster
@@ -146,6 +146,7 @@ static float current_speed = 175.0f;
  */
 void setup() {
 
+
 	//set microstepping to 4x
 	//works only on board v1e or later
 	digitalWrite(PIN_MOT_MS1, 0);
@@ -156,6 +157,8 @@ void setup() {
 
 	uart_init();
 
+
+	output_fan.set(true);
 	do_cmd_stepper_power(false);
 }
 
@@ -341,6 +344,13 @@ void loop() {
 			//feeder direction is specified on 'S' - (S > 0.5) => forward, (s <= 0.5) => backward
 			//eg: M205 P2 S1 => will advance feeder 2 to the next part
 			do_cmd_feeder(cmd);
+		} else if (cmd.id == 'M' && (cmd.num == 206)) {
+			//system reset.
+			//eg: M206
+			do_cmd_stepper_power(false);
+			do_cmd_vacuum_pump(false);
+			do_cmd_vacuum_valve(false);
+			HAL_NVIC_SystemReset();
 		} else if (cmd.id == 'M' && (cmd.num == 512)) {
 			//set default state for feedrate & accelerations
 			//eg: M512
@@ -447,7 +457,7 @@ static void do_cmd_home(Gcode_command cmd) {
 	if (cmd.valueZ != NaN) {
 		float tmpSpeed = stepperZ.getMaxSpeed_mm();
 		       //motor      endstop     dir  speed     timeout  travel backtravel
-		homeAxle(&stepperZ, &input_endZ,  1, 80.0f/4.0f, 5000,   15.0f, 7.5f, 9.0f);
+		homeAxle(&stepperZ, &input_endZ,  1, 80.0f/4.0f, 5000,   30.0f, 7.5f, 9.0f);
 		stepperZ.setMaxSpeed_mm(tmpSpeed);
 	}
 	if (cmd.valueX != NaN) {
@@ -623,7 +633,7 @@ static void do_cmd_io(Gcode_command cmd) {
 		switch (ioNumber) {
 		case 0:	output_pump.set(ioValue); break;
 		case 1:	output_aux1.set(ioValue); break;
-		case 2:	output_botup.set(ioValue); break;
+		case 2:	output_fan.set(ioValue); break;
 		case 3:	output_topdn.set(ioValue); break;
 		case 4:	output_valve.set(ioValue); break;
 		case 5:	output_tray.set(ioValue); break;
@@ -633,6 +643,7 @@ static void do_cmd_io(Gcode_command cmd) {
 
 
 static void do_cmd_stepper_power(bool on) {
+    output_fan.set(on);
 	on = !on;
 	digitalWrite(PIN_MOTX_EN,  on);
 	digitalWrite(PIN_MOTY0_EN, on);
@@ -745,6 +756,7 @@ static void job_prelling_handle() {
 		input_endZ.update();
 		input_res1.update();
 		input_res2.update();
+		output_fan.update();
 		job_prelling = false;
 	}
 }

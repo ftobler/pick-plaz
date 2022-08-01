@@ -36,6 +36,18 @@ public:
 };
 
 
+class Delay_off_out {
+private:
+	int pin;
+	uint32_t timeout;
+	uint32_t timer;
+public:
+	Delay_off_out(int a_pin, uint32_t a_imeout);
+	void set(bool on);
+	void update();
+};
+
+
 class Simple_input {
 private:
 	int pin;
