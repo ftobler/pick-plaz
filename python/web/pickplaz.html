@@ -134,14 +134,18 @@
             <table>
                 <!--table for all tray feeders-->
                 <tr>
-                    <th width="70px">Name</th>
-                    <th width="300px">Custom Settings</th>
+                    <th width="60px">Name</th>
+                    <th width="30px"></th>
+                    <th width="280px">Custom Settings</th>
                     <th width="50px">Rotation</th>
                     <th width="60px">State</th>
                     <th width="60px">Action</th>
                 </tr>
                 <tr v-for="(entry, name) in context.feeder"  v-bind:class="{ inactive: entry.state == 0, error: entry.state == 2 }">
                     <td>{{name}} ({{feeder_type(entry.type)}})</td>
+                    <td v-if="entry.type == 0"><img src="img/tray.png" style="max-height: 50px"></td>
+                    <td v-if="entry.type == 1"><img src="img/belt.png" style="max-height: 50px"></td>
+                    <td v-if="entry.type == 2"><img src="img/roll.png" style="max-height: 50px"></td>
                     <td v-if="entry.type == 0">
                         <!-- backlight tray feeder -->
                         <i style="color: gray">tray feeder is static</i>
