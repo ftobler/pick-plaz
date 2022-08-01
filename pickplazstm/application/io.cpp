@@ -72,6 +72,34 @@ bool Overloading_output::get() {
 }
 
 
+Delay_off_out::Delay_off_out(int a_pin, uint32_t a_timeout) {
+    pin = a_pin;
+    timer = 0;
+    timeout = a_timeout;
+}
+
+
+void Delay_off_out::set(bool on) {
+	if (on) {
+	    digitalWrite(pin, 1);
+	    timer = 0;
+	} else {
+		//off
+		timer = timeout;
+	}
+}
+
+
+void Delay_off_out::update() {
+	if (timer) {
+		timer--;
+		if (timer == 0) {
+		    digitalWrite(pin, 0);
+		}
+	}
+}
+
+
 Simple_input::Simple_input(int a_pin) {
 	pin = a_pin;
 }
