@@ -27,8 +27,15 @@ class Roll:
         robot.light_topdn(True)
         robot.light_tray(False)
 
+        done_time = time.time() + 1.0
+        self.advance(state, robot)
+
         #drive to the hole and correct its position
         robot.drive(state["pickpos"][0], state["pickpos"][1])
+        t = done_time - time.time()
+        if t > 0:
+            print("sleeping %fs" % t) #need to wait for something else before pick
+            time.sleep(t)
         x, y = self.hole_finder.find_hole()
 
         x = x + state["offset"][0]
@@ -36,9 +43,7 @@ class Roll:
 
         if only_camera == False:
             #normal case
-            t = time.time() + 1.5
-            self.advance(state, robot)
-            self.picker.pick(robot, x, y, state["rot"], done_time=t)
+            self.picker.pick(robot, x, y, state["rot"])
         else:
             robot.drive(x, y)
 
