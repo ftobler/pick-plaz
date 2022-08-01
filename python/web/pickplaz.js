@@ -1,4 +1,5 @@
-
+const BOMPAGE = 0
+const FEEDPAGE = 1
 const NAVPAGE = 2
 
 function start() {
@@ -235,11 +236,11 @@ function start() {
                     }
                 }
                 if (event.code == 'KeyZ') {
-                    this.do_nav(0)
+                    this.do_nav(BOMPAGE)  //go to
                 } else if (event.code == 'KeyX') {
-                    this.do_nav(1)
+                    this.do_nav(FEEDPAGE)
                 } else if (event.code == 'KeyC') {
-                    this.do_nav(2)
+                    this.do_nav(NAVPAGE)
                 }
             },
             do_nav(target_page) {
@@ -247,9 +248,9 @@ function start() {
                 this.poll_data()
             },
             do_key_move(x, y) {
-                this.canvas.pos_mm.x += x
-                this.canvas.pos_mm.y += y
-                this.do_setpos(this.nav.camera.x + x, this.nav.camera.y + y)
+                this.nav.camera.x += x
+                this.nav.camera.y += y
+                api.robot_setpos(x, y, "relative")
                 this.draw_stuff()
             },
             do_setpos(x, y, system) {

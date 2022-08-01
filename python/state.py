@@ -221,6 +221,9 @@ class StateContext:
                 y = item["y"]
                 if item["system"] == "pcb":
                     x, y = self._pcb2robot(x, y)
+                if item["system"] == "relative":
+                    x = self.nav["camera"]["x"] + x
+                    y = self.nav["camera"]["y"] + y
 
                 self.robot.default_settings()
                 self.robot.drive(x, y)
