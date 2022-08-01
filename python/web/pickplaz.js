@@ -687,12 +687,12 @@ function start() {
                 ctx.fillText(name, 0.2, 0.2);
 
                 ctx.rotate(-coord[2]);
-                
+
                 ctx.beginPath()
                 ctx.moveTo(-2,0);
                 ctx.lineTo(2,0);
                 ctx.stroke();
-                
+
                 ctx.beginPath()
                 ctx.moveTo(0,-3);
                 ctx.lineTo(0,3);
@@ -725,7 +725,6 @@ function start() {
                 ctx.translate(coord[0], coord[1]);
                 ctx.rotate(-0.2)
 
-                
                 ctx.fillText("belt", 2.0, 0.2);
 
                 ctx.beginPath();
@@ -734,7 +733,7 @@ function start() {
                 ctx.beginPath();
                 ctx.arc(0, 0, 1.5, 0, 2 * Math.PI);
                 ctx.stroke();
-                
+
                 ctx.restore();
             },
             drawSymbol(ctx, entry, id) {
@@ -849,7 +848,7 @@ function start() {
                     ctx.fillText(line, d, d+y);
                     y += fontHeight;
                 }
-                
+
                 //draw the fat outline
                 ctx.save();
                 let txt = this.context.const.feeder_state[feeder.state]
@@ -865,7 +864,7 @@ function start() {
                     ctx.stroke();
                 }
                 ctx.restore();
- 
+
                 //draw the thin outline
                 ctx.beginPath();
                 ctx.rect(0, 0, feeder.position[2], feeder.position[3]);
@@ -874,10 +873,10 @@ function start() {
             },
             draw_tray_feeder(ctx, name, feeder, part) {
 
-                this.draw_base_feeder(ctx, name, feeder, part) 
+                this.draw_base_feeder(ctx, name, feeder, part)
             },
             draw_belt_feeder(ctx, name, feeder, part) {
-                this.draw_base_feeder(ctx, name, feeder, part) 
+                this.draw_base_feeder(ctx, name, feeder, part)
 
                 //draw the crosses (main positions)
                 ctx.strokeStyle = "red"
