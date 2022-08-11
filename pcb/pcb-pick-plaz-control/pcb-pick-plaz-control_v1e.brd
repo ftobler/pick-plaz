@@ -3,7 +3,7 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="yes"/>
+<setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="0.125" unitdist="mm" unit="mm" style="lines" multiple="1" display="no" altdistance="0.1" altunitdist="mm" altunit="mm"/>
@@ -64,6 +64,7 @@
 <layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
 <layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
 <layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
+<layer number="58" name="bLayer3Ddata" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="88" name="SimResults" color="9" fill="1" visible="no" active="no"/>
@@ -162,10 +163,19 @@
 <layer number="231" name="Eagle3D_PG1" color="7" fill="1" visible="no" active="no"/>
 <layer number="232" name="Eagle3D_PG2" color="7" fill="1" visible="no" active="no"/>
 <layer number="233" name="Eagle3D_PG3" color="7" fill="1" visible="no" active="no"/>
+<layer number="240" name="TestPoint" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="241" name="Labels-TOP" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="242" name="Labels-BOT" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="243" name="AddParts-BOT" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="244" name="AddParts" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="245" name="Varnish-TOP" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="246" name="Varnish-BOT" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="248" name="Housing" color="7" fill="1" visible="no" active="yes"/>
 <layer number="249" name="Edge" color="7" fill="1" visible="no" active="yes"/>
 <layer number="250" name="Descript" color="3" fill="1" visible="no" active="no"/>
 <layer number="251" name="SMDround" color="12" fill="11" visible="no" active="no"/>
+<layer number="252" name="Mechanical" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="253" name="UL-Sign" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="254" name="cooling" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
@@ -2534,7 +2544,7 @@ by ftobler 2021</text>
 <rectangle x1="0.00410625" y1="-0.00474375" x2="7.48910625" y2="0.01025625" layer="33" rot="R90"/>
 </package>
 <package name="FIDUCIAL_2MM">
-<smd name="V" x="0" y="0" dx="0.7" dy="0.7" layer="1" roundness="100"/>
+<smd name="V" x="0" y="0" dx="0.7" dy="0.7" layer="1" roundness="100" cream="no"/>
 <circle x="0" y="0" radius="1" width="0" layer="29"/>
 <circle x="0" y="0" radius="1.1" width="0" layer="41"/>
 </package>
@@ -2581,7 +2591,7 @@ by ftobler 2021</text>
 <rectangle x1="2.9972" y1="1.8542" x2="3.3528" y2="2.8702" layer="51"/>
 <rectangle x1="4.2672" y1="1.8542" x2="4.6228" y2="2.8702" layer="51"/>
 </package>
-<package name="USB-MICRO-THT" urn="urn:adsk.eagle:footprint:27914136/1">
+<package name="USB-MICRO-THT" urn="urn:adsk.eagle:footprint:27914136/1" locally_modified="yes">
 <wire x1="-3.75" y1="2.85" x2="-3.75" y2="-2.15" width="0.2" layer="51"/>
 <wire x1="-3.75" y1="-2.15" x2="-3.2" y2="-2.15" width="0.2" layer="51"/>
 <wire x1="-3.2" y1="-2.15" x2="3.2" y2="-2.15" width="0.2" layer="51"/>
@@ -2615,8 +2625,10 @@ by ftobler 2021</text>
 <pad name="GND4" x="2.425" y="2.9" drill="0.85" diameter="1.35"/>
 <pad name="GND1" x="-3.4" y="0" drill="0.8" diameter="2" shape="square"/>
 <pad name="GND2" x="3.4" y="0" drill="0.8" diameter="2" shape="square"/>
+<text x="-3.81" y="-5.08" size="0.889" layer="51">ATTENTION
+LONG HOLES</text>
 </package>
-<package name="3225-QUARZ">
+<package name="3225-QUARZ" urn="urn:adsk.eagle:footprint:36843794/1">
 <smd name="1" x="-1.1" y="-0.85" dx="1.4" dy="1.2" layer="1"/>
 <smd name="2_GND" x="1.1" y="-0.85" dx="1.4" dy="1.2" layer="1"/>
 <smd name="3" x="1.1" y="0.85" dx="1.4" dy="1.2" layer="1"/>
@@ -2637,23 +2649,18 @@ by ftobler 2021</text>
 <circle x="1.27" y="-1.27" radius="0.127" width="0.1524" layer="21"/>
 <wire x1="1.143" y1="-1.27" x2="1.397" y2="-1.27" width="0.127" layer="21"/>
 </package>
-<package name="SOT-23">
-<wire x1="-0.66" y1="1.422" x2="0.66" y2="1.422" width="0.1524" layer="51"/>
-<wire x1="0.66" y1="1.422" x2="0.66" y2="-1.422" width="0.1524" layer="51"/>
-<wire x1="0.66" y1="-1.422" x2="-0.66" y2="-1.422" width="0.1524" layer="51"/>
-<wire x1="-0.66" y1="-1.422" x2="-0.66" y2="1.422" width="0.1524" layer="51"/>
-<wire x1="-0.7" y1="-0.7" x2="-0.7" y2="-1.5" width="0.127" layer="21"/>
-<wire x1="-0.7" y1="-1.5" x2="0.2" y2="-1.5" width="0.127" layer="21"/>
-<wire x1="-0.8" y1="0.7" x2="-0.8" y2="1.5" width="0.127" layer="21"/>
-<wire x1="-0.8" y1="1.5" x2="0.2" y2="1.5" width="0.127" layer="21"/>
-<wire x1="0.7" y1="0.3" x2="0.7" y2="-0.3" width="0.127" layer="21"/>
-<smd name="3" x="-1.1" y="0" dx="1" dy="1.4" layer="1" rot="R90"/>
-<smd name="2" x="1.1" y="0.95" dx="1" dy="1.4" layer="1" rot="R90"/>
-<smd name="1" x="1.1" y="-0.95" dx="1" dy="1.4" layer="1" rot="R90"/>
-<text x="1.905" y="-1.905" size="1.27" layer="25" font="vector" rot="R180">&gt;NAME</text>
-<rectangle x1="-1.2319" y1="-0.2921" x2="-0.7747" y2="0.2921" layer="51" rot="R90"/>
-<rectangle x1="0.7747" y1="0.6477" x2="1.2319" y2="1.2319" layer="51" rot="R90"/>
-<rectangle x1="0.7747" y1="-1.2319" x2="1.2319" y2="-0.6477" layer="51" rot="R90"/>
+<package name="SOT-23" urn="urn:adsk.eagle:footprint:36806101/1">
+<wire x1="1.422" y1="0.66" x2="1.422" y2="-0.66" width="0.1524" layer="51"/>
+<wire x1="1.422" y1="-0.66" x2="-1.422" y2="-0.66" width="0.1524" layer="51"/>
+<wire x1="-1.422" y1="-0.66" x2="-1.422" y2="0.66" width="0.1524" layer="51"/>
+<wire x1="-1.422" y1="0.66" x2="1.422" y2="0.66" width="0.1524" layer="51"/>
+<smd name="3" x="0" y="1.1" dx="1" dy="1.4" layer="1"/>
+<smd name="2" x="0.95" y="-1.1" dx="1" dy="1.4" layer="1"/>
+<smd name="1" x="-0.95" y="-1.1" dx="1" dy="1.4" layer="1"/>
+<text x="1.905" y="-1.905" size="0.8" layer="25" font="vector" rot="R180">&gt;NAME</text>
+<rectangle x1="-0.2286" y1="0.7112" x2="0.2286" y2="1.2954" layer="51"/>
+<rectangle x1="0.7112" y1="-1.2954" x2="1.1684" y2="-0.7112" layer="51"/>
+<rectangle x1="-1.1684" y1="-1.2954" x2="-0.7112" y2="-0.7112" layer="51"/>
 </package>
 <package name="SWITCH_WH" urn="urn:adsk.eagle:footprint:27914555/1">
 <wire x1="-2.25" y1="1.7" x2="2.25" y2="1.7" width="0.1524" layer="48"/>
@@ -2666,20 +2673,26 @@ by ftobler 2021</text>
 <smd name="2B" x="2.2" y="-1.3" dx="1.3" dy="0.8" layer="1"/>
 <text x="-2.3" y="1.9" size="0.889" layer="21">&gt;NAME</text>
 </package>
-<package name="0805-DOT" library_version="2">
+<package name="0805-DOT" urn="urn:adsk.eagle:footprint:36806139/1" library_version="2">
 <description>&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;</description>
-<wire x1="-0.41" y1="0.635" x2="0.41" y2="0.635" width="0.1524" layer="51"/>
-<wire x1="-0.41" y1="-0.635" x2="0.41" y2="-0.635" width="0.1524" layer="51"/>
-<smd name="1" x="-0.95" y="0" dx="1.3" dy="1.5" layer="1"/>
-<smd name="2" x="0.95" y="0" dx="1.3" dy="1.5" layer="1"/>
+<wire x1="0.41" y1="-0.635" x2="-0.41" y2="-0.635" width="0.1524" layer="51"/>
+<wire x1="0.41" y1="0.635" x2="-0.41" y2="0.635" width="0.1524" layer="51"/>
+<wire x1="-0.8850875" y1="1.121840625" x2="-1.016715625" y2="1.121840625" width="0.1524" layer="21"/>
+<wire x1="-1.016715625" y1="1.121840625" x2="-1.016715625" y2="1.135465625" width="0.1524" layer="21"/>
+<smd name="1" x="0.9" y="0" dx="1" dy="1.2" layer="1" rot="R180" cream="no"/>
+<smd name="2" x="-0.9" y="0" dx="1" dy="1.2" layer="1" rot="R180" cream="no"/>
 <text x="-0.635" y="1.27" size="0.889" layer="25">&gt;NAME</text>
 <text x="-0.635" y="-2.54" size="0.889" layer="27">&gt;VALUE</text>
-<rectangle x1="0.4064" y1="-0.6985" x2="1.0564" y2="0.7015" layer="51"/>
-<rectangle x1="-1.0668" y1="-0.6985" x2="-0.4168" y2="0.7015" layer="51"/>
+<rectangle x1="-1.0564" y1="-0.7015" x2="-0.4064" y2="0.6985" layer="51" rot="R180"/>
+<rectangle x1="0.4168" y1="-0.7015" x2="1.0668" y2="0.6985" layer="51" rot="R180"/>
 <rectangle x1="-0.1999" y1="-0.5001" x2="0.1999" y2="0.5001" layer="35"/>
-<circle x="0.953171875" y="-1.117296875" radius="0.127" width="0.1524" layer="21"/>
-<wire x1="0.8850875" y1="-1.121840625" x2="1.016715625" y2="-1.121840625" width="0.1524" layer="21"/>
-<wire x1="1.016715625" y1="-1.121840625" x2="1.016715625" y2="-1.135465625" width="0.1524" layer="21"/>
+<rectangle x1="0.4" y1="0.3" x2="0.9" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="0.4" y1="-0.6" x2="0.9" y2="-0.3" layer="31" rot="R180"/>
+<rectangle x1="-0.9" y1="-0.6" x2="-0.4" y2="-0.3" layer="31" rot="R180"/>
+<rectangle x1="-0.9" y1="0.3" x2="-0.4" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="0.9" y1="-0.6" x2="1.4" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="-1.4" y1="-0.6" x2="-0.9" y2="0.6" layer="31" rot="R180"/>
+<circle x="-0.953171875" y="1.117296875" radius="0.127" width="0.1524" layer="21"/>
 </package>
 <package name="USB-A-LCSC_C42431" urn="urn:adsk.eagle:footprint:27914157/1">
 <smd name="VCC" x="-3.5" y="0" dx="2" dy="1" layer="1" rot="R90"/>
@@ -2725,7 +2738,7 @@ by ftobler 2021</text>
 </package>
 </packages>
 <packages3d>
-<package3d name="SOIC-16" urn="urn:adsk.eagle:package:27914121/3" type="model">
+<package3d name="SOIC-16" urn="urn:adsk.eagle:package:27914121/4" type="model">
 <description>&lt;b&gt;Small Outline Package&lt;/b&gt; Fits JEDEC packages (narrow SOIC-8)</description>
 <packageinstances>
 <packageinstance name="SOIC-16"/>
@@ -2751,12 +2764,28 @@ by ftobler 2021</text>
 <packageinstance name="DFN3030-8B"/>
 </packageinstances>
 </package3d>
+<package3d name="0805-DOT" urn="urn:adsk.eagle:package:36806138/4" type="model">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;</description>
+<packageinstances>
+<packageinstance name="0805-DOT"/>
+</packageinstances>
+</package3d>
+<package3d name="SOT-23" urn="urn:adsk.eagle:package:36806100/2" type="model">
+<packageinstances>
+<packageinstance name="SOT-23"/>
+</packageinstances>
+</package3d>
+<package3d name="3225-QUARZ" urn="urn:adsk.eagle:package:36843793/3" type="model">
+<packageinstances>
+<packageinstance name="3225-QUARZ"/>
+</packageinstances>
+</package3d>
 </packages3d>
 </library>
 <library name="passives">
 <description>&lt;b&gt;LAB11&lt;/b&gt; - Resistors, caps, etc.</description>
 <packages>
-<package name="0805_CAP">
+<package name="0805_CAP" urn="urn:adsk.eagle:footprint:36813219/1">
 <description>Based on muRata GRM capacitor specifications</description>
 <wire x1="-1" y1="0.625" x2="1" y2="0.625" width="0.127" layer="21"/>
 <wire x1="1" y1="0.625" x2="1" y2="-0.625" width="0.127" layer="21"/>
@@ -2767,17 +2796,17 @@ by ftobler 2021</text>
 <rectangle x1="-0.4" y1="-0.625" x2="0.4" y2="0.625" layer="21"/>
 <text x="0" y="0.892" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
 </package>
-<package name="1206_CAP">
-<smd name="1" x="0" y="1.55" dx="1.8" dy="1.6" layer="1"/>
-<smd name="2" x="0" y="-1.55" dx="1.8" dy="1.6" layer="1"/>
-<wire x1="1.1" y1="1.75" x2="1.1" y2="0" width="0.127" layer="21"/>
-<wire x1="1.1" y1="0" x2="1.1" y2="-1.75" width="0.127" layer="21"/>
-<wire x1="-1.1" y1="-1.75" x2="-1.1" y2="0" width="0.127" layer="21"/>
-<wire x1="-1.1" y1="0" x2="-1.1" y2="1.75" width="0.127" layer="21"/>
-<wire x1="-1.1" y1="0" x2="1.1" y2="0" width="0.127" layer="21"/>
+<package name="1206_CAP" urn="urn:adsk.eagle:footprint:36813222/1">
+<smd name="1" x="-1.55" y="0" dx="1.8" dy="1.6" layer="1" rot="R90"/>
+<smd name="2" x="1.55" y="0" dx="1.8" dy="1.6" layer="1" rot="R90"/>
+<wire x1="-1.75" y1="1.1" x2="0" y2="1.1" width="0.127" layer="21"/>
+<wire x1="0" y1="1.1" x2="1.75" y2="1.1" width="0.127" layer="21"/>
+<wire x1="1.75" y1="-1.1" x2="0" y2="-1.1" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.1" x2="-1.75" y2="-1.1" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.1" x2="0" y2="1.1" width="0.127" layer="21"/>
 <text x="0" y="2.54" size="0.889" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
 </package>
-<package name="0603_CAP">
+<package name="0603_CAP" urn="urn:adsk.eagle:footprint:36813216/1">
 <wire x1="-0.356" y1="0.432" x2="0.356" y2="0.432" width="0.1016" layer="51"/>
 <wire x1="-0.356" y1="-0.419" x2="0.356" y2="-0.419" width="0.1016" layer="51"/>
 <smd name="1" x="-0.65" y="0" dx="0.7" dy="1" layer="1"/>
@@ -2787,7 +2816,7 @@ by ftobler 2021</text>
 <rectangle x1="0.3302" y1="-0.4699" x2="0.8303" y2="0.4801" layer="51"/>
 <rectangle x1="-0.2286" y1="-0.381" x2="0.2286" y2="0.381" layer="21"/>
 </package>
-<package name="0603-RES">
+<package name="0603-RES" urn="urn:adsk.eagle:footprint:36812384/1">
 <wire x1="-0.356" y1="0.432" x2="0.356" y2="0.432" width="0.1016" layer="51"/>
 <wire x1="-0.356" y1="-0.419" x2="0.356" y2="-0.419" width="0.1016" layer="51"/>
 <smd name="1" x="-0.65" y="0" dx="0.7" dy="1" layer="1"/>
@@ -2818,6 +2847,29 @@ by ftobler 2021</text>
 </polygon>
 </package>
 </packages>
+<packages3d>
+<package3d name="0603_CAP" urn="urn:adsk.eagle:package:36813215/3" type="model">
+<packageinstances>
+<packageinstance name="0603_CAP"/>
+</packageinstances>
+</package3d>
+<package3d name="0603-RES" urn="urn:adsk.eagle:package:36812383/4" type="model">
+<packageinstances>
+<packageinstance name="0603-RES"/>
+</packageinstances>
+</package3d>
+<package3d name="0805_CAP" urn="urn:adsk.eagle:package:36813218/3" type="model">
+<description>Based on muRata GRM capacitor specifications</description>
+<packageinstances>
+<packageinstance name="0805_CAP"/>
+</packageinstances>
+</package3d>
+<package3d name="1206_CAP" urn="urn:adsk.eagle:package:36813221/3" type="model">
+<packageinstances>
+<packageinstance name="1206_CAP"/>
+</packageinstances>
+</package3d>
+</packages3d>
 </library>
 <library name="RepRapjr">
 <packages>
@@ -2863,7 +2915,7 @@ by ftobler 2021</text>
 </package>
 </packages>
 <packages3d>
-<package3d name="A4988BREAKOUT" urn="urn:adsk.eagle:package:27914069/4" type="model">
+<package3d name="A4988BREAKOUT" urn="urn:adsk.eagle:package:27914069/5" type="model">
 <packageinstances>
 <packageinstance name="A4988BREAKOUT"/>
 </packageinstances>
@@ -4624,90 +4676,90 @@ design rules under a new name.</description>
 <elements>
 <element name="U$1" library="ftobler" package="TOBENG-1MM-FINISH" value="LOGO-TOBENG-1MM-FINISH" x="24.7" y="36.65" smashed="yes"/>
 <element name="V1" library="ftobler" package="FIDUCIAL_2MM" value="FIDUCIAL2MM" x="2" y="91" smashed="yes"/>
-<element name="U2" library="ftobler" package="SOIC-16" package3d_urn="urn:adsk.eagle:package:27914121/3" override_package3d_urn="urn:adsk.eagle:package:27914115/2" override_package_urn="urn:adsk.eagle:footprint:27914116/1" override_locally_modified="yes" value="CH340" x="32.4" y="24.6" smashed="yes" rot="R270">
+<element name="U2" library="ftobler" package="SOIC-16" package3d_urn="urn:adsk.eagle:package:27914121/4" value="CH340" x="32.4" y="24.6" smashed="yes" rot="R270">
 <attribute name="NAME" x="32.4" y="29.9975" size="0.889" layer="25" align="bottom-center"/>
 </element>
-<element name="Y2" library="ftobler" package="3225-QUARZ" value="3213-QUARZ3225" x="25.3" y="21.3" smashed="yes" rot="R270">
+<element name="Y2" library="ftobler" package="3225-QUARZ" package3d_urn="urn:adsk.eagle:package:36843793/3" value="3213-QUARZ3225" x="25.3" y="21.3" smashed="yes" rot="R270">
 <attribute name="NAME" x="25.3" y="18.9" size="0.889" layer="21" rot="R270" align="center-left"/>
 </element>
-<element name="C5" library="passives" package="0603_CAP" value="100n" x="34.55" y="30.3" smashed="yes">
+<element name="C5" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="34.55" y="30.3" smashed="yes">
 <attribute name="NAME" x="34.55" y="31.062" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C16" library="passives" package="0603_CAP" value="100n" x="27.6" y="26.8" smashed="yes" rot="R270">
+<element name="C16" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="27.6" y="26.8" smashed="yes" rot="R270">
 <attribute name="NAME" x="28.362" y="26.8" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="C18" library="passives" package="0603_CAP" value="22p" x="27.7" y="21.9" smashed="yes" rot="R270">
+<element name="C18" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="22p" x="27.7" y="21.9" smashed="yes" rot="R270">
 <attribute name="NAME" x="28.462" y="21.9" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="C19" library="passives" package="0603_CAP" value="22p" x="27.7" y="19.5" smashed="yes" rot="R90">
+<element name="C19" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="22p" x="27.7" y="19.5" smashed="yes" rot="R90">
 <attribute name="NAME" x="26.938" y="19.5" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="R1" library="passives" package="0603-RES" value="1k" x="31.5" y="32.3" smashed="yes" rot="R90">
+<element name="R1" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="31.5" y="32.3" smashed="yes" rot="R90">
 <attribute name="NAME" x="30.738" y="32.3" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="R2" library="passives" package="0603-RES" value="1k" x="32.9" y="32.3" smashed="yes" rot="R90">
+<element name="R2" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="32.9" y="32.3" smashed="yes" rot="R90">
 <attribute name="NAME" x="32.138" y="32.3" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="U$2" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/4" value="A4988BREAKOUT" x="18" y="89" smashed="yes" rot="R270"/>
+<element name="U$2" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/5" value="A4988BREAKOUT" x="18" y="89" smashed="yes" rot="R270"/>
 <element name="X1" library="bt_con-jst-xh" package="B4B-XH" package3d_urn="urn:adsk.eagle:package:27914051/3" value="04-JST-B4B-XH-A" x="15" y="95" smashed="yes">
 <attribute name="NAME" x="11.19" y="98.81" size="1.27" layer="21"/>
 </element>
-<element name="C8" library="passives" package="0603_CAP" value="" x="16" y="75" smashed="yes" rot="R180">
+<element name="C8" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="" x="16" y="75" smashed="yes" rot="R180">
 <attribute name="NAME" x="16" y="74.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
 <element name="C9" library="resistor" library_urn="urn:adsk.eagle:library:348" package="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2" value="" x="13" y="85" smashed="yes" rot="R90">
 <attribute name="NAME" x="8.47" y="80.71" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="18.785" y="80.675" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="U$3" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/4" value="A4988BREAKOUT" x="33" y="89" smashed="yes" rot="R270"/>
+<element name="U$3" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/5" value="A4988BREAKOUT" x="33" y="89" smashed="yes" rot="R270"/>
 <element name="X2" library="bt_con-jst-xh" package="B4B-XH" package3d_urn="urn:adsk.eagle:package:27914051/3" value="04-JST-B4B-XH-A" x="29" y="95" smashed="yes">
 <attribute name="NAME" x="25.19" y="98.81" size="1.27" layer="21"/>
 </element>
-<element name="C10" library="passives" package="0603_CAP" value="" x="31" y="75" smashed="yes" rot="R180">
+<element name="C10" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="" x="31" y="75" smashed="yes" rot="R180">
 <attribute name="NAME" x="31" y="74.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
 <element name="C11" library="resistor" library_urn="urn:adsk.eagle:library:348" package="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2" value="" x="28" y="85" smashed="yes" rot="R90">
 <attribute name="NAME" x="23.47" y="80.71" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="33.785" y="80.675" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="U$4" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/4" value="A4988BREAKOUT" x="48" y="89" smashed="yes" rot="R270"/>
+<element name="U$4" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/5" value="A4988BREAKOUT" x="48" y="89" smashed="yes" rot="R270"/>
 <element name="X3" library="bt_con-jst-xh" package="B4B-XH" package3d_urn="urn:adsk.eagle:package:27914051/3" value="04-JST-B4B-XH-A" x="43" y="95" smashed="yes">
 <attribute name="NAME" x="39.19" y="98.81" size="1.27" layer="21"/>
 </element>
-<element name="C12" library="passives" package="0603_CAP" value="" x="46" y="75" smashed="yes" rot="R180">
+<element name="C12" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="" x="46" y="75" smashed="yes" rot="R180">
 <attribute name="NAME" x="46" y="74.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
 <element name="C13" library="resistor" library_urn="urn:adsk.eagle:library:348" package="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2" value="" x="43" y="85" smashed="yes" rot="R90">
 <attribute name="NAME" x="38.47" y="80.71" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="48.785" y="80.675" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="U$5" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/4" value="A4988BREAKOUT" x="63" y="89" smashed="yes" rot="R270"/>
+<element name="U$5" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/5" value="A4988BREAKOUT" x="63" y="89" smashed="yes" rot="R270"/>
 <element name="X4" library="bt_con-jst-xh" package="B4B-XH" package3d_urn="urn:adsk.eagle:package:27914051/3" value="04-JST-B4B-XH-A" x="57" y="95" smashed="yes">
 <attribute name="NAME" x="53.19" y="98.81" size="1.27" layer="21"/>
 </element>
-<element name="C14" library="passives" package="0603_CAP" value="" x="61" y="75" smashed="yes" rot="R180">
+<element name="C14" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="" x="61" y="75" smashed="yes" rot="R180">
 <attribute name="NAME" x="61" y="74.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
 <element name="C15" library="resistor" library_urn="urn:adsk.eagle:library:348" package="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2" value="" x="58" y="85" smashed="yes" rot="R90">
 <attribute name="NAME" x="53.47" y="80.71" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="63.785" y="80.675" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="U$6" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/4" value="A4988BREAKOUT" x="78" y="89" smashed="yes" rot="R270"/>
+<element name="U$6" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/5" value="A4988BREAKOUT" x="78" y="89" smashed="yes" rot="R270"/>
 <element name="X5" library="bt_con-jst-xh" package="B4B-XH" package3d_urn="urn:adsk.eagle:package:27914051/3" value="04-JST-B4B-XH-A" x="71" y="95" smashed="yes">
 <attribute name="NAME" x="67.19" y="98.81" size="1.27" layer="21"/>
 </element>
-<element name="C17" library="passives" package="0603_CAP" value="" x="76" y="75" smashed="yes" rot="R180">
+<element name="C17" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="" x="76" y="75" smashed="yes" rot="R180">
 <attribute name="NAME" x="76" y="74.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
 <element name="C20" library="resistor" library_urn="urn:adsk.eagle:library:348" package="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2" value="" x="73" y="85" smashed="yes" rot="R90">
 <attribute name="NAME" x="68.47" y="80.71" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="78.785" y="80.675" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="U$7" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/4" value="A4988BREAKOUT" x="93" y="89" smashed="yes" rot="R270"/>
+<element name="U$7" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/5" value="A4988BREAKOUT" x="93" y="89" smashed="yes" rot="R270"/>
 <element name="X6" library="bt_con-jst-xh" package="B4B-XH" package3d_urn="urn:adsk.eagle:package:27914051/3" value="04-JST-B4B-XH-A" x="85" y="95" smashed="yes">
 <attribute name="NAME" x="81.19" y="98.81" size="1.27" layer="21"/>
 </element>
-<element name="C21" library="passives" package="0603_CAP" value="" x="91" y="75" smashed="yes" rot="R180">
+<element name="C21" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="" x="91" y="75" smashed="yes" rot="R180">
 <attribute name="NAME" x="91" y="74.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
 <element name="C22" library="resistor" library_urn="urn:adsk.eagle:library:348" package="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2" value="" x="88" y="85" smashed="yes" rot="R90">
@@ -4720,73 +4772,73 @@ design rules under a new name.</description>
 <element name="X7" library="bt_con-jst-xh" package="B3B-XH" package3d_urn="urn:adsk.eagle:package:27914046/3" value="03-JST-B3B-XH-A" x="68" y="38.25" smashed="yes">
 <attribute name="NAME" x="65.46" y="42.06" size="1.27" layer="21"/>
 </element>
-<element name="R5" library="passives" package="0603-RES" value="10k" x="61.5" y="39.25" smashed="yes" rot="R180">
+<element name="R5" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="61.5" y="39.25" smashed="yes" rot="R180">
 <attribute name="NAME" x="61.5" y="38.488" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R4" library="passives" package="0603-RES" value="10k" x="61.5" y="40.75" smashed="yes">
+<element name="R4" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="61.5" y="40.75" smashed="yes">
 <attribute name="NAME" x="61.5" y="41.512" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C23" library="passives" package="0603_CAP" value="100n" x="61.5" y="37.75" smashed="yes">
+<element name="C23" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="61.5" y="37.75" smashed="yes">
 <attribute name="NAME" x="61.5" y="38.512" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
 <element name="X8" library="bt_con-jst-xh" package="B3B-XH" package3d_urn="urn:adsk.eagle:package:27914046/3" value="03-JST-B3B-XH-A" x="68" y="31.25" smashed="yes">
 <attribute name="NAME" x="65.46" y="35.06" size="1.27" layer="21"/>
 </element>
-<element name="R6" library="passives" package="0603-RES" value="10k" x="61.5" y="32.25" smashed="yes" rot="R180">
+<element name="R6" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="61.5" y="32.25" smashed="yes" rot="R180">
 <attribute name="NAME" x="61.5" y="31.488" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R7" library="passives" package="0603-RES" value="10k" x="61.5" y="33.75" smashed="yes">
+<element name="R7" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="61.5" y="33.75" smashed="yes">
 <attribute name="NAME" x="61.5" y="34.512" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C24" library="passives" package="0603_CAP" value="100n" x="61.5" y="30.75" smashed="yes">
+<element name="C24" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="61.5" y="30.75" smashed="yes">
 <attribute name="NAME" x="61.5" y="31.512" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
 <element name="X9" library="bt_con-jst-xh" package="B3B-XH" package3d_urn="urn:adsk.eagle:package:27914046/3" value="03-JST-B3B-XH-A" x="68" y="24.25" smashed="yes">
 <attribute name="NAME" x="65.46" y="28.06" size="1.27" layer="21"/>
 </element>
-<element name="R8" library="passives" package="0603-RES" value="10k" x="61.5" y="25.25" smashed="yes" rot="R180">
+<element name="R8" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="61.5" y="25.25" smashed="yes" rot="R180">
 <attribute name="NAME" x="61.5" y="24.488" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R9" library="passives" package="0603-RES" value="10k" x="61.5" y="26.75" smashed="yes">
+<element name="R9" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="61.5" y="26.75" smashed="yes">
 <attribute name="NAME" x="61.5" y="27.512" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C25" library="passives" package="0603_CAP" value="100n" x="61.5" y="23.75" smashed="yes">
+<element name="C25" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="61.5" y="23.75" smashed="yes">
 <attribute name="NAME" x="61.5" y="24.512" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
 <element name="X10" library="bt_con-jst-xh" package="B3B-XH" package3d_urn="urn:adsk.eagle:package:27914046/3" value="03-JST-B3B-XH-A" x="68" y="17.25" smashed="yes">
 <attribute name="NAME" x="65.46" y="21.06" size="1.27" layer="21"/>
 </element>
-<element name="R10" library="passives" package="0603-RES" value="10k" x="61.5" y="18.25" smashed="yes" rot="R180">
+<element name="R10" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="61.5" y="18.25" smashed="yes" rot="R180">
 <attribute name="NAME" x="61.5" y="17.488" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R11" library="passives" package="0603-RES" value="10k" x="61.5" y="19.75" smashed="yes">
+<element name="R11" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="61.5" y="19.75" smashed="yes">
 <attribute name="NAME" x="61.5" y="20.512" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C26" library="passives" package="0603_CAP" value="100n" x="61.5" y="16.75" smashed="yes">
+<element name="C26" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="61.5" y="16.75" smashed="yes">
 <attribute name="NAME" x="61.5" y="17.512" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
 <element name="X11" library="bt_con-jst-xh" package="B3B-XH" package3d_urn="urn:adsk.eagle:package:27914046/3" value="03-JST-B3B-XH-A" x="68" y="10.25" smashed="yes">
 <attribute name="NAME" x="65.46" y="14.06" size="1.27" layer="21"/>
 </element>
-<element name="R12" library="passives" package="0603-RES" value="10k" x="58.7" y="16.15" smashed="yes" rot="R180">
+<element name="R12" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="58.7" y="16.15" smashed="yes" rot="R180">
 <attribute name="NAME" x="58.7" y="15.388" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R13" library="passives" package="0603-RES" value="10k" x="58.7" y="17.65" smashed="yes">
+<element name="R13" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="58.7" y="17.65" smashed="yes">
 <attribute name="NAME" x="58.7" y="18.412" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C27" library="passives" package="0603_CAP" value="100n" x="58.7" y="14.65" smashed="yes">
+<element name="C27" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="58.7" y="14.65" smashed="yes">
 <attribute name="NAME" x="58.7" y="15.412" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
 <element name="X12" library="bt_con-jst-xh" package="B3B-XH" package3d_urn="urn:adsk.eagle:package:27914046/3" value="03-JST-B3B-XH-A" x="68" y="3.25" smashed="yes">
 <attribute name="NAME" x="65.46" y="7.06" size="1.27" layer="21"/>
 </element>
-<element name="R14" library="passives" package="0603-RES" value="10k" x="55.7" y="16.15" smashed="yes" rot="R180">
+<element name="R14" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="55.7" y="16.15" smashed="yes" rot="R180">
 <attribute name="NAME" x="55.7" y="15.388" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R15" library="passives" package="0603-RES" value="10k" x="55.7" y="17.65" smashed="yes">
+<element name="R15" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="55.7" y="17.65" smashed="yes">
 <attribute name="NAME" x="55.7" y="18.412" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C28" library="passives" package="0603_CAP" value="100n" x="55.7" y="14.65" smashed="yes">
+<element name="C28" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="55.7" y="14.65" smashed="yes">
 <attribute name="NAME" x="55.7" y="15.412" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
 <element name="S1" library="ftobler" package="SWITCH_WH" package3d_urn="urn:adsk.eagle:package:27914554/2" value="SWITCH_2PD" x="34" y="49.5" smashed="yes" rot="R270">
@@ -4798,14 +4850,14 @@ design rules under a new name.</description>
 <element name="D13" library="passives" package="SOD123" value="" x="80.75" y="39.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="81.766" y="39.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R17" library="passives" package="0603-RES" value="1k" x="74" y="41.25" smashed="yes" rot="R270">
+<element name="R17" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="74" y="41.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="41.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="D1" library="ftobler" package="0805-DOT" value="LED-0805" x="79" y="37.25" smashed="yes" rot="R90">
-<attribute name="NAME" x="77.98" y="36.615" size="0.889" layer="25" rot="R90"/>
-<attribute name="VALUE" x="81.54" y="35.615" size="0.889" layer="27" rot="R90"/>
+<element name="D1" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="79" y="37.25" smashed="yes" rot="R270">
+<attribute name="NAME" x="80.02" y="37.885" size="0.889" layer="25" rot="R270"/>
+<attribute name="VALUE" x="76.46" y="38.885" size="0.889" layer="27" rot="R270"/>
 </element>
-<element name="R18" library="passives" package="0603-RES" value="1k" x="79" y="40.25" smashed="yes" rot="R270">
+<element name="R18" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="79" y="40.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="79.762" y="40.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
 <element name="X14" library="bt_con-jst-xh" package="B2B-XH" package3d_urn="urn:adsk.eagle:package:27914040/3" value="02-JST-B3B-XH-A" x="85.75" y="31.25" smashed="yes">
@@ -4814,14 +4866,14 @@ design rules under a new name.</description>
 <element name="D2" library="passives" package="SOD123" value="" x="80.75" y="32.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="81.766" y="32.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R19" library="passives" package="0603-RES" value="1k" x="74" y="34.25" smashed="yes" rot="R270">
+<element name="R19" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="74" y="34.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="34.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="D3" library="ftobler" package="0805-DOT" value="LED-0805" x="79" y="30.25" smashed="yes" rot="R90">
-<attribute name="NAME" x="77.98" y="28.615" size="0.889" layer="25" rot="R90"/>
-<attribute name="VALUE" x="81.54" y="28.615" size="0.889" layer="27" rot="R90"/>
+<element name="D3" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="79" y="30.25" smashed="yes" rot="R270">
+<attribute name="NAME" x="80.02" y="31.885" size="0.889" layer="25" rot="R270"/>
+<attribute name="VALUE" x="76.46" y="31.885" size="0.889" layer="27" rot="R270"/>
 </element>
-<element name="R20" library="passives" package="0603-RES" value="1k" x="79" y="33.25" smashed="yes" rot="R270">
+<element name="R20" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="79" y="33.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="79.762" y="33.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
 <element name="X15" library="bt_con-jst-xh" package="B2B-XH" package3d_urn="urn:adsk.eagle:package:27914040/3" value="02-JST-B3B-XH-A" x="85.75" y="24.25" smashed="yes">
@@ -4830,14 +4882,14 @@ design rules under a new name.</description>
 <element name="D5" library="passives" package="SOD123" value="" x="80.75" y="25.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="81.766" y="25.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R21" library="passives" package="0603-RES" value="1k" x="74" y="27.25" smashed="yes" rot="R270">
+<element name="R21" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="74" y="27.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="28.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="D6" library="ftobler" package="0805-DOT" value="LED-0805" x="79" y="23.25" smashed="yes" rot="R90">
-<attribute name="NAME" x="77.98" y="21.615" size="0.889" layer="25" rot="R90"/>
-<attribute name="VALUE" x="81.54" y="21.615" size="0.889" layer="27" rot="R90"/>
+<element name="D6" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="79" y="23.25" smashed="yes" rot="R270">
+<attribute name="NAME" x="80.02" y="24.885" size="0.889" layer="25" rot="R270"/>
+<attribute name="VALUE" x="76.46" y="24.885" size="0.889" layer="27" rot="R270"/>
 </element>
-<element name="R22" library="passives" package="0603-RES" value="1k" x="79" y="26.25" smashed="yes" rot="R270">
+<element name="R22" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="79" y="26.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="79.762" y="26.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
 <element name="X16" library="bt_con-jst-xh" package="B2B-XH" package3d_urn="urn:adsk.eagle:package:27914040/3" value="02-JST-B3B-XH-A" x="85.75" y="17.25" smashed="yes">
@@ -4846,14 +4898,14 @@ design rules under a new name.</description>
 <element name="D7" library="passives" package="SOD123" value="" x="80.75" y="18.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="81.766" y="18.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R23" library="passives" package="0603-RES" value="1k" x="74" y="20.25" smashed="yes" rot="R270">
+<element name="R23" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="74" y="20.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="20.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="D8" library="ftobler" package="0805-DOT" value="LED-0805" x="79" y="16.25" smashed="yes" rot="R90">
-<attribute name="NAME" x="77.98" y="14.615" size="0.889" layer="25" rot="R90"/>
-<attribute name="VALUE" x="81.54" y="14.615" size="0.889" layer="27" rot="R90"/>
+<element name="D8" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="79" y="16.25" smashed="yes" rot="R270">
+<attribute name="NAME" x="80.02" y="17.885" size="0.889" layer="25" rot="R270"/>
+<attribute name="VALUE" x="76.46" y="17.885" size="0.889" layer="27" rot="R270"/>
 </element>
-<element name="R24" library="passives" package="0603-RES" value="1k" x="79" y="19.25" smashed="yes" rot="R270">
+<element name="R24" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="79" y="19.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="79.762" y="19.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
 <element name="X17" library="bt_con-jst-xh" package="B2B-XH" package3d_urn="urn:adsk.eagle:package:27914040/3" value="02-JST-B3B-XH-A" x="85.75" y="10.25" smashed="yes">
@@ -4862,14 +4914,14 @@ design rules under a new name.</description>
 <element name="D9" library="passives" package="SOD123" value="" x="80.75" y="11.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="81.766" y="11.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R25" library="passives" package="0603-RES" value="1k" x="74" y="13.25" smashed="yes" rot="R270">
+<element name="R25" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="74" y="13.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="14.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="D11" library="ftobler" package="0805-DOT" value="LED-0805" x="79" y="9.25" smashed="yes" rot="R90">
-<attribute name="NAME" x="77.98" y="7.615" size="0.889" layer="25" rot="R90"/>
-<attribute name="VALUE" x="81.54" y="7.615" size="0.889" layer="27" rot="R90"/>
+<element name="D11" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="79" y="9.25" smashed="yes" rot="R270">
+<attribute name="NAME" x="80.02" y="10.885" size="0.889" layer="25" rot="R270"/>
+<attribute name="VALUE" x="76.46" y="10.885" size="0.889" layer="27" rot="R270"/>
 </element>
-<element name="R26" library="passives" package="0603-RES" value="1k" x="79" y="12.25" smashed="yes" rot="R270">
+<element name="R26" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="79" y="12.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="79.762" y="12.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
 <element name="X18" library="bt_con-jst-xh" package="B2B-XH" package3d_urn="urn:adsk.eagle:package:27914040/3" value="02-JST-B3B-XH-A" x="85.75" y="3.25" smashed="yes">
@@ -4878,32 +4930,32 @@ design rules under a new name.</description>
 <element name="D14" library="passives" package="SOD123" value="" x="80.75" y="4.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="81.766" y="4.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R27" library="passives" package="0603-RES" value="1k" x="74" y="6.25" smashed="yes" rot="R270">
+<element name="R27" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="74" y="6.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="7.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="D15" library="ftobler" package="0805-DOT" value="LED-0805" x="79" y="2.25" smashed="yes" rot="R90">
-<attribute name="NAME" x="77.98" y="0.615" size="0.889" layer="25" rot="R90"/>
-<attribute name="VALUE" x="81.54" y="0.615" size="0.889" layer="27" rot="R90"/>
+<element name="D15" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="79" y="2.25" smashed="yes" rot="R270">
+<attribute name="NAME" x="80.02" y="3.885" size="0.889" layer="25" rot="R270"/>
+<attribute name="VALUE" x="76.46" y="3.885" size="0.889" layer="27" rot="R270"/>
 </element>
-<element name="R28" library="passives" package="0603-RES" value="1k" x="79" y="5.25" smashed="yes" rot="R270">
+<element name="R28" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="79" y="5.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="79.762" y="5.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R29" library="passives" package="0603-RES" value="10k" x="37" y="47" smashed="yes" rot="R90">
+<element name="R29" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="37" y="47" smashed="yes" rot="R90">
 <attribute name="NAME" x="36.238" y="47" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="C29" library="passives" package="0603_CAP" value="100n" x="38.2" y="47" smashed="yes" rot="R270">
+<element name="C29" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="38.2" y="47" smashed="yes" rot="R270">
 <attribute name="NAME" x="38.962" y="47" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R30" library="passives" package="0603-RES" value="10k" x="47.01" y="59.92" smashed="yes" rot="R90">
+<element name="R30" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="47.01" y="59.92" smashed="yes" rot="R90">
 <attribute name="NAME" x="46.248" y="59.92" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="Y1" library="ftobler" package="3225-QUARZ" value="3213-QUARZ3225" x="38.3" y="50.6" smashed="yes" rot="R90">
+<element name="Y1" library="ftobler" package="3225-QUARZ" package3d_urn="urn:adsk.eagle:package:36843793/3" value="3213-QUARZ3225" x="38.3" y="50.6" smashed="yes" rot="R90">
 <attribute name="NAME" x="38.3" y="53" size="0.889" layer="21" rot="R90" align="center-left"/>
 </element>
-<element name="C30" library="passives" package="0603_CAP" value="10p" x="40.8" y="51.4" smashed="yes" rot="R90">
+<element name="C30" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="10p" x="40.8" y="51.4" smashed="yes" rot="R90">
 <attribute name="NAME" x="40.038" y="51.4" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="C31" library="passives" package="0603_CAP" value="10p" x="40.8" y="49.2" smashed="yes" rot="R270">
+<element name="C31" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="10p" x="40.8" y="49.2" smashed="yes" rot="R270">
 <attribute name="NAME" x="41.562" y="49.2" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
 <element name="X19" library="bt_con-jst-xh" package="B5B-XH" package3d_urn="urn:adsk.eagle:package:27914063/3" value="05-JST-B5B-XH-A" x="95" y="34" smashed="yes" rot="R90">
@@ -4912,23 +4964,23 @@ design rules under a new name.</description>
 <element name="X20" library="bt_con-jst-xh" package="B5B-XH" package3d_urn="urn:adsk.eagle:package:27914063/3" value="05-JST-B5B-XH-A" x="95" y="18" smashed="yes" rot="R90">
 <attribute name="NAME" x="91.19" y="12.92" size="1.27" layer="21" rot="R90"/>
 </element>
-<element name="R16" library="passives" package="0603-RES" value="10k" x="98.5" y="23" smashed="yes" rot="R90">
+<element name="R16" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="98.5" y="23" smashed="yes" rot="R90">
 <attribute name="NAME" x="97.738" y="23" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="R31" library="passives" package="0603-RES" value="10k" x="98.5" y="20" smashed="yes" rot="R90">
+<element name="R31" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="98.5" y="20" smashed="yes" rot="R90">
 <attribute name="NAME" x="97.738" y="20" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="R32" library="passives" package="0603-RES" value="10k" x="98.5" y="17" smashed="yes" rot="R90">
+<element name="R32" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="98.5" y="17" smashed="yes" rot="R90">
 <attribute name="NAME" x="97.738" y="17" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="Y3" library="ftobler" package="3225-QUARZ" value="3213-QUARZ3225" x="9.6" y="15.3" smashed="yes" rot="R270">
+<element name="Y3" library="ftobler" package="3225-QUARZ" package3d_urn="urn:adsk.eagle:package:36843793/3" value="3213-QUARZ3225" x="9.6" y="15.3" smashed="yes" rot="R270">
 <attribute name="NAME" x="9.6" y="12.9" size="0.889" layer="21" rot="R270" align="center-left"/>
 </element>
 <element name="J1" library="ftobler" package="USB-MICRO-THT" package3d_urn="urn:adsk.eagle:package:27914135/3" value="USB-ID-THT" x="2" y="24" smashed="yes" rot="R270">
 <attribute name="NAME" x="3.27" y="18.92" size="1.27" layer="25" rot="R270"/>
 <attribute name="VALUE" x="0.73" y="18.92" size="1.27" layer="27" rot="R270"/>
 </element>
-<element name="U4" library="ftobler" package="SOIC-16" package3d_urn="urn:adsk.eagle:package:27914121/3" value="SL2.1A" x="16.6" y="19.4" smashed="yes" rot="R90">
+<element name="U4" library="ftobler" package="SOIC-16" package3d_urn="urn:adsk.eagle:package:27914121/4" value="SL2.1A" x="16.6" y="19.4" smashed="yes" rot="R90">
 <attribute name="NAME" x="16.6" y="14.0025" size="0.889" layer="25" rot="R180" align="bottom-center"/>
 </element>
 <element name="J3C" library="ftobler" package="USB-A-LCSC_C42431" package3d_urn="urn:adsk.eagle:package:27914156/4" value="USB-LCSC_C42431" x="36" y="11" smashed="yes">
@@ -4945,8 +4997,8 @@ design rules under a new name.</description>
 <attribute name="NAME" x="12.23" y="29.77" size="0.889" layer="25"/>
 <attribute name="VALUE" x="12.23" y="25.96" size="0.889" layer="27"/>
 </element>
-<element name="D16" library="ftobler" package="SOT-23" value="DIODE-TVS" x="9.1" y="24.3" smashed="yes">
-<attribute name="NAME" x="10.305" y="22.395" size="1.27" layer="25" font="vector" rot="R180"/>
+<element name="D16" library="ftobler" package="SOT-23" package3d_urn="urn:adsk.eagle:package:36806100/2" value="DIODE-TVS" x="9.1" y="24.3" smashed="yes" rot="R90">
+<attribute name="NAME" x="11.005" y="25.505" size="1.27" layer="25" font="vector" rot="R270"/>
 </element>
 <element name="U1" library="stm32" package="LQFP100-14X14MM" override_package3d_urn="urn:adsk.eagle:package:27914169/2" override_package_urn="urn:adsk.eagle:footprint:27914171/1" value="STM32F411VET6" x="50" y="50" smashed="yes">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="50" y="50" size="1.778" layer="27" display="off"/>
@@ -4956,136 +5008,136 @@ design rules under a new name.</description>
 <attribute name="SOURCELIBRARY" value="Updates_to_database_2020-10-19" x="50" y="50" size="1.778" layer="27" display="off"/>
 <attribute name="VENDOR" value="STMicroelectronics" x="50" y="50" size="1.778" layer="27" display="off"/>
 </element>
-<element name="C1" library="passives" package="0805_CAP" value="4.7u" x="55" y="39.9" smashed="yes" rot="R90">
+<element name="C1" library="passives" package="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="4.7u" x="55" y="39.9" smashed="yes" rot="R90">
 <attribute name="NAME" x="54.238" y="39.9" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="C2" library="passives" package="0603_CAP" value="100n" x="44.8" y="40.1" smashed="yes" rot="R270">
+<element name="C2" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="44.8" y="40.1" smashed="yes" rot="R270">
 <attribute name="NAME" x="45.562" y="40.1" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="C3" library="passives" package="0603_CAP" value="100n" x="58" y="57.5" smashed="yes" rot="R90">
+<element name="C3" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="58" y="57.5" smashed="yes" rot="R90">
 <attribute name="NAME" x="57.238" y="57.5" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="C6" library="passives" package="0603_CAP" value="100n" x="42.5" y="58" smashed="yes" rot="R180">
+<element name="C6" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="42.5" y="58" smashed="yes" rot="R180">
 <attribute name="NAME" x="42.5" y="57.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C44" library="passives" package="0603_CAP" value="100n" x="40.1" y="53.4" smashed="yes" rot="R180">
+<element name="C44" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="40.1" y="53.4" smashed="yes" rot="R180">
 <attribute name="NAME" x="40.1" y="52.638" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C45" library="passives" package="0603_CAP" value="100n" x="57.5" y="42" smashed="yes">
+<element name="C45" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="57.5" y="42" smashed="yes">
 <attribute name="NAME" x="57.5" y="42.762" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C46" library="passives" package="0603_CAP" value="100n" x="40.4" y="47.1" smashed="yes" rot="R180">
+<element name="C46" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="40.4" y="47.1" smashed="yes" rot="R180">
 <attribute name="NAME" x="40.4" y="46.338" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C47" library="passives" package="0805_CAP" value="4.7u" x="56.7" y="39.9" smashed="yes" rot="R90">
+<element name="C47" library="passives" package="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="4.7u" x="56.7" y="39.9" smashed="yes" rot="R90">
 <attribute name="NAME" x="55.808" y="39.9" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="C48" library="passives" package="0603_CAP" value="100n" x="39.8" y="44.7" smashed="yes" rot="R180">
+<element name="C48" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="39.8" y="44.7" smashed="yes" rot="R180">
 <attribute name="NAME" x="39.8" y="43.938" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C49" library="passives" package="0603_CAP" value="100n" x="40.4" y="45.9" smashed="yes" rot="R180">
+<element name="C49" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="40.4" y="45.9" smashed="yes" rot="R180">
 <attribute name="NAME" x="40.4" y="45.138" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R3" library="passives" package="0603-RES" value="1k" x="34.3" y="32.3" smashed="yes" rot="R90">
+<element name="R3" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="34.3" y="32.3" smashed="yes" rot="R90">
 <attribute name="NAME" x="33.538" y="32.3" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="C4" library="passives" package="0603_CAP" value="22p" x="11.9" y="16.4" smashed="yes" rot="R90">
+<element name="C4" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="22p" x="11.9" y="16.4" smashed="yes" rot="R90">
 <attribute name="NAME" x="11.138" y="16.4" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="C41" library="passives" package="0603_CAP" value="22p" x="11.9" y="14" smashed="yes" rot="R270">
+<element name="C41" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="22p" x="11.9" y="14" smashed="yes" rot="R270">
 <attribute name="NAME" x="12.662" y="14" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="C35" library="passives" package="0805_CAP" value="10u" x="8.9" y="21.7" smashed="yes" rot="R180">
+<element name="C35" library="passives" package="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="10u" x="8.9" y="21.7" smashed="yes" rot="R180">
 <attribute name="NAME" x="8.9" y="20.938" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C36" library="passives" package="0805_CAP" value="10u" x="9.6" y="18.2" smashed="yes" rot="R180">
+<element name="C36" library="passives" package="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="10u" x="9.6" y="18.2" smashed="yes" rot="R180">
 <attribute name="NAME" x="9.6" y="17.438" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C39" library="passives" package="0805_CAP" value="10u" x="9.6" y="20" smashed="yes" rot="R180">
+<element name="C39" library="passives" package="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="10u" x="9.6" y="20" smashed="yes" rot="R180">
 <attribute name="NAME" x="9.6" y="19.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C40" library="passives" package="0603_CAP" value="100n" x="12" y="20.7" smashed="yes" rot="R90">
+<element name="C40" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="12" y="20.7" smashed="yes" rot="R90">
 <attribute name="NAME" x="11.238" y="20.7" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="C37" library="passives" package="0603_CAP" value="100n" x="30.5" y="11.5" smashed="yes" rot="R180">
+<element name="C37" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="30.5" y="11.5" smashed="yes" rot="R180">
 <attribute name="NAME" x="30.5" y="10.738" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C38" library="passives" package="0603_CAP" value="100n" x="48.5" y="11.5" smashed="yes" rot="R180">
+<element name="C38" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="48.5" y="11.5" smashed="yes" rot="R180">
 <attribute name="NAME" x="48.5" y="10.738" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C42" library="passives" package="0603_CAP" value="100n" x="12.5" y="11.5" smashed="yes" rot="R180">
+<element name="C42" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="12.5" y="11.5" smashed="yes" rot="R180">
 <attribute name="NAME" x="12.5" y="10.738" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C43" library="passives" package="0603_CAP" value="100n" x="59.6" y="55.7" smashed="yes" rot="R90">
+<element name="C43" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="59.6" y="55.7" smashed="yes" rot="R90">
 <attribute name="NAME" x="58.838" y="55.7" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
 <element name="L1" library="ftobler" package="IND_CR4" value="4.7uH" x="25.75" y="63.75" smashed="yes" rot="R90">
 <attribute name="NAME" x="25.75" y="63.75" size="0.889" layer="48" rot="R90" align="center"/>
 </element>
-<element name="C50" library="passives" package="0603_CAP" value="100n" x="22.75" y="62.75" smashed="yes" rot="R90">
+<element name="C50" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="22.75" y="62.75" smashed="yes" rot="R90">
 <attribute name="NAME" x="21.988" y="62.75" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="C51" library="passives" package="0603_CAP" value="10p" x="13.75" y="65.25" smashed="yes" rot="R270">
+<element name="C51" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="10p" x="13.75" y="65.25" smashed="yes" rot="R270">
 <attribute name="NAME" x="14.512" y="65.25" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="C52" library="passives" package="0603_CAP" value="3.3n" x="16.15" y="59.25" smashed="yes">
+<element name="C52" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="3.3n" x="16.15" y="59.25" smashed="yes">
 <attribute name="NAME" x="16.15" y="60.012" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C53" library="passives" package="0603_CAP" value="1u" x="13.75" y="59.75" smashed="yes" rot="R270">
+<element name="C53" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="1u" x="13.75" y="59.75" smashed="yes" rot="R270">
 <attribute name="NAME" x="14.512" y="59.75" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R33" library="passives" package="0603-RES" value="10k" x="15.75" y="66.75" smashed="yes" rot="R270">
+<element name="R33" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="15.75" y="66.75" smashed="yes" rot="R270">
 <attribute name="NAME" x="16.512" y="66.75" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="C54" library="passives" package="1206_CAP" value="22uF" x="20.3" y="66.8" smashed="yes" rot="R270">
-<attribute name="NAME" x="21.062" y="66.8" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
+<element name="C54" library="passives" package="1206_CAP" package3d_urn="urn:adsk.eagle:package:36813221/3" value="22uF" x="20.3" y="66.8" smashed="yes" rot="R180">
+<attribute name="NAME" x="20.3" y="66.038" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C55" library="passives" package="0805_CAP" value="22uF" x="26.25" y="60.75" smashed="yes">
+<element name="C55" library="passives" package="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="22uF" x="26.25" y="60.75" smashed="yes">
 <attribute name="NAME" x="26.25" y="64.29" size="0.889" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C56" library="passives" package="0805_CAP" value="22uF" x="26.25" y="58.75" smashed="yes">
+<element name="C56" library="passives" package="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="22uF" x="26.25" y="58.75" smashed="yes">
 <attribute name="NAME" x="26.25" y="59.642" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="R34" library="passives" package="0603-RES" value="100k" x="12.25" y="65.25" smashed="yes" rot="R90">
+<element name="R34" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="100k" x="12.25" y="65.25" smashed="yes" rot="R90">
 <attribute name="NAME" x="11.488" y="65.25" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="R35" library="passives" package="0603-RES" value="18k" x="13.75" y="62.75" smashed="yes" rot="R90">
+<element name="R35" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="18k" x="13.75" y="62.75" smashed="yes" rot="R90">
 <attribute name="NAME" x="12.988" y="62.75" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
 <element name="L2" library="ftobler" package="IND_CR4" value="4.7uH" x="25.75" y="52.5" smashed="yes" rot="R90">
 <attribute name="NAME" x="25.75" y="52.5" size="0.889" layer="48" rot="R90" align="center"/>
 </element>
-<element name="C57" library="passives" package="0603_CAP" value="100n" x="22.75" y="51.5" smashed="yes" rot="R90">
+<element name="C57" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="22.75" y="51.5" smashed="yes" rot="R90">
 <attribute name="NAME" x="21.988" y="51.5" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="C58" library="passives" package="0603_CAP" value="10p" x="13.75" y="54" smashed="yes" rot="R270">
+<element name="C58" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="10p" x="13.75" y="54" smashed="yes" rot="R270">
 <attribute name="NAME" x="14.512" y="54" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="C59" library="passives" package="0603_CAP" value="3.3n" x="16.15" y="48" smashed="yes">
+<element name="C59" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="3.3n" x="16.15" y="48" smashed="yes">
 <attribute name="NAME" x="16.15" y="48.762" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C60" library="passives" package="0603_CAP" value="1u" x="13.75" y="48.5" smashed="yes" rot="R270">
+<element name="C60" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="1u" x="13.75" y="48.5" smashed="yes" rot="R270">
 <attribute name="NAME" x="14.512" y="48.5" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R36" library="passives" package="0603-RES" value="10k" x="15.75" y="55.5" smashed="yes" rot="R270">
+<element name="R36" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="15.75" y="55.5" smashed="yes" rot="R270">
 <attribute name="NAME" x="16.512" y="55.5" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="C61" library="passives" package="1206_CAP" value="22uF" x="20.3" y="55.55" smashed="yes" rot="R270">
-<attribute name="NAME" x="22.84" y="55.55" size="0.889" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
+<element name="C61" library="passives" package="1206_CAP" package3d_urn="urn:adsk.eagle:package:36813221/3" value="22uF" x="20.3" y="55.55" smashed="yes" rot="R180">
+<attribute name="NAME" x="20.3" y="53.01" size="0.889" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="C62" library="passives" package="0805_CAP" value="22uF" x="26.25" y="47.5" smashed="yes">
+<element name="C62" library="passives" package="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="22uF" x="26.25" y="47.5" smashed="yes">
 <attribute name="NAME" x="26.25" y="48.392" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="C63" library="passives" package="0805_CAP" value="22uF" x="26.25" y="49.5" smashed="yes">
+<element name="C63" library="passives" package="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="22uF" x="26.25" y="49.5" smashed="yes">
 <attribute name="NAME" x="26.25" y="50.392" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
-<element name="R37" library="passives" package="0603-RES" value="100k" x="12.25" y="54" smashed="yes" rot="R90">
+<element name="R37" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="100k" x="12.25" y="54" smashed="yes" rot="R90">
 <attribute name="NAME" x="11.488" y="54" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="R38" library="passives" package="0603-RES" value="20k" x="13.75" y="51.5" smashed="yes" rot="R90">
+<element name="R38" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="20k" x="13.75" y="51.5" smashed="yes" rot="R90">
 <attribute name="NAME" x="12.988" y="51.5" size="1.016" layer="25" font="vector" ratio="12" rot="R90" align="bottom-center"/>
 </element>
-<element name="R39" library="passives" package="0603-RES" value="10K" x="12.25" y="51.5" smashed="yes" rot="R270">
+<element name="R39" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10K" x="12.25" y="51.5" smashed="yes" rot="R270">
 <attribute name="NAME" x="13.012" y="51.5" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
 <element name="X22" library="ftobler-conn" package="PIN_2X1_3.81MM_LONGPAD" package3d_urn="urn:adsk.eagle:package:27914026/3" value="PIN_2X13.81MM_LONGPAD" x="5" y="64" smashed="yes" rot="R270">
@@ -5109,22 +5161,22 @@ design rules under a new name.</description>
 <element name="U$26" library="ftobler" package="DFN3030-8B" package3d_urn="urn:adsk.eagle:package:27914178/3" value="MOSFET_N_LN8340DT1AG" x="76.5" y="5.75" smashed="yes" rot="R270">
 <attribute name="NAME" x="76.5" y="3.21" size="0.889" layer="48" rot="R270"/>
 </element>
-<element name="R40" library="passives" package="0603-RES" value="10" x="74" y="38.75" smashed="yes" rot="R270">
+<element name="R40" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10" x="74" y="38.75" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="38.75" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R41" library="passives" package="0603-RES" value="10" x="74" y="31.75" smashed="yes" rot="R270">
+<element name="R41" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10" x="74" y="31.75" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="31.75" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R42" library="passives" package="0603-RES" value="10" x="74" y="24.75" smashed="yes" rot="R270">
+<element name="R42" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10" x="74" y="24.75" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="24.75" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R43" library="passives" package="0603-RES" value="10" x="74" y="17.75" smashed="yes" rot="R270">
+<element name="R43" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10" x="74" y="17.75" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="17.75" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R44" library="passives" package="0603-RES" value="10" x="74" y="10.75" smashed="yes" rot="R270">
+<element name="R44" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10" x="74" y="10.75" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="10.75" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
-<element name="R45" library="passives" package="0603-RES" value="10" x="74" y="3.75" smashed="yes" rot="R270">
+<element name="R45" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10" x="74" y="3.75" smashed="yes" rot="R270">
 <attribute name="NAME" x="74.762" y="3.75" size="1.016" layer="25" font="vector" ratio="12" rot="R270" align="bottom-center"/>
 </element>
 <element name="X21" library="bt_con-jst-xh" package="B4B-XH" package3d_urn="urn:adsk.eagle:package:27914051/3" value="04-JST-B4B-XH-A" x="50" y="64" smashed="yes">
@@ -5157,22 +5209,22 @@ design rules under a new name.</description>
 <element name="X24" library="bt_con-jst-xh" package="B2B-XH" package3d_urn="urn:adsk.eagle:package:27914040/3" value="02-JST-B3B-XH-A" x="5.8" y="46.9" smashed="yes">
 <attribute name="NAME" x="1.99" y="50.71" size="1.27" layer="21"/>
 </element>
-<element name="U$8" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/4" value="A4988BREAKOUT" x="78" y="61" smashed="yes" rot="R270"/>
+<element name="U$8" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/5" value="A4988BREAKOUT" x="78" y="61" smashed="yes" rot="R270"/>
 <element name="X25" library="bt_con-jst-xh" package="B4B-XH" package3d_urn="urn:adsk.eagle:package:27914051/3" value="04-JST-B4B-XH-A" x="73" y="67" smashed="yes">
 <attribute name="NAME" x="69.19" y="70.81" size="1.27" layer="21"/>
 </element>
-<element name="C7" library="passives" package="0603_CAP" value="" x="76" y="47" smashed="yes" rot="R180">
+<element name="C7" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="" x="76" y="47" smashed="yes" rot="R180">
 <attribute name="NAME" x="76" y="46.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
 <element name="C32" library="resistor" library_urn="urn:adsk.eagle:library:348" package="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2" value="" x="73" y="57" smashed="yes" rot="R90">
 <attribute name="NAME" x="68.47" y="52.71" size="1.27" layer="25" rot="R90"/>
 <attribute name="VALUE" x="78.785" y="52.675" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="U$9" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/4" value="A4988BREAKOUT" x="93" y="61" smashed="yes" rot="R270"/>
+<element name="U$9" library="RepRapjr" package="A4988BREAKOUT" package3d_urn="urn:adsk.eagle:package:27914069/5" value="A4988BREAKOUT" x="93" y="61" smashed="yes" rot="R270"/>
 <element name="X33" library="bt_con-jst-xh" package="B4B-XH" package3d_urn="urn:adsk.eagle:package:27914051/3" value="04-JST-B4B-XH-A" x="88" y="67" smashed="yes">
 <attribute name="NAME" x="84.19" y="70.81" size="1.27" layer="21"/>
 </element>
-<element name="C33" library="passives" package="0603_CAP" value="" x="91" y="47" smashed="yes" rot="R180">
+<element name="C33" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="" x="91" y="47" smashed="yes" rot="R180">
 <attribute name="NAME" x="91" y="46.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
 <element name="C34" library="resistor" library_urn="urn:adsk.eagle:library:348" package="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2" value="" x="88" y="57" smashed="yes" rot="R90">
@@ -5204,42 +5256,42 @@ design rules under a new name.</description>
 <element name="J3C1" library="ftobler" package="USB-A-LCSC_C42431" package3d_urn="urn:adsk.eagle:package:27914156/4" value="USB-LCSC_C42431" x="18" y="11" smashed="yes">
 <attribute name="NAME" x="22.7" y="11.1" size="0.889" layer="21"/>
 </element>
-<element name="D4" library="ftobler" package="0805-DOT" value="LED-0805" x="34" y="56.25" smashed="yes">
-<attribute name="NAME" x="33.365" y="57.52" size="0.889" layer="25"/>
+<element name="D4" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="34" y="56.25" smashed="yes" rot="R180">
+<attribute name="NAME" x="34.635" y="54.98" size="0.889" layer="25" rot="R180"/>
 </element>
-<element name="R46" library="passives" package="0603-RES" value="1k" x="37.25" y="56.25" smashed="yes" rot="R180">
+<element name="R46" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="37.25" y="56.25" smashed="yes" rot="R180">
 <attribute name="NAME" x="37.25" y="55.488" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="D12" library="ftobler" package="0805-DOT" value="LED-0805" x="34" y="58.5" smashed="yes">
-<attribute name="NAME" x="33.365" y="60.02" size="0.889" layer="25"/>
+<element name="D12" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="34" y="58.5" smashed="yes" rot="R180">
+<attribute name="NAME" x="34.635" y="56.98" size="0.889" layer="25" rot="R180"/>
 </element>
-<element name="R47" library="passives" package="0603-RES" value="1k" x="37.25" y="58.5" smashed="yes" rot="R180">
+<element name="R47" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="37.25" y="58.5" smashed="yes" rot="R180">
 <attribute name="NAME" x="37.25" y="57.738" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R48" library="passives" package="0603-RES" value="1k" x="37.25" y="60.75" smashed="yes" rot="R180">
+<element name="R48" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="37.25" y="60.75" smashed="yes" rot="R180">
 <attribute name="NAME" x="37.25" y="59.988" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R49" library="passives" package="0603-RES" value="1k" x="37.25" y="63" smashed="yes" rot="R180">
+<element name="R49" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="37.25" y="63" smashed="yes" rot="R180">
 <attribute name="NAME" x="37.25" y="62.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R50" library="passives" package="0603-RES" value="1k" x="24.5" y="31.25" smashed="yes" rot="R180">
+<element name="R50" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="24.5" y="31.25" smashed="yes" rot="R180">
 <attribute name="NAME" x="24.5" y="30.488" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="R51" library="passives" package="0603-RES" value="1k" x="24.5" y="29" smashed="yes" rot="R180">
+<element name="R51" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k" x="24.5" y="29" smashed="yes" rot="R180">
 <attribute name="NAME" x="24.5" y="28.238" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
-<element name="D17" library="ftobler" package="0805-DOT" value="LED-0805" x="34" y="60.75" smashed="yes">
-<attribute name="NAME" x="33.365" y="62.27" size="0.889" layer="25"/>
+<element name="D17" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="34" y="60.75" smashed="yes" rot="R180">
+<attribute name="NAME" x="34.635" y="59.23" size="0.889" layer="25" rot="R180"/>
 </element>
-<element name="D18" library="ftobler" package="0805-DOT" value="LED-0805" x="34" y="63" smashed="yes">
-<attribute name="NAME" x="33.365" y="64.27" size="0.889" layer="25"/>
+<element name="D18" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="34" y="63" smashed="yes" rot="R180">
+<attribute name="NAME" x="34.635" y="61.73" size="0.889" layer="25" rot="R180"/>
 </element>
-<element name="D19" library="ftobler" package="0805-DOT" value="LED-0805" x="21.25" y="31.25" smashed="yes">
-<attribute name="NAME" x="20.615" y="32.52" size="0.889" layer="25"/>
-<attribute name="VALUE" x="20.615" y="28.71" size="0.889" layer="27"/>
+<element name="D19" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="21.25" y="31.25" smashed="yes" rot="R180">
+<attribute name="NAME" x="21.885" y="29.98" size="0.889" layer="25" rot="R180"/>
+<attribute name="VALUE" x="21.885" y="33.79" size="0.889" layer="27" rot="R180"/>
 </element>
-<element name="D20" library="ftobler" package="0805-DOT" value="LED-0805" x="21.25" y="29" smashed="yes">
-<attribute name="NAME" x="20.615" y="30.27" size="0.889" layer="25"/>
+<element name="D20" library="ftobler" package="0805-DOT" package3d_urn="urn:adsk.eagle:package:36806138/4" value="LED-0805" x="21.25" y="29" smashed="yes" rot="R180">
+<attribute name="NAME" x="21.885" y="27.73" size="0.889" layer="25" rot="R180"/>
 </element>
 </elements>
 <signals>
@@ -5956,7 +6008,7 @@ design rules under a new name.</description>
 <contactref element="D3" pad="1"/>
 <wire x1="80.75" y1="30.4" x2="81.6" y2="31.25" width="0.5" layer="1"/>
 <wire x1="81.6" y1="31.25" x2="84.48" y2="31.25" width="0.5" layer="1"/>
-<wire x1="79" y1="29.3" x2="79.3" y2="29.3" width="0.3" layer="1"/>
+<wire x1="79" y1="29.35" x2="79.3" y2="29.3" width="0.3" layer="1"/>
 <wire x1="80.4" y1="30.4" x2="80.75" y2="30.4" width="0.3" layer="1"/>
 <wire x1="79.3" y1="29.3" x2="80.4" y2="30.4" width="0.3" layer="1"/>
 <wire x1="84.48" y1="31.25" x2="84.48" y2="30.52" width="1.5" layer="16"/>
@@ -6191,19 +6243,19 @@ design rules under a new name.</description>
 <wire x1="81.6" y1="24.25" x2="84.48" y2="24.25" width="0.5" layer="1"/>
 <wire x1="80.75" y1="37.4" x2="81.6" y2="38.25" width="0.5" layer="1"/>
 <wire x1="81.6" y1="38.25" x2="84.48" y2="38.25" width="0.5" layer="1"/>
-<wire x1="79" y1="1.3" x2="79.3" y2="1.3" width="0.3" layer="1"/>
+<wire x1="79" y1="1.35" x2="79.3" y2="1.3" width="0.3" layer="1"/>
 <wire x1="80.4" y1="2.4" x2="80.75" y2="2.4" width="0.3" layer="1"/>
 <wire x1="79.3" y1="1.3" x2="80.4" y2="2.4" width="0.3" layer="1"/>
-<wire x1="79" y1="8.3" x2="79.3" y2="8.3" width="0.3" layer="1"/>
+<wire x1="79" y1="8.35" x2="79.3" y2="8.3" width="0.3" layer="1"/>
 <wire x1="80.4" y1="9.4" x2="80.75" y2="9.4" width="0.3" layer="1"/>
 <wire x1="79.3" y1="8.3" x2="80.4" y2="9.4" width="0.3" layer="1"/>
-<wire x1="79" y1="15.3" x2="79.3" y2="15.3" width="0.3" layer="1"/>
+<wire x1="79" y1="15.35" x2="79.3" y2="15.3" width="0.3" layer="1"/>
 <wire x1="80.4" y1="16.4" x2="80.75" y2="16.4" width="0.3" layer="1"/>
 <wire x1="79.3" y1="15.3" x2="80.4" y2="16.4" width="0.3" layer="1"/>
-<wire x1="79" y1="22.3" x2="79.3" y2="22.3" width="0.3" layer="1"/>
+<wire x1="79" y1="22.35" x2="79.3" y2="22.3" width="0.3" layer="1"/>
 <wire x1="80.4" y1="23.4" x2="80.75" y2="23.4" width="0.3" layer="1"/>
 <wire x1="79.3" y1="22.3" x2="80.4" y2="23.4" width="0.3" layer="1"/>
-<wire x1="79" y1="36.3" x2="79.3" y2="36.3" width="0.3" layer="1"/>
+<wire x1="79" y1="36.35" x2="79.3" y2="36.3" width="0.3" layer="1"/>
 <wire x1="80.4" y1="37.4" x2="80.75" y2="37.4" width="0.3" layer="1"/>
 <wire x1="79.3" y1="36.3" x2="80.4" y2="37.4" width="0.3" layer="1"/>
 <contactref element="U3" pad="8"/>
@@ -6491,8 +6543,7 @@ design rules under a new name.</description>
 <wire x1="48" y1="37.59185" x2="47.875" y2="37.71685" width="1" layer="15"/>
 <wire x1="47.875" y1="37.71685" x2="47.875" y2="38.48315" width="1" layer="15"/>
 <wire x1="47.875" y1="38.48315" x2="48" y2="38.60815" width="1" layer="15"/>
-<wire x1="48" y1="38.60815" x2="48" y2="48" width="1" layer="15"/>
-<wire x1="48" y1="48" x2="48" y2="48.575" width="1" layer="15"/>
+<wire x1="48" y1="38.60815" x2="48" y2="48.575" width="1" layer="15"/>
 <wire x1="37" y1="45.5" x2="37" y2="48.575" width="0.5" layer="15"/>
 <wire x1="40.4" y1="43.7" x2="40.4" y2="48.4" width="0.5" layer="15"/>
 <wire x1="40.575" y1="48.575" x2="40.4" y2="48.4" width="0.5" layer="15"/>
@@ -6545,8 +6596,8 @@ design rules under a new name.</description>
 <wire x1="67.75" y1="52.7" x2="67.75" y2="73.75" width="0.5" layer="16"/>
 <contactref element="D19" pad="1"/>
 <contactref element="D20" pad="1"/>
-<wire x1="20.3" y1="31.25" x2="20.3" y2="29" width="0.3" layer="1"/>
-<wire x1="20.3" y1="29" x2="18.175" y2="26.875" width="0.3" layer="1"/>
+<wire x1="20.35" y1="31.25" x2="20.35" y2="29" width="0.3" layer="1"/>
+<wire x1="20.35" y1="29" x2="18.175" y2="26.875" width="0.3" layer="1"/>
 <wire x1="14.125" y1="26.875" x2="13.5" y2="27.5" width="0.3" layer="1"/>
 <wire x1="13.5" y1="27.5" x2="13.5" y2="29.5" width="0.3" layer="1"/>
 <wire x1="13.5" y1="29.5" x2="12.125" y2="30.875" width="0.3" layer="1"/>
@@ -7086,7 +7137,7 @@ design rules under a new name.</description>
 <signal name="N$53">
 <contactref element="D1" pad="2"/>
 <contactref element="R18" pad="2"/>
-<wire x1="79" y1="39.6" x2="79" y2="38.2" width="0.2" layer="1"/>
+<wire x1="79" y1="39.6" x2="79" y2="38.15" width="0.2" layer="1"/>
 </signal>
 <signal name="N$54">
 <contactref element="D2" pad="A"/>
@@ -7111,7 +7162,7 @@ design rules under a new name.</description>
 <signal name="N$56">
 <contactref element="D3" pad="2"/>
 <contactref element="R20" pad="2"/>
-<wire x1="79" y1="32.6" x2="79" y2="31.2" width="0.2" layer="1"/>
+<wire x1="79" y1="32.6" x2="79" y2="31.15" width="0.2" layer="1"/>
 </signal>
 <signal name="N$57">
 <contactref element="D5" pad="A"/>
@@ -7136,7 +7187,7 @@ design rules under a new name.</description>
 <signal name="N$59">
 <contactref element="D6" pad="2"/>
 <contactref element="R22" pad="2"/>
-<wire x1="79" y1="25.6" x2="79" y2="24.2" width="0.2" layer="1"/>
+<wire x1="79" y1="25.6" x2="79" y2="24.15" width="0.2" layer="1"/>
 </signal>
 <signal name="N$60">
 <contactref element="D7" pad="A"/>
@@ -7161,7 +7212,7 @@ design rules under a new name.</description>
 <signal name="N$62">
 <contactref element="D8" pad="2"/>
 <contactref element="R24" pad="2"/>
-<wire x1="79" y1="18.6" x2="79" y2="17.2" width="0.2" layer="1"/>
+<wire x1="79" y1="18.6" x2="79" y2="17.15" width="0.2" layer="1"/>
 </signal>
 <signal name="N$63">
 <contactref element="D9" pad="A"/>
@@ -7188,7 +7239,7 @@ design rules under a new name.</description>
 <signal name="N$65">
 <contactref element="D11" pad="2"/>
 <contactref element="R26" pad="2"/>
-<wire x1="79" y1="11.6" x2="79" y2="10.2" width="0.2" layer="1"/>
+<wire x1="79" y1="11.6" x2="79" y2="10.15" width="0.2" layer="1"/>
 </signal>
 <signal name="N$66">
 <contactref element="D14" pad="A"/>
@@ -7213,7 +7264,7 @@ design rules under a new name.</description>
 <signal name="N$68">
 <contactref element="D15" pad="2"/>
 <contactref element="R28" pad="2"/>
-<wire x1="79" y1="4.6" x2="79" y2="3.2" width="0.2" layer="1"/>
+<wire x1="79" y1="4.6" x2="79" y2="3.15" width="0.2" layer="1"/>
 </signal>
 <signal name="NRST">
 <contactref element="S1" pad="1B"/>
@@ -8231,7 +8282,7 @@ design rules under a new name.</description>
 <signal name="N$39">
 <contactref element="D4" pad="2"/>
 <contactref element="R46" pad="2"/>
-<wire x1="34.95" y1="56.25" x2="36.6" y2="56.25" width="0.15" layer="1"/>
+<wire x1="34.9" y1="56.25" x2="36.6" y2="56.25" width="0.15" layer="1"/>
 </signal>
 <signal name="N$43">
 <contactref element="D18" pad="1"/>
@@ -8243,7 +8294,7 @@ design rules under a new name.</description>
 <wire x1="56.25" y1="52" x2="47.091" y2="52" width="0.15" layer="16"/>
 <wire x1="38.975" y1="55.9" x2="31.875" y2="63" width="0.15" layer="16"/>
 <via x="31.875" y="63" extent="1-16" drill="0.35"/>
-<wire x1="31.875" y1="63" x2="33.05" y2="63" width="0.15" layer="1"/>
+<wire x1="31.875" y1="63" x2="33.1" y2="63" width="0.15" layer="1"/>
 <wire x1="47.091" y1="52" x2="43.191" y2="55.9" width="0.15" layer="16"/>
 <wire x1="43.191" y1="55.9" x2="38.975" y2="55.9" width="0.15" layer="16"/>
 </signal>
@@ -8258,7 +8309,7 @@ design rules under a new name.</description>
 <wire x1="47.20239375" y1="51.4643375" x2="43.06673125" y2="55.6" width="0.15" layer="16"/>
 <wire x1="37.025" y1="55.6" x2="31.875" y2="60.75" width="0.15" layer="16"/>
 <via x="31.875" y="60.75" extent="1-16" drill="0.35"/>
-<wire x1="31.875" y1="60.75" x2="33.05" y2="60.75" width="0.15" layer="1"/>
+<wire x1="31.875" y1="60.75" x2="33.1" y2="60.75" width="0.15" layer="1"/>
 <wire x1="43.06673125" y1="55.6" x2="37.025" y2="55.6" width="0.15" layer="16"/>
 </signal>
 <signal name="N$99">
@@ -8270,7 +8321,7 @@ design rules under a new name.</description>
 <wire x1="47.5" y1="50.7424625" x2="42.9424625" y2="55.3" width="0.15" layer="16"/>
 <wire x1="35.075" y1="55.3" x2="31.875" y2="58.5" width="0.15" layer="16"/>
 <via x="31.875" y="58.5" extent="1-16" drill="0.35"/>
-<wire x1="31.875" y1="58.5" x2="33.05" y2="58.5" width="0.15" layer="1"/>
+<wire x1="31.875" y1="58.5" x2="33.1" y2="58.5" width="0.15" layer="1"/>
 <wire x1="42.9424625" y1="55.3" x2="35.075" y2="55.3" width="0.15" layer="16"/>
 </signal>
 <signal name="N$100">
@@ -8282,34 +8333,34 @@ design rules under a new name.</description>
 <wire x1="46.75" y1="50.75" x2="42.5" y2="55" width="0.15" layer="16"/>
 <wire x1="33.125" y1="55" x2="31.875" y2="56.25" width="0.15" layer="16"/>
 <via x="31.875" y="56.25" extent="1-16" drill="0.35"/>
-<wire x1="31.875" y1="56.25" x2="33.05" y2="56.25" width="0.15" layer="1"/>
+<wire x1="31.875" y1="56.25" x2="33.1" y2="56.25" width="0.15" layer="1"/>
 <wire x1="42.5" y1="55" x2="33.125" y2="55" width="0.15" layer="16"/>
 </signal>
 <signal name="N$40">
 <contactref element="D12" pad="2"/>
 <contactref element="R47" pad="2"/>
-<wire x1="34.95" y1="58.5" x2="36.6" y2="58.5" width="0.15" layer="1"/>
+<wire x1="34.9" y1="58.5" x2="36.6" y2="58.5" width="0.15" layer="1"/>
 </signal>
 <signal name="N$41">
 <contactref element="R48" pad="2"/>
 <contactref element="D17" pad="2"/>
-<wire x1="34.95" y1="60.75" x2="36.6" y2="60.75" width="0.15" layer="1"/>
+<wire x1="34.9" y1="60.75" x2="36.6" y2="60.75" width="0.15" layer="1"/>
 </signal>
 <signal name="N$42">
 <contactref element="R49" pad="2"/>
 <contactref element="D18" pad="2"/>
-<wire x1="34.95" y1="63" x2="36.6" y2="63" width="0.15" layer="1"/>
+<wire x1="34.9" y1="63" x2="36.6" y2="63" width="0.15" layer="1"/>
 </signal>
 <signal name="N$103">
 <contactref element="R50" pad="2"/>
 <contactref element="D19" pad="2"/>
 <wire x1="23.85" y1="31.25" x2="22.5" y2="31.25" width="0.15" layer="1"/>
-<wire x1="22.5" y1="31.25" x2="22.2" y2="31.25" width="0" layer="19" extent="1-1"/>
+<wire x1="22.5" y1="31.25" x2="22.15" y2="31.25" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$104">
 <contactref element="R51" pad="2"/>
 <contactref element="D20" pad="2"/>
-<wire x1="23.85" y1="29" x2="22.2" y2="29" width="0.15" layer="1"/>
+<wire x1="23.85" y1="29" x2="22.15" y2="29" width="0.15" layer="1"/>
 </signal>
 </signals>
 <mfgpreviewcolors>

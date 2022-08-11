@@ -64,6 +64,7 @@
 <layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
 <layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
 <layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
+<layer number="58" name="bLayer3Ddata" color="7" fill="1" visible="no" active="no"/>
 <layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="88" name="SimResults" color="9" fill="1" visible="yes" active="yes"/>
@@ -162,10 +163,19 @@
 <layer number="231" name="Eagle3D_PG1" color="7" fill="1" visible="no" active="no"/>
 <layer number="232" name="Eagle3D_PG2" color="7" fill="1" visible="no" active="no"/>
 <layer number="233" name="Eagle3D_PG3" color="7" fill="1" visible="no" active="no"/>
+<layer number="240" name="TestPoint" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="241" name="Labels-TOP" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="242" name="Labels-BOT" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="243" name="AddParts-BOT" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="244" name="AddParts" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="245" name="Varnish-TOP" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="246" name="Varnish-BOT" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="248" name="Housing" color="7" fill="1" visible="no" active="yes"/>
 <layer number="249" name="Edge" color="7" fill="1" visible="no" active="yes"/>
 <layer number="250" name="Descript" color="3" fill="1" visible="no" active="no"/>
 <layer number="251" name="SMDround" color="12" fill="11" visible="no" active="no"/>
+<layer number="252" name="Mechanical" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="253" name="UL-Sign" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="254" name="cooling" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
@@ -2581,7 +2591,7 @@ DIN A3, landscape with extra doc field</description>
 <rectangle x1="-2.5" y1="-1.5" x2="2.5" y2="0" layer="21"/>
 </package>
 <package name="FIDUCIAL_2MM">
-<smd name="V" x="0" y="0" dx="0.7" dy="0.7" layer="1" roundness="100"/>
+<smd name="V" x="0" y="0" dx="0.7" dy="0.7" layer="1" roundness="100" cream="no"/>
 <circle x="0" y="0" radius="1" width="0" layer="29"/>
 <circle x="0" y="0" radius="1.1" width="0" layer="41"/>
 </package>
@@ -4863,20 +4873,26 @@ DIN A3, landscape with extra doc field</description>
 <circle x="0" y="0" radius="1.5" width="0" layer="29"/>
 <circle x="0" y="0" radius="1.6" width="0" layer="41"/>
 </package>
-<package name="0805-DOT" library_version="2">
+<package name="0805-DOT" urn="urn:adsk.eagle:footprint:36806139/1" library_version="2">
 <description>&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;</description>
-<wire x1="-0.41" y1="0.635" x2="0.41" y2="0.635" width="0.1524" layer="51"/>
-<wire x1="-0.41" y1="-0.635" x2="0.41" y2="-0.635" width="0.1524" layer="51"/>
-<smd name="1" x="-0.95" y="0" dx="1.3" dy="1.5" layer="1"/>
-<smd name="2" x="0.95" y="0" dx="1.3" dy="1.5" layer="1"/>
+<wire x1="0.41" y1="-0.635" x2="-0.41" y2="-0.635" width="0.1524" layer="51"/>
+<wire x1="0.41" y1="0.635" x2="-0.41" y2="0.635" width="0.1524" layer="51"/>
+<wire x1="-0.8850875" y1="1.121840625" x2="-1.016715625" y2="1.121840625" width="0.1524" layer="21"/>
+<wire x1="-1.016715625" y1="1.121840625" x2="-1.016715625" y2="1.135465625" width="0.1524" layer="21"/>
+<smd name="1" x="0.9" y="0" dx="1" dy="1.2" layer="1" rot="R180" cream="no"/>
+<smd name="2" x="-0.9" y="0" dx="1" dy="1.2" layer="1" rot="R180" cream="no"/>
 <text x="-0.635" y="1.27" size="0.889" layer="25">&gt;NAME</text>
 <text x="-0.635" y="-2.54" size="0.889" layer="27">&gt;VALUE</text>
-<rectangle x1="0.4064" y1="-0.6985" x2="1.0564" y2="0.7015" layer="51"/>
-<rectangle x1="-1.0668" y1="-0.6985" x2="-0.4168" y2="0.7015" layer="51"/>
+<rectangle x1="-1.0564" y1="-0.7015" x2="-0.4064" y2="0.6985" layer="51" rot="R180"/>
+<rectangle x1="0.4168" y1="-0.7015" x2="1.0668" y2="0.6985" layer="51" rot="R180"/>
 <rectangle x1="-0.1999" y1="-0.5001" x2="0.1999" y2="0.5001" layer="35"/>
-<circle x="0.953171875" y="-1.117296875" radius="0.127" width="0.1524" layer="21"/>
-<wire x1="0.8850875" y1="-1.121840625" x2="1.016715625" y2="-1.121840625" width="0.1524" layer="21"/>
-<wire x1="1.016715625" y1="-1.121840625" x2="1.016715625" y2="-1.135465625" width="0.1524" layer="21"/>
+<rectangle x1="0.4" y1="0.3" x2="0.9" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="0.4" y1="-0.6" x2="0.9" y2="-0.3" layer="31" rot="R180"/>
+<rectangle x1="-0.9" y1="-0.6" x2="-0.4" y2="-0.3" layer="31" rot="R180"/>
+<rectangle x1="-0.9" y1="0.3" x2="-0.4" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="0.9" y1="-0.6" x2="1.4" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="-1.4" y1="-0.6" x2="-0.9" y2="0.6" layer="31" rot="R180"/>
+<circle x="-0.953171875" y="1.117296875" radius="0.127" width="0.1524" layer="21"/>
 </package>
 <package name="1206-DOT" library_version="2">
 <description>&lt;b&gt;RESISTOR&lt;/b&gt;</description>
@@ -4960,7 +4976,7 @@ DIN A3, landscape with extra doc field</description>
 <text x="5.08" y="-1.27" size="1.27" layer="27">&gt;VALUE</text>
 <wire x1="-5.08" y1="-2.54" x2="5.08" y2="-2.54" width="0.01" layer="51"/>
 </package>
-<package name="USB-MICRO-THT" urn="urn:adsk.eagle:footprint:27914136/1">
+<package name="USB-MICRO-THT" urn="urn:adsk.eagle:footprint:27914136/1" locally_modified="yes">
 <wire x1="-3.75" y1="2.85" x2="-3.75" y2="-2.15" width="0.2" layer="51"/>
 <wire x1="-3.75" y1="-2.15" x2="-3.2" y2="-2.15" width="0.2" layer="51"/>
 <wire x1="-3.2" y1="-2.15" x2="3.2" y2="-2.15" width="0.2" layer="51"/>
@@ -4994,6 +5010,8 @@ DIN A3, landscape with extra doc field</description>
 <pad name="GND4" x="2.425" y="2.9" drill="0.85" diameter="1.35"/>
 <pad name="GND1" x="-3.4" y="0" drill="0.8" diameter="2" shape="square"/>
 <pad name="GND2" x="3.4" y="0" drill="0.8" diameter="2" shape="square"/>
+<text x="-3.81" y="-5.08" size="0.889" layer="51">ATTENTION
+LONG HOLES</text>
 </package>
 <package name="3213-QUARZ">
 <wire x1="1" y1="-1.6" x2="-1" y2="-1.6" width="0.127" layer="21"/>
@@ -5005,30 +5023,25 @@ DIN A3, landscape with extra doc field</description>
 <smd name="3" x="0" y="-1.2" dx="1.7" dy="0.8" layer="1"/>
 <text x="1.4" y="-0.4" size="0.889" layer="21">&gt;NAME</text>
 </package>
-<package name="3225-QUARZ">
+<package name="3225-QUARZ" urn="urn:adsk.eagle:footprint:36843794/1">
 <smd name="1" x="-1.1" y="-0.85" dx="1.4" dy="1.2" layer="1"/>
 <smd name="2_GND" x="1.1" y="-0.85" dx="1.4" dy="1.2" layer="1"/>
 <smd name="3" x="1.1" y="0.85" dx="1.4" dy="1.2" layer="1"/>
 <smd name="4_GND" x="-1.1" y="0.85" dx="1.4" dy="1.2" layer="1"/>
 <text x="2.4" y="0" size="0.889" layer="21" align="center-left">&gt;NAME</text>
 </package>
-<package name="SOT-23">
-<wire x1="-0.66" y1="1.422" x2="0.66" y2="1.422" width="0.1524" layer="51"/>
-<wire x1="0.66" y1="1.422" x2="0.66" y2="-1.422" width="0.1524" layer="51"/>
-<wire x1="0.66" y1="-1.422" x2="-0.66" y2="-1.422" width="0.1524" layer="51"/>
-<wire x1="-0.66" y1="-1.422" x2="-0.66" y2="1.422" width="0.1524" layer="51"/>
-<wire x1="-0.7" y1="-0.7" x2="-0.7" y2="-1.5" width="0.127" layer="21"/>
-<wire x1="-0.7" y1="-1.5" x2="0.2" y2="-1.5" width="0.127" layer="21"/>
-<wire x1="-0.8" y1="0.7" x2="-0.8" y2="1.5" width="0.127" layer="21"/>
-<wire x1="-0.8" y1="1.5" x2="0.2" y2="1.5" width="0.127" layer="21"/>
-<wire x1="0.7" y1="0.3" x2="0.7" y2="-0.3" width="0.127" layer="21"/>
-<smd name="3" x="-1.1" y="0" dx="1" dy="1.4" layer="1" rot="R90"/>
-<smd name="2" x="1.1" y="0.95" dx="1" dy="1.4" layer="1" rot="R90"/>
-<smd name="1" x="1.1" y="-0.95" dx="1" dy="1.4" layer="1" rot="R90"/>
-<text x="1.905" y="-1.905" size="1.27" layer="25" font="vector" rot="R180">&gt;NAME</text>
-<rectangle x1="-1.2319" y1="-0.2921" x2="-0.7747" y2="0.2921" layer="51" rot="R90"/>
-<rectangle x1="0.7747" y1="0.6477" x2="1.2319" y2="1.2319" layer="51" rot="R90"/>
-<rectangle x1="0.7747" y1="-1.2319" x2="1.2319" y2="-0.6477" layer="51" rot="R90"/>
+<package name="SOT-23" urn="urn:adsk.eagle:footprint:36806101/1">
+<wire x1="1.422" y1="0.66" x2="1.422" y2="-0.66" width="0.1524" layer="51"/>
+<wire x1="1.422" y1="-0.66" x2="-1.422" y2="-0.66" width="0.1524" layer="51"/>
+<wire x1="-1.422" y1="-0.66" x2="-1.422" y2="0.66" width="0.1524" layer="51"/>
+<wire x1="-1.422" y1="0.66" x2="1.422" y2="0.66" width="0.1524" layer="51"/>
+<smd name="3" x="0" y="1.1" dx="1" dy="1.4" layer="1"/>
+<smd name="2" x="0.95" y="-1.1" dx="1" dy="1.4" layer="1"/>
+<smd name="1" x="-0.95" y="-1.1" dx="1" dy="1.4" layer="1"/>
+<text x="1.905" y="-1.905" size="0.8" layer="25" font="vector" rot="R180">&gt;NAME</text>
+<rectangle x1="-0.2286" y1="0.7112" x2="0.2286" y2="1.2954" layer="51"/>
+<rectangle x1="0.7112" y1="-1.2954" x2="1.1684" y2="-0.7112" layer="51"/>
+<rectangle x1="-1.1684" y1="-1.2954" x2="-0.7112" y2="-0.7112" layer="51"/>
 </package>
 <package name="SWITCH_WH" urn="urn:adsk.eagle:footprint:27914555/1">
 <wire x1="-2.25" y1="1.7" x2="2.25" y2="1.7" width="0.1524" layer="48"/>
@@ -5092,43 +5105,6 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <circle x="2.024275" y="-1.681009375" radius="0.127" width="0.1524" layer="21"/>
 <wire x1="1.96705" y1="-1.67600625" x2="2.076584375" y2="-1.67600625" width="0.1524" layer="21"/>
 <wire x1="2.076584375" y1="-1.67600625" x2="2.076584375" y2="-1.685140625" width="0.1524" layer="21"/>
-</package>
-<package name="5730-LED">
-<smd name="A2" x="-0.215" y="0" dx="3" dy="3.5" layer="1"/>
-<smd name="C" x="2.66" y="0" dx="1" dy="2.5" layer="1"/>
-<smd name="A1" x="-2.66" y="0" dx="1" dy="2.5" layer="1"/>
-<wire x1="-2.65" y1="1.5" x2="2.65" y2="1.5" width="0.1524" layer="21"/>
-<wire x1="2.65" y1="1.5" x2="2.65" y2="-1.5" width="0.1524" layer="21"/>
-<wire x1="2.65" y1="-1.5" x2="-2.65" y2="-1.5" width="0.1524" layer="21"/>
-<wire x1="-2.65" y1="-1.5" x2="-2.65" y2="1.5" width="0.1524" layer="21"/>
-<text x="-2" y="2" size="0.889" layer="21">&gt;NAME</text>
-<text x="-2" y="-3" size="0.889" layer="21">&gt;VALUE</text>
-<circle x="2.5025625" y="-1.817821875" radius="0.127" width="0.127" layer="21"/>
-<wire x1="2.4185875" y1="-1.7841" x2="2.4185875" y2="-1.828075" width="0.1524" layer="21"/>
-<wire x1="2.4185875" y1="-1.828075" x2="2.550509375" y2="-1.828075" width="0.1524" layer="21"/>
-</package>
-<package name="5730-LED-THERMALS">
-<smd name="A2" x="-0.215" y="0" dx="3" dy="3.5" layer="1"/>
-<smd name="C" x="2.66" y="0" dx="1" dy="2.5" layer="1"/>
-<smd name="A1" x="-2.66" y="0" dx="1" dy="2.5" layer="1"/>
-<wire x1="-2.65" y1="1.5" x2="2.65" y2="1.5" width="0.1524" layer="21"/>
-<wire x1="2.65" y1="1.5" x2="2.65" y2="-1.5" width="0.1524" layer="21"/>
-<wire x1="2.65" y1="-1.5" x2="-2.65" y2="-1.5" width="0.1524" layer="21"/>
-<wire x1="-2.65" y1="-1.5" x2="-2.65" y2="1.5" width="0.1524" layer="21"/>
-<text x="-2" y="2" size="0.889" layer="21">&gt;NAME</text>
-<text x="-2" y="-3" size="0.889" layer="21">&gt;VALUE</text>
-<circle x="2.5025625" y="-1.817821875" radius="0.127" width="0.127" layer="21"/>
-<wire x1="2.4185875" y1="-1.7841" x2="2.4185875" y2="-1.828075" width="0.1524" layer="21"/>
-<wire x1="2.4185875" y1="-1.828075" x2="2.550509375" y2="-1.828075" width="0.1524" layer="21"/>
-<pad name="AT1" x="0.5" y="0" drill="0.3" diameter="0.6"/>
-<pad name="AT2" x="-0.2" y="0" drill="0.3" diameter="0.6"/>
-<pad name="AT3" x="-0.9" y="0" drill="0.3" diameter="0.6"/>
-<pad name="AT4" x="0.5" y="0.7" drill="0.3" diameter="0.6"/>
-<pad name="AT5" x="-0.2" y="0.7" drill="0.3" diameter="0.6"/>
-<pad name="AT6" x="-0.9" y="0.7" drill="0.3" diameter="0.6"/>
-<pad name="AT7" x="0.5" y="-0.7" drill="0.3" diameter="0.6"/>
-<pad name="AT8" x="-0.2" y="-0.7" drill="0.3" diameter="0.6"/>
-<pad name="AT9" x="-0.9" y="-0.7" drill="0.3" diameter="0.6"/>
 </package>
 <package name="0603" urn="urn:adsk.eagle:footprint:23044/1" locally_modified="yes" library_version="2">
 <description>&lt;b&gt;RESISTOR&lt;/b&gt;</description>
@@ -5276,9 +5252,149 @@ Jing Extension of the Electronic Co.</description>
 <wire x1="-1.475" y1="-1.5" x2="-1.475" y2="1.5" width="0.1" layer="48"/>
 <text x="2.54" y="0" size="0.889" layer="48">&gt;NAME</text>
 </package>
+<package name="5730-LED" urn="urn:adsk.eagle:footprint:27953847/1">
+<smd name="A2" x="-0.215" y="0" dx="3" dy="3.5" layer="1"/>
+<smd name="C" x="2.66" y="0" dx="1" dy="2.5" layer="1"/>
+<smd name="A1" x="-2.66" y="0" dx="1" dy="2.5" layer="1"/>
+<wire x1="-2.65" y1="1.5" x2="2.65" y2="1.5" width="0.1524" layer="21"/>
+<wire x1="2.65" y1="1.5" x2="2.65" y2="-1.5" width="0.1524" layer="21"/>
+<wire x1="2.65" y1="-1.5" x2="-2.65" y2="-1.5" width="0.1524" layer="21"/>
+<wire x1="-2.65" y1="-1.5" x2="-2.65" y2="1.5" width="0.1524" layer="21"/>
+<wire x1="2.4185875" y1="-1.7841" x2="2.4185875" y2="-1.828075" width="0.1524" layer="21"/>
+<wire x1="2.4185875" y1="-1.828075" x2="2.550509375" y2="-1.828075" width="0.1524" layer="21"/>
+<text x="-2" y="2" size="0.889" layer="21">&gt;NAME</text>
+<text x="-2" y="-3" size="0.889" layer="21">&gt;VALUE</text>
+<circle x="2.5025625" y="-1.817821875" radius="0.127" width="0.127" layer="21"/>
+</package>
+<package name="5730-LED-THERMALS" urn="urn:adsk.eagle:footprint:27953860/1">
+<smd name="A2" x="-0.215" y="0" dx="3" dy="3.5" layer="1"/>
+<smd name="C" x="2.66" y="0" dx="1" dy="2.5" layer="1"/>
+<smd name="A1" x="-2.66" y="0" dx="1" dy="2.5" layer="1"/>
+<wire x1="-2.65" y1="1.5" x2="2.65" y2="1.5" width="0.1524" layer="21"/>
+<wire x1="2.65" y1="1.5" x2="2.65" y2="-1.5" width="0.1524" layer="21"/>
+<wire x1="2.65" y1="-1.5" x2="-2.65" y2="-1.5" width="0.1524" layer="21"/>
+<wire x1="-2.65" y1="-1.5" x2="-2.65" y2="1.5" width="0.1524" layer="21"/>
+<wire x1="2.4185875" y1="-1.7841" x2="2.4185875" y2="-1.828075" width="0.1524" layer="21"/>
+<wire x1="2.4185875" y1="-1.828075" x2="2.550509375" y2="-1.828075" width="0.1524" layer="21"/>
+<text x="-2" y="2" size="0.889" layer="21">&gt;NAME</text>
+<text x="-2" y="-3" size="0.889" layer="21">&gt;VALUE</text>
+<circle x="2.5025625" y="-1.817821875" radius="0.127" width="0.127" layer="21"/>
+<pad name="AT1" x="0.5" y="0" drill="0.3" diameter="0.6"/>
+<pad name="AT2" x="-0.2" y="0" drill="0.3" diameter="0.6"/>
+<pad name="AT3" x="-0.9" y="0" drill="0.3" diameter="0.6"/>
+<pad name="AT4" x="0.5" y="0.7" drill="0.3" diameter="0.6"/>
+<pad name="AT5" x="-0.2" y="0.7" drill="0.3" diameter="0.6"/>
+<pad name="AT6" x="-0.9" y="0.7" drill="0.3" diameter="0.6"/>
+<pad name="AT7" x="0.5" y="-0.7" drill="0.3" diameter="0.6"/>
+<pad name="AT8" x="-0.2" y="-0.7" drill="0.3" diameter="0.6"/>
+<pad name="AT9" x="-0.9" y="-0.7" drill="0.3" diameter="0.6"/>
+</package>
+<package name="SOD123" urn="urn:adsk.eagle:footprint:36806146/1">
+<wire x1="-0.7698" y1="-0.7" x2="-0.7698" y2="0.7" width="0.2" layer="51"/>
+<wire x1="-1.3" y1="0.8" x2="1.3" y2="0.8" width="0.1" layer="48"/>
+<wire x1="1.3" y1="0.8" x2="1.3" y2="-0.8" width="0.1" layer="48"/>
+<wire x1="1.3" y1="-0.8" x2="-1.3" y2="-0.8" width="0.1" layer="48"/>
+<wire x1="-1.3" y1="-0.8" x2="-1.3" y2="0.8" width="0.1" layer="48"/>
+<smd name="C" x="-1.58" y="0" dx="0.9" dy="1" layer="1" cream="no"/>
+<smd name="A" x="1.58" y="0" dx="0.9" dy="1" layer="1" cream="no"/>
+<text x="-1.1" y="1" size="0.889" layer="25">&gt;NAME</text>
+<text x="-1.1" y="-2.3" size="0.889" layer="27">&gt;VALUE</text>
+<rectangle x1="-1.58" y1="0.25" x2="-1.13" y2="0.5" layer="31"/>
+<rectangle x1="-1.58" y1="-0.5" x2="-1.13" y2="-0.25" layer="31"/>
+<rectangle x1="-2.03" y1="-0.5" x2="-1.58" y2="0.5" layer="31"/>
+<rectangle x1="1.13" y1="0.25" x2="1.58" y2="0.5" layer="31"/>
+<rectangle x1="1.13" y1="-0.5" x2="1.58" y2="-0.25" layer="31"/>
+<rectangle x1="1.58" y1="-0.5" x2="2.03" y2="0.5" layer="31"/>
+</package>
+<package name="SOD523" urn="urn:adsk.eagle:footprint:43179/1" locally_modified="yes">
+<description>&lt;B&gt;DIODE&lt;/B&gt;</description>
+<wire x1="-0.0566" y1="-0.4" x2="-0.0566" y2="0.4" width="0.1016" layer="51"/>
+<smd name="A" x="0.7" y="0" dx="0.7" dy="0.5" layer="1"/>
+<smd name="C" x="-0.6" y="0" dx="0.7" dy="0.5" layer="1"/>
+<text x="-0.635" y="0.635" size="0.889" layer="25">&gt;NAME</text>
+<text x="-0.635" y="-1.905" size="0.889" layer="27">&gt;VALUE</text>
+<rectangle x1="-0.75" y1="-0.17" x2="-0.54" y2="0.17" layer="51"/>
+</package>
+<package name="TO-252_DPAK" urn="urn:adsk.eagle:footprint:36806134/1">
+<smd name="2" x="0" y="2.8" dx="6.3" dy="6.5" layer="1"/>
+<smd name="1" x="-2.286" y="-4.15" dx="1.5" dy="2.9" layer="1"/>
+<smd name="3" x="2.286" y="-4.15" dx="1.5" dy="2.9" layer="1"/>
+<text x="0" y="-5.08" size="0.8" layer="25" rot="R90">&gt;NAME</text>
+</package>
+<package name="DIRECTFET" urn="urn:adsk.eagle:footprint:36803918/1">
+<smd name="D1" x="-3.2" y="1.175" dx="1.85" dy="0.9" layer="1" rot="R90"/>
+<smd name="G" x="-1.55" y="0.95" dx="1.15" dy="0.65" layer="1" rot="R90"/>
+<smd name="S1" x="-0.17" y="0.85" dx="1.35" dy="1" layer="1" rot="R90"/>
+<smd name="S2" x="1.38" y="0.85" dx="1.35" dy="1" layer="1" rot="R90"/>
+<smd name="D3" x="3.21" y="1.175" dx="1.85" dy="0.9" layer="1" rot="R90"/>
+<smd name="S3" x="-1.55" y="-0.85" dx="1.35" dy="0.65" layer="1" rot="R90"/>
+<smd name="S4" x="-0.17" y="-0.85" dx="1.35" dy="1" layer="1" rot="R90"/>
+<smd name="S5" x="1.38" y="-0.85" dx="1.35" dy="1" layer="1" rot="R90"/>
+<smd name="D4" x="3.21" y="-1.175" dx="1.85" dy="0.9" layer="1" rot="R90"/>
+<smd name="D2" x="-3.2" y="-1.175" dx="1.85" dy="0.9" layer="1" rot="R90"/>
+<wire x1="-2.65" y1="2" x2="-2.65" y2="2.25" width="0.1" layer="21"/>
+<wire x1="-2.65" y1="2.25" x2="-2.4" y2="2.5" width="0.1" layer="21"/>
+<wire x1="-2.4" y1="2.5" x2="2.4" y2="2.5" width="0.1" layer="21"/>
+<wire x1="2.4" y1="2.5" x2="2.65" y2="2.25" width="0.1" layer="21"/>
+<wire x1="2.65" y1="2.25" x2="2.65" y2="2" width="0.1" layer="21"/>
+<wire x1="3.15" y1="2" x2="3.15" y2="-2" width="0.1" layer="21"/>
+<wire x1="2.65" y1="-2" x2="2.65" y2="-2.25" width="0.1" layer="21"/>
+<wire x1="2.65" y1="-2.25" x2="2.4" y2="-2.5" width="0.1" layer="21"/>
+<wire x1="2.4" y1="-2.5" x2="-2.4" y2="-2.5" width="0.1" layer="21"/>
+<wire x1="-2.4" y1="-2.5" x2="-2.65" y2="-2.25" width="0.1" layer="21"/>
+<wire x1="-2.65" y1="-2.25" x2="-2.65" y2="-2" width="0.1" layer="21"/>
+<wire x1="-3.15" y1="-2" x2="-3.15" y2="2" width="0.1" layer="21"/>
+<wire x1="-2.65" y1="-2" x2="-2.65" y2="2" width="0.1" layer="21"/>
+<wire x1="2.65" y1="2" x2="2.65" y2="-2" width="0.1" layer="21"/>
+<wire x1="-3.15" y1="2" x2="-2.65" y2="2" width="0.1" layer="21"/>
+<wire x1="2.65" y1="2" x2="3.15" y2="2" width="0.1" layer="21"/>
+<wire x1="3.15" y1="-2" x2="2.65" y2="-2" width="0.1" layer="21"/>
+<wire x1="-2.65" y1="-2" x2="-3.15" y2="-2" width="0.1" layer="21"/>
+<text x="-3.5" y="3" size="0.8" layer="21">&gt;NAME</text>
+</package>
+<package name="DFN5X6" urn="urn:adsk.eagle:footprint:36806131/1">
+<smd name="D1" x="-1.93625" y="2.725" dx="1.15" dy="0.725" layer="1" rot="R90"/>
+<smd name="D2" x="-0.635" y="2.725" dx="1.15" dy="0.65" layer="1" rot="R90"/>
+<smd name="D3" x="0.635" y="2.725" dx="1.15" dy="0.65" layer="1" rot="R90"/>
+<smd name="D4" x="1.93625" y="2.725" dx="1.15" dy="0.725" layer="1" rot="R90"/>
+<smd name="S1" x="-1.905" y="-2.725" dx="1.15" dy="0.65" layer="1" rot="R90"/>
+<smd name="S2" x="-0.635" y="-2.725" dx="1.15" dy="0.65" layer="1" rot="R90"/>
+<smd name="S3" x="0.635" y="-2.725" dx="1.15" dy="0.65" layer="1" rot="R90"/>
+<smd name="G" x="1.905" y="-2.725" dx="1.15" dy="0.65" layer="1" rot="R90"/>
+<smd name="D5" x="0" y="0.7" dx="4.6" dy="4.1" layer="1" rot="R180"/>
+<text x="-1.27" y="3.81" size="0.8" layer="21">&gt;NAME</text>
+</package>
+<package name="DIRECTFET_MN" urn="urn:adsk.eagle:footprint:36806103/1">
+<smd name="D1" x="-3.2" y="1.175" dx="1.85" dy="0.9" layer="1" rot="R90"/>
+<smd name="G" x="-1.125" y="0" dx="0.85" dy="0.95" layer="1"/>
+<smd name="S1" x="0.695" y="0.7" dx="1.45" dy="0.95" layer="1"/>
+<smd name="S2" x="0.695" y="-0.7" dx="1.45" dy="0.95" layer="1"/>
+<smd name="D3" x="3.21" y="1.175" dx="1.85" dy="0.9" layer="1" rot="R90"/>
+<smd name="D4" x="3.21" y="-1.175" dx="1.85" dy="0.9" layer="1" rot="R90"/>
+<smd name="D2" x="-3.2" y="-1.175" dx="1.85" dy="0.9" layer="1" rot="R90"/>
+<wire x1="-2.65" y1="2" x2="-2.65" y2="2.25" width="0.1" layer="21"/>
+<wire x1="-2.65" y1="2.25" x2="-2.4" y2="2.5" width="0.1" layer="21"/>
+<wire x1="-2.4" y1="2.5" x2="2.4" y2="2.5" width="0.1" layer="21"/>
+<wire x1="2.4" y1="2.5" x2="2.65" y2="2.25" width="0.1" layer="21"/>
+<wire x1="2.65" y1="2.25" x2="2.65" y2="2" width="0.1" layer="21"/>
+<wire x1="3.15" y1="2" x2="3.15" y2="-2" width="0.1" layer="21"/>
+<wire x1="2.65" y1="-2" x2="2.65" y2="-2.25" width="0.1" layer="21"/>
+<wire x1="2.65" y1="-2.25" x2="2.4" y2="-2.5" width="0.1" layer="21"/>
+<wire x1="2.4" y1="-2.5" x2="-2.4" y2="-2.5" width="0.1" layer="21"/>
+<wire x1="-2.4" y1="-2.5" x2="-2.65" y2="-2.25" width="0.1" layer="21"/>
+<wire x1="-2.65" y1="-2.25" x2="-2.65" y2="-2" width="0.1" layer="21"/>
+<wire x1="-3.15" y1="-2" x2="-3.15" y2="2" width="0.1" layer="21"/>
+<wire x1="-2.65" y1="-2" x2="-2.65" y2="2" width="0.1" layer="21"/>
+<wire x1="2.65" y1="2" x2="2.65" y2="-2" width="0.1" layer="21"/>
+<wire x1="-3.15" y1="2" x2="-2.65" y2="2" width="0.1" layer="21"/>
+<wire x1="2.65" y1="2" x2="3.15" y2="2" width="0.1" layer="21"/>
+<wire x1="3.15" y1="-2" x2="2.65" y2="-2" width="0.1" layer="21"/>
+<wire x1="-2.65" y1="-2" x2="-3.15" y2="-2" width="0.1" layer="21"/>
+<text x="-3.5" y="3" size="0.8" layer="21">&gt;NAME</text>
+</package>
 </packages>
 <packages3d>
-<package3d name="SOIC-16" urn="urn:adsk.eagle:package:27914121/3" type="model">
+<package3d name="SOIC-16" urn="urn:adsk.eagle:package:27914121/4" type="model">
 <description>&lt;b&gt;Small Outline Package&lt;/b&gt; Fits JEDEC packages (narrow SOIC-8)</description>
 <packageinstances>
 <packageinstance name="SOIC-16"/>
@@ -5302,6 +5418,63 @@ Jing Extension of the Electronic Co.</description>
 <package3d name="DFN3030-8B" urn="urn:adsk.eagle:package:27914178/3" type="model">
 <packageinstances>
 <packageinstance name="DFN3030-8B"/>
+</packageinstances>
+</package3d>
+<package3d name="0805-DOT" urn="urn:adsk.eagle:package:36806138/4" type="model">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;</description>
+<packageinstances>
+<packageinstance name="0805-DOT"/>
+</packageinstances>
+</package3d>
+<package3d name="5730-LED" urn="urn:adsk.eagle:package:27953846/2" type="model">
+<packageinstances>
+<packageinstance name="5730-LED"/>
+</packageinstances>
+</package3d>
+<package3d name="5730-LED-THERMALS" urn="urn:adsk.eagle:package:27953859/2" type="model">
+<packageinstances>
+<packageinstance name="5730-LED-THERMALS"/>
+</packageinstances>
+</package3d>
+<package3d name="SOD123" urn="urn:adsk.eagle:package:36806145/2" type="model">
+<packageinstances>
+<packageinstance name="SOD123"/>
+</packageinstances>
+</package3d>
+<package3d name="SOD523" urn="urn:adsk.eagle:package:43410/4" type="model">
+<description>DIODE</description>
+<packageinstances>
+<packageinstance name="SOD523"/>
+</packageinstances>
+</package3d>
+<package3d name="SOT-23" urn="urn:adsk.eagle:package:36806100/2" type="model">
+<packageinstances>
+<packageinstance name="SOT-23"/>
+</packageinstances>
+</package3d>
+<package3d name="TO-252_DPAK" urn="urn:adsk.eagle:package:36806133/2" type="model">
+<packageinstances>
+<packageinstance name="TO-252_DPAK"/>
+</packageinstances>
+</package3d>
+<package3d name="DIRECTFET" urn="urn:adsk.eagle:package:36803916/2" type="model">
+<packageinstances>
+<packageinstance name="DIRECTFET"/>
+</packageinstances>
+</package3d>
+<package3d name="DFN5X6" urn="urn:adsk.eagle:package:36806130/2" type="model">
+<packageinstances>
+<packageinstance name="DFN5X6"/>
+</packageinstances>
+</package3d>
+<package3d name="DIRECTFET_MN" urn="urn:adsk.eagle:package:36806102/2" type="model">
+<packageinstances>
+<packageinstance name="DIRECTFET_MN"/>
+</packageinstances>
+</package3d>
+<package3d name="3225-QUARZ" urn="urn:adsk.eagle:package:36843793/3" type="model">
+<packageinstances>
+<packageinstance name="3225-QUARZ"/>
 </packageinstances>
 </package3d>
 </packages3d>
@@ -5510,7 +5683,7 @@ Jing Extension of the Electronic Co.</description>
 <pin name="2" x="7.62" y="0" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
 <pin name="1" x="-7.62" y="0" visible="pad" length="middle" direction="pas" swaplevel="1"/>
 </symbol>
-<symbol name="MOSFET">
+<symbol name="MOSFET_N">
 <pin name="G" x="-7.62" y="-2.54" visible="off" length="short"/>
 <pin name="D" x="0" y="5.08" visible="off" length="short" rot="R270"/>
 <pin name="S" x="0" y="-5.08" visible="off" length="short" rot="R90"/>
@@ -5519,25 +5692,27 @@ Jing Extension of the Electronic Co.</description>
 <wire x1="0" y1="-2.54" x2="-2.54" y2="-2.54" width="0.254" layer="94"/>
 <wire x1="0" y1="-2.54" x2="0" y2="0" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="-2.54" y2="0" width="0.254" layer="94"/>
-<wire x1="1.905" y1="2.54" x2="-2.54" y2="2.54" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="3.175" x2="-2.54" y2="1.905" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="3.175" x2="-2.54" y2="2.54" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="2.54" x2="-2.54" y2="1.905" width="0.254" layer="94"/>
 <wire x1="-2.54" y1="0.635" x2="-2.54" y2="-0.635" width="0.254" layer="94"/>
 <wire x1="-2.54" y1="-1.905" x2="-2.54" y2="-3.175" width="0.254" layer="94"/>
 <wire x1="-5.08" y1="-2.54" x2="-3.175" y2="-2.54" width="0.254" layer="94"/>
 <wire x1="-3.175" y1="-2.54" x2="-3.175" y2="2.54" width="0.254" layer="94"/>
-<wire x1="1.905" y1="2.54" x2="1.905" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="1.905" y1="-2.54" x2="0" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="1.27" y1="0.635" x2="2.54" y2="0.635" width="0.254" layer="94"/>
-<polygon width="0.254" layer="94">
+<wire x1="1.905" y1="2.54" x2="1.905" y2="-2.54" width="0.127" layer="94"/>
+<wire x1="1.905" y1="-2.54" x2="0" y2="-2.54" width="0.127" layer="94"/>
+<wire x1="1.27" y1="0.635" x2="2.54" y2="0.635" width="0.127" layer="94"/>
+<polygon width="0.127" layer="94">
 <vertex x="1.905" y="0.635"/>
 <vertex x="1.27" y="-0.635"/>
 <vertex x="2.54" y="-0.635"/>
 </polygon>
-<polygon width="0.254" layer="94">
+<polygon width="0.127" layer="94">
 <vertex x="-0.635" y="0.635"/>
 <vertex x="-0.635" y="-0.635"/>
 <vertex x="-1.905" y="0"/>
 </polygon>
+<wire x1="0" y1="2.54" x2="-2.54" y2="2.54" width="0.254" layer="94"/>
+<wire x1="1.905" y1="2.54" x2="0" y2="2.54" width="0.127" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -5615,6 +5790,9 @@ Jing Extension of the Electronic Co.</description>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5624,6 +5802,30 @@ Jing Extension of the Electronic Co.</description>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SOD123" package="SOD123">
+<connects>
+<connect gate="G$1" pin="1" pad="A"/>
+<connect gate="G$1" pin="2" pad="C"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36806145/2"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SOD523" package="SOD523">
+<connects>
+<connect gate="G$1" pin="1" pad="A"/>
+<connect gate="G$1" pin="2" pad="C"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:43410/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5655,7 +5857,7 @@ Jing Extension of the Electronic Co.</description>
 <connect gate="G$1" pin="XO" pad="8"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:27914121/3"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:27914121/4"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -5742,6 +5944,9 @@ Jing Extension of the Electronic Co.</description>
 <connect gate="G$1" pin="2" pad="2_GND 4_GND"/>
 <connect gate="G$1" pin="3" pad="3"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36843793/3"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5759,6 +5964,9 @@ Jing Extension of the Electronic Co.</description>
 <connect gate="G$2" pin="2" pad="2"/>
 <connect gate="G$2" pin="3" pad="3"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36806100/2"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5823,6 +6031,9 @@ Jing Extension of the Electronic Co.</description>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5832,6 +6043,9 @@ Jing Extension of the Electronic Co.</description>
 <connect gate="G$1" pin="1" pad="A1 A2"/>
 <connect gate="G$1" pin="2" pad="C"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:27953846/2"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5841,6 +6055,9 @@ Jing Extension of the Electronic Co.</description>
 <connect gate="G$1" pin="1" pad="A1 A2 AT1 AT2 AT3 AT4 AT5 AT6 AT7 AT8 AT9"/>
 <connect gate="G$1" pin="2" pad="C"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:27953859/2"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5933,7 +6150,7 @@ Jing Extension of the Electronic Co.</description>
 <connect gate="G$1" pin="XOUT" pad="15"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:27914121/3"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:27914121/4"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -5959,7 +6176,7 @@ Jing Extension of the Electronic Co.</description>
 </deviceset>
 <deviceset name="MOSFET_N" prefix="Q">
 <gates>
-<gate name="G$1" symbol="MOSFET" x="0" y="0"/>
+<gate name="G$1" symbol="MOSFET_N" x="0" y="0"/>
 </gates>
 <devices>
 <device name="_LN8340DT1AG" package="DFN3030-8B">
@@ -5970,6 +6187,71 @@ Jing Extension of the Electronic Co.</description>
 </connects>
 <package3dinstances>
 <package3dinstance package3d_urn="urn:adsk.eagle:package:27914178/3"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="TO-252_DPAK" package="TO-252_DPAK">
+<connects>
+<connect gate="G$1" pin="D" pad="2"/>
+<connect gate="G$1" pin="G" pad="1"/>
+<connect gate="G$1" pin="S" pad="3"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36806133/2"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="DIRECTFET" package="DIRECTFET">
+<connects>
+<connect gate="G$1" pin="D" pad="D1 D2 D3 D4"/>
+<connect gate="G$1" pin="G" pad="G"/>
+<connect gate="G$1" pin="S" pad="S1 S2 S3 S4 S5"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36803916/2"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="DFN5X6" package="DFN5X6">
+<connects>
+<connect gate="G$1" pin="D" pad="D1 D2 D3 D4 D5"/>
+<connect gate="G$1" pin="G" pad="G"/>
+<connect gate="G$1" pin="S" pad="S1 S2 S3"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36806130/2"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SOT-23" package="SOT-23">
+<connects>
+<connect gate="G$1" pin="D" pad="3"/>
+<connect gate="G$1" pin="G" pad="1"/>
+<connect gate="G$1" pin="S" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36806100/2"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="DIRECTFET_MN" package="DIRECTFET_MN">
+<connects>
+<connect gate="G$1" pin="D" pad="D1 D2 D3 D4"/>
+<connect gate="G$1" pin="G" pad="G"/>
+<connect gate="G$1" pin="S" pad="S1 S2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36806102/2"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -6093,13 +6375,7 @@ Jing Extension of the Electronic Co.</description>
 <library name="passives">
 <description>&lt;b&gt;LAB11&lt;/b&gt; - Resistors, caps, etc.</description>
 <packages>
-<package name="0402_CAP">
-<smd name="2" x="0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
-<smd name="1" x="-0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
-<text x="0" y="0.381" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
-<circle x="0" y="0" radius="0.127" width="0" layer="21"/>
-</package>
-<package name="0603_CAP">
+<package name="0603_CAP" urn="urn:adsk.eagle:footprint:36813216/1">
 <wire x1="-0.356" y1="0.432" x2="0.356" y2="0.432" width="0.1016" layer="51"/>
 <wire x1="-0.356" y1="-0.419" x2="0.356" y2="-0.419" width="0.1016" layer="51"/>
 <smd name="1" x="-0.65" y="0" dx="0.7" dy="1" layer="1"/>
@@ -6109,29 +6385,7 @@ Jing Extension of the Electronic Co.</description>
 <rectangle x1="0.3302" y1="-0.4699" x2="0.8303" y2="0.4801" layer="51"/>
 <rectangle x1="-0.2286" y1="-0.381" x2="0.2286" y2="0.381" layer="21"/>
 </package>
-<package name="01005_CAP">
-<smd name="P$1" x="0" y="0.19" dx="0.22" dy="0.2" layer="1"/>
-<smd name="P$2" x="0" y="-0.19" dx="0.22" dy="0.2" layer="1"/>
-<wire x1="-0.08" y1="0" x2="0.08" y2="0" width="0.05" layer="25"/>
-<text x="-0.32" y="0.36" size="0.127" layer="25">&gt;NAME</text>
-</package>
-<package name="0201_CAP">
-<smd name="P$1" x="0" y="0.22" dx="0.3" dy="0.21" layer="1"/>
-<smd name="P$2" x="0" y="-0.22" dx="0.3" dy="0.21" layer="1"/>
-<wire x1="-0.13" y1="0" x2="0.12" y2="0" width="0.05" layer="21"/>
-<text x="-0.36" y="0.4" size="0.127" layer="25">&gt;NAME</text>
-</package>
-<package name="1210_CAP">
-<smd name="1" x="0" y="1.55" dx="2.4" dy="1.6" layer="1"/>
-<smd name="2" x="0" y="-1.55" dx="2.4" dy="1.6" layer="1"/>
-<wire x1="1.4" y1="1.75" x2="1.4" y2="0" width="0.127" layer="21"/>
-<wire x1="1.4" y1="0" x2="1.4" y2="-1.75" width="0.127" layer="21"/>
-<wire x1="-1.4" y1="-1.75" x2="-1.4" y2="0" width="0.127" layer="21"/>
-<wire x1="-1.4" y1="0" x2="-1.4" y2="1.75" width="0.127" layer="21"/>
-<wire x1="-1.4" y1="0" x2="1.4" y2="0" width="0.127" layer="21"/>
-<text x="0" y="2.54" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
-</package>
-<package name="0805_CAP">
+<package name="0805_CAP" urn="urn:adsk.eagle:footprint:36813219/1">
 <description>Based on muRata GRM capacitor specifications</description>
 <wire x1="-1" y1="0.625" x2="1" y2="0.625" width="0.127" layer="21"/>
 <wire x1="1" y1="0.625" x2="1" y2="-0.625" width="0.127" layer="21"/>
@@ -6142,14 +6396,7 @@ Jing Extension of the Electronic Co.</description>
 <rectangle x1="-0.4" y1="-0.625" x2="0.4" y2="0.625" layer="21"/>
 <text x="0" y="0.892" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
 </package>
-<package name="0402_RES">
-<smd name="2" x="0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
-<smd name="1" x="-0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
-<rectangle x1="-0.127" y1="-0.127" x2="0.127" y2="0.127" layer="21"/>
-<text x="0" y="0.381" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
-<text x="0" y="-1.397" size="1.016" layer="27" font="vector" ratio="12" align="bottom-center">&gt;VALUE</text>
-</package>
-<package name="0603-RES">
+<package name="0603-RES" urn="urn:adsk.eagle:footprint:36812384/1">
 <wire x1="-0.356" y1="0.432" x2="0.356" y2="0.432" width="0.1016" layer="51"/>
 <wire x1="-0.356" y1="-0.419" x2="0.356" y2="-0.419" width="0.1016" layer="51"/>
 <smd name="1" x="-0.65" y="0" dx="0.7" dy="1" layer="1"/>
@@ -6160,49 +6407,14 @@ Jing Extension of the Electronic Co.</description>
 <rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
 <rectangle x1="-0.2286" y1="-0.381" x2="0.2286" y2="0.381" layer="21"/>
 </package>
-<package name="0805_RES">
-<wire x1="-0.3" y1="0.6" x2="0.3" y2="0.6" width="0.1524" layer="21"/>
-<wire x1="-0.3" y1="-0.6" x2="0.3" y2="-0.6" width="0.1524" layer="21"/>
-<smd name="1" x="-0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
-<smd name="2" x="0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
-<text x="0" y="1" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
-<text x="0" y="-2" size="1.016" layer="27" font="vector" ratio="12" align="bottom-center">&gt;VALUE</text>
-<rectangle x1="-0.2" y1="-0.2" x2="0.2" y2="0.2" layer="21"/>
-</package>
-<package name="1206_RES_HIGH_CLEARANCE">
-<smd name="2" x="1.6" y="0" dx="1" dy="1.7" layer="1"/>
-<smd name="1" x="-1.6" y="0" dx="1" dy="1.7" layer="1"/>
-<text x="0" y="0.981" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
-<wire x1="-1.6" y1="0.8" x2="-1.1" y2="0.8" width="0.0508" layer="21"/>
-<wire x1="-1.1" y1="0.8" x2="1.1" y2="0.8" width="0.0508" layer="21"/>
-<wire x1="1.1" y1="0.8" x2="1.6" y2="0.8" width="0.0508" layer="21"/>
-<wire x1="1.6" y1="0.8" x2="1.6" y2="-0.8" width="0.0508" layer="21"/>
-<wire x1="1.6" y1="-0.8" x2="1.1" y2="-0.8" width="0.0508" layer="21"/>
-<wire x1="1.1" y1="-0.8" x2="-1.1" y2="-0.8" width="0.0508" layer="21"/>
-<wire x1="-1.1" y1="-0.8" x2="-1.6" y2="-0.8" width="0.0508" layer="21"/>
-<wire x1="-1.6" y1="-0.8" x2="-1.6" y2="0.8" width="0.0508" layer="21"/>
-<wire x1="-1.1" y1="0.8" x2="-1.1" y2="-0.8" width="0.0508" layer="21"/>
-<wire x1="1.1" y1="0.8" x2="1.1" y2="-0.8" width="0.0508" layer="21"/>
-</package>
-<package name="0201_RES" urn="urn:adsk.eagle:footprint:23101/1" locally_modified="yes">
-<description>&lt;b&gt;RESISTOR&lt;/b&gt; chip&lt;p&gt;
-Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
-<smd name="1" x="-0.255" y="0" dx="0.28" dy="0.43" layer="1"/>
-<smd name="2" x="0.255" y="0" dx="0.28" dy="0.43" layer="1"/>
-<text x="0" y="0.381" size="1.016" layer="25" align="bottom-center">&gt;NAME</text>
-<text x="0" y="-1.397" size="1.016" layer="27" align="bottom-center">&gt;VALUE</text>
-<rectangle x1="-0.3" y1="-0.15" x2="-0.15" y2="0.15" layer="51"/>
-<rectangle x1="0.15" y1="-0.15" x2="0.3" y2="0.15" layer="51"/>
-<rectangle x1="-0.15" y1="-0.15" x2="0.15" y2="0.15" layer="21"/>
-</package>
-<package name="1206_CAP">
-<smd name="1" x="0" y="1.55" dx="1.8" dy="1.6" layer="1"/>
-<smd name="2" x="0" y="-1.55" dx="1.8" dy="1.6" layer="1"/>
-<wire x1="1.1" y1="1.75" x2="1.1" y2="0" width="0.127" layer="21"/>
-<wire x1="1.1" y1="0" x2="1.1" y2="-1.75" width="0.127" layer="21"/>
-<wire x1="-1.1" y1="-1.75" x2="-1.1" y2="0" width="0.127" layer="21"/>
-<wire x1="-1.1" y1="0" x2="-1.1" y2="1.75" width="0.127" layer="21"/>
-<wire x1="-1.1" y1="0" x2="1.1" y2="0" width="0.127" layer="21"/>
+<package name="1206_CAP" urn="urn:adsk.eagle:footprint:36813222/1">
+<smd name="1" x="-1.55" y="0" dx="1.8" dy="1.6" layer="1" rot="R90"/>
+<smd name="2" x="1.55" y="0" dx="1.8" dy="1.6" layer="1" rot="R90"/>
+<wire x1="-1.75" y1="1.1" x2="0" y2="1.1" width="0.127" layer="21"/>
+<wire x1="0" y1="1.1" x2="1.75" y2="1.1" width="0.127" layer="21"/>
+<wire x1="1.75" y1="-1.1" x2="0" y2="-1.1" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.1" x2="-1.75" y2="-1.1" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.1" x2="0" y2="1.1" width="0.127" layer="21"/>
 <text x="0" y="2.54" size="0.889" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
 </package>
 <package name="0402_DIODE">
@@ -6242,7 +6454,157 @@ Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <vertex x="0.6" y="-0.8"/>
 </polygon>
 </package>
+<package name="0402_CAP" urn="urn:adsk.eagle:footprint:36813213/1">
+<smd name="2" x="0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
+<smd name="1" x="-0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
+<text x="0" y="0.381" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
+<circle x="0" y="0" radius="0.127" width="0" layer="21"/>
+</package>
+<package name="01005_CAP" urn="urn:adsk.eagle:footprint:36813205/1">
+<smd name="P$1" x="-0.19" y="0" dx="0.22" dy="0.2" layer="1" rot="R90"/>
+<smd name="P$2" x="0.19" y="0" dx="0.22" dy="0.2" layer="1" rot="R90"/>
+<wire x1="0" y1="-0.08" x2="0" y2="0.08" width="0.05" layer="25"/>
+<text x="-0.32" y="0.36" size="0.127" layer="25">&gt;NAME</text>
+</package>
+<package name="0201_CAP" urn="urn:adsk.eagle:footprint:36813209/3">
+<smd name="P$1" x="-0.22" y="0" dx="0.3" dy="0.21" layer="1" rot="R90"/>
+<smd name="P$2" x="0.22" y="0" dx="0.3" dy="0.21" layer="1" rot="R90"/>
+<wire x1="0" y1="-0.13" x2="0" y2="0.12" width="0.05" layer="21"/>
+<text x="-0.4" y="-0.36" size="0.127" layer="25" rot="R90">&gt;NAME</text>
+</package>
+<package name="1210_CAP" urn="urn:adsk.eagle:footprint:36813225/1">
+<smd name="1" x="-1.55" y="0" dx="2.4" dy="1.6" layer="1" rot="R90"/>
+<smd name="2" x="1.55" y="0" dx="2.4" dy="1.6" layer="1" rot="R90"/>
+<wire x1="-1.75" y1="1.4" x2="0" y2="1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="1.4" x2="1.75" y2="1.4" width="0.127" layer="21"/>
+<wire x1="1.75" y1="-1.4" x2="0" y2="-1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.4" x2="-1.75" y2="-1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.4" x2="0" y2="1.4" width="0.127" layer="21"/>
+<text x="0" y="2.54" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
+</package>
+<package name="0402_RES" urn="urn:adsk.eagle:footprint:36812550/1">
+<smd name="2" x="0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
+<smd name="1" x="-0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
+<rectangle x1="-0.127" y1="-0.127" x2="0.127" y2="0.127" layer="21"/>
+<text x="0" y="0.381" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-1.397" size="1.016" layer="27" font="vector" ratio="12" align="bottom-center">&gt;VALUE</text>
+</package>
+<package name="0805_RES" urn="urn:adsk.eagle:footprint:36812397/1">
+<wire x1="-0.3" y1="0.6" x2="0.3" y2="0.6" width="0.1524" layer="21"/>
+<wire x1="-0.3" y1="-0.6" x2="0.3" y2="-0.6" width="0.1524" layer="21"/>
+<smd name="1" x="-0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
+<smd name="2" x="0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
+<text x="0" y="1" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-2" size="1.016" layer="27" font="vector" ratio="12" align="bottom-center">&gt;VALUE</text>
+<rectangle x1="-0.2" y1="-0.2" x2="0.2" y2="0.2" layer="21"/>
+</package>
+<package name="1206_RES_HIGH_CLEARANCE" urn="urn:adsk.eagle:footprint:36812406/1">
+<smd name="2" x="1.6" y="0" dx="1" dy="1.7" layer="1"/>
+<smd name="1" x="-1.6" y="0" dx="1" dy="1.7" layer="1"/>
+<text x="0" y="0.981" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
+<wire x1="-1.6" y1="0.8" x2="-1.1" y2="0.8" width="0.0508" layer="21"/>
+<wire x1="-1.1" y1="0.8" x2="1.1" y2="0.8" width="0.0508" layer="21"/>
+<wire x1="1.1" y1="0.8" x2="1.6" y2="0.8" width="0.0508" layer="21"/>
+<wire x1="1.6" y1="0.8" x2="1.6" y2="-0.8" width="0.0508" layer="21"/>
+<wire x1="1.6" y1="-0.8" x2="1.1" y2="-0.8" width="0.0508" layer="21"/>
+<wire x1="1.1" y1="-0.8" x2="-1.1" y2="-0.8" width="0.0508" layer="21"/>
+<wire x1="-1.1" y1="-0.8" x2="-1.6" y2="-0.8" width="0.0508" layer="21"/>
+<wire x1="-1.6" y1="-0.8" x2="-1.6" y2="0.8" width="0.0508" layer="21"/>
+<wire x1="-1.1" y1="0.8" x2="-1.1" y2="-0.8" width="0.0508" layer="21"/>
+<wire x1="1.1" y1="0.8" x2="1.1" y2="-0.8" width="0.0508" layer="21"/>
+</package>
+<package name="0201_RES" urn="urn:adsk.eagle:footprint:36812558/1">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt; chip&lt;p&gt;
+Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
+<smd name="1" x="-0.255" y="0" dx="0.28" dy="0.43" layer="1"/>
+<smd name="2" x="0.255" y="0" dx="0.28" dy="0.43" layer="1"/>
+<text x="0" y="0.381" size="1.016" layer="25" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-1.397" size="1.016" layer="27" align="bottom-center">&gt;VALUE</text>
+<rectangle x1="-0.3" y1="-0.15" x2="-0.15" y2="0.15" layer="51"/>
+<rectangle x1="0.15" y1="-0.15" x2="0.3" y2="0.15" layer="51"/>
+<rectangle x1="-0.15" y1="-0.15" x2="0.15" y2="0.15" layer="21"/>
+</package>
+<package name="1210_RES" urn="urn:adsk.eagle:footprint:36812410/1">
+<smd name="1" x="-1.55" y="0" dx="2.4" dy="1.6" layer="1" rot="R90"/>
+<smd name="2" x="1.55" y="0" dx="2.4" dy="1.6" layer="1" rot="R90"/>
+<wire x1="-1.75" y1="1.4" x2="0" y2="1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="1.4" x2="1.75" y2="1.4" width="0.127" layer="21"/>
+<wire x1="1.75" y1="-1.4" x2="0" y2="-1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.4" x2="-1.75" y2="-1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.4" x2="0" y2="1.4" width="0.127" layer="21"/>
+<text x="0" y="2.54" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
+</package>
 </packages>
+<packages3d>
+<package3d name="0603_CAP" urn="urn:adsk.eagle:package:36813215/3" type="model">
+<packageinstances>
+<packageinstance name="0603_CAP"/>
+</packageinstances>
+</package3d>
+<package3d name="0805_CAP" urn="urn:adsk.eagle:package:36813218/3" type="model">
+<description>Based on muRata GRM capacitor specifications</description>
+<packageinstances>
+<packageinstance name="0805_CAP"/>
+</packageinstances>
+</package3d>
+<package3d name="1206_CAP" urn="urn:adsk.eagle:package:36813221/3" type="model">
+<packageinstances>
+<packageinstance name="1206_CAP"/>
+</packageinstances>
+</package3d>
+<package3d name="0402_CAP" urn="urn:adsk.eagle:package:36813212/3" type="model">
+<packageinstances>
+<packageinstance name="0402_CAP"/>
+</packageinstances>
+</package3d>
+<package3d name="01005_CAP" urn="urn:adsk.eagle:package:36813204/3" type="model">
+<packageinstances>
+<packageinstance name="01005_CAP"/>
+</packageinstances>
+</package3d>
+<package3d name="0201_CAP" urn="urn:adsk.eagle:package:36813208/5" type="model">
+<packageinstances>
+<packageinstance name="0201_CAP"/>
+</packageinstances>
+</package3d>
+<package3d name="1210_CAP" urn="urn:adsk.eagle:package:36813224/3" type="model">
+<packageinstances>
+<packageinstance name="1210_CAP"/>
+</packageinstances>
+</package3d>
+<package3d name="0603-RES" urn="urn:adsk.eagle:package:36812383/4" type="model">
+<packageinstances>
+<packageinstance name="0603-RES"/>
+</packageinstances>
+</package3d>
+<package3d name="0402_RES" urn="urn:adsk.eagle:package:36812549/4" type="model">
+<packageinstances>
+<packageinstance name="0402_RES"/>
+</packageinstances>
+</package3d>
+<package3d name="0805_RES" urn="urn:adsk.eagle:package:36812396/4" type="model">
+<packageinstances>
+<packageinstance name="0805_RES"/>
+</packageinstances>
+</package3d>
+<package3d name="1206_RES_HIGH_CLEARANCE" urn="urn:adsk.eagle:package:36812405/4" type="model">
+<packageinstances>
+<packageinstance name="1206_RES_HIGH_CLEARANCE"/>
+</packageinstances>
+</package3d>
+<package3d name="0201_RES" urn="urn:adsk.eagle:package:36812556/4" type="model">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt; chip&lt;p&gt;
+Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
+<packageinstances>
+<packageinstance name="0201_RES"/>
+</packageinstances>
+</package3d>
+<package3d name="1210_RES" urn="urn:adsk.eagle:package:36812409/4" type="model">
+<packageinstances>
+<packageinstance name="1210_RES"/>
+</packageinstances>
+</package3d>
+</packages3d>
 <symbols>
 <symbol name="CAPACITOR">
 <pin name="2" x="0" y="-5.08" visible="off" length="point" rot="R90"/>
@@ -6293,6 +6655,9 @@ Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36813212/3"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6302,6 +6667,9 @@ Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36813215/3"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6311,6 +6679,9 @@ Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <connect gate="G$1" pin="1" pad="P$1"/>
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36813204/3"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6320,6 +6691,9 @@ Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <connect gate="G$1" pin="1" pad="P$1"/>
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36813208/5"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6329,6 +6703,9 @@ Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36813224/3"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6338,6 +6715,9 @@ Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <connect gate="G$1" pin="1" pad="P$1"/>
 <connect gate="G$1" pin="2" pad="P$2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36813218/3"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6347,6 +6727,9 @@ Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36813221/3"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6365,6 +6748,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812549/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6374,6 +6760,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812383/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6383,6 +6772,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812396/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6392,6 +6784,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812405/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6401,6 +6796,21 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812556/4"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1210_RES" package="1210_RES">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812409/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -6487,7 +6897,7 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 </package>
 </packages>
 <packages3d>
-<package3d name="A4988BREAKOUT" urn="urn:adsk.eagle:package:27914069/4" type="model">
+<package3d name="A4988BREAKOUT" urn="urn:adsk.eagle:package:27914069/5" type="model">
 <packageinstances>
 <packageinstance name="A4988BREAKOUT"/>
 </packageinstances>
@@ -6560,7 +6970,7 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="VMOT" pad="VMOT"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:27914069/4"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:27914069/5"/>
 </package3dinstances>
 <technologies>
 <technology name=""/>
@@ -16119,76 +16529,76 @@ by exp-lbrs.ulp</description>
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="V1" library="ftobler" deviceset="FIDUCIAL" device="2MM"/>
-<part name="U2" library="ftobler" deviceset="CH340" device="" package3d_urn="urn:adsk.eagle:package:27914121/3" override_package3d_urn="urn:adsk.eagle:package:27914115/2" override_package_urn="urn:adsk.eagle:footprint:27914116/1" override_locally_modified="yes"/>
+<part name="U2" library="ftobler" deviceset="CH340" device="" package3d_urn="urn:adsk.eagle:package:27914121/4"/>
 <part name="GND10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="Y2" library="ftobler" deviceset="3213-QUARZ" device="3225"/>
+<part name="Y2" library="ftobler" deviceset="3213-QUARZ" device="3225" package3d_urn="urn:adsk.eagle:package:36843793/3"/>
 <part name="GND15" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+20" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
-<part name="C5" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C16" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C18" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="22p"/>
-<part name="C19" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="22p"/>
+<part name="C5" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C16" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C18" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="22p"/>
+<part name="C19" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="22p"/>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R1" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
-<part name="R2" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="R1" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
+<part name="R2" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="FRAME2" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="DINA3_L" device=""/>
-<part name="U$2" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/4"/>
+<part name="U$2" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/5"/>
 <part name="GND9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X1" library="bt_con-jst-xh" deviceset="04-JST" device="-B4B-XH-A" package3d_urn="urn:adsk.eagle:package:27914051/3"/>
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="+3V2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C8" library="passives" deviceset="CAPACITOR" device="0603_CAP"/>
+<part name="C8" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3"/>
 <part name="GND11" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="C9" library="resistor" library_urn="urn:adsk.eagle:library:348" deviceset="CPOL-EU" device="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2"/>
 <part name="P+5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="U$3" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/4"/>
+<part name="U$3" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/5"/>
 <part name="GND14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X2" library="bt_con-jst-xh" deviceset="04-JST" device="-B4B-XH-A" package3d_urn="urn:adsk.eagle:package:27914051/3"/>
 <part name="P+6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="+3V3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C10" library="passives" deviceset="CAPACITOR" device="0603_CAP"/>
+<part name="C10" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3"/>
 <part name="GND17" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="C11" library="resistor" library_urn="urn:adsk.eagle:library:348" deviceset="CPOL-EU" device="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2"/>
 <part name="P+7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND18" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="U$4" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/4"/>
+<part name="U$4" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/5"/>
 <part name="GND19" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X3" library="bt_con-jst-xh" deviceset="04-JST" device="-B4B-XH-A" package3d_urn="urn:adsk.eagle:package:27914051/3"/>
 <part name="P+8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="+3V4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C12" library="passives" deviceset="CAPACITOR" device="0603_CAP"/>
+<part name="C12" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3"/>
 <part name="GND20" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="C13" library="resistor" library_urn="urn:adsk.eagle:library:348" deviceset="CPOL-EU" device="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2"/>
 <part name="P+9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND21" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="U$5" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/4"/>
+<part name="U$5" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/5"/>
 <part name="GND22" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X4" library="bt_con-jst-xh" deviceset="04-JST" device="-B4B-XH-A" package3d_urn="urn:adsk.eagle:package:27914051/3"/>
 <part name="P+10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="+3V5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C14" library="passives" deviceset="CAPACITOR" device="0603_CAP"/>
+<part name="C14" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3"/>
 <part name="GND23" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="C15" library="resistor" library_urn="urn:adsk.eagle:library:348" deviceset="CPOL-EU" device="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2"/>
 <part name="P+11" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND24" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="U$6" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/4"/>
+<part name="U$6" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/5"/>
 <part name="GND25" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X5" library="bt_con-jst-xh" deviceset="04-JST" device="-B4B-XH-A" package3d_urn="urn:adsk.eagle:package:27914051/3"/>
 <part name="P+12" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="+3V6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C17" library="passives" deviceset="CAPACITOR" device="0603_CAP"/>
+<part name="C17" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3"/>
 <part name="GND26" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="C20" library="resistor" library_urn="urn:adsk.eagle:library:348" deviceset="CPOL-EU" device="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2"/>
 <part name="P+13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND27" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="U$7" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/4"/>
+<part name="U$7" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/5"/>
 <part name="GND28" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X6" library="bt_con-jst-xh" deviceset="04-JST" device="-B4B-XH-A" package3d_urn="urn:adsk.eagle:package:27914051/3"/>
 <part name="P+14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="+3V7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C21" library="passives" deviceset="CAPACITOR" device="0603_CAP"/>
+<part name="C21" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3"/>
 <part name="GND29" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="C22" library="resistor" library_urn="urn:adsk.eagle:library:348" deviceset="CPOL-EU" device="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2"/>
 <part name="P+15" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
@@ -16199,126 +16609,126 @@ by exp-lbrs.ulp</description>
 <part name="X7" library="bt_con-jst-xh" deviceset="03-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914046/3"/>
 <part name="GND31" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="R5" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="R4" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
+<part name="R5" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="R4" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="+3V9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C23" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
+<part name="C23" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="GND32" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X8" library="bt_con-jst-xh" deviceset="03-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914046/3"/>
 <part name="GND33" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="R6" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="R7" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
+<part name="R6" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="R7" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="+3V11" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C24" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
+<part name="C24" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="GND34" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X9" library="bt_con-jst-xh" deviceset="03-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914046/3"/>
 <part name="GND36" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V12" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="R8" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="R9" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
+<part name="R8" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="R9" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="+3V13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C25" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
+<part name="C25" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="GND37" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X10" library="bt_con-jst-xh" deviceset="03-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914046/3"/>
 <part name="GND38" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="R10" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="R11" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
+<part name="R10" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="R11" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="+3V15" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C26" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
+<part name="C26" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="GND39" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X11" library="bt_con-jst-xh" deviceset="03-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914046/3"/>
 <part name="GND40" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="R12" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="R13" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
+<part name="R12" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="R13" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="+3V17" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C27" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
+<part name="C27" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="GND41" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X12" library="bt_con-jst-xh" deviceset="03-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914046/3"/>
 <part name="GND42" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V18" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="R14" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="R15" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
+<part name="R14" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="R15" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="+3V19" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C28" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
+<part name="C28" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="GND43" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="S1" library="ftobler" deviceset="SWITCH_2PD" device="" package3d_urn="urn:adsk.eagle:package:27914554/2"/>
 <part name="X13" library="bt_con-jst-xh" deviceset="02-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914040/3"/>
 <part name="D13" library="passives" deviceset="DIODE_ZENER" device="SOD123"/>
 <part name="P+16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND44" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R17" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="R17" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND45" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D1" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R18" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="D1" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R18" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="X14" library="bt_con-jst-xh" deviceset="02-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914040/3"/>
 <part name="D2" library="passives" deviceset="DIODE_ZENER" device="SOD123"/>
 <part name="GND46" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R19" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="R19" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND47" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D3" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R20" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="D3" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R20" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="X15" library="bt_con-jst-xh" deviceset="02-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914040/3"/>
 <part name="D5" library="passives" deviceset="DIODE_ZENER" device="SOD123"/>
 <part name="P+18" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND48" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R21" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="R21" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND49" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D6" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R22" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="D6" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R22" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="X16" library="bt_con-jst-xh" deviceset="02-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914040/3"/>
 <part name="D7" library="passives" deviceset="DIODE_ZENER" device="SOD123"/>
 <part name="P+21" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND50" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R23" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="R23" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND51" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D8" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R24" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="D8" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R24" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="FRAME3" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="DINA3_L" device=""/>
 <part name="X17" library="bt_con-jst-xh" deviceset="02-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914040/3"/>
 <part name="D9" library="passives" deviceset="DIODE_ZENER" device="SOD123"/>
 <part name="P+22" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND52" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R25" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="R25" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND53" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D11" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R26" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="D11" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R26" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="X18" library="bt_con-jst-xh" deviceset="02-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914040/3"/>
 <part name="D14" library="passives" deviceset="DIODE_ZENER" device="SOD123"/>
 <part name="P+23" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND54" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R27" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="R27" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND55" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D15" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R28" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
-<part name="R29" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="C29" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
+<part name="D15" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R28" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
+<part name="R29" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="C29" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="+3V21" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="GND56" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND57" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R30" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
+<part name="R30" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="GND58" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="Y1" library="ftobler" deviceset="3213-QUARZ" device="3225"/>
+<part name="Y1" library="ftobler" deviceset="3213-QUARZ" device="3225" package3d_urn="urn:adsk.eagle:package:36843793/3"/>
 <part name="GND59" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="C30" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="10p"/>
-<part name="C31" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="10p"/>
+<part name="C30" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="10p"/>
+<part name="C31" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="10p"/>
 <part name="GND60" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND61" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X19" library="bt_con-jst-xh" deviceset="05-JST" device="-B5B-XH-A" package3d_urn="urn:adsk.eagle:package:27914063/3"/>
 <part name="X20" library="bt_con-jst-xh" deviceset="05-JST" device="-B5B-XH-A" package3d_urn="urn:adsk.eagle:package:27914063/3"/>
 <part name="P+25" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND71" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R16" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="R31" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="R32" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
+<part name="R16" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="R31" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="R32" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="+3V25" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="+3V26" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="+3V27" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="Y3" library="ftobler" deviceset="3213-QUARZ" device="3225"/>
+<part name="Y3" library="ftobler" deviceset="3213-QUARZ" device="3225" package3d_urn="urn:adsk.eagle:package:36843793/3"/>
 <part name="J1" library="ftobler" deviceset="USB-ID" device="-THT" package3d_urn="urn:adsk.eagle:package:27914135/3" value="USB-ID-THT"/>
-<part name="U4" library="ftobler" deviceset="SL2.1A" device="" package3d_urn="urn:adsk.eagle:package:27914121/3"/>
+<part name="U4" library="ftobler" deviceset="SL2.1A" device="" package3d_urn="urn:adsk.eagle:package:27914121/4"/>
 <part name="J3C" library="ftobler" deviceset="USB" device="-LCSC_C42431" package3d_urn="urn:adsk.eagle:package:27914156/4" value="USB-LCSC_C42431"/>
 <part name="GND72" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND73" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -16342,22 +16752,22 @@ by exp-lbrs.ulp</description>
 <part name="P+30" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND85" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="D10" library="ftobler" deviceset="DIODE" device="-1206" value="DIODE-1206"/>
-<part name="D16" library="ftobler" deviceset="DIODE-TVS" device=""/>
+<part name="D16" library="ftobler" deviceset="DIODE-TVS" device="" package3d_urn="urn:adsk.eagle:package:36806100/2"/>
 <part name="GND86" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="FRAME4" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="DINA3_L" device=""/>
 <part name="U1" library="stm32" deviceset="STM32F411VET6" device="" override_package3d_urn="urn:adsk.eagle:package:27914169/2" override_package_urn="urn:adsk.eagle:footprint:27914171/1"/>
-<part name="C1" library="passives" deviceset="CAPACITOR" device="0805_CAP" value="4.7u"/>
+<part name="C1" library="passives" deviceset="CAPACITOR" device="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="4.7u"/>
 <part name="+3V28" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="+3V29" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="GND8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="C2" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C3" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C6" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C44" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C45" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C46" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C47" library="passives" deviceset="CAPACITOR" device="0805_CAP" value="4.7u"/>
+<part name="C2" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C3" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C6" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C44" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C45" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C46" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C47" library="passives" deviceset="CAPACITOR" device="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="4.7u"/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -16365,61 +16775,61 @@ by exp-lbrs.ulp</description>
 <part name="GND35" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND87" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND88" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="C48" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
+<part name="C48" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="GND89" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="C49" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
+<part name="C49" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="GND90" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R3" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
-<part name="C4" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="22p"/>
-<part name="C41" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="22p"/>
-<part name="C35" library="passives" deviceset="CAPACITOR" device="0805_CAP" value="10u"/>
-<part name="C36" library="passives" deviceset="CAPACITOR" device="0805_CAP" value="10u"/>
-<part name="C39" library="passives" deviceset="CAPACITOR" device="0805_CAP" value="10u"/>
-<part name="C40" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C37" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C38" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C42" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C43" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
+<part name="R3" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
+<part name="C4" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="22p"/>
+<part name="C41" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="22p"/>
+<part name="C35" library="passives" deviceset="CAPACITOR" device="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="10u"/>
+<part name="C36" library="passives" deviceset="CAPACITOR" device="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="10u"/>
+<part name="C39" library="passives" deviceset="CAPACITOR" device="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="10u"/>
+<part name="C40" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C37" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C38" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C42" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C43" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="GND66" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="FRAME5" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="DINA3_L" device=""/>
 <part name="FRAME6" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="DINA3_L" device=""/>
 <part name="GND436" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="L1" library="ftobler" deviceset="INDUCTOR" device="" value="4.7uH"/>
-<part name="C50" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C51" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="10p"/>
-<part name="C52" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="3.3n"/>
-<part name="C53" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="1u"/>
+<part name="C50" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C51" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="10p"/>
+<part name="C52" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="3.3n"/>
+<part name="C53" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="1u"/>
 <part name="GND67" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND68" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R33" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="C54" library="passives" deviceset="CAPACITOR" device="1206_CAP" value="22uF"/>
+<part name="R33" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="C54" library="passives" deviceset="CAPACITOR" device="1206_CAP" package3d_urn="urn:adsk.eagle:package:36813221/3" value="22uF"/>
 <part name="GND69" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="C55" library="passives" deviceset="CAPACITOR" device="0805_CAP" value="22uF"/>
-<part name="C56" library="passives" deviceset="CAPACITOR" device="0805_CAP" value="22uF"/>
-<part name="R34" library="passives" deviceset="RESISTOR" device="0603_RES" value="100k"/>
-<part name="R35" library="passives" deviceset="RESISTOR" device="0603_RES" value="18k"/>
+<part name="C55" library="passives" deviceset="CAPACITOR" device="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="22uF"/>
+<part name="C56" library="passives" deviceset="CAPACITOR" device="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="22uF"/>
+<part name="R34" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="100k"/>
+<part name="R35" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="18k"/>
 <part name="GND91" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND92" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND93" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND94" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="L2" library="ftobler" deviceset="INDUCTOR" device="" value="4.7uH"/>
-<part name="C57" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="100n"/>
-<part name="C58" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="10p"/>
-<part name="C59" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="3.3n"/>
-<part name="C60" library="passives" deviceset="CAPACITOR" device="0603_CAP" value="1u"/>
+<part name="C57" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
+<part name="C58" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="10p"/>
+<part name="C59" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="3.3n"/>
+<part name="C60" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="1u"/>
 <part name="GND95" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND96" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R36" library="passives" deviceset="RESISTOR" device="0603_RES" value="10k"/>
-<part name="C61" library="passives" deviceset="CAPACITOR" device="1206_CAP" value="22uF"/>
+<part name="R36" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
+<part name="C61" library="passives" deviceset="CAPACITOR" device="1206_CAP" package3d_urn="urn:adsk.eagle:package:36813221/3" value="22uF"/>
 <part name="GND97" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="C62" library="passives" deviceset="CAPACITOR" device="0805_CAP" value="22uF"/>
-<part name="C63" library="passives" deviceset="CAPACITOR" device="0805_CAP" value="22uF"/>
-<part name="R37" library="passives" deviceset="RESISTOR" device="0603_RES" value="100k"/>
-<part name="R38" library="passives" deviceset="RESISTOR" device="0603_RES" value="20k"/>
+<part name="C62" library="passives" deviceset="CAPACITOR" device="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="22uF"/>
+<part name="C63" library="passives" deviceset="CAPACITOR" device="0805_CAP" package3d_urn="urn:adsk.eagle:package:36813218/3" value="22uF"/>
+<part name="R37" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="100k"/>
+<part name="R38" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="20k"/>
 <part name="GND98" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND99" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND100" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R39" library="passives" deviceset="RESISTOR" device="0603_RES" value="10K"/>
+<part name="R39" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10K"/>
 <part name="+3V20" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="P+4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="P+19" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
@@ -16433,12 +16843,12 @@ by exp-lbrs.ulp</description>
 <part name="U$24" library="ftobler" deviceset="MOSFET_N" device="_LN8340DT1AG" package3d_urn="urn:adsk.eagle:package:27914178/3"/>
 <part name="U$25" library="ftobler" deviceset="MOSFET_N" device="_LN8340DT1AG" package3d_urn="urn:adsk.eagle:package:27914178/3"/>
 <part name="U$26" library="ftobler" deviceset="MOSFET_N" device="_LN8340DT1AG" package3d_urn="urn:adsk.eagle:package:27914178/3"/>
-<part name="R40" library="passives" deviceset="RESISTOR" device="0603_RES" value="10"/>
-<part name="R41" library="passives" deviceset="RESISTOR" device="0603_RES" value="10"/>
-<part name="R42" library="passives" deviceset="RESISTOR" device="0603_RES" value="10"/>
-<part name="R43" library="passives" deviceset="RESISTOR" device="0603_RES" value="10"/>
-<part name="R44" library="passives" deviceset="RESISTOR" device="0603_RES" value="10"/>
-<part name="R45" library="passives" deviceset="RESISTOR" device="0603_RES" value="10"/>
+<part name="R40" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10"/>
+<part name="R41" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10"/>
+<part name="R42" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10"/>
+<part name="R43" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10"/>
+<part name="R44" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10"/>
+<part name="R45" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10"/>
 <part name="FRAME7" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="DINA3_L" device=""/>
 <part name="FRAME8" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="DINA3_L" device=""/>
 <part name="X21" library="bt_con-jst-xh" deviceset="04-JST" device="-B4B-XH-A" package3d_urn="urn:adsk.eagle:package:27914051/3"/>
@@ -16468,22 +16878,22 @@ by exp-lbrs.ulp</description>
 <part name="GND62" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+32" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="P+33" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
-<part name="U$8" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/4"/>
+<part name="U$8" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/5"/>
 <part name="GND63" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X25" library="bt_con-jst-xh" deviceset="04-JST" device="-B4B-XH-A" package3d_urn="urn:adsk.eagle:package:27914051/3"/>
 <part name="P+36" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="+3V22" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C7" library="passives" deviceset="CAPACITOR" device="0603_CAP"/>
+<part name="C7" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3"/>
 <part name="GND107" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="C32" library="resistor" library_urn="urn:adsk.eagle:library:348" deviceset="CPOL-EU" device="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2"/>
 <part name="P+37" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="GND108" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="U$9" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/4"/>
+<part name="U$9" library="RepRapjr" deviceset="A4988BREAKOUT" device="" package3d_urn="urn:adsk.eagle:package:27914069/5"/>
 <part name="GND109" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X33" library="bt_con-jst-xh" deviceset="04-JST" device="-B4B-XH-A" package3d_urn="urn:adsk.eagle:package:27914051/3"/>
 <part name="P+38" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
 <part name="+3V31" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="C33" library="passives" deviceset="CAPACITOR" device="0603_CAP"/>
+<part name="C33" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3"/>
 <part name="GND110" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="C34" library="resistor" library_urn="urn:adsk.eagle:library:348" deviceset="CPOL-EU" device="175TMP-0808" package3d_urn="urn:adsk.eagle:package:23412/2"/>
 <part name="P+39" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+12V" device=""/>
@@ -16492,22 +16902,22 @@ by exp-lbrs.ulp</description>
 <part name="U5" library="pcb-pick-plaz-control_v1b" deviceset="TPS54227DDAR" device=""/>
 <part name="P+17" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="J3C1" library="ftobler" deviceset="USB" device="-LCSC_C42431" package3d_urn="urn:adsk.eagle:package:27914156/4" value="USB-LCSC_C42431"/>
-<part name="D4" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R46" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="D4" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R46" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND112" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND113" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND114" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND115" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D12" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R47" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
-<part name="R48" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
-<part name="R49" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
-<part name="R50" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
-<part name="R51" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
-<part name="D17" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="D18" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="D19" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="D20" library="ftobler" deviceset="LED" device="-0805"/>
+<part name="D12" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R47" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
+<part name="R48" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
+<part name="R49" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
+<part name="R50" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
+<part name="R51" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
+<part name="D17" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="D18" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="D19" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="D20" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
 <part name="+3V32" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="+3V33" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 </parts>
@@ -21427,6 +21837,10 @@ by exp-lbrs.ulp</description>
 </schematic>
 </drawing>
 <compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
 <note version="8.2" severity="warning">
 Since Version 8.2, EAGLE supports online libraries. The ids
 of those online libraries will not be understood (or retained)

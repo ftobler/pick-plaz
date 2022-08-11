@@ -64,6 +64,7 @@
 <layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
 <layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
 <layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
+<layer number="58" name="bLayer3Ddata" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="88" name="SimResults" color="9" fill="1" visible="no" active="no"/>
@@ -162,10 +163,19 @@
 <layer number="231" name="Eagle3D_PG1" color="7" fill="1" visible="no" active="no"/>
 <layer number="232" name="Eagle3D_PG2" color="7" fill="1" visible="no" active="no"/>
 <layer number="233" name="Eagle3D_PG3" color="7" fill="1" visible="no" active="no"/>
+<layer number="240" name="TestPoint" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="241" name="Labels-TOP" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="242" name="Labels-BOT" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="243" name="AddParts-BOT" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="244" name="AddParts" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="245" name="Varnish-TOP" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="246" name="Varnish-BOT" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="248" name="Housing" color="7" fill="1" visible="no" active="yes"/>
 <layer number="249" name="Edge" color="7" fill="1" visible="no" active="yes"/>
 <layer number="250" name="Descript" color="3" fill="1" visible="no" active="no"/>
 <layer number="251" name="SMDround" color="12" fill="11" visible="no" active="no"/>
+<layer number="252" name="Mechanical" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="253" name="UL-Sign" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="254" name="cooling" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
@@ -2505,7 +2515,7 @@ by ftobler 2021</text>
 <circle x="2.5025625" y="-1.817821875" radius="0.127" width="0.127" layer="21"/>
 </package>
 <package name="FIDUCIAL_2MM">
-<smd name="V" x="0" y="0" dx="0.7" dy="0.7" layer="1" roundness="100"/>
+<smd name="V" x="0" y="0" dx="0.7" dy="0.7" layer="1" roundness="100" cream="no"/>
 <circle x="0" y="0" radius="1" width="0" layer="29"/>
 <circle x="0" y="0" radius="1.1" width="0" layer="41"/>
 </package>
@@ -2521,7 +2531,7 @@ by ftobler 2021</text>
 <library name="passives">
 <description>&lt;b&gt;LAB11&lt;/b&gt; - Resistors, caps, etc.</description>
 <packages>
-<package name="0805_RES">
+<package name="0805_RES" urn="urn:adsk.eagle:footprint:36812397/1">
 <wire x1="-0.3" y1="0.6" x2="0.3" y2="0.6" width="0.1524" layer="21"/>
 <wire x1="-0.3" y1="-0.6" x2="0.3" y2="-0.6" width="0.1524" layer="21"/>
 <smd name="1" x="-0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
@@ -2531,6 +2541,13 @@ by ftobler 2021</text>
 <rectangle x1="-0.2" y1="-0.2" x2="0.2" y2="0.2" layer="21"/>
 </package>
 </packages>
+<packages3d>
+<package3d name="0805_RES" urn="urn:adsk.eagle:package:36812396/4" type="model">
+<packageinstances>
+<packageinstance name="0805_RES"/>
+</packageinstances>
+</package3d>
+</packages3d>
 </library>
 <library name="bt_con-jst-xh">
 <description>&lt;b&gt;J.S.T. Connectors XH Family&lt;/b&gt;
@@ -2786,7 +2803,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="6.31613125" y="8.37831875" size="0.889" layer="21" rot="R42"/>
 <attribute name="VALUE" x="9.661784375" y="4.662596875" size="0.889" layer="21" rot="R42"/>
 </element>
-<element name="R1" library="passives" package="0805_RES" value="470" x="12.12435625" y="7" smashed="yes" rot="R30">
+<element name="R1" library="passives" package="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470" x="12.12435625" y="7" smashed="yes" rot="R30">
 <attribute name="NAME" x="11.743353125" y="7.659909375" size="1.016" layer="25" font="vector" ratio="12" rot="R30" align="bottom-center"/>
 </element>
 <element name="U$2" library="bt_con-jst-xh" package="B2B-XH" package3d_urn="urn:adsk.eagle:package:27914040/3" value="02-JST-B3B-XH-A" x="-13.5" y="8.25" smashed="yes" rot="MR90">
@@ -2804,7 +2821,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="9.920059375" y="-3.417946875" size="0.889" layer="21" rot="R330"/>
 <attribute name="VALUE" x="7.4200625" y="-7.748071875" size="0.889" layer="21" rot="R330"/>
 </element>
-<element name="R2" library="passives" package="0805_RES" value="470" x="10.404028125" y="-9.367828125" smashed="yes" rot="R318">
+<element name="R2" library="passives" package="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470" x="10.404028125" y="-9.367828125" smashed="yes" rot="R318">
 <attribute name="NAME" x="11.07315625" y="-8.624678125" size="1.016" layer="25" font="vector" ratio="12" rot="R318" align="bottom-center"/>
 <attribute name="VALUE" x="9.065765625" y="-10.854115625" size="1.016" layer="27" font="vector" ratio="12" rot="R318" align="bottom-center"/>
 </element>
@@ -2820,7 +2837,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="-0.185196875" y="-10.490740625" size="0.889" layer="21" rot="R258"/>
 <attribute name="VALUE" x="-5.07593125" y="-9.45118125" size="0.889" layer="21" rot="R258"/>
 </element>
-<element name="R3" library="passives" package="0805_RES" value="470" x="-5.6943125" y="-12.7896375" smashed="yes" rot="R246">
+<element name="R3" library="passives" package="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470" x="-5.6943125" y="-12.7896375" smashed="yes" rot="R246">
 <attribute name="NAME" x="-4.780765625" y="-13.196371875" size="1.016" layer="25" font="vector" ratio="12" rot="R246" align="bottom-center"/>
 <attribute name="VALUE" x="-7.521403125" y="-11.9761625" size="1.016" layer="27" font="vector" ratio="12" rot="R246" align="bottom-center"/>
 </element>
@@ -2836,7 +2853,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="-10.034521875" y="-3.065684375" size="0.889" layer="21" rot="R186"/>
 <attribute name="VALUE" x="-10.5571625" y="1.906915625" size="0.889" layer="21" rot="R186"/>
 </element>
-<element name="R4" library="passives" package="0805_RES" value="470" x="-13.92330625" y="1.463396875" smashed="yes" rot="R174">
+<element name="R4" library="passives" package="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470" x="-13.92330625" y="1.463396875" smashed="yes" rot="R174">
 <attribute name="NAME" x="-14.02783125" y="0.46886875" size="1.016" layer="25" font="vector" ratio="12" rot="R174" align="bottom-center"/>
 <attribute name="VALUE" x="-13.714246875" y="3.4524375" size="1.016" layer="27" font="vector" ratio="12" rot="R174" align="bottom-center"/>
 </element>
@@ -2852,7 +2869,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="-6.016478125" y="8.59604375" size="0.889" layer="21" rot="R114"/>
 <attribute name="VALUE" x="-1.448746875" y="10.629728125" size="0.889" layer="21" rot="R114"/>
 </element>
-<element name="R5" library="passives" package="0805_RES" value="470" x="-2.9107625" y="13.694065625" smashed="yes" rot="R102">
+<element name="R5" library="passives" package="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470" x="-2.9107625" y="13.694065625" smashed="yes" rot="R102">
 <attribute name="NAME" x="-3.888909375" y="13.48615" size="1.016" layer="25" font="vector" ratio="12" rot="R102" align="bottom-center"/>
 <attribute name="VALUE" x="-0.954465625" y="14.109884375" size="1.016" layer="27" font="vector" ratio="12" rot="R102" align="bottom-center"/>
 </element>
@@ -2962,7 +2979,12 @@ design rules under a new name.</description>
 <wire x1="-5.328246875" y1="-11.96744375" x2="-4.89" y2="-10.95" width="0.3" layer="1"/>
 <via x="-4.89" y="-10.95" extent="1-16" drill="0.3"/>
 <contactref element="X2" pad="1"/>
+<wire x1="8.93" y1="-7.98" x2="10.46" y2="6.08" width="0" layer="19" extent="1-1"/>
+<wire x1="-4.89" y1="-10.95" x2="8.93" y2="-7.98" width="0" layer="19" extent="1-1"/>
+<wire x1="-12.07" y1="1.27" x2="-4.89" y2="-10.95" width="0" layer="19" extent="1-1"/>
 <wire x1="-12.2" y1="1.9" x2="-12.07" y2="1.27" width="0" layer="19" extent="16-16"/>
+<wire x1="-13.5" y1="6.98" x2="-12.2" y2="1.9" width="0" layer="19" extent="16-16"/>
+<wire x1="-2.52" y1="11.82" x2="-13.5" y2="6.98" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$4">
 <contactref element="D4" pad="C"/>

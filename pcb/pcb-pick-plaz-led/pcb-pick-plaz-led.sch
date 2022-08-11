@@ -8,34 +8,34 @@
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="yes" active="no"/>
-<layer number="2" name="Route2" color="16" fill="1" visible="yes" active="no"/>
-<layer number="3" name="Route3" color="17" fill="1" visible="yes" active="no"/>
-<layer number="4" name="Route4" color="18" fill="1" visible="yes" active="no"/>
-<layer number="5" name="Route5" color="19" fill="1" visible="yes" active="no"/>
-<layer number="6" name="Route6" color="25" fill="1" visible="yes" active="no"/>
-<layer number="7" name="Route7" color="26" fill="1" visible="yes" active="no"/>
-<layer number="8" name="Route8" color="27" fill="1" visible="yes" active="no"/>
-<layer number="9" name="Route9" color="28" fill="1" visible="yes" active="no"/>
-<layer number="10" name="Route10" color="29" fill="1" visible="yes" active="no"/>
-<layer number="11" name="Route11" color="30" fill="1" visible="yes" active="no"/>
-<layer number="12" name="Route12" color="20" fill="1" visible="yes" active="no"/>
-<layer number="13" name="Route13" color="21" fill="1" visible="yes" active="no"/>
-<layer number="14" name="Route14" color="22" fill="1" visible="yes" active="no"/>
-<layer number="15" name="Route15" color="23" fill="1" visible="yes" active="no"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="no"/>
-<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="no"/>
-<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="no"/>
-<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="no"/>
-<layer number="20" name="Dimension" color="24" fill="1" visible="yes" active="no"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="no"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="no"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="no"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="no"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="no"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="no"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="no"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="no"/>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
+<layer number="2" name="Route2" color="16" fill="1" visible="no" active="no"/>
+<layer number="3" name="Route3" color="17" fill="1" visible="no" active="no"/>
+<layer number="4" name="Route4" color="18" fill="1" visible="no" active="no"/>
+<layer number="5" name="Route5" color="19" fill="1" visible="no" active="no"/>
+<layer number="6" name="Route6" color="25" fill="1" visible="no" active="no"/>
+<layer number="7" name="Route7" color="26" fill="1" visible="no" active="no"/>
+<layer number="8" name="Route8" color="27" fill="1" visible="no" active="no"/>
+<layer number="9" name="Route9" color="28" fill="1" visible="no" active="no"/>
+<layer number="10" name="Route10" color="29" fill="1" visible="no" active="no"/>
+<layer number="11" name="Route11" color="30" fill="1" visible="no" active="no"/>
+<layer number="12" name="Route12" color="20" fill="1" visible="no" active="no"/>
+<layer number="13" name="Route13" color="21" fill="1" visible="no" active="no"/>
+<layer number="14" name="Route14" color="22" fill="1" visible="no" active="no"/>
+<layer number="15" name="Route15" color="23" fill="1" visible="no" active="no"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="no" active="no"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="no" active="no"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="no"/>
+<layer number="20" name="Dimension" color="24" fill="1" visible="no" active="no"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="no"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="no"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="no"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="no"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="no" active="no"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="no" active="no"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="no" active="no"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="no" active="no"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="no"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="no"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="no"/>
@@ -44,8 +44,8 @@
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="no"/>
 <layer number="35" name="tGlue" color="7" fill="4" visible="no" active="no"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="no"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="no"/>
-<layer number="38" name="bTest" color="7" fill="1" visible="yes" active="no"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="no"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="no" active="no"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="no"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="no"/>
 <layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="no"/>
@@ -53,19 +53,20 @@
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="no"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="no"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="no" active="no"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="no"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="no"/>
-<layer number="48" name="Document" color="7" fill="1" visible="yes" active="no"/>
-<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="no"/>
-<layer number="50" name="dxf" color="7" fill="1" visible="yes" active="no"/>
-<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="no"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="no"/>
-<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="yes" active="no"/>
-<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="yes" active="no"/>
-<layer number="56" name="wert" color="7" fill="1" visible="yes" active="no"/>
-<layer number="57" name="tCAD" color="7" fill="1" visible="yes" active="no"/>
-<layer number="59" name="tCarbon" color="7" fill="1" visible="yes" active="no"/>
-<layer number="60" name="bCarbon" color="7" fill="1" visible="yes" active="no"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="no"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="no" active="no"/>
+<layer number="48" name="Document" color="7" fill="1" visible="no" active="no"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="no" active="no"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
+<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
+<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
+<layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
+<layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
+<layer number="58" name="bLayer3Ddata" color="7" fill="1" visible="no" active="no"/>
+<layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
+<layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="88" name="SimResults" color="9" fill="1" visible="yes" active="yes"/>
 <layer number="89" name="SimProbes" color="9" fill="1" visible="yes" active="yes"/>
 <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
@@ -162,10 +163,19 @@
 <layer number="231" name="Eagle3D_PG1" color="7" fill="1" visible="no" active="no"/>
 <layer number="232" name="Eagle3D_PG2" color="7" fill="1" visible="no" active="no"/>
 <layer number="233" name="Eagle3D_PG3" color="7" fill="1" visible="no" active="no"/>
+<layer number="240" name="TestPoint" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="241" name="Labels-TOP" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="242" name="Labels-BOT" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="243" name="AddParts-BOT" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="244" name="AddParts" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="245" name="Varnish-TOP" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="246" name="Varnish-BOT" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="248" name="Housing" color="7" fill="1" visible="no" active="yes"/>
 <layer number="249" name="Edge" color="7" fill="1" visible="no" active="yes"/>
 <layer number="250" name="Descript" color="3" fill="1" visible="no" active="no"/>
 <layer number="251" name="SMDround" color="12" fill="11" visible="no" active="no"/>
+<layer number="252" name="Mechanical" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="253" name="UL-Sign" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="254" name="cooling" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
@@ -2632,21 +2642,6 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <wire x1="1.96705" y1="-1.67600625" x2="2.076584375" y2="-1.67600625" width="0.1524" layer="21"/>
 <wire x1="2.076584375" y1="-1.67600625" x2="2.076584375" y2="-1.685140625" width="0.1524" layer="21"/>
 </package>
-<package name="0805-DOT" library_version="2">
-<description>&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;</description>
-<wire x1="-0.41" y1="0.635" x2="0.41" y2="0.635" width="0.1524" layer="51"/>
-<wire x1="-0.41" y1="-0.635" x2="0.41" y2="-0.635" width="0.1524" layer="51"/>
-<smd name="1" x="-0.95" y="0" dx="1.3" dy="1.5" layer="1"/>
-<smd name="2" x="0.95" y="0" dx="1.3" dy="1.5" layer="1"/>
-<text x="-0.635" y="1.27" size="0.889" layer="25">&gt;NAME</text>
-<text x="-0.635" y="-2.54" size="0.889" layer="27">&gt;VALUE</text>
-<rectangle x1="0.4064" y1="-0.6985" x2="1.0564" y2="0.7015" layer="51"/>
-<rectangle x1="-1.0668" y1="-0.6985" x2="-0.4168" y2="0.7015" layer="51"/>
-<rectangle x1="-0.1999" y1="-0.5001" x2="0.1999" y2="0.5001" layer="35"/>
-<circle x="0.953171875" y="-1.117296875" radius="0.127" width="0.1524" layer="21"/>
-<wire x1="0.8850875" y1="-1.121840625" x2="1.016715625" y2="-1.121840625" width="0.1524" layer="21"/>
-<wire x1="1.016715625" y1="-1.121840625" x2="1.016715625" y2="-1.135465625" width="0.1524" layer="21"/>
-</package>
 <package name="5730-LED" urn="urn:adsk.eagle:footprint:27953847/1">
 <smd name="A2" x="-0.215" y="0" dx="3" dy="3.5" layer="1"/>
 <smd name="C" x="2.66" y="0" dx="1" dy="2.5" layer="1"/>
@@ -2712,7 +2707,7 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <circle x="0" y="0" radius="1.6" width="0" layer="41"/>
 </package>
 <package name="FIDUCIAL_2MM">
-<smd name="V" x="0" y="0" dx="0.7" dy="0.7" layer="1" roundness="100"/>
+<smd name="V" x="0" y="0" dx="0.7" dy="0.7" layer="1" roundness="100" cream="no"/>
 <circle x="0" y="0" radius="1" width="0" layer="29"/>
 <circle x="0" y="0" radius="1.1" width="0" layer="41"/>
 </package>
@@ -5012,6 +5007,27 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <pad name="AT8" x="-0.2" y="-0.7" drill="0.3" diameter="0.6"/>
 <pad name="AT9" x="-0.9" y="-0.7" drill="0.3" diameter="0.6"/>
 </package>
+<package name="0805-DOT" urn="urn:adsk.eagle:footprint:36806139/1" library_version="2">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;</description>
+<wire x1="0.41" y1="-0.635" x2="-0.41" y2="-0.635" width="0.1524" layer="51"/>
+<wire x1="0.41" y1="0.635" x2="-0.41" y2="0.635" width="0.1524" layer="51"/>
+<wire x1="-0.8850875" y1="1.121840625" x2="-1.016715625" y2="1.121840625" width="0.1524" layer="21"/>
+<wire x1="-1.016715625" y1="1.121840625" x2="-1.016715625" y2="1.135465625" width="0.1524" layer="21"/>
+<smd name="1" x="0.9" y="0" dx="1" dy="1.2" layer="1" rot="R180" cream="no"/>
+<smd name="2" x="-0.9" y="0" dx="1" dy="1.2" layer="1" rot="R180" cream="no"/>
+<text x="-0.635" y="1.27" size="0.889" layer="25">&gt;NAME</text>
+<text x="-0.635" y="-2.54" size="0.889" layer="27">&gt;VALUE</text>
+<rectangle x1="-1.0564" y1="-0.7015" x2="-0.4064" y2="0.6985" layer="51" rot="R180"/>
+<rectangle x1="0.4168" y1="-0.7015" x2="1.0668" y2="0.6985" layer="51" rot="R180"/>
+<rectangle x1="-0.1999" y1="-0.5001" x2="0.1999" y2="0.5001" layer="35"/>
+<rectangle x1="0.4" y1="0.3" x2="0.9" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="0.4" y1="-0.6" x2="0.9" y2="-0.3" layer="31" rot="R180"/>
+<rectangle x1="-0.9" y1="-0.6" x2="-0.4" y2="-0.3" layer="31" rot="R180"/>
+<rectangle x1="-0.9" y1="0.3" x2="-0.4" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="0.9" y1="-0.6" x2="1.4" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="-1.4" y1="-0.6" x2="-0.9" y2="0.6" layer="31" rot="R180"/>
+<circle x="-0.953171875" y="1.117296875" radius="0.127" width="0.1524" layer="21"/>
+</package>
 </packages>
 <packages3d>
 <package3d name="5730-LED" urn="urn:adsk.eagle:package:27953846/2" type="model">
@@ -5022,6 +5038,12 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <package3d name="5730-LED-THERMALS" urn="urn:adsk.eagle:package:27953859/2" type="model">
 <packageinstances>
 <packageinstance name="5730-LED-THERMALS"/>
+</packageinstances>
+</package3d>
+<package3d name="0805-DOT" urn="urn:adsk.eagle:package:36806138/4" type="model">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;</description>
+<packageinstances>
+<packageinstance name="0805-DOT"/>
 </packageinstances>
 </package3d>
 </packages3d>
@@ -5147,6 +5169,9 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5278,14 +5303,23 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <library name="passives">
 <description>&lt;b&gt;LAB11&lt;/b&gt; - Resistors, caps, etc.</description>
 <packages>
-<package name="0402_RES">
+<package name="0805_RES" urn="urn:adsk.eagle:footprint:36812397/1">
+<wire x1="-0.3" y1="0.6" x2="0.3" y2="0.6" width="0.1524" layer="21"/>
+<wire x1="-0.3" y1="-0.6" x2="0.3" y2="-0.6" width="0.1524" layer="21"/>
+<smd name="1" x="-0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
+<smd name="2" x="0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
+<text x="0" y="1" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-2" size="1.016" layer="27" font="vector" ratio="12" align="bottom-center">&gt;VALUE</text>
+<rectangle x1="-0.2" y1="-0.2" x2="0.2" y2="0.2" layer="21"/>
+</package>
+<package name="0402_RES" urn="urn:adsk.eagle:footprint:36812550/1">
 <smd name="2" x="0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
 <smd name="1" x="-0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
 <rectangle x1="-0.127" y1="-0.127" x2="0.127" y2="0.127" layer="21"/>
 <text x="0" y="0.381" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
 <text x="0" y="-1.397" size="1.016" layer="27" font="vector" ratio="12" align="bottom-center">&gt;VALUE</text>
 </package>
-<package name="0603-RES">
+<package name="0603-RES" urn="urn:adsk.eagle:footprint:36812384/1">
 <wire x1="-0.356" y1="0.432" x2="0.356" y2="0.432" width="0.1016" layer="51"/>
 <wire x1="-0.356" y1="-0.419" x2="0.356" y2="-0.419" width="0.1016" layer="51"/>
 <smd name="1" x="-0.65" y="0" dx="0.7" dy="1" layer="1"/>
@@ -5296,16 +5330,7 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
 <rectangle x1="-0.2286" y1="-0.381" x2="0.2286" y2="0.381" layer="21"/>
 </package>
-<package name="0805_RES">
-<wire x1="-0.3" y1="0.6" x2="0.3" y2="0.6" width="0.1524" layer="21"/>
-<wire x1="-0.3" y1="-0.6" x2="0.3" y2="-0.6" width="0.1524" layer="21"/>
-<smd name="1" x="-0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
-<smd name="2" x="0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
-<text x="0" y="1" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
-<text x="0" y="-2" size="1.016" layer="27" font="vector" ratio="12" align="bottom-center">&gt;VALUE</text>
-<rectangle x1="-0.2" y1="-0.2" x2="0.2" y2="0.2" layer="21"/>
-</package>
-<package name="1206_RES_HIGH_CLEARANCE">
+<package name="1206_RES_HIGH_CLEARANCE" urn="urn:adsk.eagle:footprint:36812406/1">
 <smd name="2" x="1.6" y="0" dx="1" dy="1.7" layer="1"/>
 <smd name="1" x="-1.6" y="0" dx="1" dy="1.7" layer="1"/>
 <text x="0" y="0.981" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
@@ -5320,7 +5345,7 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <wire x1="-1.1" y1="0.8" x2="-1.1" y2="-0.8" width="0.0508" layer="21"/>
 <wire x1="1.1" y1="0.8" x2="1.1" y2="-0.8" width="0.0508" layer="21"/>
 </package>
-<package name="0201_RES" urn="urn:adsk.eagle:footprint:23101/1" locally_modified="yes">
+<package name="0201_RES" urn="urn:adsk.eagle:footprint:36812558/1">
 <description>&lt;b&gt;RESISTOR&lt;/b&gt; chip&lt;p&gt;
 Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <smd name="1" x="-0.255" y="0" dx="0.28" dy="0.43" layer="1"/>
@@ -5331,7 +5356,51 @@ Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <rectangle x1="0.15" y1="-0.15" x2="0.3" y2="0.15" layer="51"/>
 <rectangle x1="-0.15" y1="-0.15" x2="0.15" y2="0.15" layer="21"/>
 </package>
+<package name="1210_RES" urn="urn:adsk.eagle:footprint:36812410/1">
+<smd name="1" x="-1.55" y="0" dx="2.4" dy="1.6" layer="1" rot="R90"/>
+<smd name="2" x="1.55" y="0" dx="2.4" dy="1.6" layer="1" rot="R90"/>
+<wire x1="-1.75" y1="1.4" x2="0" y2="1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="1.4" x2="1.75" y2="1.4" width="0.127" layer="21"/>
+<wire x1="1.75" y1="-1.4" x2="0" y2="-1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.4" x2="-1.75" y2="-1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.4" x2="0" y2="1.4" width="0.127" layer="21"/>
+<text x="0" y="2.54" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
+</package>
 </packages>
+<packages3d>
+<package3d name="0805_RES" urn="urn:adsk.eagle:package:36812396/4" type="model">
+<packageinstances>
+<packageinstance name="0805_RES"/>
+</packageinstances>
+</package3d>
+<package3d name="0402_RES" urn="urn:adsk.eagle:package:36812549/4" type="model">
+<packageinstances>
+<packageinstance name="0402_RES"/>
+</packageinstances>
+</package3d>
+<package3d name="0603-RES" urn="urn:adsk.eagle:package:36812383/4" type="model">
+<packageinstances>
+<packageinstance name="0603-RES"/>
+</packageinstances>
+</package3d>
+<package3d name="1206_RES_HIGH_CLEARANCE" urn="urn:adsk.eagle:package:36812405/4" type="model">
+<packageinstances>
+<packageinstance name="1206_RES_HIGH_CLEARANCE"/>
+</packageinstances>
+</package3d>
+<package3d name="0201_RES" urn="urn:adsk.eagle:package:36812556/4" type="model">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt; chip&lt;p&gt;
+Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
+<packageinstances>
+<packageinstance name="0201_RES"/>
+</packageinstances>
+</package3d>
+<package3d name="1210_RES" urn="urn:adsk.eagle:package:36812409/4" type="model">
+<packageinstances>
+<packageinstance name="1210_RES"/>
+</packageinstances>
+</package3d>
+</packages3d>
 <symbols>
 <symbol name="RESISTOR">
 <text x="-3.81" y="1.4986" size="1.778" layer="95">&gt;NAME</text>
@@ -5357,6 +5426,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812549/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5366,6 +5438,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812383/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5375,6 +5450,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812396/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5384,6 +5462,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812405/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5393,6 +5474,21 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812556/4"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1210_RES" package="1210_RES">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812409/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5504,7 +5600,7 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <part name="D3" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R1" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R1" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="U$2" library="bt_con-jst-xh" deviceset="02-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914040/3"/>
 <part name="U$3" library="bt_con-jst-xh" deviceset="02-JST" device="-B3B-XH-A" package3d_urn="urn:adsk.eagle:package:27914040/3"/>
 <part name="P+19" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
@@ -5516,91 +5612,91 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <part name="D6" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R2" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R2" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D7" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D8" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D9" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R3" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R3" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D10" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D11" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D12" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R4" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R4" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D13" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D14" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D15" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R5" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R5" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D16" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D17" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D18" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R6" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R6" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D19" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D20" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D21" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R7" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R7" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D22" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D23" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D24" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R8" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R8" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D25" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D26" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D27" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R9" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R9" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D28" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D29" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D30" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND10" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R10" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R10" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D31" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D32" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D33" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+11" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND11" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R11" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R11" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D34" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D35" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D36" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+12" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND12" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R12" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R12" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D37" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D38" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D39" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND13" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R13" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R13" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D40" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D41" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D42" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND14" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R14" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R14" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D43" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D44" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D45" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+15" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND15" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R15" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R15" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="D46" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D47" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="D48" library="ftobler" deviceset="LED" device="-5730" package3d_urn="urn:adsk.eagle:package:27953846/2"/>
 <part name="P+16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND16" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R16" library="passives" deviceset="RESISTOR" device="0805_RES" value="470"/>
+<part name="R16" library="passives" deviceset="RESISTOR" device="0805_RES" package3d_urn="urn:adsk.eagle:package:36812396/4" value="470"/>
 <part name="V1" library="ftobler" deviceset="FIDUCIAL" device="2MM" value="FIDUCIAL2MM"/>
 <part name="V2" library="ftobler" deviceset="FIDUCIAL" device="2MM" value="FIDUCIAL2MM"/>
 <part name="V3" library="ftobler" deviceset="FIDUCIAL" device="2MM" value="FIDUCIAL2MM"/>

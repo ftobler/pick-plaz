@@ -4915,57 +4915,26 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <wire x1="1.96705" y1="-1.67600625" x2="2.076584375" y2="-1.67600625" width="0.1524" layer="21"/>
 <wire x1="2.076584375" y1="-1.67600625" x2="2.076584375" y2="-1.685140625" width="0.1524" layer="21"/>
 </package>
-<package name="0805-DOT" library_version="2">
+<package name="0805-DOT" urn="urn:adsk.eagle:footprint:36806139/1" library_version="2">
 <description>&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;</description>
-<wire x1="-0.41" y1="0.635" x2="0.41" y2="0.635" width="0.1524" layer="51"/>
-<wire x1="-0.41" y1="-0.635" x2="0.41" y2="-0.635" width="0.1524" layer="51"/>
-<smd name="1" x="-0.95" y="0" dx="1.3" dy="1.5" layer="1"/>
-<smd name="2" x="0.95" y="0" dx="1.3" dy="1.5" layer="1"/>
+<wire x1="0.41" y1="-0.635" x2="-0.41" y2="-0.635" width="0.1524" layer="51"/>
+<wire x1="0.41" y1="0.635" x2="-0.41" y2="0.635" width="0.1524" layer="51"/>
+<wire x1="-0.8850875" y1="1.121840625" x2="-1.016715625" y2="1.121840625" width="0.1524" layer="21"/>
+<wire x1="-1.016715625" y1="1.121840625" x2="-1.016715625" y2="1.135465625" width="0.1524" layer="21"/>
+<smd name="1" x="0.9" y="0" dx="1" dy="1.2" layer="1" rot="R180" cream="no"/>
+<smd name="2" x="-0.9" y="0" dx="1" dy="1.2" layer="1" rot="R180" cream="no"/>
 <text x="-0.635" y="1.27" size="0.889" layer="25">&gt;NAME</text>
 <text x="-0.635" y="-2.54" size="0.889" layer="27">&gt;VALUE</text>
-<rectangle x1="0.4064" y1="-0.6985" x2="1.0564" y2="0.7015" layer="51"/>
-<rectangle x1="-1.0668" y1="-0.6985" x2="-0.4168" y2="0.7015" layer="51"/>
+<rectangle x1="-1.0564" y1="-0.7015" x2="-0.4064" y2="0.6985" layer="51" rot="R180"/>
+<rectangle x1="0.4168" y1="-0.7015" x2="1.0668" y2="0.6985" layer="51" rot="R180"/>
 <rectangle x1="-0.1999" y1="-0.5001" x2="0.1999" y2="0.5001" layer="35"/>
-<circle x="0.953171875" y="-1.117296875" radius="0.127" width="0.1524" layer="21"/>
-<wire x1="0.8850875" y1="-1.121840625" x2="1.016715625" y2="-1.121840625" width="0.1524" layer="21"/>
-<wire x1="1.016715625" y1="-1.121840625" x2="1.016715625" y2="-1.135465625" width="0.1524" layer="21"/>
-</package>
-<package name="5730-LED">
-<smd name="A2" x="-0.215" y="0" dx="3" dy="3.5" layer="1"/>
-<smd name="C" x="2.66" y="0" dx="1" dy="2.5" layer="1"/>
-<smd name="A1" x="-2.66" y="0" dx="1" dy="2.5" layer="1"/>
-<wire x1="-2.65" y1="1.5" x2="2.65" y2="1.5" width="0.1524" layer="21"/>
-<wire x1="2.65" y1="1.5" x2="2.65" y2="-1.5" width="0.1524" layer="21"/>
-<wire x1="2.65" y1="-1.5" x2="-2.65" y2="-1.5" width="0.1524" layer="21"/>
-<wire x1="-2.65" y1="-1.5" x2="-2.65" y2="1.5" width="0.1524" layer="21"/>
-<text x="-2" y="2" size="0.889" layer="21">&gt;NAME</text>
-<text x="-2" y="-3" size="0.889" layer="21">&gt;VALUE</text>
-<circle x="2.5025625" y="-1.817821875" radius="0.127" width="0.127" layer="21"/>
-<wire x1="2.4185875" y1="-1.7841" x2="2.4185875" y2="-1.828075" width="0.1524" layer="21"/>
-<wire x1="2.4185875" y1="-1.828075" x2="2.550509375" y2="-1.828075" width="0.1524" layer="21"/>
-</package>
-<package name="5730-LED-THERMALS">
-<smd name="A2" x="-0.215" y="0" dx="3" dy="3.5" layer="1"/>
-<smd name="C" x="2.66" y="0" dx="1" dy="2.5" layer="1"/>
-<smd name="A1" x="-2.66" y="0" dx="1" dy="2.5" layer="1"/>
-<wire x1="-2.65" y1="1.5" x2="2.65" y2="1.5" width="0.1524" layer="21"/>
-<wire x1="2.65" y1="1.5" x2="2.65" y2="-1.5" width="0.1524" layer="21"/>
-<wire x1="2.65" y1="-1.5" x2="-2.65" y2="-1.5" width="0.1524" layer="21"/>
-<wire x1="-2.65" y1="-1.5" x2="-2.65" y2="1.5" width="0.1524" layer="21"/>
-<text x="-2" y="2" size="0.889" layer="21">&gt;NAME</text>
-<text x="-2" y="-3" size="0.889" layer="21">&gt;VALUE</text>
-<circle x="2.5025625" y="-1.817821875" radius="0.127" width="0.127" layer="21"/>
-<wire x1="2.4185875" y1="-1.7841" x2="2.4185875" y2="-1.828075" width="0.1524" layer="21"/>
-<wire x1="2.4185875" y1="-1.828075" x2="2.550509375" y2="-1.828075" width="0.1524" layer="21"/>
-<pad name="AT1" x="0.5" y="0" drill="0.3" diameter="0.6"/>
-<pad name="AT2" x="-0.2" y="0" drill="0.3" diameter="0.6"/>
-<pad name="AT3" x="-0.9" y="0" drill="0.3" diameter="0.6"/>
-<pad name="AT4" x="0.5" y="0.7" drill="0.3" diameter="0.6"/>
-<pad name="AT5" x="-0.2" y="0.7" drill="0.3" diameter="0.6"/>
-<pad name="AT6" x="-0.9" y="0.7" drill="0.3" diameter="0.6"/>
-<pad name="AT7" x="0.5" y="-0.7" drill="0.3" diameter="0.6"/>
-<pad name="AT8" x="-0.2" y="-0.7" drill="0.3" diameter="0.6"/>
-<pad name="AT9" x="-0.9" y="-0.7" drill="0.3" diameter="0.6"/>
+<rectangle x1="0.4" y1="0.3" x2="0.9" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="0.4" y1="-0.6" x2="0.9" y2="-0.3" layer="31" rot="R180"/>
+<rectangle x1="-0.9" y1="-0.6" x2="-0.4" y2="-0.3" layer="31" rot="R180"/>
+<rectangle x1="-0.9" y1="0.3" x2="-0.4" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="0.9" y1="-0.6" x2="1.4" y2="0.6" layer="31" rot="R180"/>
+<rectangle x1="-1.4" y1="-0.6" x2="-0.9" y2="0.6" layer="31" rot="R180"/>
+<circle x="-0.953171875" y="1.117296875" radius="0.127" width="0.1524" layer="21"/>
 </package>
 <package name="1206-DOT" library_version="2">
 <description>&lt;b&gt;RESISTOR&lt;/b&gt;</description>
@@ -5012,7 +4981,62 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 </polygon>
 <circle x="0" y="0" radius="0.9" width="0.05" layer="21"/>
 </package>
+<package name="5730-LED" urn="urn:adsk.eagle:footprint:27953847/1">
+<smd name="A2" x="-0.215" y="0" dx="3" dy="3.5" layer="1"/>
+<smd name="C" x="2.66" y="0" dx="1" dy="2.5" layer="1"/>
+<smd name="A1" x="-2.66" y="0" dx="1" dy="2.5" layer="1"/>
+<wire x1="-2.65" y1="1.5" x2="2.65" y2="1.5" width="0.1524" layer="21"/>
+<wire x1="2.65" y1="1.5" x2="2.65" y2="-1.5" width="0.1524" layer="21"/>
+<wire x1="2.65" y1="-1.5" x2="-2.65" y2="-1.5" width="0.1524" layer="21"/>
+<wire x1="-2.65" y1="-1.5" x2="-2.65" y2="1.5" width="0.1524" layer="21"/>
+<wire x1="2.4185875" y1="-1.7841" x2="2.4185875" y2="-1.828075" width="0.1524" layer="21"/>
+<wire x1="2.4185875" y1="-1.828075" x2="2.550509375" y2="-1.828075" width="0.1524" layer="21"/>
+<text x="-2" y="2" size="0.889" layer="21">&gt;NAME</text>
+<text x="-2" y="-3" size="0.889" layer="21">&gt;VALUE</text>
+<circle x="2.5025625" y="-1.817821875" radius="0.127" width="0.127" layer="21"/>
+</package>
+<package name="5730-LED-THERMALS" urn="urn:adsk.eagle:footprint:27953860/1">
+<smd name="A2" x="-0.215" y="0" dx="3" dy="3.5" layer="1"/>
+<smd name="C" x="2.66" y="0" dx="1" dy="2.5" layer="1"/>
+<smd name="A1" x="-2.66" y="0" dx="1" dy="2.5" layer="1"/>
+<wire x1="-2.65" y1="1.5" x2="2.65" y2="1.5" width="0.1524" layer="21"/>
+<wire x1="2.65" y1="1.5" x2="2.65" y2="-1.5" width="0.1524" layer="21"/>
+<wire x1="2.65" y1="-1.5" x2="-2.65" y2="-1.5" width="0.1524" layer="21"/>
+<wire x1="-2.65" y1="-1.5" x2="-2.65" y2="1.5" width="0.1524" layer="21"/>
+<wire x1="2.4185875" y1="-1.7841" x2="2.4185875" y2="-1.828075" width="0.1524" layer="21"/>
+<wire x1="2.4185875" y1="-1.828075" x2="2.550509375" y2="-1.828075" width="0.1524" layer="21"/>
+<text x="-2" y="2" size="0.889" layer="21">&gt;NAME</text>
+<text x="-2" y="-3" size="0.889" layer="21">&gt;VALUE</text>
+<circle x="2.5025625" y="-1.817821875" radius="0.127" width="0.127" layer="21"/>
+<pad name="AT1" x="0.5" y="0" drill="0.3" diameter="0.6"/>
+<pad name="AT2" x="-0.2" y="0" drill="0.3" diameter="0.6"/>
+<pad name="AT3" x="-0.9" y="0" drill="0.3" diameter="0.6"/>
+<pad name="AT4" x="0.5" y="0.7" drill="0.3" diameter="0.6"/>
+<pad name="AT5" x="-0.2" y="0.7" drill="0.3" diameter="0.6"/>
+<pad name="AT6" x="-0.9" y="0.7" drill="0.3" diameter="0.6"/>
+<pad name="AT7" x="0.5" y="-0.7" drill="0.3" diameter="0.6"/>
+<pad name="AT8" x="-0.2" y="-0.7" drill="0.3" diameter="0.6"/>
+<pad name="AT9" x="-0.9" y="-0.7" drill="0.3" diameter="0.6"/>
+</package>
 </packages>
+<packages3d>
+<package3d name="0805-DOT" urn="urn:adsk.eagle:package:36806138/4" type="model">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt;&lt;p&gt;</description>
+<packageinstances>
+<packageinstance name="0805-DOT"/>
+</packageinstances>
+</package3d>
+<package3d name="5730-LED" urn="urn:adsk.eagle:package:27953846/2" type="model">
+<packageinstances>
+<packageinstance name="5730-LED"/>
+</packageinstances>
+</package3d>
+<package3d name="5730-LED-THERMALS" urn="urn:adsk.eagle:package:27953859/2" type="model">
+<packageinstances>
+<packageinstance name="5730-LED-THERMALS"/>
+</packageinstances>
+</package3d>
+</packages3d>
 <symbols>
 <symbol name="LOGO">
 <rectangle x1="-3.175" y1="0" x2="-1.905" y2="1.905" layer="94"/>
@@ -5130,6 +5154,9 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5139,6 +5166,9 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <connect gate="G$1" pin="1" pad="A1 A2"/>
 <connect gate="G$1" pin="2" pad="C"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:27953846/2"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5148,6 +5178,9 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <connect gate="G$1" pin="1" pad="A1 A2 AT1 AT2 AT3 AT4 AT5 AT6 AT7 AT8 AT9"/>
 <connect gate="G$1" pin="2" pad="C"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:27953859/2"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5480,14 +5513,7 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <library name="passives">
 <description>&lt;b&gt;LAB11&lt;/b&gt; - Resistors, caps, etc.</description>
 <packages>
-<package name="0402_RES">
-<smd name="2" x="0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
-<smd name="1" x="-0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
-<rectangle x1="-0.127" y1="-0.127" x2="0.127" y2="0.127" layer="21"/>
-<text x="0" y="0.381" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
-<text x="0" y="-1.397" size="1.016" layer="27" font="vector" ratio="12" align="bottom-center">&gt;VALUE</text>
-</package>
-<package name="0603-RES">
+<package name="0603-RES" urn="urn:adsk.eagle:footprint:36812384/1">
 <wire x1="-0.356" y1="0.432" x2="0.356" y2="0.432" width="0.1016" layer="51"/>
 <wire x1="-0.356" y1="-0.419" x2="0.356" y2="-0.419" width="0.1016" layer="51"/>
 <smd name="1" x="-0.65" y="0" dx="0.7" dy="1" layer="1"/>
@@ -5498,7 +5524,14 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
 <rectangle x1="-0.2286" y1="-0.381" x2="0.2286" y2="0.381" layer="21"/>
 </package>
-<package name="0805_RES">
+<package name="0402_RES" urn="urn:adsk.eagle:footprint:36812550/1">
+<smd name="2" x="0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
+<smd name="1" x="-0.43306875" y="0" dx="0.535940625" dy="0.5461" layer="1"/>
+<rectangle x1="-0.127" y1="-0.127" x2="0.127" y2="0.127" layer="21"/>
+<text x="0" y="0.381" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-1.397" size="1.016" layer="27" font="vector" ratio="12" align="bottom-center">&gt;VALUE</text>
+</package>
+<package name="0805_RES" urn="urn:adsk.eagle:footprint:36812397/1">
 <wire x1="-0.3" y1="0.6" x2="0.3" y2="0.6" width="0.1524" layer="21"/>
 <wire x1="-0.3" y1="-0.6" x2="0.3" y2="-0.6" width="0.1524" layer="21"/>
 <smd name="1" x="-0.9" y="0" dx="0.8" dy="1.2" layer="1"/>
@@ -5507,7 +5540,7 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <text x="0" y="-2" size="1.016" layer="27" font="vector" ratio="12" align="bottom-center">&gt;VALUE</text>
 <rectangle x1="-0.2" y1="-0.2" x2="0.2" y2="0.2" layer="21"/>
 </package>
-<package name="1206_RES_HIGH_CLEARANCE">
+<package name="1206_RES_HIGH_CLEARANCE" urn="urn:adsk.eagle:footprint:36812406/1">
 <smd name="2" x="1.6" y="0" dx="1" dy="1.7" layer="1"/>
 <smd name="1" x="-1.6" y="0" dx="1" dy="1.7" layer="1"/>
 <text x="0" y="0.981" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
@@ -5522,7 +5555,7 @@ Source: http://www.kingbright.com/manager/upload/pdf/KA-3528ASYC(Ver1189474662.1
 <wire x1="-1.1" y1="0.8" x2="-1.1" y2="-0.8" width="0.0508" layer="21"/>
 <wire x1="1.1" y1="0.8" x2="1.1" y2="-0.8" width="0.0508" layer="21"/>
 </package>
-<package name="0201_RES" urn="urn:adsk.eagle:footprint:23101/1" locally_modified="yes">
+<package name="0201_RES" urn="urn:adsk.eagle:footprint:36812558/1">
 <description>&lt;b&gt;RESISTOR&lt;/b&gt; chip&lt;p&gt;
 Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <smd name="1" x="-0.255" y="0" dx="0.28" dy="0.43" layer="1"/>
@@ -5533,7 +5566,51 @@ Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
 <rectangle x1="0.15" y1="-0.15" x2="0.3" y2="0.15" layer="51"/>
 <rectangle x1="-0.15" y1="-0.15" x2="0.15" y2="0.15" layer="21"/>
 </package>
+<package name="1210_RES" urn="urn:adsk.eagle:footprint:36812410/1">
+<smd name="1" x="-1.55" y="0" dx="2.4" dy="1.6" layer="1" rot="R90"/>
+<smd name="2" x="1.55" y="0" dx="2.4" dy="1.6" layer="1" rot="R90"/>
+<wire x1="-1.75" y1="1.4" x2="0" y2="1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="1.4" x2="1.75" y2="1.4" width="0.127" layer="21"/>
+<wire x1="1.75" y1="-1.4" x2="0" y2="-1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.4" x2="-1.75" y2="-1.4" width="0.127" layer="21"/>
+<wire x1="0" y1="-1.4" x2="0" y2="1.4" width="0.127" layer="21"/>
+<text x="0" y="2.54" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center">&gt;NAME</text>
+</package>
 </packages>
+<packages3d>
+<package3d name="0603-RES" urn="urn:adsk.eagle:package:36812383/4" type="model">
+<packageinstances>
+<packageinstance name="0603-RES"/>
+</packageinstances>
+</package3d>
+<package3d name="0402_RES" urn="urn:adsk.eagle:package:36812549/4" type="model">
+<packageinstances>
+<packageinstance name="0402_RES"/>
+</packageinstances>
+</package3d>
+<package3d name="0805_RES" urn="urn:adsk.eagle:package:36812396/4" type="model">
+<packageinstances>
+<packageinstance name="0805_RES"/>
+</packageinstances>
+</package3d>
+<package3d name="1206_RES_HIGH_CLEARANCE" urn="urn:adsk.eagle:package:36812405/4" type="model">
+<packageinstances>
+<packageinstance name="1206_RES_HIGH_CLEARANCE"/>
+</packageinstances>
+</package3d>
+<package3d name="0201_RES" urn="urn:adsk.eagle:package:36812556/4" type="model">
+<description>&lt;b&gt;RESISTOR&lt;/b&gt; chip&lt;p&gt;
+Source: https://www.ibselectronics.com/pdf/pa/walsin/smt_notes.pdf</description>
+<packageinstances>
+<packageinstance name="0201_RES"/>
+</packageinstances>
+</package3d>
+<package3d name="1210_RES" urn="urn:adsk.eagle:package:36812409/4" type="model">
+<packageinstances>
+<packageinstance name="1210_RES"/>
+</packageinstances>
+</package3d>
+</packages3d>
 <symbols>
 <symbol name="RESISTOR">
 <text x="-3.81" y="1.4986" size="1.778" layer="95">&gt;NAME</text>
@@ -5559,6 +5636,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812549/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5568,6 +5648,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812383/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5577,6 +5660,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812396/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5586,6 +5672,9 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812405/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5595,6 +5684,21 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812556/4"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1210_RES" package="1210_RES">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:36812409/4"/>
+</package3dinstances>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -5630,17 +5734,17 @@ Basic schematic elements and footprints for 0201, 0402, 0603, 1206, and PTH resi
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D15" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R9" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="D15" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R9" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND20" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D1" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R1" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="D1" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R1" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D2" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R2" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="D2" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R2" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="D3" library="ftobler" deviceset="LED" device="-0805"/>
-<part name="R3" library="passives" deviceset="RESISTOR" device="0603_RES" value="1k"/>
+<part name="D3" library="ftobler" deviceset="LED" device="-0805" package3d_urn="urn:adsk.eagle:package:36806138/4"/>
+<part name="R3" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="1k"/>
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 </parts>
 <sheets>
