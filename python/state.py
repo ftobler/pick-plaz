@@ -128,7 +128,7 @@ class StateContext:
         narrow_eye = eye.Eye(self.robot, self.camera, self.cal, res=60, cam_range=5)
 
         self.live_cam = LiveCam(self.camera, self.cal, self.nav["camera"])
-        self.fd = fiducial.FiducialDetector(narrow_eye)
+        self.fd = fiducial.FiducialMultiDetector(narrow_eye)
         self.hole_finder = HoleFinder(narrow_eye)
         self.picker = pick.Picker(wide_eye)
         self.belt = belt.Belt(narrow_eye, self.picker)
@@ -463,6 +463,8 @@ class StateContext:
             self.tray.pick(feeder, self.robot)
         elif feeder["type"] == belt.TYPE_NUMBER:
             self.belt.pick(feeder, self.robot)
+        elif feeder["type"] == roll.TYPE_NUMBER:
+            self.roll.pick(feeder, self.robot)
         else:
             raise Exception(f"Feeder type {feeder['type']} unknown")
 

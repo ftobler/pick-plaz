@@ -5,17 +5,44 @@ import cv2
 import numpy as np
 
 import debug
+import math
 
 class NoFiducialFoundException(Exception):
     pass
 
+class FiducialMultiDetector:
+
+    def __init__(self, eye, radius_list=[1, 0.7/2]):
+        self.fd = [FiducialDetector(eye, radius=r) for r in radius_list]
+        self.eye = eye
+        self.shape = eye.get_valid_image().shape
+
+    def __call__(self):
+        positions = []
+        for fd in self.fd:
+            try:
+                positions.append(fd())
+            except NoFiducialFoundException as _e:
+                pass
+
+        if len(positions) == 0:
+            raise NoFiducialFoundException("No viable fiducial found")
+
+        center = self.eye.get_pos_from_image_indices(self.shape[0]/2, self.shape[1]/2)
+        closest_position = min(positions, key=lambda pos: self.__calculate_distance(center, pos))
+
+        return closest_position
+
+    def __calculate_distance(self, point1, point2):
+        return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+
 class FiducialDetector:
 
-    def __init__(self, eye):
+    def __init__(self, eye, radius=0.7/2):
 
         self.eye = eye
 
-        self.radius = 0.7/2
+        self.radius = radius # 0.7/2
         self.r_tol= 0.2
 
     def __call__(self):
