@@ -44,25 +44,16 @@ class ContextManager:
             raise Exception("filename '%s' not allowed")
         try:
             self._file_read_internal("user/context/%s" % filename)
-            # with open("user/context/%s" % filename, "r") as f:
-            #             self.context = json.load(f)
-            #             self.context["const"] = {}
-            #             self.context["const"]["part_state"] = self.part_state
-            #             self.context["const"]["feeder_type"] = self.feeder_type
-            #             self.context["const"]["feeder_state"] = self.feeder_state
             print("context data restored from '%s'" % filename)
         except:
             self._file_read_internal("template/context.json")
-            # with open("template/context.json", "r") as f:
-            #             self.context = json.load(f)
-            #             self.context["const"] = {}
-            #             self.context["const"]["part_state"] = self.part_state
-            #             self.context["const"]["feeder_type"] = self.feeder_type
-            #             self.context["const"]["feeder_state"] = self.feeder_state
             print("context template loaded from '%s'" % filename)
 
     def _file_read_internal(self, filename):
         with open(filename, "r") as f:
+            #use update instead of =
+            #this will allow all references to context to stay
+            #in place and data to be updated.
             self.context.update(json.load(f))
             self.context["const"] = {}
             self.context["const"]["part_state"] = self.part_state
