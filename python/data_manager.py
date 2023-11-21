@@ -22,6 +22,7 @@ class ContextManager:
     feeder_attribute = ["pitch", "x_offset", "y_offset"]
 
     def __init__(self):
+        self.context = {}
         self.file_read()
 
     def file_save(self, filename="context"):
@@ -42,21 +43,31 @@ class ContextManager:
         if "\\" in filename or "/" in filename:
             raise Exception("filename '%s' not allowed")
         try:
-            with open("user/context/%s" % filename, "r") as f:
-                        self.context = json.load(f)
-                        self.context["const"] = {}
-                        self.context["const"]["part_state"] = self.part_state
-                        self.context["const"]["feeder_type"] = self.feeder_type
-                        self.context["const"]["feeder_state"] = self.feeder_state
+            self._file_read_internal("user/context/%s" % filename)
+            # with open("user/context/%s" % filename, "r") as f:
+            #             self.context = json.load(f)
+            #             self.context["const"] = {}
+            #             self.context["const"]["part_state"] = self.part_state
+            #             self.context["const"]["feeder_type"] = self.feeder_type
+            #             self.context["const"]["feeder_state"] = self.feeder_state
             print("context data restored from '%s'" % filename)
         except:
-            with open("template/context.json", "r") as f:
-                        self.context = json.load(f)
-                        self.context["const"] = {}
-                        self.context["const"]["part_state"] = self.part_state
-                        self.context["const"]["feeder_type"] = self.feeder_type
-                        self.context["const"]["feeder_state"] = self.feeder_state
+            self._file_read_internal("template/context.json")
+            # with open("template/context.json", "r") as f:
+            #             self.context = json.load(f)
+            #             self.context["const"] = {}
+            #             self.context["const"]["part_state"] = self.part_state
+            #             self.context["const"]["feeder_type"] = self.feeder_type
+            #             self.context["const"]["feeder_state"] = self.feeder_state
             print("context template loaded from '%s'" % filename)
+
+    def _file_read_internal(self, filename):
+        with open(filename, "r") as f:
+            self.context.update(json.load(f))
+            self.context["const"] = {}
+            self.context["const"]["part_state"] = self.part_state
+            self.context["const"]["feeder_type"] = self.feeder_type
+            self.context["const"]["feeder_state"] = self.feeder_state
 
     def get(self):
         return self.context
