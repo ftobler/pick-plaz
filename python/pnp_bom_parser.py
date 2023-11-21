@@ -2,7 +2,7 @@ import pnp_bom_parser_eagle
 
 
 
-def pnp_bom_parse(pnp, bom):
+def pnp_bom_parse(pnp: [str], bom: [str]) -> object:
     parsers = [
         lambda p, b: pnp_bom_parser_eagle.pnp_bom_parse_generic(p, b),
         lambda p, b: pnp_bom_parser_eagle.pnp_bom_parse_eagle(p, b),
@@ -16,8 +16,7 @@ def pnp_bom_parse(pnp, bom):
     raise Exception(exceptions)
 
 
-
-def test_bom_pnp(bom_file, pnp_file):
+def test_bom_pnp(bom_file: str, pnp_file: str) -> object:
     print("/************************************************************")
     print("test", bom_file, pnp_file)
     with open(pnp_file, "r") as f:
@@ -29,8 +28,10 @@ def test_bom_pnp(bom_file, pnp_file):
     data = pnp_bom_parse(pnp_str, bom_str)
     # print(json.dumps(data, indent=4, sort_keys=True))
     print("************************************************************/")
+    return data
 
-def test():
+
+def test() -> None:
     print("automatic testing of BOM parsing")
     import os
     base = "test/bom/"
