@@ -152,10 +152,14 @@ def pnp_bom_parse_internal(pnp, bom):
                     parts_data["x"]     = float(part[pnp_index_x].replace("mm", ""))
                     parts_data["y"]     = float(part[pnp_index_y].replace("mm", ""))
                     parts_data["rot"]   = float(part[pnp_index_rot])
-                    if pnp_index_layer != -1: #this could be non existing
-                        parts_data["layer"] = part[pnp_index_layer]
-                    else:
-                        parts_data["layer"] = None
+
+                    if pnp_index_layer != -1:
+                        layer_name = part[pnp_index_layer].lower()
+                        if layer_name in ["bot", "bottom", "bottomlayer"]:
+                            #this is bottom layer. need to flip coordinates
+                            parts_data["x"] = -parts_data["x"]
+                            parts_data["rot"] = -parts_data["rot"]
+
                     parts_data["place"] = True
                     bom_entry["place"] = True
                     break
