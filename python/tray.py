@@ -2,6 +2,8 @@ import numpy as np
 import math
 import debug
 import pick
+import config
+
 
 TYPE_NUMBER = 0
 
@@ -24,7 +26,7 @@ class Tray:
             robot.drive(x, y)
         else:
             self.apply_area_slowdown(robot, A)
-            self.picker.pick(robot, x, y, a)
+            self.picker.pick(robot, x, y, a, config.PICK_Z_TRAY)
 
     def _find_in_tray(self, feeder, robot):
 

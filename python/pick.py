@@ -18,6 +18,7 @@ class Picker():
         self.min_area_mm2 = 0.75
 
         self.eye = eye
+        self.home_interval = 0
 
         try:
             with open("user/picker.json", "r") as f:
@@ -47,7 +48,8 @@ class Picker():
 
         return pos[0], pos[1], a[0]
 
-    def pick(self, robot, x, y, angle, done_time=None, pick_depth=config.PICK_Z):
+    def pick(self, robot, x, y, angle, pick_depth=config.PICK_Z_PLACE, done_time=None):
+        print(f"pick z={pick_depth}")
         vacuum_time = time.time() + 1
         robot.vacuum(True)
         robot.valve(False)
@@ -71,7 +73,8 @@ class Picker():
         # robot.drive(e=0, r=10.0)
         # robot.drive(e=0, f=200, r=0.75)
 
-    def place(self, robot, x, y, angle, pick_depth=config.PICK_Z):
+    def place(self, robot, x, y, angle, pick_depth=config.PICK_Z_PLACE):
+        print(f"place z={pick_depth}")
         robot.drive(x=x+self.DX, y=y+self.DY, e=angle, f=200, r=10.0)
         robot.drive(e=angle)
         robot.drive(z=pick_depth)
@@ -79,6 +82,13 @@ class Picker():
         robot.valve(False)
         robot.vacuum(False)
         robot.drive(z=0)
+
+        self.home_interval += 1
+        if self.home_interval > 5:
+            robot.done()
+            self.home_interval = 0
+            robot.home('z')
+            robot.drive(z=0)
 
     def calibrate_legacy(self, pos, robot, camera):
 
@@ -110,7 +120,13 @@ class Picker():
 
         robot.light_topdn(False)
         robot.light_tray(True)
-
+        tf = 1
+        zf = 0.5
+        of = 1
+        rf = 0.1  #*12?
+        robot.feedrate_multiplier(x=tf, y=tf, z=zf, e=rf, a=of, b=of, c=of)
+        # funktioniert nicht?
+        # homing z funktioniert auch nicht gut.
         print("old calibration: %f/%f" % (self.DX, self.DY))
 
         x, y = pos

@@ -1,5 +1,6 @@
 import hole_finder
 import numpy as np
+import config
 
 
 TYPE_NUMBER = 1
@@ -74,7 +75,7 @@ class Belt:
             #vibrations that the parts are flying out.
             state["pos"] += 1
             self._apply_general_pick_slowdown(robot, apply=True)
-            self.picker.pick(robot, pick_pos[0], pick_pos[1], angle + state["rot"])
+            self.picker.pick(robot, pick_pos[0], pick_pos[1], angle + state["rot"], config.PICK_Z_BELT)
             self._apply_general_pick_slowdown(robot, apply=False)
 
         # self.picker.place(robot, pick_pos[0], pick_pos[1] + 10, 0)
